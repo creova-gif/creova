@@ -402,6 +402,25 @@ const translations = {
     'form.error.generic': 'Something went wrong. Please try again.',
     'form.saving': 'Saving...',
     
+    // Exit Intent Modal
+    'exit.heading': 'Before You Go...',
+    'exit.sub': 'Join the CREOVA community and be first to access',
+    'exit.launch': 'exclusive launch offers.',
+    'exit.offer': 'Get',
+    'exit.offer.bold': '15% off',
+    'exit.offer.rest': 'your first booking when you subscribe.',
+    'exit.email.placeholder': 'Enter your email address',
+    'exit.joining': 'Joining...',
+    'exit.cta': 'Claim My Discount',
+    'exit.disclaimer': 'No spam, ever. Unsubscribe anytime. By subscribing you agree to our privacy policy.',
+    'exit.trust1.value': '500+',
+    'exit.trust1.label': 'Happy Clients',
+    'exit.trust2.value': '5★',
+    'exit.trust2.label': 'Average Rating',
+    'exit.toast.invalid': 'Please enter a valid email address.',
+    'exit.toast.success': "You're in! Check your inbox for your discount code.",
+    'exit.toast.error': 'Something went wrong. Please try again.',
+
     // Accessibility
     'a11y.skip.content': 'Skip to content',
     'a11y.back.top': 'Back to top',
@@ -809,6 +828,25 @@ const translations = {
     'form.error.generic': 'Une erreur s\'est produite. Veuillez réessayer.',
     'form.saving': 'Enregistrement...',
     
+    // Exit Intent Modal
+    'exit.heading': 'Avant de Partir...',
+    'exit.sub': 'Rejoignez la communauté CREOVA et accédez en premier aux',
+    'exit.launch': 'offres de lancement exclusives.',
+    'exit.offer': 'Obtenez',
+    'exit.offer.bold': '15% de réduction',
+    'exit.offer.rest': 'sur votre première réservation en vous abonnant.',
+    'exit.email.placeholder': 'Entrez votre adresse courriel',
+    'exit.joining': 'Inscription...',
+    'exit.cta': 'Réclamer ma réduction',
+    'exit.disclaimer': 'Aucun spam, jamais. Désabonnez-vous à tout moment. En vous abonnant, vous acceptez notre politique de confidentialité.',
+    'exit.trust1.value': '500+',
+    'exit.trust1.label': 'Clients Satisfaits',
+    'exit.trust2.value': '5★',
+    'exit.trust2.label': 'Note Moyenne',
+    'exit.toast.invalid': 'Veuillez entrer une adresse courriel valide.',
+    'exit.toast.success': "Vous êtes inscrit ! Vérifiez votre boîte de réception pour votre code de réduction.",
+    'exit.toast.error': 'Une erreur est survenue. Veuillez réessayer.',
+
     // Accessibility
     'a11y.skip.content': 'Aller au contenu',
     'a11y.back.top': 'Retour en haut',
