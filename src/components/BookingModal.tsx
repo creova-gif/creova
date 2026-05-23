@@ -5,6 +5,13 @@ import { toast } from 'sonner';
 import { logger } from '../utils/logger';
 import { motion } from 'motion/react';
 import { useNavigate } from 'react-router-dom';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from './ui/dialog';
+import { Button } from './ui/button';
+import { Input } from './ui/input';
+import { Label } from './ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
+import { Textarea } from './ui/textarea';
+import { Calendar, User, ArrowRight } from 'lucide-react';
 
 interface BookingModalProps {
   isOpen: boolean;
@@ -15,7 +22,7 @@ interface BookingModalProps {
 }
 
 export function BookingModal({ isOpen, onClose, service, package: packageName, price }: BookingModalProps) {
-  const { language } = useLanguage();
+  const { language, t } = useLanguage();
   const navigate = useNavigate();
   
   const [formData, setFormData] = useState({
@@ -38,30 +45,17 @@ export function BookingModal({ isOpen, onClose, service, package: packageName, p
     
     // Validate required fields
     if (!formData.name || !formData.email || !formData.phone || !formData.date) {
-      toast.error(
-        language === 'fr'
-          ? 'Veuillez remplir tous les champs obligatoires'
-          : 'Please fill in all required fields'
-      );
+      toast.error(t('booking.error.fields'));
       return;
     }
 
-    // Email validation
     if (!formData.email.includes('@')) {
-      toast.error(
-        language === 'fr'
-          ? 'Veuillez entrer une adresse email valide'
-          : 'Please enter a valid email address'
-      );
+      toast.error(t('booking.error.email'));
       return;
     }
 
     // Show success and proceed to payment
-    toast.success(
-      language === 'fr'
-        ? 'Réservation reçue! Redirection vers le paiement...'
-        : 'Booking received! Redirecting to payment...'
-    );
+    toast.success(t('booking.success.received'));
 
     // Send real booking confirmation email
     try {
@@ -88,21 +82,13 @@ export function BookingModal({ isOpen, onClose, service, package: packageName, p
         logger.log('Booking confirmation email sent:', emailResult);
         
         setTimeout(() => {
-          toast.success(
-            language === 'fr'
-              ? 'Email de confirmation envoyé! Vérifiez votre boîte de réception.'
-              : 'Confirmation email sent! Check your inbox.'
-          );
+          toast.success(t('booking.success.sent'));
         }, 1500);
       } else {
         // Email failed but don't block the booking flow
         console.warn('Email sending failed, but booking was saved');
         setTimeout(() => {
-          toast.info(
-            language === 'fr'
-              ? 'Réservation confirmée. Nous vous contacterons sous peu.'
-              : 'Booking confirmed. We\'ll contact you shortly.'
-          );
+          toast.info(t('booking.success.confirmed'));
         }, 1500);
       }
     } catch (emailError) {
@@ -123,26 +109,16 @@ export function BookingModal({ isOpen, onClose, service, package: packageName, p
     }, 2000);
   };
 
-  const services = language === 'fr' ? [
-    'Photographie Familiale',
-    'Photographie de Marque',
-    'Photographie de Produits',
-    'Drone/Aérien',
-    'Couverture d\'Événements',
-    'Design Graphique',
-    'Gestion des Médias Sociaux',
-    'Vidéographie',
-    'Location d\'Équipement'
-  ] : [
-    'Family Photography',
-    'Brand Photography',
-    'Product Photography',
-    'Drone/Aerial',
-    'Event Coverage',
-    'Graphic Design',
-    'Social Media Management',
-    'Videography',
-    'Equipment Rental'
+  const services = [
+    t('booking.service.family'),
+    t('booking.service.brand'),
+    t('booking.service.product'),
+    t('booking.service.drone'),
+    t('booking.service.event'),
+    t('booking.service.graphic'),
+    t('booking.service.social'),
+    t('booking.service.video'),
+    t('booking.service.rental')
   ];
 
   const timeSlots = [
@@ -157,12 +133,10 @@ export function BookingModal({ isOpen, onClose, service, package: packageName, p
         <DialogHeader>
           <DialogTitle className="text-3xl flex items-center gap-2" style={{ color: '#121212' }}>
             <Calendar className="w-7 h-7" style={{ color: '#A68F59' }} />
-            {language === 'fr' ? 'Réserver une Session' : 'Book a Session'}
+            {t('booking.title')}
           </DialogTitle>
           <DialogDescription style={{ color: '#7A6F66' }}>
-            {language === 'fr'
-              ? 'Remplissez le formulaire ci-dessous et nous vous contacterons pour confirmer votre réservation. Un dépôt de 50% est requis pour sécuriser votre date.'
-              : 'Fill out the form below and we\'ll contact you to confirm your booking. A 50% deposit is required to secure your date.'}
+            {t('booking.desc')}
           </DialogDescription>
         </DialogHeader>
 
@@ -171,16 +145,16 @@ export function BookingModal({ isOpen, onClose, service, package: packageName, p
           <div className="space-y-4">
             <h3 className="flex items-center gap-2" style={{ color: '#121212' }}>
               <User className="w-5 h-5" style={{ color: '#A68F59' }} />
-              {language === 'fr' ? 'Informations Personnelles' : 'Personal Information'}
+              {t('booking.info.personal')}
             </h3>
             
             <div>
-              <Label htmlFor="name">{language === 'fr' ? 'Nom Complet *' : 'Full Name *'}</Label>
+              <Label htmlFor="name">{t('booking.label.name')}</Label>
               <Input
                 id="name"
                 value={formData.name}
                 onChange={(e) => handleChange('name', e.target.value)}
-                placeholder={language === 'fr' ? 'Votre nom complet' : 'Your full name'}
+                placeholder={t('booking.placeholder.name')}
                 required
                 className="mt-2"
               />
@@ -188,7 +162,7 @@ export function BookingModal({ isOpen, onClose, service, package: packageName, p
 
             <div className="grid md:grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="email">{language === 'fr' ? 'Email *' : 'Email *'}</Label>
+                <Label htmlFor="email">{t('booking.label.email')}</Label>
                 <Input
                   id="email"
                   type="email"
@@ -200,7 +174,7 @@ export function BookingModal({ isOpen, onClose, service, package: packageName, p
                 />
               </div>
               <div>
-                <Label htmlFor="phone">{language === 'fr' ? 'Téléphone *' : 'Phone *'}</Label>
+                <Label htmlFor="phone">{t('booking.label.phone')}</Label>
                 <Input
                   id="phone"
                   type="tel"
@@ -218,14 +192,14 @@ export function BookingModal({ isOpen, onClose, service, package: packageName, p
           <div className="space-y-4">
             <h3 className="flex items-center gap-2" style={{ color: '#121212' }}>
               <Calendar className="w-5 h-5" style={{ color: '#A68F59' }} />
-              {language === 'fr' ? 'Détails du Service' : 'Service Details'}
+              {t('booking.info.service')}
             </h3>
 
             <div>
-              <Label htmlFor="service">{language === 'fr' ? 'Service *' : 'Service *'}</Label>
+              <Label htmlFor="service">{t('booking.label.service')}</Label>
               <Select value={formData.service} onValueChange={(value) => handleChange('service', value)}>
                 <SelectTrigger className="mt-2">
-                  <SelectValue placeholder={language === 'fr' ? 'Sélectionner un service' : 'Select a service'} />
+                  <SelectValue placeholder={t('booking.placeholder.service')} />
                 </SelectTrigger>
                 <SelectContent>
                   {services.map((s) => (
@@ -237,7 +211,7 @@ export function BookingModal({ isOpen, onClose, service, package: packageName, p
 
             {formData.package && (
               <div>
-                <Label>{language === 'fr' ? 'Forfait Sélectionné' : 'Selected Package'}</Label>
+                <Label>{t('booking.label.package')}</Label>
                 <div className="mt-2 p-3 rounded-lg border-2" style={{ borderColor: '#A68F59', backgroundColor: '#F5F1EB' }}>
                   <p style={{ color: '#121212' }}>{formData.package}</p>
                   {price && (
@@ -251,7 +225,7 @@ export function BookingModal({ isOpen, onClose, service, package: packageName, p
 
             <div className="grid md:grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="date">{language === 'fr' ? 'Date Préférée *' : 'Preferred Date *'}</Label>
+                <Label htmlFor="date">{t('booking.label.date')}</Label>
                 <Input
                   id="date"
                   type="date"
@@ -263,10 +237,10 @@ export function BookingModal({ isOpen, onClose, service, package: packageName, p
                 />
               </div>
               <div>
-                <Label htmlFor="time">{language === 'fr' ? 'Heure Préférée' : 'Preferred Time'}</Label>
+                <Label htmlFor="time">{t('booking.label.time')}</Label>
                 <Select value={formData.time} onValueChange={(value) => handleChange('time', value)}>
                   <SelectTrigger className="mt-2">
-                    <SelectValue placeholder={language === 'fr' ? 'Sélectionner une heure' : 'Select a time'} />
+                    <SelectValue placeholder={t('booking.placeholder.time')} />
                   </SelectTrigger>
                   <SelectContent>
                     {timeSlots.map((time) => (
@@ -280,14 +254,12 @@ export function BookingModal({ isOpen, onClose, service, package: packageName, p
 
           {/* Additional Information */}
           <div>
-            <Label htmlFor="message">{language === 'fr' ? 'Message Additionnel' : 'Additional Message'}</Label>
+            <Label htmlFor="message">{t('booking.label.message')}</Label>
             <Textarea
               id="message"
               value={formData.message}
               onChange={(e) => handleChange('message', e.target.value)}
-              placeholder={language === 'fr' 
-                ? 'Parlez-nous de votre vision, besoins spéciaux, ou questions...'
-                : 'Tell us about your vision, special needs, or any questions...'}
+              placeholder={t('booking.placeholder.message')}
               rows={4}
               className="mt-2"
             />
@@ -301,17 +273,15 @@ export function BookingModal({ isOpen, onClose, service, package: packageName, p
             style={{ backgroundColor: '#F5F1EB', borderColor: '#A68F59' }}
           >
             <p className="text-sm mb-2" style={{ color: '#121212' }}>
-              <strong>{language === 'fr' ? '💰 Dépôt Requis:' : '💰 Required Deposit:'}</strong>
+              <strong>{t('booking.deposit.title')}</strong>
             </p>
             <p className="text-sm" style={{ color: '#7A6F66' }}>
-              {language === 'fr'
-                ? 'Un dépôt de 50% est nécessaire pour confirmer votre réservation. Vous serez redirigé vers le paiement sécurisé après soumission.'
-                : 'A 50% deposit is required to confirm your booking. You\'ll be redirected to secure payment after submission.'}
+              {t('booking.deposit.desc')}
             </p>
             {price && (
               <p className="text-lg mt-2" style={{ color: '#B1643B' }}>
                 <strong>
-                  {language === 'fr' ? 'Dépôt: ' : 'Deposit: '}
+                  {t('booking.deposit.label')}
                   {(price * 0.5).toLocaleString('en-CA', { style: 'currency', currency: 'CAD' })}
                 </strong>
               </p>
@@ -326,14 +296,14 @@ export function BookingModal({ isOpen, onClose, service, package: packageName, p
               onClick={onClose}
               className="flex-1 rounded-xl py-6"
             >
-              {language === 'fr' ? 'Annuler' : 'Cancel'}
+              {t('booking.btn.cancel')}
             </Button>
             <Button
               type="submit"
               className="flex-1 rounded-xl py-6 group"
               style={{ backgroundColor: '#121212', color: '#F5F1EB' }}
             >
-              {language === 'fr' ? 'Continuer au Paiement' : 'Continue to Payment'}
+              {t('booking.btn.continue')}
               <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
             </Button>
           </div>

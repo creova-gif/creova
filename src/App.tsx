@@ -83,7 +83,7 @@ function AnimatedRoutes() {
 }
 
 function AppContent() {
-  const { language, t } = useLanguage();
+  const { language, t, isChanging } = useLanguage();
   
   // Ensure language is always a string
   const currentLang = language || 'en';
@@ -93,18 +93,18 @@ function AppContent() {
   return (
     <>
       <Helmet htmlAttributes={{ lang: currentLang }}>
-        <title>CREOVA | Black-Owned Creative Agency Ontario | Photography, Videography, Brand Design</title>
-        <meta name="description" content="CREOVA is a Black-owned creative agency in Ontario, Canada specializing in professional photography, videography, brand management, and digital content creation. Serving BIPOC communities across Niagara, Toronto & GTA with authentic storytelling and premium creative services." />
-        <meta name="keywords" content="Black-owned creative agency Ontario, BIPOC photographer Niagara, videography services Toronto, brand photography Ontario, creative studio Canada, Black photographer Toronto, Niagara videographer, brand design Ontario, social media management, Ontario creative agency, African Canadian photographer" />
-        <meta property="og:title" content="CREOVA | Black-Owned Creative Agency Ontario" />
-        <meta property="og:description" content="Professional photography, videography, brand management & digital content creation for BIPOC communities across Ontario. Book your creative session today." />
+        <title>{t('seo.title')}</title>
+        <meta name="description" content={t('seo.description')} />
+        <meta name="keywords" content={t('seo.keywords')} />
+        <meta property="og:title" content={t('seo.og.title')} />
+        <meta property="og:description" content={t('seo.og.description')} />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://creova.ca" />
         <meta property="og:locale" content={ogLocale} />
         <meta property="og:locale:alternate" content={ogLocaleAlternate} />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="CREOVA | Black-Owned Creative Agency Ontario" />
-        <meta name="twitter:description" content="Professional Photography, Videography & Brand Design for BIPOC Communities in Ontario, Canada" />
+        <meta name="twitter:title" content={t('seo.og.title')} />
+        <meta name="twitter:description" content={t('seo.og.description')} />
         <link rel="canonical" href="https://creova.ca" />
         <meta name="geo.region" content="CA-ON" />
         <meta name="geo.placename" content="Ontario, Niagara Region" />
@@ -121,7 +121,7 @@ function AppContent() {
           "@context": "https://schema.org",
           "@type": "ProfessionalService",
           "name": "CREOVA Creative Agency",
-          "description": "Black-owned creative agency specializing in photography, videography, and brand design",
+          "description": t('seo.schema.desc'),
           "url": "https://creova.ca",
           "telephone": "+1-437-260-8925",
           "email": "support@creova.ca",
@@ -161,30 +161,30 @@ function AppContent() {
           ],
           "hasOfferCatalog": {
             "@type": "OfferCatalog",
-            "name": "Creative Services",
+            "name": t('seo.schema.catalog'),
             "itemListElement": [
               {
                 "@type": "Offer",
                 "itemOffered": {
                   "@type": "Service",
-                  "name": "Photography Services",
-                  "description": "Professional family, brand, and product photography"
+                  "name": t('seo.schema.photo.name'),
+                  "description": t('seo.schema.photo.desc')
                 }
               },
               {
                 "@type": "Offer",
                 "itemOffered": {
                   "@type": "Service",
-                  "name": "Videography Services",
-                  "description": "Cinematic videography and event coverage"
+                  "name": t('seo.schema.video.name'),
+                  "description": t('seo.schema.video.desc')
                 }
               },
               {
                 "@type": "Offer",
                 "itemOffered": {
                   "@type": "Service",
-                  "name": "Brand Design Services",
-                  "description": "Brand identity, logo design, and visual systems"
+                  "name": t('seo.schema.brand.name'),
+                  "description": t('seo.schema.brand.desc')
                 }
               }
             ]
@@ -194,12 +194,25 @@ function AppContent() {
       
       <ScrollToTopOnMount />
       
+      {/* Language-switch flash overlay — cinematic simultaneous content swap */}
+      {isChanging && (
+        <div
+          className="fixed inset-0 z-[9999] pointer-events-none"
+          style={{
+            backgroundColor: '#080808',
+            opacity: 0.18,
+            transition: 'opacity 120ms ease',
+          }}
+          aria-hidden="true"
+        />
+      )}
+
       {/* Accessibility skip link - hidden unless focused */}
-      <a 
-        href="#main-content" 
+      <a
+        href="#main-content"
         className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:bg-[#121212] focus:text-[#F5F1EB] focus:px-4 focus:py-2 focus:rounded"
       >
-        Skip to main content
+        {t('a11y.skip.content')}
       </a>
       
       <div className="min-h-screen flex flex-col bg-white overflow-x-hidden">

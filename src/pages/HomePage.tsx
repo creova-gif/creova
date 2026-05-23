@@ -113,24 +113,24 @@ export function HomePage() {
   const heroOpacityOut = useTransform(heroScrollY, [0, 0.7], [1, 0]);
 
   const features = [
-    { icon: Camera, title: 'Photography', description: 'Brand, family, and professional portraiture', link: '/services', image: photoServicePhotography, objectPosition: 'center 25%', accent: '#A68F59' },
-    { icon: Video, title: 'Videography', description: 'Cinematic storytelling and event coverage', link: '/services', image: photoServiceVideography, objectPosition: 'center top', accent: '#B1643B' },
-    { icon: Palette, title: 'Brand Identity', description: 'Visual systems and strategic design', link: '/services', image: photoCommunity2, objectPosition: 'center 20%', accent: '#A68F59' },
-    { icon: TrendingUp, title: 'Social Media', description: 'Content strategy and digital growth', link: '/services', image: photoSocialLaptop, objectPosition: 'center top', accent: '#B1643B' },
-    { icon: ShoppingBag, title: 'Shop SEEN', description: 'CREOVA apparel and accessories', link: '/shop', image: photoEvent1, objectPosition: 'center top', accent: '#A68F59' },
-    { icon: Calendar, title: 'Events', description: 'Workshops and creative gatherings', link: '/experience', image: photoServiceEvents, objectPosition: 'center 40%', accent: '#B1643B' },
+    { icon: Camera, title: t('home.feature.1.title'), description: t('home.feature.1.desc'), link: '/services', image: photoServicePhotography, objectPosition: 'center 25%', accent: '#A68F59' },
+    { icon: Video, title: t('home.feature.2.title'), description: t('home.feature.2.desc'), link: '/services', image: photoServiceVideography, objectPosition: 'center top', accent: '#B1643B' },
+    { icon: Palette, title: t('home.feature.3.title'), description: t('home.feature.3.desc'), link: '/services', image: photoCommunity2, objectPosition: 'center 20%', accent: '#A68F59' },
+    { icon: TrendingUp, title: t('home.feature.4.title'), description: t('home.feature.4.desc'), link: '/services', image: photoSocialLaptop, objectPosition: 'center top', accent: '#B1643B' },
+    { icon: ShoppingBag, title: t('home.feature.5.title'), description: t('home.feature.5.desc'), link: '/shop', image: photoEvent1, objectPosition: 'center top', accent: '#A68F59' },
+    { icon: Calendar, title: t('home.feature.6.title'), description: t('home.feature.6.desc'), link: '/experience', image: photoServiceEvents, objectPosition: 'center 40%', accent: '#B1643B' },
   ];
 
   const stats = [
-    { number: '15+', label: 'Projects Delivered', icon: Award },
-    { number: '5+', label: 'Communities Reached', icon: Globe },
-    { number: '1+', label: 'Years in Business', icon: Users },
+    { number: '15+', label: t('home.stat.projects'), icon: Award },
+    { number: '5+', label: t('home.stat.communities'), icon: Globe },
+    { number: '1+', label: t('home.stat.years'), icon: Users },
   ];
 
   const marqueeItems = [
-    'Photography', 'Videography', 'Brand Identity', 'Social Media',
-    'Events', 'Community', 'BIPOC Creative', 'Ontario',
-    'SEEN Platform', 'Drone Aerial', 'Content Creation', 'Cultural Storytelling',
+    t('home.marquee.1'), t('home.marquee.2'), t('home.marquee.3'), t('home.marquee.4'),
+    t('home.marquee.5'), t('home.marquee.6'), t('home.marquee.7'), t('home.marquee.8'),
+    t('home.marquee.9'), t('home.marquee.10'), t('home.marquee.11'), t('home.marquee.12'),
   ];
 
   return (
@@ -178,7 +178,7 @@ export function HomePage() {
                 style={{ backgroundColor: 'rgba(166, 143, 89, 0.15)', border: '1px solid rgba(166, 143, 89, 0.3)' }}
               >
                 <Award className="w-4 h-4" style={{ color: '#A68F59' }} />
-                <span className="text-sm tracking-wide" style={{ color: '#A68F59' }}>Ontario's BIPOC Creative Agency</span>
+                <span className="text-sm tracking-wide" style={{ color: '#A68F59' }}>{t('home.hero.badge')}</span>
               </motion.div>
 
               <div className="mb-8">
@@ -196,14 +196,14 @@ export function HomePage() {
                   style={{ color: '#A68F59', letterSpacing: '0.02em' }}
                   initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.9, duration: 0.8 }}
                 >
-                  Visual branding for BIPOC founders
+                  {t('home.hero.tagline1')}
                 </motion.p>
                 <motion.p
                   className="text-xl md:text-2xl font-light"
                   style={{ color: '#7A6F66', letterSpacing: '0.02em' }}
                   initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 1.0, duration: 0.8 }}
                 >
-                  who refuse to blend in.
+                  {t('home.hero.tagline2')}
                 </motion.p>
               </div>
 
@@ -212,8 +212,7 @@ export function HomePage() {
                 style={{ color: '#E3DCD3' }}
                 initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2, duration: 1 }}
               >
-                Photography, videography, and brand strategy built for BIPOC entrepreneurs across Ontario.
-                From your first brand shoot to a full content engine — we deliver results, not just pretty pictures.
+                {t('home.hero.body')}
               </motion.p>
 
               {/* Availability signal */}
@@ -224,7 +223,7 @@ export function HomePage() {
               >
                 <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: '#B1643B' }} />
                 <span className="text-xs tracking-wide" style={{ color: '#B1643B' }}>
-                  4 client spots open for Q3 2026
+                  {t('home.hero.availability')}
                 </span>
               </motion.div>
 
@@ -254,9 +253,9 @@ export function HomePage() {
                 initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.6, duration: 0.8 }}
                 className="flex flex-wrap gap-6 mt-10 pt-8 border-t" style={{ borderColor: 'rgba(227, 220, 211, 0.2)' }}>
                 {[
-                  { icon: Award, text: '15+ Projects Delivered' },
-                  { icon: Heart, text: 'BIPOC-Owned & Operated' },
-                  { icon: CheckCircle2, text: '5-Star Rated' },
+                  { icon: Award, text: t('home.hero.badge1') },
+                  { icon: Heart, text: t('home.hero.badge2') },
+                  { icon: CheckCircle2, text: t('home.hero.badge3') },
                 ].map((badge, i) => (
                   <div key={i} className="flex items-center gap-2">
                     <badge.icon className="w-5 h-5" style={{ color: '#A68F59' }} />
@@ -336,7 +335,7 @@ export function HomePage() {
               transition={{ duration: 1 }} viewport={{ once: true }}>
               <div className="flex items-center gap-3 mb-6">
                 <span className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: '#A68F59' }} />
-                <span className="text-xs tracking-[0.4em] uppercase" style={{ color: '#A68F59' }}>Upcoming Platform</span>
+                <span className="text-xs tracking-[0.4em] uppercase" style={{ color: '#A68F59' }}>{t('home.seen.badge')}</span>
               </div>
               <h2 className="font-bold leading-none mb-6 tracking-tight" style={{
                 fontSize: 'clamp(4rem, 10vw, 7rem)', color: 'transparent',
@@ -344,15 +343,15 @@ export function HomePage() {
                 WebkitBackgroundClip: 'text', backgroundClip: 'text',
               }}>SEEN</h2>
               <p className="text-base md:text-lg mb-4 leading-relaxed" style={{ color: '#E3DCD3' }}>
-                Canada's culturally-centred storytelling platform — where Indigenous, Black Canadian, francophone, and immigrant voices own their stories.
+                {t('home.seen.desc')}
               </p>
               <p className="text-sm mb-10" style={{ color: '#7A6F66' }}>
-                Story worlds · Creator IP ownership · Multilingual · Audio-first
+                {t('home.seen.features')}
               </p>
               <Link to="/seen"
                 className="inline-flex items-center gap-3 px-8 py-4 rounded-xl text-base font-medium tracking-wide transition-all duration-500 hover:shadow-2xl group"
                 style={{ backgroundColor: '#F5F1EB', color: '#121212' }}>
-                Explore SEEN
+                {t('home.seen.cta')}
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Link>
             </motion.div>
@@ -360,10 +359,10 @@ export function HomePage() {
               transition={{ duration: 1, delay: 0.2 }} viewport={{ once: true }}
               className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {[
-                { label: 'Story Worlds', desc: 'Immersive cultural narratives with ambient audio' },
-                { label: 'Creator First', desc: '100% IP ownership — always' },
-                { label: 'Multilingual', desc: 'EN · FR · ES · Indigenous languages' },
-                { label: 'Community Owned', desc: 'Revenue shared with creators' },
+                { label: t('home.seen.f1.label'), desc: t('home.seen.f1.desc') },
+                { label: t('home.seen.f2.label'), desc: t('home.seen.f2.desc') },
+                { label: t('home.seen.f3.label'), desc: t('home.seen.f3.desc') },
+                { label: t('home.seen.f4.label'), desc: t('home.seen.f4.desc') },
               ].map((item, i) => (
                 <motion.div key={item.label}
                   initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
@@ -392,13 +391,13 @@ export function HomePage() {
             transition={{ duration: 1 }} viewport={{ once: true }} className="mb-20">
             <div className="flex items-center gap-4 mb-6">
               <div className="w-12 h-px" style={{ backgroundColor: '#A68F59' }} />
-              <span className="text-xs tracking-[0.4em] uppercase" style={{ color: '#A68F59' }}>Our Services</span>
+              <span className="text-xs tracking-[0.4em] uppercase" style={{ color: '#A68F59' }}>{t('home.services.badge')}</span>
             </div>
-            <SplitText text="What We Offer" tag="h2"
+            <SplitText text={t('home.services.heading')} tag="h2"
               className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl tracking-tight leading-tight"
               style={{ color: '#F5F1EB' }} mode="words" stagger={0.07} />
             <p className="text-base sm:text-xl mt-6 max-w-2xl leading-relaxed" style={{ color: '#7A6F66' }}>
-              Comprehensive creative services for brands, entrepreneurs, and cultural storytellers across Canada
+              {t('home.services.sub')}
             </p>
           </motion.div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -424,7 +423,7 @@ export function HomePage() {
                     <p className="text-sm leading-relaxed mb-4" style={{ color: '#E3DCD3' }}>{feature.description}</p>
                     <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-500"
                       style={{ color: feature.accent }}>
-                      <span className="text-sm font-medium">Explore</span>
+                      <span className="text-sm font-medium">{t('home.services.explore')}</span>
                       <ArrowRight className="w-4 h-4" />
                     </div>
                     <div className="h-px mt-3 w-0 group-hover:w-full transition-all duration-700"
@@ -449,10 +448,10 @@ export function HomePage() {
         <div className="max-w-4xl mx-auto">
           <div className="flex items-center gap-4 mb-16">
             <div className="w-12 h-px" style={{ backgroundColor: 'rgba(166,143,89,0.5)' }} />
-            <span className="text-xs tracking-[0.4em] uppercase" style={{ color: '#A68F59' }}>Our Belief</span>
+            <span className="text-xs tracking-[0.4em] uppercase" style={{ color: '#A68F59' }}>{t('home.manifesto.badge')}</span>
           </div>
           <ScrollScrubText
-            text="We believe that every community deserves to see itself reflected in the work that shapes culture. CREOVA exists to give BIPOC creators, entrepreneurs, and storytellers the tools, platform, and visibility they deserve — crafted with intention, delivered with excellence."
+            text={t('home.manifesto.text')}
             className="text-2xl md:text-3xl lg:text-4xl font-light leading-relaxed"
             style={{ color: '#F5F1EB', fontFamily: 'var(--font-display)', letterSpacing: '-0.01em' }}
           />
@@ -491,20 +490,20 @@ export function HomePage() {
               transition={{ duration: 1 }} viewport={{ once: true }}>
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-10 h-px" style={{ backgroundColor: '#B1643B' }} />
-                <span className="text-xs tracking-[0.4em] uppercase" style={{ color: '#B1643B' }}>Fall 2026 Season</span>
+                <span className="text-xs tracking-[0.4em] uppercase" style={{ color: '#B1643B' }}>{t('home.fall.badge')}</span>
               </div>
-              <SplitText text="This fall, we bring the community together." tag="h2"
+              <SplitText text={t('home.fall.heading')} tag="h2"
                 className="text-4xl md:text-5xl mb-6 tracking-tight leading-tight"
                 style={{ color: '#121212' }} mode="words" stagger={0.05} />
               <p className="text-lg mb-8 leading-relaxed" style={{ color: '#4A3E36' }}>
-                From brand photography workshops to networking mixers, CREOVA's Fall 2026 season is built for BIPOC creatives and entrepreneurs across Ontario. Real skills, real connections, real impact.
+                {t('home.fall.desc')}
               </p>
               <div className="space-y-4 mb-10">
                 {[
-                  { label: 'September', desc: 'Brand Photography & Social Media Workshops' },
-                  { label: 'October', desc: 'Networking Mixers & Vineyard Brand Shoots' },
-                  { label: 'November', desc: 'Fall Showcase & Golden Hour Portraits' },
-                  { label: 'December', desc: 'CREOVA Holiday Showcase — Greater Niagara' },
+                  { label: t('home.fall.sep.label'), desc: t('home.fall.sep.desc') },
+                  { label: t('home.fall.oct.label'), desc: t('home.fall.oct.desc') },
+                  { label: t('home.fall.nov.label'), desc: t('home.fall.nov.desc') },
+                  { label: t('home.fall.dec.label'), desc: t('home.fall.dec.desc') },
                 ].map((item, i) => (
                   <motion.div key={i}
                     initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }}
@@ -519,7 +518,7 @@ export function HomePage() {
               <Link to="/experience"
                 className="inline-flex items-center gap-3 px-8 py-4 rounded-xl text-base font-medium tracking-wide transition-all duration-500 hover:shadow-xl group"
                 style={{ backgroundColor: '#121212', color: '#F5F1EB' }}>
-                View All Fall Events
+                {t('home.fall.cta')}
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Link>
             </motion.div>
@@ -547,7 +546,7 @@ export function HomePage() {
             transition={{ duration: 1, ease: 'easeOut' }} viewport={{ once: true }}>
             <div className="flex items-center justify-center gap-5 mb-10">
               <div style={{ height: '1px', width: '60px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
-              <p className="text-xs tracking-[0.55em] uppercase" style={{ color: '#A68F59' }}>Creative Community</p>
+              <p className="text-xs tracking-[0.55em] uppercase" style={{ color: '#A68F59' }}>{t('home.editorial.badge')}</p>
               <div style={{ height: '1px', width: '60px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
             </div>
             <div className="leading-none mb-2 select-none" style={{
@@ -568,14 +567,14 @@ export function HomePage() {
               transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
               viewport={{ once: true }}
             >
-              Every story deserves<br />
-              to be told{' '}
+              {t('home.editorial.quote')}<br />
+              {t('home.editorial.quote2').split('beautifully.')[0]}{' '}
               <span style={{ color: '#A68F59' }}>beautifully.</span>
             </motion.h2>
             <div className="flex items-center justify-center gap-4 mt-10">
               <div style={{ height: '1px', width: '40px', backgroundColor: 'rgba(166,143,89,0.4)' }} />
               <p className="text-xs tracking-[0.4em] uppercase" style={{ color: 'rgba(166,143,89,0.65)' }}>
-                CREOVA — Black-Owned Creative Agency
+                {t('home.editorial.credit')}
               </p>
               <div style={{ height: '1px', width: '40px', backgroundColor: 'rgba(166,143,89,0.4)' }} />
             </div>
@@ -592,19 +591,18 @@ export function HomePage() {
             <div className="mb-12">
               <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 1 }} viewport={{ once: true }}>
-                <SplitText text="Crafted with Intention" tag="h2"
+                <SplitText text={t('home.why.heading')} tag="h2"
                   className="text-4xl md:text-5xl lg:text-6xl mb-8 tracking-tight"
                   style={{ color: '#121212' }} mode="words" stagger={0.06} />
                 <p className="text-xl mb-10 leading-relaxed" style={{ color: '#4A3E36' }}>
-                  Every frame, every brand element, every story we tell is designed with purpose,
-                  cultural authenticity, and strategic thinking.
+                  {t('home.why.sub')}
                 </p>
                 <div className="grid sm:grid-cols-2 gap-5">
                   {[
-                    { icon: Globe, title: 'Culturally Rooted', desc: 'We honor heritage and tradition in every visual story we tell' },
-                    { icon: TrendingUp, title: 'Strategically Driven', desc: 'Beautiful work designed to achieve measurable impact' },
-                    { icon: Users, title: 'Client-Centered', desc: 'Collaborative partnerships built on trust and transparency' },
-                    { icon: Award, title: 'Quality Craftsmanship', desc: 'Professional-grade production with meticulous attention to detail' },
+                    { icon: Globe, title: t('home.why.v1.title'), desc: t('home.why.v1.desc') },
+                    { icon: TrendingUp, title: t('home.why.v2.title'), desc: t('home.why.v2.desc') },
+                    { icon: Users, title: t('home.why.v3.title'), desc: t('home.why.v3.desc') },
+                    { icon: Award, title: t('home.why.v4.title'), desc: t('home.why.v4.desc') },
                   ].map((item, i) => (
                     <motion.div key={i}
                       initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }}
@@ -627,7 +625,7 @@ export function HomePage() {
                     className="group px-8 py-6 rounded-xl text-base border-2 hover:shadow-xl hover:scale-105 transition-all duration-300"
                     style={{ backgroundColor: '#121212', color: '#F5F1EB', borderColor: '#121212' }} asChild>
                     <Link to="/community" className="flex items-center gap-2">
-                      Learn Our Story
+                      {t('home.why.cta')}
                       <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                     </Link>
                   </Button>
@@ -655,37 +653,36 @@ export function HomePage() {
                 <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full mb-5"
                   style={{ backgroundColor: 'rgba(177,100,59,0.08)', border: '1px solid rgba(177,100,59,0.2)' }}>
                   <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: '#B1643B' }} />
-                  <span className="text-xs tracking-wide" style={{ color: '#B1643B' }}>Limited Availability</span>
+                  <span className="text-xs tracking-wide" style={{ color: '#B1643B' }}>{t('home.urgency.badge')}</span>
                 </div>
                 <h3 className="text-2xl md:text-3xl mb-4 tracking-tight" style={{ color: '#121212' }}>
-                  4 client spots remaining for Q3 2026
+                  {t('home.urgency.heading')}
                 </h3>
                 <p className="text-base mb-6 leading-relaxed" style={{ color: '#7A6F66' }}>
-                  We keep our roster small on purpose — every client gets our full attention.
-                  If you're planning a launch, rebrand, or campaign this summer, now is the time to start the conversation.
+                  {t('home.urgency.desc')}
                 </p>
                 <div className="flex flex-wrap gap-3">
                   <Button
                     className="px-6 py-3 rounded-xl hover:scale-105 transition-all duration-300"
                     style={{ backgroundColor: '#121212', color: '#F5F1EB' }} asChild>
                     <Link to="/contact" className="flex items-center gap-2">
-                      Claim Your Spot
+                      {t('home.urgency.cta')}
                       <ArrowRight className="w-4 h-4" />
                     </Link>
                   </Button>
                   <Button variant="outline"
                     className="px-6 py-3 rounded-xl border-2 hover:scale-105 transition-all duration-300"
                     style={{ borderColor: '#A68F59', color: '#A68F59' }} asChild>
-                    <Link to="/pricing">View Pricing</Link>
+                    <Link to="/pricing">{t('home.cta.pricing')}</Link>
                   </Button>
                 </div>
               </div>
               <div className="flex-shrink-0 flex flex-col gap-4 w-full md:w-48">
                 {[
-                  { label: 'Free discovery call', check: true },
-                  { label: 'Response within 24 hrs', check: true },
-                  { label: 'No contracts required', check: true },
-                  { label: 'Ontario-based team', check: true },
+                  { label: t('home.urgency.check1'), check: true },
+                  { label: t('home.urgency.check2'), check: true },
+                  { label: t('home.urgency.check3'), check: true },
+                  { label: t('home.urgency.check4'), check: true },
                 ].map((item, i) => (
                   <div key={i} className="flex items-center gap-3">
                     <CheckCircle2 className="w-4 h-4 flex-shrink-0" style={{ color: '#A68F59' }} />
@@ -710,12 +707,11 @@ export function HomePage() {
           <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 1 }} viewport={{ once: true }}>
             <div className="h-1 w-24 mx-auto mb-10" style={{ backgroundColor: '#A68F59' }} />
-            <SplitText text="Ready to Create Something Extraordinary?"
+            <SplitText text={t('home.cta.heading')}
               tag="h2" className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl mb-6 sm:mb-8 tracking-tight"
               style={{ color: '#F5F1EB', lineHeight: '1.1' }} mode="words" stagger={0.04} />
             <p className="text-base sm:text-lg md:text-xl mb-8 sm:mb-12 leading-relaxed max-w-3xl mx-auto" style={{ color: '#E3DCD3' }}>
-              From brand identity to milestone moments, we bring vision to life with precision and purpose.
-              Let's collaborate to create something that resonates and inspires.
+              {t('home.cta.desc')}
             </p>
             <div className="flex flex-col sm:flex-row flex-wrap gap-4 sm:gap-6 justify-center items-center">
               <Button size="lg"
@@ -723,27 +719,27 @@ export function HomePage() {
                 style={{ backgroundColor: '#F5F1EB', color: '#121212', borderColor: '#F5F1EB' }} asChild>
                 <Link to="/contact" className="flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: '#A68F59' }} />
-                  Book a Discovery Call
+                  {t('home.cta.book')}
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
                 </Link>
               </Button>
               <Button size="lg" variant="outline"
                 className="w-full sm:w-auto px-8 py-5 sm:px-10 sm:py-7 rounded-xl text-base sm:text-xl border-2 backdrop-blur-sm hover:backdrop-blur-md hover:scale-105 transition-all duration-500"
                 style={{ borderColor: '#A68F59', color: '#A68F59', backgroundColor: 'rgba(166, 143, 89, 0.1)' }} asChild>
-                <Link to="/pricing">View Pricing</Link>
+                <Link to="/pricing">{t('home.cta.pricing')}</Link>
               </Button>
             </div>
             <motion.p
               initial={{ opacity: 0 }} whileInView={{ opacity: 1 }}
               transition={{ delay: 0.5, duration: 0.8 }} viewport={{ once: true }}
               className="text-xs mt-4" style={{ color: '#7A6F66' }}>
-              Free 20-minute call · No commitment · Response within 24 hours
+              {t('home.cta.note')}
             </motion.p>
             <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }}
               transition={{ delay: 0.3, duration: 0.8 }} viewport={{ once: true }}
               className="flex flex-wrap gap-8 justify-center mt-16 pt-12 border-t"
               style={{ borderColor: 'rgba(227, 220, 211, 0.2)' }}>
-              {[{ icon: Users, text: 'BIPOC-Owned' }, { icon: CheckCircle2, text: '5-Star Reviews' }, { icon: Globe, text: 'Canada-Wide' }].map((item, i) => (
+              {[{ icon: Users, text: t('home.cta.badge1') }, { icon: CheckCircle2, text: t('home.cta.badge2') }, { icon: Globe, text: t('home.cta.badge3') }].map((item, i) => (
                 <div key={i} className="flex items-center gap-3">
                   <item.icon className="w-6 h-6" style={{ color: '#A68F59' }} />
                   <span className="text-sm tracking-wide" style={{ color: '#E3DCD3' }}>{item.text}</span>

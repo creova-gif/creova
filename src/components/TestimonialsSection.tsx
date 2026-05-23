@@ -2,41 +2,44 @@ import { motion } from 'motion/react';
 import { MessageCircle, Quote, Globe, TrendingUp, CheckCircle, MapPin, Award, Users } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
+import { useLanguage } from '../context/LanguageContext';
+
 export function TestimonialsSection() {
+  const { t } = useLanguage();
   const [activeTestimonial, setActiveTestimonial] = useState(0);
 
   const testimonials = [
     {
       name: 'Mimi',
       location: 'Niagara Falls, ON',
-      role: 'Creative & Entrepreneur',
-      quote: 'Working with CREOVA was transformative. They didn\'t just capture moments—they understood the story I wanted to tell and brought it to life with such intentionality. The vibe, the professionalism, and the cultural awareness all aligned perfectly.',
+      role: t('testimonials.role.mimi'),
+      quote: t('testimonials.quote.mimi'),
       initials: 'MM',
       color: '#B1643B'
     },
     {
       name: 'Emily Katabaro',
       location: 'Thorold, ON',
-      role: 'Student & Creative',
-      quote: 'CREOVA gets the vibe. The energy on set was so natural, and the final shots were absolutely incredible. They made me feel seen and celebrated.',
+      role: t('testimonials.role.emily'),
+      quote: t('testimonials.quote.emily'),
       initials: 'EK',
       color: '#A68F59'
     },
     {
       name: 'Winston Omondi',
       location: 'Birmingham, UK',
-      role: 'Entrepreneur',
-      quote: 'From London to Canada, finding a creative partner who truly represents our community is rare. CREOVA\'s work speaks volumes—quality, vision, and cultural depth all delivered consistently.',
+      role: t('testimonials.role.winston'),
+      quote: t('testimonials.quote.winston'),
       initials: 'WO',
       color: '#B1643B'
     }
   ];
 
   const stats = [
-    { value: '15+', label: 'Projects Delivered', icon: Award },
-    { value: '5★', label: 'Average Rating', icon: CheckCircle },
-    { value: '1+', label: 'Years in Business', icon: TrendingUp },
-    { value: '5+', label: 'Communities Reached', icon: Globe }
+    { value: '15+', label: t('testimonials.stat.projects'), icon: Award },
+    { value: '5★', label: t('testimonials.stat.rating'), icon: CheckCircle },
+    { value: '1+', label: t('testimonials.stat.years'), icon: TrendingUp },
+    { value: '5+', label: t('testimonials.stat.communities'), icon: Globe }
   ];
 
   // Auto-advance testimonial every 5 seconds
@@ -70,14 +73,14 @@ export function TestimonialsSection() {
             style={{ backgroundColor: 'rgba(177, 100, 59, 0.1)', border: '1px solid rgba(177, 100, 59, 0.3)' }}
           >
             <MessageCircle className="w-4 h-4" style={{ color: '#B1643B' }} />
-            <span className="text-sm tracking-wide" style={{ color: '#B1643B' }}>COMMUNITY LOVE</span>
+            <span className="text-sm tracking-wide" style={{ color: '#B1643B' }}>{t('testimonials.badge')}</span>
           </motion.div>
 
           <h2 className="text-4xl md:text-6xl mb-6 tracking-tight" style={{ color: '#F5F1EB' }}>
-            Voices That Matter
+            {t('testimonials.heading')}
           </h2>
           <p className="text-lg md:text-xl max-w-3xl mx-auto leading-relaxed" style={{ color: '#E3DCD3' }}>
-            Real stories from BIPOC creatives, entrepreneurs, and community members across Ontario and beyond
+            {t('testimonials.sub')}
           </p>
         </motion.div>
 
@@ -220,16 +223,16 @@ export function TestimonialsSection() {
           className="text-center"
         >
           <h3 className="text-2xl md:text-3xl mb-8" style={{ color: '#F5F1EB' }}>
-            What Our Community Values Most
+            {t('testimonials.values.heading')}
           </h3>
           <div className="flex flex-wrap justify-center gap-4">
             {[
-              'Quality of Work',
-              'Creative Vision', 
-              'Vibe & Connection',
-              'Affordability',
-              'Representation',
-              'Community Impact'
+              t('testimonials.value.1'),
+              t('testimonials.value.2'), 
+              t('testimonials.value.3'),
+              t('testimonials.value.4'),
+              t('testimonials.value.5'),
+              t('testimonials.value.6')
             ].map((value, index) => (
               <motion.div
                 key={index}

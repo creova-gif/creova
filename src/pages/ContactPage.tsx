@@ -35,15 +35,15 @@ export function ContactPage() {
   const handleCaptchaExpire = () => {
     setCaptchaToken(null);
     logger.log('CAPTCHA expired, please verify again');
-    toast.error('Security verification expired. Please verify again.');
+    toast.error(t('contact.toast.captcha.expired'));
   };
 
   const handleCaptchaError = (error: string) => {
     setCaptchaToken(null);
     console.error('CAPTCHA error:', error);
     if (window.location.hostname === 'creova.ca') {
-      toast.error('Security Verification Issue', {
-        description: error || 'Unable to verify. Please refresh and try again.'
+      toast.error(t('contact.toast.captcha.issue'), {
+        description: error || t('contact.toast.captcha.desc')
       });
     }
   };
@@ -53,7 +53,7 @@ export function ContactPage() {
 
     // CAPTCHA validation
     if (!captchaToken) {
-      toast.error('Please complete the CAPTCHA verification');
+      toast.error(t('contact.toast.captcha.missing'));
       return;
     }
 
@@ -140,7 +140,7 @@ export function ContactPage() {
           >
             <div className="flex items-center justify-center gap-5 mb-10">
               <div style={{ height: '1px', width: '50px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
-              <p className="text-xs tracking-[0.55em] uppercase" style={{ color: '#A68F59' }}>Get In Touch</p>
+              <p className="text-xs tracking-[0.55em] uppercase" style={{ color: '#A68F59' }}>{t('contact.badge.getintouch')}</p>
               <div style={{ height: '1px', width: '50px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
             </div>
             <h1
@@ -153,7 +153,7 @@ export function ContactPage() {
               {t('contact.hero.subtitle')}
             </p>
             <div className="flex flex-wrap gap-6 justify-center items-center">
-              {['Book Services', 'Collaborate', 'General Inquiries'].map((tag, i) => (
+              {[t('contact.tag.book'), t('contact.tag.collaborate'), t('contact.tag.inquiries')].map((tag, i) => (
                 <span key={i} className="flex items-center gap-3">
                   <span className="text-sm tracking-wider" style={{ color: '#A68F59' }}>{tag}</span>
                   {i < 2 && <span style={{ width: '1px', height: '14px', backgroundColor: 'rgba(166,143,89,0.3)', display: 'inline-block' }} />}
@@ -177,10 +177,10 @@ export function ContactPage() {
               <div className="flex items-start gap-4">
                 <div className="flex-1">
                   <h3 className="text-lg mb-1 tracking-tight" style={{ color: '#F5F1EB' }}>
-                    Ready to book a session?
+                    {t('contact.book.title')}
                   </h3>
                   <p className="text-sm mb-4" style={{ color: '#7A6F66' }}>
-                    Skip the inquiry form and book directly — we'll confirm your session within 4 business hours.
+                    {t('contact.book.desc')}
                   </p>
                   <div className="flex flex-col sm:flex-row gap-3">
                     <Button
@@ -189,7 +189,7 @@ export function ContactPage() {
                       onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = '#A68F59'; }}
                       asChild
                     >
-                      <Link to="/booking">Book Session Now</Link>
+                      <Link to="/booking">{t('contact.book.btn.now')}</Link>
                     </Button>
                     <Button
                       variant="outline"
@@ -198,7 +198,7 @@ export function ContactPage() {
                         window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
                       }}
                     >
-                      Chat with Sankofa First
+                      {t('contact.book.btn.chat')}
                     </Button>
                   </div>
                 </div>
@@ -208,29 +208,29 @@ export function ContactPage() {
             {/* Divider */}
             <div className="flex items-center gap-4 mb-8">
               <div style={{ flex: 1, height: '1px', backgroundColor: 'rgba(18,18,18,0.1)' }} />
-              <p className="text-xs tracking-widest uppercase" style={{ color: '#7A6F66' }}>or send a general inquiry</p>
+              <p className="text-xs tracking-widest uppercase" style={{ color: '#7A6F66' }}>{t('contact.form.or')}</p>
               <div style={{ flex: 1, height: '1px', backgroundColor: 'rgba(18,18,18,0.1)' }} />
             </div>
 
             <div className="rounded-2xl p-8 md:p-12" style={{ backgroundColor: '#FFFFFF', border: '1px solid rgba(18,18,18,0.1)' }}>
-              <h2 className="text-2xl mb-6">Send Us a Message</h2>
+              <h2 className="text-2xl mb-6">{t('contact.form.title')}</h2>
               
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
-                    <Label htmlFor="name">Name *</Label>
+                    <Label htmlFor="name">{t('contact.form.label.name')}</Label>
                     <Input
                       id="name"
                       autoComplete="name"
                       required
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      placeholder="Your full name"
+                      placeholder={t('contact.form.placeholder.name')}
                     />
                   </div>
 
                   <div>
-                    <Label htmlFor="email">Email *</Label>
+                    <Label htmlFor="email">{t('contact.form.label.email')}</Label>
                     <Input
                       id="email"
                       type="email"
@@ -238,25 +238,25 @@ export function ContactPage() {
                       required
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      placeholder="your@email.com"
+                      placeholder={t('contact.form.placeholder.email')}
                     />
                   </div>
                 </div>
 
                 <div>
-                  <Label htmlFor="phone">Phone Number</Label>
+                  <Label htmlFor="phone">{t('contact.form.label.phone')}</Label>
                   <Input
                     id="phone"
                     type="tel"
                     autoComplete="tel"
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    placeholder="(123) 456-7890"
+                    placeholder={t('contact.form.placeholder.phone')}
                   />
                 </div>
 
                 <div>
-                  <Label htmlFor="service">Service Interested In *</Label>
+                  <Label htmlFor="service">{t('contact.form.label.service')}</Label>
                   <select
                     id="service"
                     required
@@ -264,56 +264,56 @@ export function ContactPage() {
                     onChange={(e) => setFormData({ ...formData, service: e.target.value })}
                     className="w-full border border-neutral-300 rounded-md px-3 py-2"
                   >
-                    <option value="">Select a service</option>
-                    <option value="family-photography">Family Photography</option>
-                    <option value="brand-photography">Brand Photography</option>
-                    <option value="product-photography">Product Photography</option>
-                    <option value="event-coverage">Event Coverage (Photo/Video)</option>
-                    <option value="drone-aerial">Drone & Aerial Photography</option>
-                    <option value="social-media">Social Media Management</option>
-                    <option value="brand-management">Brand Management</option>
-                    <option value="collaboration">Collaboration Opportunity</option>
-                    <option value="other">Other/Not Sure</option>
+                    <option value="">{t('contact.form.select.service')}</option>
+                    <option value="family-photography">{t('contact.form.opt.family')}</option>
+                    <option value="brand-photography">{t('contact.form.opt.brand')}</option>
+                    <option value="product-photography">{t('contact.form.opt.product')}</option>
+                    <option value="event-coverage">{t('contact.form.opt.event')}</option>
+                    <option value="drone-aerial">{t('contact.form.opt.drone')}</option>
+                    <option value="social-media">{t('contact.form.opt.social')}</option>
+                    <option value="brand-management">{t('contact.form.opt.brandmgt')}</option>
+                    <option value="collaboration">{t('contact.form.opt.collab')}</option>
+                    <option value="other">{t('contact.form.opt.other')}</option>
                   </select>
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
-                    <Label htmlFor="budget">Budget Range</Label>
+                    <Label htmlFor="budget">{t('contact.form.label.budget')}</Label>
                     <Input
                       id="budget"
                       value={formData.budget}
                       onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
-                      placeholder="e.g., $500-$1000"
+                      placeholder={t('contact.form.placeholder.budget')}
                     />
                   </div>
 
                   <div>
-                    <Label htmlFor="timeline">Timeline/Event Date</Label>
+                    <Label htmlFor="timeline">{t('contact.form.label.timeline')}</Label>
                     <Input
                       id="timeline"
                       value={formData.timeline}
                       onChange={(e) => setFormData({ ...formData, timeline: e.target.value })}
-                      placeholder="e.g., June 2026"
+                      placeholder={t('contact.form.placeholder.timeline')}
                     />
                   </div>
                 </div>
 
                 <div>
-                  <Label htmlFor="message">Message *</Label>
+                  <Label htmlFor="message">{t('contact.form.label.message')}</Label>
                   <Textarea
                     id="message"
                     required
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    placeholder="Tell us about your project, event, or what you're looking for..."
+                    placeholder={t('contact.form.placeholder.message')}
                     rows={6}
                   />
                 </div>
 
                 {/* CAPTCHA Verification */}
                 <div className="border-t pt-6" style={{ borderColor: '#E3DCD3' }}>
-                  <h3 className="text-lg mb-2" style={{ color: '#121212' }}>Security Verification</h3>
+                  <h3 className="text-lg mb-2" style={{ color: '#121212' }}>{t('contact.form.security')}</h3>
                   <p className="text-xs mb-4" style={{ color: '#7A6F66' }}>
                     {t('contact.captcha.security')}
                   </p>
@@ -325,11 +325,11 @@ export function ContactPage() {
                 </div>
 
                 <Button type="submit" size="lg" className="w-full" disabled={isSubmitting}>
-                  {isSubmitting ? 'Sending...' : 'Send Message'}
+                  {isSubmitting ? t('contact.form.btn.sending') : t('contact.form.btn.send')}
                 </Button>
 
                 <p className="text-sm text-neutral-500 text-center">
-                  By submitting this form, you agree to be contacted by CREOVA regarding your inquiry
+                  {t('contact.form.disclaimer')}
                 </p>
               </form>
             </div>
@@ -348,9 +348,9 @@ export function ContactPage() {
           <div className="mb-12">
             <div className="flex items-center gap-5 mb-3">
               <div style={{ height: '1px', width: '40px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
-              <p className="text-xs tracking-[0.5em] uppercase" style={{ color: '#A68F59' }}>Quick Answers</p>
+              <p className="text-xs tracking-[0.5em] uppercase" style={{ color: '#A68F59' }}>{t('contact.faq.badge')}</p>
             </div>
-            <h2 className="text-4xl font-light tracking-tight" style={{ color: '#F5F1EB' }}>Frequently Asked Questions</h2>
+            <h2 className="text-4xl font-light tracking-tight" style={{ color: '#F5F1EB' }}>{t('contact.faq.title')}</h2>
           </div>
           
           <Accordion 
@@ -370,12 +370,12 @@ export function ContactPage() {
             }}
           >
             {[
-              { q: 'How far in advance should I book?', a: 'For events and weddings, we recommend booking 3-6 months in advance. For brand photography and other services, 2-4 weeks notice is typically sufficient, but we can sometimes accommodate rush requests.' },
-              { q: 'Do you travel outside of Niagara?', a: 'Yes! We serve clients across Ontario and Canada-wide. Travel fees may apply for locations outside Niagara city limits and will be quoted based on distance.' },
-              { q: "What's your cancellation policy?", a: 'We require a deposit to secure your booking. Cancellations made 14+ days before your session receive a 50% refund. Cancellations within 14 days forfeit the deposit. We can discuss rescheduling options for weather or emergencies.' },
-              { q: 'How long until I receive my photos/videos?', a: 'Standard turnaround is 2-3 weeks for photography and 3-4 weeks for video projects. Expedited delivery (48-72 hours) is available for an additional fee.' },
-              { q: 'Do you offer payment plans?', a: 'Yes, we offer payment plans for packages over $1,000. Typically, this includes a 50% deposit to book and the remaining balance due before or on the day of service.' },
-              { q: 'What equipment do you use?', a: 'We use professional-grade Canon and Sony cameras, professional lighting equipment, DJI drones (licensed and insured), and industry-standard editing software including Adobe Creative Suite and Final Cut Pro.' }
+              { q: t('contact.faq.q1'), a: t('contact.faq.a1') },
+              { q: t('contact.faq.q2'), a: t('contact.faq.a2') },
+              { q: t('contact.faq.q3'), a: t('contact.faq.a3') },
+              { q: t('contact.faq.q4'), a: t('contact.faq.a4') },
+              { q: t('contact.faq.q5'), a: t('contact.faq.a5') },
+              { q: t('contact.faq.q6'), a: t('contact.faq.a6') }
             ].map((item, i) => (
               <AccordionItem
                 key={i}

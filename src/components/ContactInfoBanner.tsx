@@ -1,14 +1,17 @@
 import { Phone, Mail, MapPin, Clock } from 'lucide-react';
 import { motion } from 'motion/react';
+import { useLanguage } from '../context/LanguageContext';
 
 const warmGradient = 'linear-gradient(135deg, #A68F59 0%, #B1643B 100%)';
 
 export function ContactInfoBanner() {
+  const { t } = useLanguage();
+
   const contactInfo = [
-    { icon: Phone, label: 'CALL US', value: '+1 (437) 260-8925', href: 'tel:+14372608925' },
-    { icon: Mail, label: 'EMAIL', value: 'support@creova.ca', href: 'mailto:support@creova.ca' },
-    { icon: MapPin, label: 'LOCATION', value: 'Niagara Region, Ontario', href: 'https://maps.google.com/?q=Niagara+Region+Ontario+Canada' },
-    { icon: Clock, label: 'HOURS', value: 'Mon–Fri: 9AM–6PM EST', href: null }
+    { icon: Phone, label: t('banner.call'), value: '+1 (437) 260-8925', href: 'tel:+14372608925' },
+    { icon: Mail, label: t('banner.email'), value: 'support@creova.ca', href: 'mailto:support@creova.ca' },
+    { icon: MapPin, label: t('banner.location'), value: t('banner.location.value'), href: 'https://maps.google.com/?q=Niagara+Region+Ontario+Canada' },
+    { icon: Clock, label: t('banner.hours'), value: t('banner.hours.value'), href: null },
   ];
 
   return (
@@ -35,7 +38,7 @@ export function ContactInfoBanner() {
               <Phone className="w-3 h-3" style={{ color: '#A68F59' }} />
             </div>
             <div className="min-w-0">
-              <p className="text-[9px] tracking-[0.3em] uppercase leading-none mb-0.5" style={{ color: '#4A3E36' }}>Call Us</p>
+              <p className="text-[9px] tracking-[0.3em] uppercase leading-none mb-0.5" style={{ color: '#4A3E36' }}>{t('banner.call')}</p>
               <p className="text-xs truncate group-hover:opacity-70 transition-opacity" style={{ color: '#E3DCD3' }}>+1 (437) 260-8925</p>
             </div>
           </a>
@@ -49,7 +52,7 @@ export function ContactInfoBanner() {
               <Mail className="w-3 h-3" style={{ color: '#A68F59' }} />
             </div>
             <div className="min-w-0">
-              <p className="text-[9px] tracking-[0.3em] uppercase leading-none mb-0.5" style={{ color: '#4A3E36' }}>Email</p>
+              <p className="text-[9px] tracking-[0.3em] uppercase leading-none mb-0.5" style={{ color: '#4A3E36' }}>{t('banner.email')}</p>
               <p className="text-xs truncate group-hover:opacity-70 transition-opacity" style={{ color: '#E3DCD3' }}>support@creova.ca</p>
             </div>
           </a>

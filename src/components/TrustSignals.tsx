@@ -1,56 +1,66 @@
 import { motion } from 'motion/react';
 import { Award, Star, Users } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 import logoBrockU from '../assets/logo-brock-university.webp';
 import logoBSSC from '../assets/logo-bssc.png';
 import logoBLSA from '../assets/logo-blsa.png';
 
 export function TrustSignals() {
+  const { t } = useLanguage();
+
   const partners = [
     {
-      name: 'Brock University',
-      description: 'Creative assets for Black History Month & African Heritage Month',
+      nameKey: 'trust.partner1.name',
+      descKey: 'trust.partner1.desc',
       logo: logoBrockU,
       logoAlt: 'Brock University',
       logoBg: '#CC0000',
-      year: '2024'
+      year: '2024',
     },
     {
-      name: 'Black Student Success Centre',
-      description: 'Stock photography partnership',
+      nameKey: 'trust.partner2.name',
+      descKey: 'trust.partner2.desc',
       logo: logoBSSC,
       logoAlt: 'BSSC — Black Student Success Centre',
       logoBg: '#121212',
-      year: '2025'
+      year: '2025',
     },
     {
-      name: 'Black Students Association',
-      description: 'Event coverage & creative collaboration',
+      nameKey: 'trust.partner3.name',
+      descKey: 'trust.partner3.desc',
       logo: logoBLSA,
       logoAlt: 'BLSA — Black Student Association Brock University',
       logoBg: '#FFFFFF',
-      year: '2024-2025'
-    }
+      year: '2024-2025',
+    },
   ];
 
   const testimonials = [
     {
-      quote: "CREOVA's work on our Black History Month campaign was exceptional. They understood our vision and delivered beyond expectations.",
-      author: "Human Rights & Equity",
-      organization: "Brock University",
-      rating: 5
+      quoteKey: 'trust.test1.quote',
+      authorKey: 'trust.test1.author',
+      orgKey: 'trust.test1.org',
+      rating: 5,
     },
     {
-      quote: "Professional, creative, and culturally aware. CREOVA brings authenticity to every project.",
-      author: "BSSC Team",
-      organization: "Black Student Success Centre",
-      rating: 5
+      quoteKey: 'trust.test2.quote',
+      authorKey: 'trust.test2.author',
+      orgKey: 'trust.test2.org',
+      rating: 5,
     },
     {
-      quote: "Their photography captures the essence of our community. CREOVA is our go-to creative partner.",
-      author: "BSA Leadership",
-      organization: "Black Students Association",
-      rating: 5
-    }
+      quoteKey: 'trust.test3.quote',
+      authorKey: 'trust.test3.author',
+      orgKey: 'trust.test3.org',
+      rating: 5,
+    },
+  ];
+
+  const stats = [
+    { icon: Users, stat: '20+', labelKey: 'trust.stat1.label' },
+    { icon: Award, stat: '5+',  labelKey: 'trust.stat2.label' },
+    { icon: Star,  stat: '5.0', labelKey: 'trust.stat3.label' },
+    { icon: Users, stat: '100%',labelKey: 'trust.stat4.label' },
   ];
 
   return (
@@ -66,14 +76,13 @@ export function TrustSignals() {
         >
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6" style={{ backgroundColor: 'rgba(166, 143, 89, 0.1)', border: '1px solid rgba(166, 143, 89, 0.2)' }}>
             <Award className="w-4 h-4" style={{ color: '#A68F59' }} />
-            <span className="text-sm tracking-wide font-medium" style={{ color: '#A68F59' }}>TRUSTED BY LEADING ORGANIZATIONS</span>
+            <span className="text-sm tracking-wide font-medium" style={{ color: '#A68F59' }}>{t('trust.badge')}</span>
           </div>
-          
           <h2 className="text-4xl md:text-5xl mb-4" style={{ color: '#121212' }}>
-            Our Partners
+            {t('trust.heading')}
           </h2>
           <p className="text-lg max-w-2xl mx-auto" style={{ color: '#4A3E36' }}>
-            Proud to serve institutions and organizations across Ontario that champion BIPOC excellence
+            {t('trust.sub')}
           </p>
         </motion.div>
 
@@ -81,7 +90,7 @@ export function TrustSignals() {
         <div className="grid md:grid-cols-3 gap-8 mb-20">
           {partners.map((partner, index) => (
             <motion.div
-              key={partner.name}
+              key={partner.nameKey}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -100,13 +109,13 @@ export function TrustSignals() {
                 />
               </div>
               <h3 className="text-xl font-semibold mb-2" style={{ color: '#121212' }}>
-                {partner.name}
+                {t(partner.nameKey)}
               </h3>
               <p className="text-sm mb-3" style={{ color: '#7A6F66' }}>
-                {partner.description}
+                {t(partner.descKey)}
               </p>
               <div className="text-xs tracking-wide" style={{ color: '#A68F59' }}>
-                Since {partner.year}
+                {t('trust.since')} {partner.year}
               </div>
             </motion.div>
           ))}
@@ -122,11 +131,10 @@ export function TrustSignals() {
         >
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6" style={{ backgroundColor: 'rgba(177, 100, 59, 0.1)', border: '1px solid rgba(177, 100, 59, 0.2)' }}>
             <Star className="w-4 h-4" style={{ color: '#B1643B' }} />
-            <span className="text-sm tracking-wide font-medium" style={{ color: '#B1643B' }}>CLIENT TESTIMONIALS</span>
+            <span className="text-sm tracking-wide font-medium" style={{ color: '#B1643B' }}>{t('trust.testimonials.badge')}</span>
           </div>
-          
           <h2 className="text-4xl md:text-5xl mb-4" style={{ color: '#121212' }}>
-            What Our Partners Say
+            {t('trust.testimonials.heading')}
           </h2>
         </motion.div>
 
@@ -147,17 +155,15 @@ export function TrustSignals() {
                   <Star key={i} className="w-5 h-5 fill-current" style={{ color: '#A68F59' }} />
                 ))}
               </div>
-
               <p className="text-lg mb-6 italic leading-relaxed" style={{ color: '#4A3E36' }}>
-                "{testimonial.quote}"
+                "{t(testimonial.quoteKey)}"
               </p>
-
               <div className="border-t pt-4" style={{ borderColor: '#E3DCD3' }}>
                 <p className="font-semibold mb-1" style={{ color: '#121212' }}>
-                  {testimonial.author}
+                  {t(testimonial.authorKey)}
                 </p>
                 <p className="text-sm" style={{ color: '#7A6F66' }}>
-                  {testimonial.organization}
+                  {t(testimonial.orgKey)}
                 </p>
               </div>
             </motion.div>
@@ -173,19 +179,14 @@ export function TrustSignals() {
           className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-8 p-12 rounded-3xl"
           style={{ backgroundColor: '#121212' }}
         >
-          {[
-            { icon: Users, stat: '20+', label: 'Projects Delivered' },
-            { icon: Award, stat: '5+', label: 'Partner Organizations' },
-            { icon: Star, stat: '5.0', label: 'Average Rating' },
-            { icon: Users, stat: '100%', label: 'Client Satisfaction' }
-          ].map((item, index) => (
+          {stats.map((item, index) => (
             <div key={index} className="text-center">
               <item.icon className="w-8 h-8 mx-auto mb-3" style={{ color: '#A68F59' }} />
               <div className="text-4xl font-bold mb-2" style={{ color: '#F5F1EB' }}>
                 {item.stat}
               </div>
               <div className="text-sm tracking-wide" style={{ color: '#E3DCD3' }}>
-                {item.label}
+                {t(item.labelKey)}
               </div>
             </div>
           ))}

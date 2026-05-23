@@ -2,7 +2,12 @@ import { motion } from 'motion/react';
 import { ArrowRight, ExternalLink, Quote } from 'lucide-react';
 import { Link } from 'react-router';
 
+import { useLanguage } from '../context/LanguageContext';
+import logoBSSC from '../assets/logo-bssc.png';
+
 export function CaseStudy() {
+  const { t } = useLanguage();
+
   return (
     <section className="py-24 relative overflow-hidden" style={{ backgroundColor: '#FFFFFF' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -16,10 +21,10 @@ export function CaseStudy() {
         >
           <div className="flex items-center gap-4 mb-5">
             <div className="w-12 h-px" style={{ backgroundColor: '#B1643B' }} />
-            <span className="text-xs tracking-[0.4em] uppercase" style={{ color: '#B1643B' }}>Real Results</span>
+            <span className="text-xs tracking-[0.4em] uppercase" style={{ color: '#B1643B' }}>{t('casestudy.badge')}</span>
           </div>
           <h2 className="text-4xl md:text-5xl tracking-tight" style={{ color: '#121212' }}>
-            Work that moves the needle
+            {t('casestudy.heading')}
           </h2>
         </motion.div>
 
@@ -60,7 +65,7 @@ export function CaseStudy() {
               {/* BSSC logo + badge */}
               <div className="flex items-center gap-3 mb-6">
                 <img
-                  src="/logo-bssc.png"
+                  src={logoBSSC}
                   alt="Brock University Black Student Success Centre"
                   className="h-7 w-auto"
                   style={{ filter: 'brightness(0) invert(1) opacity(0.6)' }}
@@ -74,7 +79,7 @@ export function CaseStudy() {
                     color: '#A68F59',
                   }}
                 >
-                  Brand + Events
+                  {t('casestudy.tag.1')}
                 </span>
               </div>
 
@@ -88,16 +93,15 @@ export function CaseStudy() {
                 className="text-lg md:text-xl leading-relaxed mb-6 font-light"
                 style={{ color: '#F5F1EB', fontFamily: 'var(--font-display)' }}
               >
-                "CREOVA captured our brand essence perfectly. The professionalism
-                and cultural understanding made all the difference."
+                {t('casestudy.quote')}
               </blockquote>
 
               <div className="pt-5 border-t" style={{ borderColor: 'rgba(166,143,89,0.2)' }}>
                 <p className="text-base font-semibold mb-0.5" style={{ color: '#F5F1EB' }}>
-                  Monique Beauregard
+                  {t('casestudy.author.name')}
                 </p>
                 <p className="text-sm" style={{ color: '#A68F59' }}>
-                  Brock University — Black Student Success Centre
+                  {t('casestudy.author.org')}
                 </p>
               </div>
             </div>
@@ -144,7 +148,7 @@ export function CaseStudy() {
                   style={{ backgroundColor: 'rgba(166,143,89,0.9)', color: '#121212' }}
                 >
                   <ExternalLink className="w-3 h-3" />
-                  LinkedIn Recap
+                  {t('casestudy.card1.badge')}
                 </div>
               </div>
 
@@ -158,22 +162,21 @@ export function CaseStudy() {
                       color: '#A68F59',
                     }}
                   >
-                    Past Event · Recap
+                    {t('casestudy.card1.tag')}
                   </span>
-                  <span className="text-xs" style={{ color: '#4A3E36' }}>Brock University LINC</span>
+                  <span className="text-xs" style={{ color: '#4A3E36' }}>{t('casestudy.card1.org')}</span>
                 </div>
                 <h3 className="text-lg tracking-tight mb-2" style={{ color: '#F5F1EB' }}>
-                  Innovation Showcase
+                  {t('casestudy.card1.title')}
                 </h3>
                 <p className="text-sm leading-relaxed mb-4" style={{ color: '#7A6F66' }}>
-                  CREOVA was selected to present at Brock University's Innovation Showcase — a
-                  celebration of entrepreneurship and creative impact in the Niagara region.
+                  {t('casestudy.card1.desc')}
                 </p>
                 <div
                   className="flex items-center gap-2 text-sm group-hover:translate-x-2 transition-transform duration-300"
                   style={{ color: '#A68F59' }}
                 >
-                  <span>See the full recap</span>
+                  <span>{t('casestudy.card1.link')}</span>
                   <ArrowRight className="w-4 h-4" />
                 </div>
               </div>
@@ -216,7 +219,7 @@ export function CaseStudy() {
                   style={{ backgroundColor: 'rgba(177,100,59,0.9)', color: '#F5F1EB' }}
                 >
                   <ExternalLink className="w-3 h-3" />
-                  View on Instagram
+                  {t('casestudy.card2.badge')}
                 </div>
               </div>
 
@@ -230,23 +233,21 @@ export function CaseStudy() {
                       color: '#B1643B',
                     }}
                   >
-                    Community Event
+                    {t('casestudy.card2.tag')}
                   </span>
-                  <span className="text-xs" style={{ color: '#4A3E36' }}>Black Student Success Centre</span>
+                  <span className="text-xs" style={{ color: '#4A3E36' }}>{t('casestudy.card2.org')}</span>
                 </div>
                 <h3 className="text-lg tracking-tight mb-2" style={{ color: '#F5F1EB' }}>
-                  The Black Print — Closing Session
+                  {t('casestudy.card2.title')}
                 </h3>
                 <p className="text-sm leading-relaxed mb-4" style={{ color: '#7A6F66' }}>
-                  Wednesday's closing session of The Black Print, in partnership with the Black Student
-                  Success Centre — a conversation filled with joy, good vibes, and powerful moments of
-                  connection.
+                  {t('casestudy.card2.desc')}
                 </p>
                 <div
                   className="flex items-center gap-2 text-sm group-hover:translate-x-2 transition-transform duration-300"
                   style={{ color: '#B1643B' }}
                 >
-                  <span>Read the post</span>
+                  <span>{t('casestudy.card2.link')}</span>
                   <ArrowRight className="w-4 h-4" />
                 </div>
               </div>
@@ -265,7 +266,7 @@ export function CaseStudy() {
                 className="group inline-flex items-center gap-3 px-7 py-3.5 rounded-xl text-sm font-semibold tracking-wide transition-all duration-500 hover:shadow-xl hover:scale-[1.02]"
                 style={{ backgroundColor: '#121212', color: '#F5F1EB' }}
               >
-                Start your project
+                {t('casestudy.cta.start')}
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link
@@ -273,7 +274,7 @@ export function CaseStudy() {
                 className="text-sm transition-opacity hover:opacity-60"
                 style={{ color: '#A68F59' }}
               >
-                View all events →
+                {t('casestudy.cta.view')}
               </Link>
             </motion.div>
           </div>

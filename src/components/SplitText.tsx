@@ -60,13 +60,14 @@ export function SplitText({
       className={className}
       style={{ ...style, display: 'block' }}
     >
+      <span className="sr-only">{text}</span>
       <motion.span
         className="inline-flex flex-wrap gap-x-[0.22em]"
         style={{ perspective: '800px' }}
         variants={containerVariants}
         initial="hidden"
         animate={isInView ? 'visible' : 'hidden'}
-        aria-label={text}
+        aria-hidden="true"
       >
         {units.map((unit, i) => (
           <motion.span

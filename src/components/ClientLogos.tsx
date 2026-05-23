@@ -1,4 +1,5 @@
 import { motion } from 'motion/react';
+import { useLanguage } from '../context/LanguageContext';
 
 const LOGOS = [
   { name: 'Instagram',  src: 'https://svgl.app/library/instagram-icon.svg',  url: 'https://instagram.com' },
@@ -14,6 +15,7 @@ const LOGOS = [
 ];
 
 export function ClientLogos() {
+  const { t } = useLanguage();
   return (
     <section className="py-20 relative overflow-hidden" style={{ backgroundColor: '#F5F1EB' }}>
       <div className="absolute inset-0 pointer-events-none" style={{
@@ -32,12 +34,12 @@ export function ClientLogos() {
           <div className="flex items-center justify-center gap-5 mb-4">
             <div style={{ height: '1px', width: '40px', backgroundColor: 'rgba(18,18,18,0.15)' }} />
             <p className="text-xs tracking-[0.45em] uppercase" style={{ color: '#7A6F66' }}>
-              Platforms We Create For
+              {t('logos.badge')}
             </p>
             <div style={{ height: '1px', width: '40px', backgroundColor: 'rgba(18,18,18,0.15)' }} />
           </div>
           <p className="text-sm" style={{ color: '#7A6F66' }}>
-            Content built to perform across every platform your brand calls home
+            {t('logos.sub')}
           </p>
         </motion.div>
 

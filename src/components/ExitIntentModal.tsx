@@ -4,8 +4,10 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { motion, AnimatePresence } from 'motion/react';
 import { toast } from 'sonner@2.0.3';
+import { useLanguage } from '../context/LanguageContext';
 
 export function ExitIntentModal() {
+  const { t } = useLanguage();
   const [isVisible, setIsVisible] = useState(false);
   const [hasShown, setHasShown] = useState(false);
   const [email, setEmail] = useState('');
@@ -42,7 +44,7 @@ export function ExitIntentModal() {
       // Email validation
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(email)) {
-        toast.error('Please enter a valid email address');
+        toast.error(t('exit.toast.invalid'));
         setIsSubmitting(false);
         return;
       }
@@ -56,12 +58,12 @@ export function ExitIntentModal() {
       });
       localStorage.setItem('exitIntentEmails', JSON.stringify(existingEmails));
 
-      toast.success('🎉 You\'re on the list! Check your email for your exclusive discount code.');
+      toast.success(t('exit.toast.success'));
       
       setIsVisible(false);
       setEmail('');
     } catch (error) {
-      toast.error('Something went wrong. Please try again.');
+      toast.error(t('exit.toast.error'));
     } finally {
       setIsSubmitting(false);
     }
@@ -110,15 +112,15 @@ export function ExitIntentModal() {
                   </div>
                   
                   <h2 className="text-3xl md:text-4xl font-bold mb-3" style={{ color: '#121212' }}>
-                    Wait! Don't Go Yet
+                    {t('exit.heading')}
                   </h2>
                   
                   <p className="text-lg mb-2" style={{ color: '#4A3E36' }}>
-                    Join our exclusive waitlist for the <strong>Summer 2026 launch</strong>
+                    {t('exit.sub')} <strong>{t('exit.launch')}</strong>
                   </p>
                   
                   <p className="text-base" style={{ color: '#7A6F66' }}>
-                    Get <strong className="text-[#B1643B]">10% off</strong> your first purchase + early access to new drops
+                    {t('exit.offer')} <strong className="text-[#B1643B]">{t('exit.offer.bold')}</strong> {t('exit.offer.rest')}
                   </p>
                 </div>
               </div>
@@ -130,7 +132,7 @@ export function ExitIntentModal() {
                     <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5" style={{ color: '#A68F59' }} />
                     <Input
                       type="email"
-                      placeholder="Enter your email address"
+                      placeholder={t('exit.email.placeholder')}
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       required
@@ -152,11 +154,11 @@ export function ExitIntentModal() {
                       color: '#F5F1EB'
                     }}
                   >
-                    {isSubmitting ? 'Joining...' : 'CLAIM MY 10% DISCOUNT'}
+                    {isSubmitting ? t('exit.joining') : t('exit.cta')}
                   </Button>
 
                   <p className="text-xs text-center" style={{ color: '#7A6F66' }}>
-                    By signing up, you agree to receive promotional emails. Unsubscribe anytime.
+                    {t('exit.disclaimer')}
                   </p>
                 </form>
 
@@ -164,18 +166,18 @@ export function ExitIntentModal() {
                 <div className="mt-6 pt-6 border-t flex justify-center gap-8" style={{ borderColor: '#E3DCD3' }}>
                   <div className="text-center">
                     <div className="text-2xl font-bold" style={{ color: '#121212' }}>
-                      Summer 2026
+                      {t('exit.trust1.value')}
                     </div>
                     <div className="text-xs" style={{ color: '#7A6F66' }}>
-                      Launch Date
+                      {t('exit.trust1.label')}
                     </div>
                   </div>
                   <div className="text-center">
                     <div className="text-2xl font-bold" style={{ color: '#121212' }}>
-                      10% Off
+                      {t('exit.trust2.value')}
                     </div>
                     <div className="text-xs" style={{ color: '#7A6F66' }}>
-                      Early Access
+                      {t('exit.trust2.label')}
                     </div>
                   </div>
                 </div>

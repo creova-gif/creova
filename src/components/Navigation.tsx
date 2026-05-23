@@ -25,14 +25,14 @@ export function Navigation() {
   ];
 
   const pricingCategories = [
-    { name: 'All Pricing', path: '/pricing', description: 'View complete pricing guide' },
-    { name: 'Family Portraits', path: '/pricing#family', description: 'Mini Memories, Timeless Bonds, Legacy Heirloom' },
-    { name: 'Brand Identity', path: '/pricing#brand', description: 'Profile Pro, Workspace Stories, Brand Vision' },
-    { name: 'Product Photography', path: '/pricing#commerce', description: 'E-commerce & lifestyle product shots' },
-    { name: 'Aerial/Drone', path: '/pricing#aerial', description: 'Cinematic aerial perspectives' },
-    { name: 'Event Coverage', path: '/pricing#events', description: 'Photo + video packages' },
-    { name: 'Social Media', path: '/pricing#social', description: 'Monthly management plans' },
-    { name: 'Graphic Design', path: '/pricing#design', description: 'Branding & visual identity' },
+    { name: t('nav.pricing.all.label'), path: '/pricing', description: t('nav.pricing.all.desc') },
+    { name: t('nav.pricing.family'), path: '/pricing#family', description: t('nav.pricing.family.desc') },
+    { name: t('nav.pricing.brand'), path: '/pricing#brand', description: t('nav.pricing.brand.desc') },
+    { name: t('nav.pricing.product'), path: '/pricing#commerce', description: t('nav.pricing.product.desc') },
+    { name: t('nav.pricing.aerial'), path: '/pricing#aerial', description: t('nav.pricing.aerial.desc') },
+    { name: t('nav.pricing.events'), path: '/pricing#events', description: t('nav.pricing.events.desc') },
+    { name: t('nav.pricing.social'), path: '/pricing#social', description: t('nav.pricing.social.desc') },
+    { name: t('nav.pricing.design'), path: '/pricing#design', description: t('nav.pricing.design.desc') },
   ];
 
   return (
@@ -45,7 +45,9 @@ export function Navigation() {
               <img 
                 src={creovaLogo} 
                 alt="CREOVA - Creative Stories, Digital Impact" 
-                className="h-12 w-auto transition-all duration-300 group-hover:scale-105"
+                width={48}
+                height={48}
+                className="h-12 w-auto transition-all duration-300 group-hover:scale-105 aspect-square"
               />
             </Link>
 
@@ -84,7 +86,7 @@ export function Navigation() {
                   className="px-4 py-2 transition-colors duration-300 text-sm tracking-wide font-medium flex items-center hover:bg-transparent"
                   style={{ color: pricingDropdownOpen ? '#B1643B' : '#4A3E36' }}
                 >
-                  Pricing
+                  {t('nav.pricing')}
                   <ChevronDown className={`w-4 h-4 ml-1 transition-transform duration-200 ${pricingDropdownOpen ? 'rotate-180' : ''}`} />
                 </button>
 
@@ -137,7 +139,7 @@ export function Navigation() {
                 style={{ backgroundColor: '#121212', color: '#F5F1EB', border: '1px solid rgba(166,143,89,0.25)' }}
               >
                 <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: '#A68F59' }} />
-                Book a Call
+                {t('nav.book.call')}
               </Link>
 
               <Button
@@ -146,7 +148,7 @@ export function Navigation() {
                 onClick={() => setCartOpen(true)}
                 className="relative hover:bg-transparent"
                 style={{ color: '#121212' }}
-                aria-label={`Shopping cart with ${totalItems} ${totalItems === 1 ? 'item' : 'items'}`}
+                aria-label={t('nav.cart.aria', { count: totalItems })}
               >
                 <ShoppingCart className="w-5 h-5" />
                 {totalItems > 0 && (
@@ -201,7 +203,7 @@ export function Navigation() {
                 style={{ backgroundColor: '#121212', color: '#F5F1EB' }}
               >
                 <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: '#A68F59' }} />
-                Book a Discovery Call
+                {t('nav.book.call.mobile')}
               </Link>
 
               {/* SEEN - Mobile */}
@@ -212,7 +214,7 @@ export function Navigation() {
                 style={{ color: '#A68F59' }}
               >
                 <span className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: '#A68F59' }} />
-                SEEN — Upcoming Platform
+                {t('nav.seen.label')}
               </Link>
 
               {/* Mobile Pricing Accordion */}
@@ -222,7 +224,7 @@ export function Navigation() {
                   className="w-full flex items-center justify-between py-3 px-4 transition-colors text-sm tracking-wide"
                   style={{ color: '#4A3E36' }}
                 >
-                  Pricing
+                  {t('nav.pricing')}
                   <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${pricingDropdownOpen ? 'rotate-180' : ''}`} />
                 </button>
 

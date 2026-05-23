@@ -4,6 +4,7 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { motion, AnimatePresence } from 'motion/react';
+import { useLanguage } from '../context/LanguageContext';
 import { toast } from 'sonner@2.0.3';
 import { projectId, publicAnonKey } from '../utils/supabase/info';
 
@@ -23,6 +24,7 @@ interface LeadMagnetModalProps {
 }
 
 export function LeadMagnetModal({ isOpen, onClose, leadMagnet }: LeadMagnetModalProps) {
+  const { t } = useLanguage();
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -32,7 +34,7 @@ export function LeadMagnetModal({ isOpen, onClose, leadMagnet }: LeadMagnetModal
     e.preventDefault();
 
     if (!email || !name) {
-      toast.error('Please fill in all fields');
+      toast.error(t('leadmagnet.error.fields'));
       return;
     }
 
@@ -71,8 +73,8 @@ export function LeadMagnetModal({ isOpen, onClose, leadMagnet }: LeadMagnetModal
           });
         }
 
-        toast.success('Success!', {
-          description: 'Check your email for the download link.'
+        toast.success(t('leadmagnet.success.title'), {
+          description: t('leadmagnet.success.desc')
         });
 
         // Close modal after 3 seconds
@@ -83,12 +85,12 @@ export function LeadMagnetModal({ isOpen, onClose, leadMagnet }: LeadMagnetModal
           setName('');
         }, 3000);
       } else {
-        throw new Error(data.error || 'Failed to subscribe');
+        throw new Error(data.error || t('leadmagnet.error.submit'));
       }
     } catch (error) {
       console.error('Error submitting lead magnet form:', error);
-      toast.error('Something went wrong', {
-        description: 'Please try again or contact us directly.'
+      toast.error(t('leadmagnet.error.wrong.title'), {
+        description: t('leadmagnet.error.wrong.desc')
       });
     } finally {
       setIsSubmitting(false);
@@ -141,10 +143,10 @@ export function LeadMagnetModal({ isOpen, onClose, leadMagnet }: LeadMagnetModal
                 </motion.div>
 
                 <h3 className="text-2xl mb-3" style={{ color: '#121212' }}>
-                  You're all set!
+                  {t('leadmagnet.success.heading')}
                 </h3>
                 <p style={{ color: '#7A6F66' }}>
-                  Check your email for the download link. We've sent it to <strong>{email}</strong>
+                  {t('leadmagnet.success.text1')}<strong>{email}</strong>
                 </p>
               </div>
             ) : (
@@ -156,7 +158,7 @@ export function LeadMagnetModal({ isOpen, onClose, leadMagnet }: LeadMagnetModal
                   </div>
                   
                   <h2 className="text-2xl mb-2" style={{ color: '#121212' }}>
-                    Get Your Free {leadMagnet.fileType}
+                    {t('leadmagnet.get.free')}{leadMagnet.fileType}
                   </h2>
                   <p className="text-lg mb-3" style={{ color: '#121212' }}>
                     {leadMagnet.title}
@@ -168,7 +170,7 @@ export function LeadMagnetModal({ isOpen, onClose, leadMagnet }: LeadMagnetModal
                   <div className="inline-flex items-center gap-2 mt-4 px-4 py-2 rounded-full" style={{ backgroundColor: 'rgba(166, 143, 89, 0.1)', border: '1px solid #A68F59' }}>
                     <Star className="w-4 h-4" style={{ color: '#A68F59' }} />
                     <span className="text-sm" style={{ color: '#A68F59' }}>
-                      Value: {leadMagnet.value} - Yours FREE
+                      {t('leadmagnet.value')}{leadMagnet.value}{t('leadmagnet.yours.free')}
                     </span>
                   </div>
                 </div>
@@ -178,14 +180,14 @@ export function LeadMagnetModal({ isOpen, onClose, leadMagnet }: LeadMagnetModal
                   <div className="space-y-4">
                     <div>
                       <Label htmlFor="name" className="mb-2 block" style={{ color: '#121212' }}>
-                        Your Name *
+                        {t('leadmagnet.label.name')}
                       </Label>
                       <Input
                         id="name"
                         type="text"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
-                        placeholder="John Doe"
+                        placeholder={t('leadmagnet.placeholder.name')}
                         required
                         className="h-12"
                       />
@@ -193,14 +195,14 @@ export function LeadMagnetModal({ isOpen, onClose, leadMagnet }: LeadMagnetModal
 
                     <div>
                       <Label htmlFor="email" className="mb-2 block" style={{ color: '#121212' }}>
-                        Email Address *
+                        {t('leadmagnet.label.email')}
                       </Label>
                       <Input
                         id="email"
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        placeholder="john@example.com"
+                        placeholder={t('leadmagnet.placeholder.email')}
                         required
                         className="h-12"
                       />
@@ -215,18 +217,18 @@ export function LeadMagnetModal({ isOpen, onClose, leadMagnet }: LeadMagnetModal
                       {isSubmitting ? (
                         <>
                           <Mail className="w-5 h-5 mr-2 animate-pulse" />
-                          Sending...
+                          {t('leadmagnet.btn.sending')}
                         </>
                       ) : (
                         <>
                           <Download className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" />
-                          Get Free {leadMagnet.fileType}
+                          {t('leadmagnet.btn.get')}{leadMagnet.fileType}
                         </>
                       )}
                     </Button>
 
                     <p className="text-xs text-center pt-2" style={{ color: '#7A6F66' }}>
-                      By downloading, you'll also receive our occasional newsletter with tips, resources, and exclusive offers. Unsubscribe anytime.
+                      {t('leadmagnet.fineprint')}
                     </p>
                   </div>
                 </form>

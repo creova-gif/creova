@@ -4,68 +4,12 @@ import { motion, useInView } from 'motion/react';
 import { ArrowUpRight, Instagram, Mail, Linkedin, Star, MapPin } from 'lucide-react';
 import creovaLogo from '../assets/creova-logo.png';
 import photoInline from '../assets/photo-duo-portrait.jpg';
-
-/* ─── DATA ─────────────────────────────────────────────────────────────── */
-
-const COLUMNS = [
-  {
-    title: 'Services',
-    links: [
-      { label: 'Photography',    href: '/services' },
-      { label: 'Videography',    href: '/services' },
-      { label: 'Brand Identity', href: '/services' },
-      { label: 'Aerial Drone',   href: '/services' },
-      { label: 'Social Media',   href: '/services' },
-      { label: 'Graphic Design', href: '/pricing#design' },
-    ],
-  },
-  {
-    title: 'Company',
-    links: [
-      { label: 'Our Story',       href: '/community' },
-      { label: 'Pricing',         href: '/pricing' },
-      { label: 'Book a Call',     href: '/contact' },
-      { label: 'Community',       href: '/community' },
-      { label: 'Terms of Service',href: '/terms-of-service' },
-      { label: 'Privacy Policy',  href: '/privacy-policy' },
-    ],
-  },
-  {
-    title: 'Platform',
-    links: [
-      { label: 'SEEN',             href: '/seen' },
-      { label: 'Shop',             href: '/shop' },
-      { label: 'Digital Products', href: '/digital-products' },
-      { label: 'Events',           href: '/experience' },
-      { label: 'Memberships',      href: '/memberships' },
-    ],
-  },
-  {
-    title: 'Connect',
-    links: [
-      { label: '@creativeinnovation__',     href: 'https://instagram.com/creativeinnovation__',         external: true },
-      { label: 'LinkedIn',                  href: 'https://www.linkedin.com/company/creovaspace/',       external: true },
-      { label: 'support@creova.ca',         href: 'mailto:support@creova.ca',                            external: true },
-      { label: 'Ontario, Canada',           href: '#',                                                   external: false },
-      { label: 'Leave a Google Review',     href: 'https://g.page/r/creova/review',                      external: true },
-    ],
-  },
-] as const;
-
-const MARQUEE_ITEMS = [
-  'Photography', '·', 'Videography', '·', 'Brand Identity',
-  '·', 'Drone Aerial', '·', 'Social Media', '·', 'Community',
-  '·', 'BIPOC Creative', '·', 'Ontario', '·', 'Cultural Storytelling',
-];
+import { useLanguage } from '../context/LanguageContext';
 
 /* ─── HELPERS ───────────────────────────────────────────────────────────── */
 
-const HEADLINE_TOKENS: Array<string | 'IMAGE'> = [
-  'Your', 'next', 'IMAGE', 'chapter', 'starts', 'here.'
-];
-
-function FooterMarquee() {
-  const doubled = [...MARQUEE_ITEMS, ...MARQUEE_ITEMS];
+function FooterMarquee({ items }: { items: string[] }) {
+  const doubled = [...items, ...items];
   return (
     <div className="overflow-hidden select-none" aria-hidden="true">
       <div
@@ -115,17 +59,74 @@ function SocialIcon({
 /* ─── MAIN COMPONENT ─────────────────────────────────────────────────────── */
 
 export function Footer() {
+  const { t } = useLanguage();
   const headlineRef = useRef<HTMLDivElement>(null);
   const linksRef    = useRef<HTMLDivElement>(null);
   const headlineInView = useInView(headlineRef, { once: true, margin: '-5% 0px' });
   const linksInView    = useInView(linksRef,    { once: true, margin: '-5% 0px' });
+
+  const COLUMNS = [
+    {
+      titleKey: 'footer.col.services',
+      links: [
+        { labelKey: 'footer.link.photography', href: '/services' },
+        { labelKey: 'footer.link.videography',  href: '/services' },
+        { labelKey: 'footer.link.brand',         href: '/services' },
+        { labelKey: 'footer.link.aerial',        href: '/services' },
+        { labelKey: 'footer.link.social',        href: '/services' },
+        { labelKey: 'footer.link.graphic',       href: '/pricing#design' },
+      ],
+    },
+    {
+      titleKey: 'footer.col.company',
+      links: [
+        { labelKey: 'footer.link.story',      href: '/community' },
+        { labelKey: 'footer.link.pricing',    href: '/pricing' },
+        { labelKey: 'footer.link.book',       href: '/contact' },
+        { labelKey: 'footer.link.community',  href: '/community' },
+        { labelKey: 'footer.link.terms',      href: '/terms-of-service' },
+        { labelKey: 'footer.link.privacy',    href: '/privacy-policy' },
+      ],
+    },
+    {
+      titleKey: 'footer.col.platform',
+      links: [
+        { labelKey: 'footer.link.seen',        href: '/seen' },
+        { labelKey: 'footer.link.shop',        href: '/shop' },
+        { labelKey: 'footer.link.digital',     href: '/digital-products' },
+        { labelKey: 'footer.link.events',      href: '/experience' },
+        { labelKey: 'footer.link.memberships', href: '/memberships' },
+      ],
+    },
+    {
+      titleKey: 'footer.col.connect',
+      links: [
+        { label: '@creativeinnovation__',     href: 'https://instagram.com/creativeinnovation__',   external: true },
+        { label: 'LinkedIn',                  href: 'https://www.linkedin.com/company/creovaspace/', external: true },
+        { label: 'support@creova.ca',         href: 'mailto:support@creova.ca',                     external: true },
+        { label: t('footer.contact.location'), href: '#',                                            external: false },
+        { labelKey: 'footer.contact.review',  href: 'https://g.page/r/creova/review',               external: true },
+      ],
+    },
+  ] as const;
+
+  const MARQUEE_ITEMS = [
+    t('footer.link.photography'), '·', t('footer.link.videography'), '·', t('footer.link.brand'),
+    '·', t('footer.link.aerial'), '·', t('footer.link.social'), '·', t('footer.link.community'),
+    '·', t('footer.marquee.bipoc'), '·', t('footer.marquee.ontario'), '·', t('footer.marquee.cultural'),
+  ];
+
+  const HEADLINE_TOKENS: Array<string | 'IMAGE'> = [
+    t('footer.headline.0'), t('footer.headline.1'), 'IMAGE',
+    t('footer.headline.2'), t('footer.headline.3'), t('footer.headline.4'),
+  ];
 
   return (
     <footer
       className="relative overflow-hidden"
       style={{ backgroundColor: '#080808', color: '#E3DCD3' }}
     >
-      {/* Ambient radial glow — bottom-right quadrant */}
+      {/* Ambient radial glow */}
       <div
         className="absolute pointer-events-none"
         style={{
@@ -156,8 +157,8 @@ export function Footer() {
               style={{ backgroundColor: '#B1643B' }}
             />
             <p className="text-xs tracking-[0.08em]" style={{ color: '#7A6F66' }}>
-              <span style={{ color: '#E3DCD3' }}>Limited availability —</span>
-              {' '}currently accepting 4 new projects for Q3 2026
+              <span style={{ color: '#E3DCD3' }}>{t('footer.avail.text')}</span>
+              {' '}{t('footer.avail.sub')}
             </p>
           </div>
           <Link
@@ -165,7 +166,7 @@ export function Footer() {
             className="flex-shrink-0 inline-flex items-center gap-1.5 text-xs tracking-[0.12em] uppercase transition-all duration-300 hover:opacity-60"
             style={{ color: '#A68F59' }}
           >
-            Book a free discovery call
+            {t('footer.avail.cta')}
             <ArrowUpRight className="w-3 h-3" />
           </Link>
         </div>
@@ -190,7 +191,7 @@ export function Footer() {
             >
               <div className="w-10 h-px" style={{ backgroundColor: 'rgba(166,143,89,0.5)' }} />
               <span className="text-xs tracking-[0.45em] uppercase" style={{ color: '#A68F59' }}>
-                CREOVA Creative Agency
+                {t('footer.eyebrow')}
               </span>
             </motion.div>
 
@@ -235,7 +236,7 @@ export function Footer() {
                     transition={{ delay: i * 0.09, duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
                     style={{ display: 'inline-block', transformOrigin: 'bottom center' }}
                   >
-                    {token === 'here.' ? (
+                    {token === t('footer.headline.4') ? (
                       <span
                         style={{
                           backgroundImage: 'linear-gradient(135deg, #F5F1EB 10%, #A68F59 80%)',
@@ -260,8 +261,7 @@ export function Footer() {
               animate={headlineInView ? { opacity: 1 } : {}}
               transition={{ delay: 0.8, duration: 0.8 }}
             >
-              Photography · Videography · Brand Identity for BIPOC founders across Ontario.
-              Free 20-minute discovery call. No commitment required.
+              {t('footer.sub')}
             </motion.p>
 
             {/* CTAs */}
@@ -276,7 +276,7 @@ export function Footer() {
                 className="group inline-flex items-center gap-2.5 px-7 py-4 rounded-xl text-sm font-semibold tracking-wide transition-all duration-400 hover:shadow-[0_8px_32px_rgba(166,143,89,0.2)] hover:-translate-y-0.5"
                 style={{ backgroundColor: '#F5F1EB', color: '#121212' }}
               >
-                Book a Discovery Call
+                {t('footer.cta.book')}
                 <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
               </Link>
               <Link
@@ -290,7 +290,7 @@ export function Footer() {
                 onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(166,143,89,0.6)'; }}
                 onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(166,143,89,0.3)'; }}
               >
-                View Pricing
+                {t('footer.cta.pricing')}
               </Link>
             </motion.div>
           </div>
@@ -303,9 +303,9 @@ export function Footer() {
             transition={{ delay: 0.7, duration: 0.8 }}
           >
             {[
-              { Icon: MapPin, text: 'Ontario, Canada' },
+              { Icon: MapPin, text: t('footer.contact.location') },
               { Icon: Mail,   text: 'support@creova.ca', href: 'mailto:support@creova.ca' },
-              { Icon: Star,   text: '5-Star Rated', href: 'https://g.page/r/creova/review' },
+              { Icon: Star,   text: t('footer.contact.rating'), href: 'https://g.page/r/creova/review' },
             ].map(({ Icon, text, href }, i) => (
               <div key={i} className="flex items-center gap-3">
                 <div
@@ -338,7 +338,7 @@ export function Footer() {
         className="relative border-y py-5 overflow-hidden"
         style={{ borderColor: 'rgba(166,143,89,0.1)' }}
       >
-        <FooterMarquee />
+        <FooterMarquee items={MARQUEE_ITEMS} />
       </div>
 
       {/* ── 4. LINKS GRID ──────────────────────────────────────────────── */}
@@ -350,7 +350,7 @@ export function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-12">
           {COLUMNS.map((col, colIdx) => (
             <motion.div
-              key={col.title}
+              key={colIdx}
               initial={{ opacity: 0, y: 24 }}
               animate={linksInView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: colIdx * 0.1, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
@@ -362,48 +362,52 @@ export function Footer() {
                   className="text-xs tracking-[0.4em] uppercase"
                   style={{ color: '#A68F59' }}
                 >
-                  {col.title}
+                  {t(col.titleKey)}
                 </p>
               </div>
 
               <ul className="space-y-3.5">
-                {col.links.map((link, linkIdx) => (
-                  <motion.li
-                    key={link.label}
-                    initial={{ opacity: 0, x: -8 }}
-                    animate={linksInView ? { opacity: 1, x: 0 } : {}}
-                    transition={{ delay: colIdx * 0.1 + linkIdx * 0.05 + 0.15, duration: 0.5 }}
-                  >
-                    {'external' in link && link.external ? (
-                      <a
-                        href={link.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="group inline-flex items-center gap-1.5 text-sm transition-all duration-250"
-                        style={{ color: '#7A6F66' }}
-                        onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = '#E3DCD3'; }}
-                        onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = '#7A6F66'; }}
-                      >
-                        {link.label}
-                        {link.href !== '#' && (
-                          <ArrowUpRight
-                            className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-                          />
-                        )}
-                      </a>
-                    ) : (
-                      <Link
-                        to={link.href}
-                        className="text-sm transition-all duration-250"
-                        style={{ color: '#7A6F66' }}
-                        onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = '#E3DCD3'; }}
-                        onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = '#7A6F66'; }}
-                      >
-                        {link.label}
-                      </Link>
-                    )}
-                  </motion.li>
-                ))}
+                {col.links.map((link, linkIdx) => {
+                  const label = 'labelKey' in link ? t(link.labelKey) : link.label;
+                  const isExternal = 'external' in link && link.external;
+                  return (
+                    <motion.li
+                      key={linkIdx}
+                      initial={{ opacity: 0, x: -8 }}
+                      animate={linksInView ? { opacity: 1, x: 0 } : {}}
+                      transition={{ delay: colIdx * 0.1 + linkIdx * 0.05 + 0.15, duration: 0.5 }}
+                    >
+                      {isExternal ? (
+                        <a
+                          href={link.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="group inline-flex items-center gap-1.5 text-sm transition-all duration-250"
+                          style={{ color: '#7A6F66' }}
+                          onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = '#E3DCD3'; }}
+                          onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = '#7A6F66'; }}
+                        >
+                          {label}
+                          {link.href !== '#' && (
+                            <ArrowUpRight
+                              className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                            />
+                          )}
+                        </a>
+                      ) : (
+                        <Link
+                          to={link.href}
+                          className="text-sm transition-all duration-250"
+                          style={{ color: '#7A6F66' }}
+                          onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = '#E3DCD3'; }}
+                          onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = '#7A6F66'; }}
+                        >
+                          {label}
+                        </Link>
+                      )}
+                    </motion.li>
+                  );
+                })}
               </ul>
             </motion.div>
           ))}
@@ -431,44 +435,42 @@ export function Footer() {
             {/* Legal strip */}
             <div className="flex flex-col items-center gap-1.5 text-center">
               <p className="text-xs" style={{ color: '#3A3A3A' }}>
-                © {new Date().getFullYear()} CREOVA. All rights reserved.
-                {' '}·{' '}
-                BIPOC-Owned &amp; Operated · Ontario, Canada
+                {t('footer.bottom.rights').replace('{year}', String(new Date().getFullYear()))}
               </p>
               <p className="text-xs" style={{ color: '#2C2C2C' }}>
-                All prices in CAD. 13% GST/HST (Ontario) applies.
+                {t('footer.bottom.tax')}
               </p>
             </div>
 
             {/* Social icons + legal links */}
             <div className="flex flex-col items-end gap-3">
               <div className="flex items-center gap-2">
-                <SocialIcon href="https://instagram.com/creativeinnovation__" label="Instagram">
+                <SocialIcon href="https://instagram.com/creativeinnovation__" label={t('footer.social.instagram')}>
                   <Instagram className="w-4 h-4" />
                 </SocialIcon>
-                <SocialIcon href="https://www.linkedin.com/company/creovaspace/" label="LinkedIn">
+                <SocialIcon href="https://www.linkedin.com/company/creovaspace/" label={t('footer.social.linkedin')}>
                   <Linkedin className="w-4 h-4" />
                 </SocialIcon>
-                <SocialIcon href="mailto:support@creova.ca" label="Email">
+                <SocialIcon href="mailto:support@creova.ca" label={t('footer.social.email')}>
                   <Mail className="w-4 h-4" />
                 </SocialIcon>
-                <SocialIcon href="https://g.page/r/creova/review" label="Google Review">
+                <SocialIcon href="https://g.page/r/creova/review" label={t('footer.contact.review')}>
                   <Star className="w-4 h-4" />
                 </SocialIcon>
               </div>
               <div className="flex items-center gap-4">
                 {[
-                  { label: 'Terms', href: '/terms-of-service' },
-                  { label: 'Privacy', href: '/privacy-policy' },
-                  { label: 'Contact', href: '/contact' },
-                ].map(({ label, href }) => (
+                  { labelKey: 'footer.legal.terms', href: '/terms-of-service' },
+                  { labelKey: 'footer.legal.privacy', href: '/privacy-policy' },
+                  { labelKey: 'footer.legal.contact', href: '/contact' },
+                ].map(({ labelKey, href }) => (
                   <Link
-                    key={label}
+                    key={href}
                     to={href}
                     className="text-xs transition-opacity duration-200 hover:opacity-70"
                     style={{ color: '#3A3A3A' }}
                   >
-                    {label}
+                    {t(labelKey)}
                   </Link>
                 ))}
               </div>

@@ -1,36 +1,34 @@
 import { motion } from 'motion/react';
 import { Users, Globe, Heart, TrendingUp, Camera, ShoppingBag, Calendar, Palette } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 export function CommunityInsights() {
+  const { t } = useLanguage();
   const topInterests = [
-    { icon: Camera, label: 'Photography Shoots', percentage: '85%', color: '#B1643B' },
-    { icon: ShoppingBag, label: 'Fashion Drops', percentage: '75%', color: '#A68F59' },
-    { icon: Calendar, label: 'Events & Workshops', percentage: '70%', color: '#A2542D' },
-    { icon: Palette, label: 'Social Media Content', percentage: '65%', color: '#8A9777' }
+    { icon: Camera, label: t('insights.interest1'), percentage: '85%', color: '#B1643B' },
+    { icon: ShoppingBag, label: t('insights.interest2'), percentage: '75%', color: '#A68F59' },
+    { icon: Calendar, label: t('insights.interest3'), percentage: '70%', color: '#A2542D' },
+    { icon: Palette, label: t('insights.interest4'), percentage: '65%', color: '#8A9777' }
   ];
 
   const contentDesires = [
-    'Creative Business & Entrepreneurship Tips',
-    'Professional Photography Tutorials',
-    'Brand Building & Marketing Strategies',
-    'Behind-the-Scenes Studio Content',
-    'BIPOC Creative Success Stories',
-    'Exclusive Member Resources & Templates'
+    t('insights.content1'),
+    t('insights.content2'),
+    t('insights.content3'),
+    t('insights.content4'),
+    t('insights.content5'),
+    t('insights.content6'),
   ];
 
   const globalReach = [
     'Canada',
-    'United States',
-    'United Kingdom',
+    t('insights.global.us') || 'United States',
+    t('insights.global.uk') || 'United Kingdom',
     'Nigeria',
     'Ghana',
     'Jamaica',
     'Kenya',
     'South Africa',
-    'Trinidad & Tobago',
-    'Barbados',
-    'France',
-    'Germany'
   ];
 
   return (
@@ -45,10 +43,10 @@ export function CommunityInsights() {
         >
           <div className="h-1 w-16 mx-auto mb-8" style={{ backgroundColor: '#B1643B' }}></div>
           <h2 className="text-3xl md:text-4xl mb-4 tracking-tight" style={{ color: '#121212' }}>
-            Built for Our Community
+            {t('insights.heading')}
           </h2>
           <p className="text-lg max-w-2xl mx-auto" style={{ color: '#4A3E36' }}>
-            Based on real feedback from 60+ creatives, students, entrepreneurs, and culture enthusiasts worldwide
+            {t('insights.sub')}
           </p>
         </motion.div>
 
@@ -89,7 +87,7 @@ export function CommunityInsights() {
           >
             <Heart className="w-8 h-8 mb-4" style={{ color: '#B1643B' }} />
             <h3 className="text-2xl mb-6 tracking-tight" style={{ color: '#121212' }}>
-              What You Want to See
+              {t('insights.content.heading')}
             </h3>
             <div className="space-y-3">
               {contentDesires.map((desire, index) => (
@@ -112,7 +110,7 @@ export function CommunityInsights() {
           >
             <Globe className="w-8 h-8 mb-4" style={{ color: '#B1643B' }} />
             <h3 className="text-2xl mb-6 tracking-tight" style={{ color: '#121212' }}>
-              Our Global Community
+              {t('insights.global.heading')}
             </h3>
             <div className="grid grid-cols-1 gap-2">
               {globalReach.slice(0, 8).map((location, index) => (
@@ -121,7 +119,7 @@ export function CommunityInsights() {
                   <span style={{ color: '#4A3E36' }}>{location}</span>
                 </div>
               ))}
-              <div className="text-sm mt-2" style={{ color: '#A68F59' }}>+ more worldwide</div>
+              <div className="text-sm mt-2" style={{ color: '#A68F59' }}>{t('insights.global.more')}</div>
             </div>
           </motion.div>
         </div>
@@ -137,10 +135,10 @@ export function CommunityInsights() {
         >
           <TrendingUp className="w-10 h-10 mx-auto mb-4" style={{ color: '#A68F59' }} />
           <h3 className="text-2xl mb-3" style={{ color: '#F5F1EB' }}>
-            95% of Our Community
+            {t('insights.finding.heading')}
           </h3>
           <p className="text-lg" style={{ color: '#E3DCD3' }}>
-            Would wear or support fashion that celebrates African and diaspora cultures
+            {t('insights.finding.desc')}
           </p>
         </motion.div>
       </div>

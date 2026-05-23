@@ -65,7 +65,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                   </p>
                   {items.length > 0 && (
                     <p className="text-xs" style={{ color: '#7A6F66' }}>
-                      {items.length} {items.length === 1 ? 'item' : 'items'}
+                      {items.length} {items.length === 1 ? t('cart.item') : t('cart.items')}
                     </p>
                   )}
                 </div>
@@ -92,26 +92,26 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                   </div>
                   <div className="flex items-center gap-3 mb-4">
                     <div style={{ height: '1px', width: '28px', backgroundColor: 'rgba(166,143,89,0.35)' }} />
-                    <p className="text-xs tracking-[0.4em] uppercase" style={{ color: '#A68F59' }}>Your Bag</p>
+                    <p className="text-xs tracking-[0.4em] uppercase" style={{ color: '#A68F59' }}>{t('cart.bag')}</p>
                     <div style={{ height: '1px', width: '28px', backgroundColor: 'rgba(166,143,89,0.35)' }} />
                   </div>
                   <p className="text-lg font-light mb-2" style={{ color: '#F5F1EB' }}>{t('cart.empty')}</p>
                   <p className="text-sm mb-8 leading-relaxed" style={{ color: '#7A6F66' }}>
-                    Browse the SEEN shop or our digital resources to find something worth owning.
+                    {t('cart.empty.desc')}
                   </p>
                   <button
                     onClick={() => { onClose(); navigate('/shop'); }}
                     className="w-full py-3 rounded-lg text-sm font-medium text-white mb-3"
                     style={{ background: warmGradient }}
                   >
-                    Browse SEEN Shop
+                    {t('cart.btn.shop')}
                   </button>
                   <button
                     onClick={() => { onClose(); navigate('/digital-products'); }}
                     className="w-full py-3 rounded-lg text-sm font-medium border"
                     style={{ borderColor: 'rgba(166,143,89,0.3)', color: '#C8C0B8', backgroundColor: 'transparent' }}
                   >
-                    Digital Resources
+                    {t('cart.btn.digital')}
                   </button>
                 </div>
               ) : (
@@ -135,7 +135,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                       )}
                       <div className="flex-grow min-w-0">
                         <h3 className="text-sm font-medium mb-1 truncate" style={{ color: '#F5F1EB' }}>{item.name}</h3>
-                        <p className="text-sm mb-3" style={{ color: '#A68F59' }}>${item.price} CAD</p>
+                        <p className="text-sm mb-3" style={{ color: '#A68F59' }}>${item.price}{t('cart.cad')}</p>
                         <div className="flex items-center justify-between">
                           <div
                             className="flex items-center gap-0 rounded-lg overflow-hidden"
@@ -180,7 +180,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
               >
                 <div className="flex justify-between items-baseline">
                   <span className="text-xs tracking-[0.35em] uppercase" style={{ color: '#7A6F66' }}>{t('cart.total')}</span>
-                  <span className="text-xl font-light" style={{ color: '#F5F1EB' }}>${totalPrice.toFixed(2)} <span className="text-sm" style={{ color: '#7A6F66' }}>CAD</span></span>
+                  <span className="text-xl font-light" style={{ color: '#F5F1EB' }}>${totalPrice.toFixed(2)} <span className="text-sm" style={{ color: '#7A6F66' }}>{t('cart.cad')}</span></span>
                 </div>
                 <button
                   className="w-full py-3.5 rounded-xl text-sm font-medium text-white"
