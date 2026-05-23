@@ -1,15 +1,5 @@
-import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
-
-type Language = 'en' | 'fr';
-
-interface LanguageContextType {
-  language: Language;
-  setLanguage: (lang: Language) => void;
-  t: (key: string) => string;
-  isChanging: boolean;
-}
-
-const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
+import { useContext, useState, ReactNode, useEffect } from 'react';
+import { LanguageContext, Language } from './LanguageContextInstance';
 
 // SEO-optimized translations
 const translations = {
@@ -82,7 +72,6 @@ const translations = {
     'nav.book.call': 'Book a Call',
     'nav.seen.label': 'SEEN — Upcoming Platform',
     'nav.book.call.mobile': 'Book a Discovery Call',
-    'nav.pricing': 'Pricing',
     'nav.cart.aria': 'Shopping cart',
     'trust.test1.quote': "CREOVA's work on our Black History Month campaign was exceptional. They understood our vision and delivered beyond expectations.",
     'trust.test1.author': 'Human Rights & Equity',
@@ -94,8 +83,7 @@ const translations = {
     'trust.test3.author': 'BSA Leadership',
     'trust.test3.org': 'Black Students Association',
     'cart.cad': ' CAD',
-    'common.loading': 'Loading...',
-    
+
     // Contact Page Keys
     'contact.toast.captcha.expired': 'Security verification expired. Please verify again.',
     'contact.toast.captcha.issue': 'Security Verification Issue',
@@ -110,7 +98,6 @@ const translations = {
     'contact.book.btn.now': 'Book Session Now',
     'contact.book.btn.chat': 'Chat with Sankofa First',
     'contact.form.or': 'or send a general inquiry',
-    'contact.form.title': 'Send Us a Message',
     'contact.form.label.name': 'Name *',
     'contact.form.placeholder.name': 'Your full name',
     'contact.form.label.email': 'Email *',
@@ -139,7 +126,6 @@ const translations = {
     'contact.form.btn.send': 'Send Message',
     'contact.form.disclaimer': 'By submitting this form, you agree to be contacted by CREOVA regarding your inquiry',
     'contact.faq.badge': 'Quick Answers',
-    'contact.faq.title': 'Frequently Asked Questions',
     'contact.faq.q1': 'How far in advance should I book?',
     'contact.faq.a1': 'For events and weddings, we recommend booking 3-6 months in advance. For brand photography and other services, 2-4 weeks notice is typically sufficient, but we can sometimes accommodate rush requests.',
     'contact.faq.q2': 'Do you travel outside of Niagara?',
@@ -494,7 +480,6 @@ const translations = {
     'nav.book.call': 'Réserver un Appel',
     'nav.seen.label': 'SEEN — Plateforme à Venir',
     'nav.book.call.mobile': 'Réserver un Appel Découverte',
-    'nav.pricing': 'Tarification',
     'nav.cart.aria': 'Panier d\'achat',
     'trust.test1.quote': "Le travail de CREOVA sur notre campagne du Mois de l'Histoire des Noirs a été exceptionnel. Ils ont compris notre vision et ont livré au-delà des attentes.",
     'trust.test1.author': 'Droits de la Personne & Équité',
@@ -520,7 +505,6 @@ const translations = {
     'contact.book.btn.now': 'Réserver une Session Maintenant',
     'contact.book.btn.chat': 'Discuter avec Sankofa d\'Abord',
     'contact.form.or': 'ou envoyez une demande générale',
-    'contact.form.title': 'Envoyez-nous un Message',
     'contact.form.label.name': 'Nom *',
     'contact.form.placeholder.name': 'Votre nom complet',
     'contact.form.label.email': 'Email *',
@@ -549,7 +533,6 @@ const translations = {
     'contact.form.btn.send': 'Envoyer le Message',
     'contact.form.disclaimer': 'En soumettant ce formulaire, vous acceptez d\'être contacté par CREOVA concernant votre demande',
     'contact.faq.badge': 'Réponses Rapides',
-    'contact.faq.title': 'Foire Aux Questions',
     'contact.faq.q1': 'Combien de temps à l\'avance dois-je réserver ?',
     'contact.faq.a1': 'Pour les événements et mariages, nous recommandons de réserver 3-6 mois à l\'avance. Pour la photographie de marque et autres services, un préavis de 2-4 semaines est généralement suffisant, mais nous pouvons parfois accommoder des demandes urgentes.',
     'contact.faq.q2': 'Vous déplacez-vous en dehors de Niagara ?',
