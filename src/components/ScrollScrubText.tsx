@@ -1,10 +1,28 @@
 import { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'motion/react';
+import { motion, useScroll, useTransform, MotionValue } from 'motion/react';
 
 interface ScrollScrubTextProps {
   text: string;
   className?: string;
   style?: React.CSSProperties;
+}
+
+interface WordSpanProps {
+  word: string;
+  index: number;
+  total: number;
+  scrollYProgress: MotionValue<number>;
+}
+
+function WordSpan({ word, index, total, scrollYProgress }: WordSpanProps) {
+  const start = index / total;
+  const end = (index + 1) / total;
+  const opacity = useTransform(scrollYProgress, [start, end], [0.12, 1]);
+  return (
+    <motion.span style={{ opacity }} className="inline-block">
+      {word}
+    </motion.span>
+  );
 }
 
 export function ScrollScrubText({ text, className = '', style }: ScrollScrubTextProps) {
@@ -15,21 +33,19 @@ export function ScrollScrubText({ text, className = '', style }: ScrollScrubText
   });
 
   const words = text.split(' ');
-  const total = words.length;
 
   return (
     <div ref={containerRef} className={className} style={style}>
       <p className="flex flex-wrap gap-x-[0.28em] gap-y-1">
-        {words.map((word, i) => {
-          const start = i / total;
-          const end = (i + 1) / total;
-          const opacity = useTransform(scrollYProgress, [start, end], [0.12, 1]);
-          return (
-            <motion.span key={i} style={{ opacity }} className="inline-block">
-              {word}
-            </motion.span>
-          );
-        })}
+        {words.map((word, i) => (
+          <WordSpan
+            key={i}
+            word={word}
+            index={i}
+            total={words.length}
+            scrollYProgress={scrollYProgress}
+          />
+        ))}
       </p>
     </div>
   );
