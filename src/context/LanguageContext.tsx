@@ -6,6 +6,7 @@ interface LanguageContextType {
   language: Language;
   setLanguage: (lang: Language) => void;
   t: (key: string) => string;
+  isChanging: boolean;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
@@ -846,12 +847,23 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     if (browserLang.startsWith('fr')) return 'fr';
     return 'en';
   });
+  const [isChanging, setIsChanging] = useState(false);
 
   const setLanguage = (lang: Language) => {
-    setLanguageState(lang);
-    localStorage.setItem('creova-language', lang);
-    // Update HTML lang attribute for SEO
-    document.documentElement.lang = lang;
+    if (lang === language) return;
+    setIsChanging(true);
+    
+    // Cinematic swap effect
+    setTimeout(() => {
+      setLanguageState(lang);
+      localStorage.setItem('creova-language', lang);
+      // Update HTML lang attribute for SEO
+      document.documentElement.lang = lang;
+      
+      setTimeout(() => {
+        setIsChanging(false);
+      }, 150); // slight delay after content swap to remove overlay
+    }, 150); // delay to let overlay fade in
   };
 
   const t = (key: string): string => {
@@ -864,7 +876,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   }, [language]);
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, t }}>
+    <LanguageContext.Provider value={{ language, setLanguage, t, isChanging }}>
       {children}
     </LanguageContext.Provider>
   );
