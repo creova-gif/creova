@@ -16,7 +16,6 @@ export function AuthCallbackPage() {
         const { data, error } = await supabase.auth.getSession();
 
         if (error) {
-          console.error('Auth callback error:', error);
           setStatus('error');
           setMessage('Authentication failed. Please try again.');
           setTimeout(() => navigate('/auth'), 3000);
@@ -32,8 +31,7 @@ export function AuthCallbackPage() {
           setMessage('No active session found.');
           setTimeout(() => navigate('/auth'), 3000);
         }
-      } catch (error) {
-        console.error('Unexpected error:', error);
+      } catch {
         setStatus('error');
         setMessage('An unexpected error occurred.');
         setTimeout(() => navigate('/auth'), 3000);

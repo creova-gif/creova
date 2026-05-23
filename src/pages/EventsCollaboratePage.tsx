@@ -48,7 +48,6 @@ export function EventsCollaboratePage() {
 
   const handleCaptchaError = (error: string) => {
     setCaptchaToken(null);
-    console.error('CAPTCHA error:', error);
     if (window.location.hostname === 'creova.ca') {
       toast.error('Security Verification Issue', {
         description: error || 'Unable to verify. Please refresh and try again.'
@@ -321,8 +320,7 @@ export function EventsCollaboratePage() {
       } else {
         throw new Error(data.error || 'Failed to submit collaboration request');
       }
-    } catch (error) {
-      console.error('Error submitting collaboration form:', error);
+    } catch {
       toast.error('Failed to submit request', { description: 'Please try again or email us directly.' });
     } finally {
       setIsSubmitting(false);

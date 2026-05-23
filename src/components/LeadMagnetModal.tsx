@@ -87,8 +87,7 @@ export function LeadMagnetModal({ isOpen, onClose, leadMagnet }: LeadMagnetModal
       } else {
         throw new Error(data.error || t('leadmagnet.error.submit'));
       }
-    } catch (error) {
-      console.error('Error submitting lead magnet form:', error);
+    } catch {
       toast.error(t('leadmagnet.error.wrong.title'), {
         description: t('leadmagnet.error.wrong.desc')
       });

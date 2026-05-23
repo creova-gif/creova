@@ -1,8 +1,6 @@
 import { loadStripe } from '@stripe/stripe-js';
 import { projectId, publicAnonKey } from './supabase/info';
 
-// Initialize Stripe with your publishable key from the VITE_STRIPE_PUBLISHABLE_KEY env var
-// Get your key from https://dashboard.stripe.com/apikeys
 const stripePublishableKey = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || '';
 const stripePromise = loadStripe(stripePublishableKey);
 
@@ -46,168 +44,138 @@ export interface PaymentItem {
   category?: string;
 }
 
-// Create a service booking
 export async function createBooking(
   service: string,
   customerInfo: CustomerInfo,
   bookingDetails: BookingDetails,
   amount: number
 ) {
-  try {
-    const response = await fetch(`${API_URL}/create-booking`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${publicAnonKey}`
-      },
-      body: JSON.stringify({
-        service,
-        customer_info: customerInfo,
-        booking_details: bookingDetails,
-        amount: Math.round(amount * 100), // Convert to cents
-        currency: 'cad'
-      })
-    });
+  const response = await fetch(`${API_URL}/create-booking`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${publicAnonKey}`
+    },
+    body: JSON.stringify({
+      service,
+      customer_info: customerInfo,
+      booking_details: bookingDetails,
+      amount: Math.round(amount * 100),
+      currency: 'cad'
+    })
+  });
 
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.error || 'Failed to create booking');
-    }
-
-    return await response.json();
-  } catch (error) {
-    console.error('Booking creation error:', error);
-    throw error;
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || 'Failed to create booking');
   }
+
+  return await response.json();
 }
 
-// Create equipment rental
 export async function createRental(
   equipment: string[],
   customerInfo: CustomerInfo,
   rentalDetails: RentalDetails,
   amount: number
 ) {
-  try {
-    const response = await fetch(`${API_URL}/create-rental`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${publicAnonKey}`
-      },
-      body: JSON.stringify({
-        equipment,
-        customer_info: customerInfo,
-        rental_details: rentalDetails,
-        amount: Math.round(amount * 100),
-        currency: 'cad'
-      })
-    });
+  const response = await fetch(`${API_URL}/create-rental`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${publicAnonKey}`
+    },
+    body: JSON.stringify({
+      equipment,
+      customer_info: customerInfo,
+      rental_details: rentalDetails,
+      amount: Math.round(amount * 100),
+      currency: 'cad'
+    })
+  });
 
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.error || 'Failed to create rental');
-    }
-
-    return await response.json();
-  } catch (error) {
-    console.error('Rental creation error:', error);
-    throw error;
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || 'Failed to create rental');
   }
+
+  return await response.json();
 }
 
-// Create event ticket purchase
 export async function createTicket(
   eventId: string,
   customerInfo: CustomerInfo,
   ticketDetails: TicketDetails,
   amount: number
 ) {
-  try {
-    const response = await fetch(`${API_URL}/create-ticket`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${publicAnonKey}`
-      },
-      body: JSON.stringify({
-        event_id: eventId,
-        customer_info: customerInfo,
-        ticket_details: ticketDetails,
-        amount: Math.round(amount * 100),
-        currency: 'cad'
-      })
-    });
+  const response = await fetch(`${API_URL}/create-ticket`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${publicAnonKey}`
+    },
+    body: JSON.stringify({
+      event_id: eventId,
+      customer_info: customerInfo,
+      ticket_details: ticketDetails,
+      amount: Math.round(amount * 100),
+      currency: 'cad'
+    })
+  });
 
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.error || 'Failed to purchase ticket');
-    }
-
-    return await response.json();
-  } catch (error) {
-    console.error('Ticket purchase error:', error);
-    throw error;
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || 'Failed to purchase ticket');
   }
+
+  return await response.json();
 }
 
-// Create payment intent for shop/digital products
 export async function createPaymentIntent(
   amount: number,
   customerInfo: CustomerInfo,
   items: PaymentItem[]
 ) {
-  try {
-    const response = await fetch(`${API_URL}/create-payment-intent`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${publicAnonKey}`
-      },
-      body: JSON.stringify({
-        amount: Math.round(amount * 100), // Convert to cents
-        currency: 'cad',
-        customer_info: customerInfo,
-        items
-      })
-    });
+  const response = await fetch(`${API_URL}/create-payment-intent`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${publicAnonKey}`
+    },
+    body: JSON.stringify({
+      amount: Math.round(amount * 100),
+      currency: 'cad',
+      customer_info: customerInfo,
+      items
+    })
+  });
 
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.error || 'Failed to create payment');
-    }
-
-    return await response.json();
-  } catch (error) {
-    console.error('Payment intent creation error:', error);
-    throw error;
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || 'Failed to create payment');
   }
+
+  return await response.json();
 }
 
-// Process payment with Stripe Elements
 export async function processPayment(
   clientSecret: string,
   elements: any,
   stripe: any
 ) {
-  try {
-    const { error, paymentIntent } = await stripe.confirmPayment({
-      elements,
-      confirmParams: {
-        return_url: `${window.location.origin}/payment-success`,
-      },
-      redirect: 'if_required'
-    });
+  const { error, paymentIntent } = await stripe.confirmPayment({
+    elements,
+    confirmParams: {
+      return_url: `${window.location.origin}/payment-success`,
+    },
+    redirect: 'if_required'
+  });
 
-    if (error) {
-      throw new Error(error.message);
-    }
-
-    return paymentIntent;
-  } catch (error) {
-    console.error('Payment processing error:', error);
-    throw error;
+  if (error) {
+    throw new Error(error.message);
   }
+
+  return paymentIntent;
 }
 
 export { stripePromise };

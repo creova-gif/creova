@@ -40,7 +40,6 @@ export function ContactPage() {
 
   const handleCaptchaError = (error: string) => {
     setCaptchaToken(null);
-    console.error('CAPTCHA error:', error);
     if (window.location.hostname === 'creova.ca') {
       toast.error(t('contact.toast.captcha.issue'), {
         description: error || t('contact.toast.captcha.desc')
@@ -88,9 +87,8 @@ export function ContactPage() {
               body: JSON.stringify(formData)
             }
           );
-        } catch (emailError) {
+        } catch {
           // Don't block success message if email notification fails
-          console.error('Admin notification failed:', emailError);
         }
 
         toast.success(t('contact.form.success.title'), {
@@ -109,7 +107,6 @@ export function ContactPage() {
         throw new Error(data.error || 'Failed to send message');
       }
     } catch (error) {
-      console.error('Error submitting contact form:', error);
       toast.error(t('contact.form.error.title'), {
         description: t('contact.form.error.description')
       });

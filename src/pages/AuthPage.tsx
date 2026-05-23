@@ -68,7 +68,6 @@ export function AuthPage() {
 
   const handleCaptchaError = (error: string) => {
     setCaptchaToken(null);
-    console.error('CAPTCHA error:', error);
     if (window.location.hostname === 'creova.ca') {
       toast.error('Security Verification Issue', {
         description: error || 'Unable to verify. Please refresh and try again.'
@@ -138,7 +137,6 @@ export function AuthPage() {
       });
 
       if (error) {
-        console.error('Sign up error:', error);
         toast.error('Sign up failed: ' + error.message);
         return;
       }
@@ -148,8 +146,7 @@ export function AuthPage() {
         setMode('login');
         setFormData({ name: '', email: formData.email, password: '', confirmPassword: '' });
       }
-    } catch (error: any) {
-      console.error('Sign up error:', error);
+    } catch {
       toast.error('An error occurred during sign up');
     } finally {
       setIsLoading(false);
@@ -168,7 +165,6 @@ export function AuthPage() {
       });
 
       if (error) {
-        console.error('Login error:', error);
         toast.error('Login failed: ' + error.message);
         return;
       }
@@ -178,8 +174,7 @@ export function AuthPage() {
         // Redirect to memberships or dashboard
         navigate('/memberships');
       }
-    } catch (error: any) {
-      console.error('Login error:', error);
+    } catch {
       toast.error('An error occurred during login');
     } finally {
       setIsLoading(false);
@@ -196,11 +191,9 @@ export function AuthPage() {
       });
 
       if (error) {
-        console.error('OAuth error:', error);
         toast.error(`${provider} login failed. Please ensure ${provider} is enabled in Supabase settings.`);
       }
-    } catch (error: any) {
-      console.error('OAuth error:', error);
+    } catch {
       toast.error('An error occurred during social login');
     }
   };

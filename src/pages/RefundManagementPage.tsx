@@ -82,8 +82,7 @@ export function RefundManagementPage() {
       if (refundsRes.ok) {
         setRefunds(refundsData.refunds || []);
       }
-    } catch (error) {
-      console.error('Error fetching data:', error);
+    } catch {
       toast.error('Failed to load payment data');
     } finally {
       setLoading(false);
@@ -127,7 +126,6 @@ export function RefundManagementPage() {
         throw new Error(data.error || 'Failed to process refund');
       }
     } catch (error: any) {
-      console.error('Error creating refund:', error);
       toast.error(error.message || 'Failed to process refund');
     } finally {
       setIsRefunding(false);

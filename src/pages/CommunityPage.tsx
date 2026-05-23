@@ -93,15 +93,13 @@ export function CommunityPage() {
         );
         setNotifyEmails(prev => ({ ...prev, [tier]: '' }));
       } else {
-        console.error('Notification signup error:', data);
         toast.error(
           language === 'fr'
             ? 'Une erreur s\'est produite. Veuillez réessayer.'
             : 'An error occurred. Please try again.'
         );
       }
-    } catch (error) {
-      console.error('Network error during notification signup:', error);
+    } catch {
       toast.error(
         language === 'fr'
           ? 'Erreur de connexion. Veuillez vérifier votre connexion Internet.'

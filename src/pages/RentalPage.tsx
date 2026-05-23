@@ -46,7 +46,6 @@ export function RentalPage() {
 
   const handleCaptchaError = (error: string) => {
     setCaptchaToken(null);
-    console.error('CAPTCHA error:', error);
     if (window.location.hostname === 'creova.ca') {
       toast.error('Security Verification Issue', {
         description: error || 'Unable to verify. Please refresh and try again.'
@@ -258,8 +257,7 @@ export function RentalPage() {
       } else {
         throw new Error(data.error || 'Failed to submit rental request');
       }
-    } catch (error) {
-      console.error('Error submitting rental request:', error);
+    } catch {
       toast.error('Failed to submit rental request', {
         description: 'Please try again or contact us directly.'
       });

@@ -72,7 +72,6 @@ function CheckoutForm({
         }, 2000);
       }
     } catch (err: any) {
-      console.error('Payment error:', err);
       toast.error('Payment failed', {
         description: err.message || 'An unexpected error occurred'
       });

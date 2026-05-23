@@ -220,7 +220,6 @@ export function CheckoutPage() {
         throw new Error('Failed to create payment intent');
       }
     } catch (error) {
-      console.error('Payment error:', error);
       toast.error('Failed to initialize payment', {
         description: 'Please try again or contact support'
       });

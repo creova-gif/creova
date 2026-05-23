@@ -78,6 +78,8 @@
     build: {
       target: 'esnext',
       outDir: 'build',
+      sourcemap: false,
+      minify: 'esbuild',
       rollupOptions: {
         output: {
           manualChunks(id) {
@@ -99,6 +101,10 @@
           }
         }
       }
+    },
+    esbuild: {
+      drop: process.env.NODE_ENV === 'production' ? ['console', 'debugger'] : [],
+      legalComments: 'none',
     },
     server: {
       port: 5000,

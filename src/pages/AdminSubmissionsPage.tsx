@@ -48,8 +48,7 @@ export function AdminSubmissionsPage() {
       } else {
         throw new Error(data.error || 'Failed to fetch submissions');
       }
-    } catch (error) {
-      console.error('Error fetching submissions:', error);
+    } catch {
       toast.error('Failed to load submissions');
     } finally {
       setLoading(false);
@@ -81,8 +80,7 @@ export function AdminSubmissionsPage() {
       } else {
         throw new Error(data.error || 'Failed to update status');
       }
-    } catch (error) {
-      console.error('Error updating status:', error);
+    } catch {
       toast.error('Failed to update status');
     }
   };

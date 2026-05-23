@@ -151,7 +151,6 @@ export function BookingPage() {
 
   const handleCaptchaError = (error: string) => {
     setCaptchaToken(null);
-    console.error('CAPTCHA error:', error);
     if (window.location.hostname === 'creova.ca') {
       toast.error('Security Verification Issue', {
         description: error || 'Unable to verify. Please refresh and try again.'
@@ -229,8 +228,7 @@ export function BookingPage() {
       } else {
         throw new Error(data.error || 'Failed to submit booking');
       }
-    } catch (error) {
-      console.error('Error submitting booking:', error);
+    } catch {
       toast.error('Failed to submit booking', {
         description: 'Please try again or contact us directly.'
       });

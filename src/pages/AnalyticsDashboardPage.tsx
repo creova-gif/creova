@@ -64,8 +64,7 @@ export function AnalyticsDashboardPage() {
       } else {
         throw new Error(data.error || 'Failed to fetch analytics');
       }
-    } catch (error) {
-      console.error('Error fetching analytics:', error);
+    } catch {
       toast.error('Failed to load analytics');
     } finally {
       setLoading(false);

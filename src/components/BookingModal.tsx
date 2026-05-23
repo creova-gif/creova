@@ -4,7 +4,7 @@ import { projectId, publicAnonKey } from '../utils/supabase/info';
 import { toast } from 'sonner';
 import { logger } from '../utils/logger';
 import { motion } from 'motion/react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from './ui/dialog';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -85,15 +85,12 @@ export function BookingModal({ isOpen, onClose, service, package: packageName, p
           toast.success(t('booking.success.sent'));
         }, 1500);
       } else {
-        // Email failed but don't block the booking flow
-        console.warn('Email sending failed, but booking was saved');
         setTimeout(() => {
           toast.info(t('booking.success.confirmed'));
         }, 1500);
       }
-    } catch (emailError) {
+    } catch {
       // Don't block checkout if email fails
-      console.error('Email sending error:', emailError);
     }
 
     // Close modal and navigate to checkout after 2 seconds

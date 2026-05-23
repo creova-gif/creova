@@ -115,9 +115,8 @@ export function AnalyticsTracker() {
             page_location: window.location.href
           });
         }
-      } catch (error) {
+      } catch {
         // Silently fail - don't disrupt user experience
-        console.debug('Analytics tracking error:', error);
       }
     };
 
@@ -157,15 +156,10 @@ export function AnalyticsTracker() {
           })
         }
       );
-    } catch (error) {
-      console.debug('Event tracking error:', error);
+    } catch {
+      // Silently fail
     }
   };
-
-  // Expose trackEvent function globally for use in other components
-  useEffect(() => {
-    (window as any).trackEvent = trackEvent;
-  }, []);
 
   return null; // This component doesn't render anything
 }

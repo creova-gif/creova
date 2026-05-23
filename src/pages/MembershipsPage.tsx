@@ -209,8 +209,7 @@ export default function MembershipsPage() {
         setTimeout(() => setNotifySuccess(false), 5000);
         toast.success('Subscribed to membership updates!');
       }
-    } catch (error) {
-      console.error('Error subscribing to notifications:', error);
+    } catch {
       toast.error('Failed to subscribe');
     }
   };
@@ -264,8 +263,7 @@ export default function MembershipsPage() {
       } else {
         throw new Error(data.error || 'Failed to create checkout session');
       }
-    } catch (error) {
-      console.error('Error creating checkout session:', error);
+    } catch {
       toast.error('Failed to start checkout. Please try again.');
       setIsProcessing(false);
     }
