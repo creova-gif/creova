@@ -84,11 +84,7 @@ environment variable. Set this in Replit Secrets.
 The reCAPTCHA site key is registered for `creova.ca`. Shows a false-positive error callback
 in Replit's dev environment. Will work correctly on the production domain.
 
-### 4. Duplicate Translation Keys (non-breaking warnings)
-`LanguageContext.tsx` has 6 duplicate keys: `home.hero.description`, `footer.tagline`,
-`footer.description` (in both EN and FR). The second value silently wins.
-
-### 5. Supabase Configuration
+### 4. Supabase Configuration
 Credentials are hardcoded in `src/utils/supabase/info.tsx` pointing to the original project.
 If the Supabase project is no longer accessible, a new project will be needed.
 

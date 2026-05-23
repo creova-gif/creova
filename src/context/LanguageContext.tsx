@@ -1221,6 +1221,30 @@ const translations = {
     'footer.bottom.rights': '© {year} CREOVA Creative Inc. Tous droits réservés.',
     'footer.bottom.tax': 'Inscription HST/TPS en cours. Prix en CAD.',
 
+    // Home — Hero
+    "home.hero.body": "Nous aidons les organisations dirigées par des Noirs et des BIPOC à raconter leurs histoires avec de la photographie éditoriale, de la vidéographie cinématographique et du design de marque audacieux.",
+    "home.hero.availability": "Réservations Ouvertes — Places Limitées pour le Printemps & l'Été 2026",
+
+    // Home — SEEN
+    "home.seen.badge": "Bientôt Disponible",
+    "home.seen.desc": "SEEN est notre prochaine plateforme de mode et de culture dédiée à célébrer l'identité noire à travers le style, l'histoire et la communauté.",
+    "home.seen.f2.desc": "Célébrer l'identité et la créativité noires",
+    "home.seen.f4.label": "Événements",
+
+    // Home — Manifesto
+    "home.manifesto.text": "Nous croyons que chaque histoire noire mérite d'être racontée avec intention, soin et beauté cinématographique. CREOVA existe pour amplifier les voix, les visages et les visions de notre communauté — car la représentation n'est pas une tendance, c'est une nécessité.",
+
+    // Home — Fall Season
+    "home.fall.badge": "Saison Automne 2026",
+    "home.fall.oct.desc": "Événements communautaires & préparation du Mois de l'Histoire des Noirs",
+    "home.fall.cta": "Voir le Calendrier d'Automne",
+
+    // Home — Editorial
+    "home.editorial.badge": "Un Mot de Notre Part",
+
+    // Home — CTA
+    "home.urgency.badge": "Disponibilité Limitée",
+
     // Lead Magnet Modal
     'leadmagnet.error.fields': 'Veuillez remplir tous les champs obligatoires.',
     'leadmagnet.error.submit': 'Échec de la soumission. Veuillez réessayer.',
