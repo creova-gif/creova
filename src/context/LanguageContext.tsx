@@ -666,6 +666,107 @@ const translations = {
     'a11y.open.menu': 'Open menu',
     'a11y.close.menu': 'Close menu',
     'a11y.loading': 'Loading',
+
+    // Contact Info Banner
+    'banner.call': 'Call Us',
+    'banner.email': 'Email',
+    'banner.location': 'Location',
+    'banner.location.value': 'Niagara Region, Ontario',
+    'banner.hours': 'Hours',
+    'banner.hours.value': 'Mon–Fri: 9AM–6PM EST',
+
+    // Home Hero
+    'home.hero.badge': 'Black-Owned Creative Studio',
+    'home.hero.tagline1': 'Photography · Videography · Brand',
+    'home.hero.tagline2': 'Empowering BIPOC Creatives Across Canada',
+    'home.hero.body': 'We craft visual narratives that elevate brands and preserve cultural moments. From strategic branding to cinematic storytelling, we deliver excellence for BIPOC communities across Ontario and beyond.',
+    'home.hero.availability': 'Now accepting Fall 2026 bookings',
+    'home.hero.badge1': 'Black-Owned',
+    'home.hero.badge2': 'Community-First',
+    'home.hero.badge3': 'Ontario Based',
+
+    // Home Stats
+    'home.stat.projects': 'Projects Delivered',
+    'home.stat.communities': 'Communities Served',
+    'home.stat.years': 'Year of Excellence',
+
+    // SEEN Platform Teaser
+    'home.seen.badge': 'Coming Soon',
+    'home.seen.desc': 'SEEN is our upcoming fashion platform celebrating Black excellence through age-inclusive, Afro-minimalist design for everyone aged 5 to 90.',
+    'home.seen.features': 'Sustainable materials · Timeless silhouettes · Cultural storytelling',
+    'home.seen.cta': 'Explore the Collection',
+    'home.seen.f1.label': 'Age-Inclusive',
+    'home.seen.f1.desc': 'Designed for everyone aged 5 to 90.',
+    'home.seen.f2.label': 'Afro-Minimalism',
+    'home.seen.f2.desc': 'Clean lines rooted in cultural identity.',
+    'home.seen.f3.label': 'Sustainable',
+    'home.seen.f3.desc': 'Ethically sourced, lasting quality.',
+    'home.seen.f4.label': 'Storytelling',
+    'home.seen.f4.desc': 'Every piece carries a narrative.',
+
+    // Services Section
+    'home.services.badge': 'What We Do',
+    'home.services.heading': 'Creative Services Built for Impact',
+    'home.services.sub': 'From cinematic video to brand strategy, our services are designed to amplify your vision and connect you with your audience.',
+    'home.services.explore': 'Explore',
+
+    // Manifesto
+    'home.manifesto.badge': 'Our Belief',
+    'home.manifesto.text': 'Every community deserves to see itself represented beautifully. We exist to make that vision a reality—one frame, one brand, one story at a time.',
+
+    // Fall 2026 Season
+    'home.fall.badge': 'Fall 2026 Season',
+    'home.fall.heading': 'A Season of Stories',
+    'home.fall.desc': 'Our Fall 2026 creative calendar is filling up. Book early to secure your preferred date for portraits, brand shoots, events, and more.',
+    'home.fall.sep.label': 'September',
+    'home.fall.sep.desc': 'Back-to-school brand refreshes and family portraits.',
+    'home.fall.oct.label': 'October',
+    'home.fall.oct.desc': 'Cultural heritage month campaigns and community events.',
+    'home.fall.nov.label': 'November',
+    'home.fall.nov.desc': 'Year-end brand recaps and holiday collection shoots.',
+    'home.fall.dec.label': 'December',
+    'home.fall.dec.desc': 'Festive family sessions and corporate highlights.',
+    'home.fall.cta': 'View Event Calendar',
+
+    // Editorial Quote
+    'home.editorial.badge': 'CREOVA Philosophy',
+    'home.editorial.quote': 'Every community deserves to be seen',
+    'home.editorial.quote2': 'represented',
+    'home.editorial.highlight': 'beautifully.',
+    'home.editorial.credit': 'CREOVA — Ontario, Canada',
+
+    // Why CREOVA
+    'home.why.heading': 'Why Choose CREOVA',
+    'home.why.sub': 'We are more than a creative agency — we are a cultural partner committed to amplifying Black and BIPOC voices through world-class visual storytelling.',
+    'home.why.v1.title': 'Authentic Representation',
+    'home.why.v1.desc': 'We bring lived experience and cultural fluency to every project we take on.',
+    'home.why.v2.title': 'Strategic Creative',
+    'home.why.v2.desc': 'Every visual decision is backed by brand strategy and audience insight.',
+    'home.why.v3.title': 'Community-Rooted',
+    'home.why.v3.desc': 'We actively invest in and give back to the communities we serve.',
+    'home.why.v4.title': 'Professional Excellence',
+    'home.why.v4.desc': 'Premium equipment, seasoned expertise, and a commitment to quality.',
+    'home.why.cta': 'Meet the Team',
+
+    // Urgency Block
+    'home.urgency.badge': 'Limited Availability',
+    'home.urgency.heading': 'Fall Bookings Are Filling Fast',
+    'home.urgency.desc': 'Our calendar is limited — secure your spot now and get priority scheduling for your shoot, event, or brand project.',
+    'home.urgency.cta': 'Book a Consultation',
+    'home.urgency.check1': 'No obligation consultation',
+    'home.urgency.check2': 'Transparent pricing',
+    'home.urgency.check3': 'Flexible scheduling',
+    'home.urgency.check4': 'Fast turnaround',
+
+    // Final CTA
+    'home.cta.heading': 'Ready to Tell Your Story?',
+    'home.cta.desc': 'Join the growing community of brands, entrepreneurs, and families who trust CREOVA to bring their vision to life with authenticity and excellence.',
+    'home.cta.book': 'Book a Free Consultation',
+    'home.cta.pricing': 'View Pricing',
+    'home.cta.note': 'Free 30-minute discovery call · No commitment required',
+    'home.cta.badge1': '500+ Clients Served',
+    'home.cta.badge2': 'Ontario-Wide Coverage',
+    'home.cta.badge3': 'BIPOC-Led Studio',
   },
   
   fr: {
@@ -992,6 +1093,7 @@ const translations = {
     'about.connect': 'Restez Connecté',
     
     // Shopping Cart
+    'cart.cad': ' CAD',
     'cart.title': 'Panier d\'Achat',
     'cart.empty': 'Votre panier est vide',
     'cart.empty.subtitle': 'Ajoutez des articles pour commencer',
@@ -1330,6 +1432,107 @@ const translations = {
     'a11y.open.menu': 'Ouvrir le menu',
     'a11y.close.menu': 'Fermer le menu',
     'a11y.loading': 'Chargement',
+
+    // Contact Info Banner
+    'banner.call': 'Appelez-nous',
+    'banner.email': 'Courriel',
+    'banner.location': 'Localisation',
+    'banner.location.value': 'Région de Niagara, Ontario',
+    'banner.hours': 'Heures',
+    'banner.hours.value': 'Lun–Ven : 9h–18h EST',
+
+    // Home Hero
+    'home.hero.badge': 'Studio Créatif Appartenant à des Noirs',
+    'home.hero.tagline1': 'Photographie · Vidéographie · Marque',
+    'home.hero.tagline2': 'Valoriser les Créatifs BIPOC à travers le Canada',
+    'home.hero.body': 'Nous créons des récits visuels qui élèvent les marques et préservent des moments culturels. Du branding stratégique au storytelling cinématographique, nous livrons de l\'excellence pour les communautés BIPOC en Ontario et au-delà.',
+    'home.hero.availability': 'Réservations automne 2026 acceptées',
+    'home.hero.badge1': 'Propriété Noire',
+    'home.hero.badge2': 'Communauté d\'Abord',
+    'home.hero.badge3': 'Basé en Ontario',
+
+    // Home Stats
+    'home.stat.projects': 'Projets Réalisés',
+    'home.stat.communities': 'Communautés Servies',
+    'home.stat.years': 'An d\'Excellence',
+
+    // SEEN Platform Teaser
+    'home.seen.badge': 'Bientôt Disponible',
+    'home.seen.desc': 'SEEN est notre prochaine plateforme de mode célébrant l\'excellence noire à travers un design afro-minimaliste inclusif pour tous, de 5 à 90 ans.',
+    'home.seen.features': 'Matériaux durables · Silhouettes intemporelles · Narration culturelle',
+    'home.seen.cta': 'Explorer la Collection',
+    'home.seen.f1.label': 'Inclusif par Âge',
+    'home.seen.f1.desc': 'Conçu pour tous, de 5 à 90 ans.',
+    'home.seen.f2.label': 'Afro-Minimalisme',
+    'home.seen.f2.desc': 'Lignes épurées ancrées dans l\'identité culturelle.',
+    'home.seen.f3.label': 'Durable',
+    'home.seen.f3.desc': 'Approvisionnement éthique, qualité durable.',
+    'home.seen.f4.label': 'Narration',
+    'home.seen.f4.desc': 'Chaque pièce porte une histoire.',
+
+    // Services Section
+    'home.services.badge': 'Ce Que Nous Faisons',
+    'home.services.heading': 'Services Créatifs Conçus pour l\'Impact',
+    'home.services.sub': 'De la vidéo cinématographique à la stratégie de marque, nos services sont conçus pour amplifier votre vision et vous connecter à votre audience.',
+    'home.services.explore': 'Explorer',
+
+    // Manifesto
+    'home.manifesto.badge': 'Notre Conviction',
+    'home.manifesto.text': 'Chaque communauté mérite de se voir représentée magnifiquement. Nous existons pour faire de cette vision une réalité—un cadre, une marque, une histoire à la fois.',
+
+    // Fall 2026 Season
+    'home.fall.badge': 'Saison Automne 2026',
+    'home.fall.heading': 'Une Saison d\'Histoires',
+    'home.fall.desc': 'Notre calendrier créatif d\'automne 2026 se remplit rapidement. Réservez tôt pour sécuriser votre date préférée pour des portraits, des séances de marque, des événements et plus encore.',
+    'home.fall.sep.label': 'Septembre',
+    'home.fall.sep.desc': 'Rafraîchissements de marque de rentrée et portraits familiaux.',
+    'home.fall.oct.label': 'Octobre',
+    'home.fall.oct.desc': 'Campagnes du mois du patrimoine culturel et événements communautaires.',
+    'home.fall.nov.label': 'Novembre',
+    'home.fall.nov.desc': 'Bilans de marque de fin d\'année et séances de collection des fêtes.',
+    'home.fall.dec.label': 'Décembre',
+    'home.fall.dec.desc': 'Sessions familiales festives et points forts corporatifs.',
+    'home.fall.cta': 'Voir le Calendrier des Événements',
+
+    // Editorial Quote
+    'home.editorial.badge': 'Philosophie CREOVA',
+    'home.editorial.quote': 'Chaque communauté mérite d\'être vue',
+    'home.editorial.quote2': 'représentée',
+    'home.editorial.highlight': 'magnifiquement.',
+    'home.editorial.credit': 'CREOVA — Ontario, Canada',
+
+    // Why CREOVA
+    'home.why.heading': 'Pourquoi Choisir CREOVA',
+    'home.why.sub': 'Nous sommes plus qu\'une agence créative — nous sommes un partenaire culturel engagé à amplifier les voix noires et BIPOC à travers une narration visuelle de classe mondiale.',
+    'home.why.v1.title': 'Représentation Authentique',
+    'home.why.v1.desc': 'Nous apportons une expérience vécue et une aisance culturelle à chaque projet.',
+    'home.why.v2.title': 'Créatif Stratégique',
+    'home.why.v2.desc': 'Chaque décision visuelle est soutenue par une stratégie de marque et une connaissance du public.',
+    'home.why.v3.title': 'Ancré dans la Communauté',
+    'home.why.v3.desc': 'Nous investissons activement dans les communautés que nous servons et leur redonnons.',
+    'home.why.v4.title': 'Excellence Professionnelle',
+    'home.why.v4.desc': 'Équipement haut de gamme, expertise confirmée et engagement envers la qualité.',
+    'home.why.cta': 'Rencontrer l\'Équipe',
+
+    // Urgency Block
+    'home.urgency.badge': 'Disponibilité Limitée',
+    'home.urgency.heading': 'Les Réservations d\'Automne Se Remplissent Vite',
+    'home.urgency.desc': 'Notre calendrier est limité — réservez votre place maintenant et obtenez une priorité de planification pour votre séance, événement ou projet de marque.',
+    'home.urgency.cta': 'Réserver une Consultation',
+    'home.urgency.check1': 'Consultation sans obligation',
+    'home.urgency.check2': 'Tarification transparente',
+    'home.urgency.check3': 'Horaire flexible',
+    'home.urgency.check4': 'Délai rapide',
+
+    // Final CTA
+    'home.cta.heading': 'Prêt à Raconter Votre Histoire?',
+    'home.cta.desc': 'Rejoignez la communauté grandissante de marques, d\'entrepreneurs et de familles qui font confiance à CREOVA pour donner vie à leur vision avec authenticité et excellence.',
+    'home.cta.book': 'Réserver une Consultation Gratuite',
+    'home.cta.pricing': 'Voir les Tarifs',
+    'home.cta.note': 'Appel découverte de 30 minutes gratuit · Sans engagement',
+    'home.cta.badge1': '500+ Clients Servis',
+    'home.cta.badge2': 'Couverture à travers l\'Ontario',
+    'home.cta.badge3': 'Studio Dirigé par des BIPOC',
   }
 };
 

@@ -568,8 +568,8 @@ export function HomePage() {
               viewport={{ once: true }}
             >
               {t('home.editorial.quote')}<br />
-              {t('home.editorial.quote2').split('beautifully.')[0]}{' '}
-              <span style={{ color: '#A68F59' }}>beautifully.</span>
+              {t('home.editorial.quote2')}{' '}
+              <span style={{ color: '#A68F59' }}>{t('home.editorial.highlight')}</span>
             </motion.h2>
             <div className="flex items-center justify-center gap-4 mt-10">
               <div style={{ height: '1px', width: '40px', backgroundColor: 'rgba(166,143,89,0.4)' }} />
