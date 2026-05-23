@@ -394,14 +394,6 @@ const translations = {
     'form.error.generic': 'Something went wrong. Please try again.',
     'form.saving': 'Saving...',
     
-    // Contact Info Banner
-    'banner.call': 'CALL',
-    'banner.email': 'EMAIL',
-    'banner.location': 'LOCATION',
-    'banner.location.value': 'Niagara Region, Ontario',
-    'banner.hours': 'HOURS',
-    'banner.hours.value': 'Mon–Fri: 9AM–6PM EST',
-
     // Booking Modal
     'booking.title': 'Book a Session',
     'booking.desc': "Fill out the form below and we'll confirm your booking within 4 business hours.",
@@ -518,74 +510,6 @@ const translations = {
     'footer.bottom.rights': '© {year} CREOVA Creative Inc. All rights reserved.',
     'footer.bottom.tax': 'HST/GST registration in progress. Prices in CAD.',
 
-    // Home — Hero
-    'home.hero.badge': 'Black-Owned Creative Studio — Ontario, Canada',
-    'home.hero.tagline1': 'Photography · Videography · Brand Design',
-    'home.hero.tagline2': 'Digital Content · Fashion · Events',
-    'home.hero.body': 'We help Black-owned and BIPOC-led organizations tell their stories with editorial photography, cinematic videography, and bold brand design.',
-    'home.hero.availability': 'Now Booking — Limited Spots for Spring & Summer 2026',
-    'home.hero.badge1': 'Black-Owned & Operated',
-    'home.hero.badge2': 'BIPOC Community Focus',
-    'home.hero.badge3': 'Ontario Based',
-    'home.stat.projects': 'Projects Completed',
-    'home.stat.communities': 'Communities Reached',
-    'home.stat.years': 'Years in Business',
-
-    // Home — SEEN
-    'home.seen.badge': 'Coming Soon',
-    'home.seen.desc': 'SEEN is our upcoming fashion and culture platform dedicated to celebrating Black identity through style, story, and community.',
-    'home.seen.features': 'Shop the collection · Connect with community · Access exclusive events',
-    'home.seen.cta': 'Explore SEEN',
-    'home.seen.f1.label': 'Fashion',
-    'home.seen.f1.desc': 'Curated drops from BIPOC designers',
-    'home.seen.f2.label': 'Culture',
-    'home.seen.f2.desc': 'Celebrate Black identity and creativity',
-    'home.seen.f3.label': 'Community',
-    'home.seen.f3.desc': 'Connect with like-minded creators',
-    'home.seen.f4.label': 'Events',
-    'home.seen.f4.desc': 'Exclusive in-person and virtual experiences',
-
-    // Home — Services
-    'home.services.badge': 'Our Services',
-    'home.services.heading': 'Creative Services for BIPOC Communities',
-    'home.services.sub': 'From brand photography to cinematic video, we offer full-service creative production tailored for Black-owned businesses and BIPOC storytellers.',
-    'home.services.explore': 'Explore',
-
-    // Home — Manifesto
-    'home.manifesto.badge': 'Our Manifesto',
-    'home.manifesto.text': 'We believe every Black story deserves to be told with intention, care, and cinematic beauty. CREOVA exists to amplify the voices, faces, and visions of our community — because representation is not a trend, it is a necessity.',
-
-    // Home — Fall Season
-    'home.fall.badge': 'Fall 2026 Season',
-    'home.fall.heading': 'A Season of Stories',
-    'home.fall.desc': "From September through December, we're booking an intimate selection of projects. Each session is approached as a collaboration — your story, told beautifully.",
-    'home.fall.sep.label': 'September',
-    'home.fall.sep.desc': 'Brand identity shoots & editorial portraits',
-    'home.fall.oct.label': 'October',
-    'home.fall.oct.desc': 'Community events & Black History Month prep',
-    'home.fall.nov.label': 'November',
-    'home.fall.nov.desc': 'Holiday content & family portraits',
-    'home.fall.dec.label': 'December',
-    'home.fall.dec.desc': 'End-of-year campaigns & year-in-review films',
-    'home.fall.cta': 'View Fall Schedule',
-
-    // Home — Editorial
-    'home.editorial.badge': 'A Word From Us',
-    'home.editorial.quote': "We don't just capture moments.",
-    'home.editorial.quote2': 'We tell them beautifully.',
-    'home.editorial.credit': 'CREOVA — Black-Led Creative Studio',
-
-    // Home — CTA
-    'home.cta.badge1': 'Black-Owned',
-    'home.cta.badge2': 'Ontario Based',
-    'home.cta.badge3': 'BIPOC Community',
-    'home.cta.heading': 'Ready to Tell Your Story?',
-    'home.cta.desc': 'Join the growing community of Black-owned businesses and BIPOC creators who trust CREOVA to bring their vision to life.',
-    'home.cta.book': 'Book a Discovery Call',
-    'home.cta.pricing': 'View Pricing',
-    'home.cta.note': 'No commitment required',
-    'home.urgency.badge': 'Limited Availability',
-
     // Lead Magnet Modal
     'leadmagnet.error.fields': 'Please fill in all required fields.',
     'leadmagnet.error.submit': 'Failed to submit. Please try again.',
@@ -631,6 +555,27 @@ const translations = {
     'testimonials.value.4': 'BIPOC Representation',
     'testimonials.value.5': 'Artistic Integrity',
     'testimonials.value.6': 'Inclusive Storytelling',
+
+    // Community Insights
+    'insights.heading': 'Community Insights',
+    'insights.sub': 'Understanding the BIPOC creative community across Ontario and beyond.',
+    'insights.interest1': 'Photography',
+    'insights.interest2': 'Fashion & Style',
+    'insights.interest3': 'Events & Gatherings',
+    'insights.interest4': 'Brand & Design',
+    'insights.content1': 'Brand storytelling through authentic photography',
+    'insights.content2': 'Community event documentation and coverage',
+    'insights.content3': 'Fashion and editorial portrait sessions',
+    'insights.content4': 'Social media content creation and strategy',
+    'insights.content5': 'Cultural celebration and heritage documentation',
+    'insights.content6': 'Business branding and identity design',
+    'insights.content.heading': 'What Our Community Creates',
+    'insights.global.heading': 'Our Global Reach',
+    'insights.global.us': 'United States',
+    'insights.global.uk': 'United Kingdom',
+    'insights.global.more': 'And growing internationally',
+    'insights.finding.heading': 'Key Finding',
+    'insights.finding.desc': '9 in 10 BIPOC entrepreneurs say authentic visual representation directly impacts how their community perceives their brand.',
 
     // Trust Signals
     'trust.badge': 'Trusted By',
@@ -1160,14 +1105,6 @@ const translations = {
     'form.error.generic': 'Une erreur s\'est produite. Veuillez réessayer.',
     'form.saving': 'Enregistrement...',
 
-    // Contact Info Banner
-    'banner.call': 'APPEL',
-    'banner.email': 'COURRIEL',
-    'banner.location': 'LIEU',
-    'banner.location.value': 'Région de Niagara, Ontario',
-    'banner.hours': 'HEURES',
-    'banner.hours.value': 'Lun–Ven : 9h–18h EST',
-
     // Booking Modal
     'booking.title': 'Réserver une Session',
     'booking.desc': 'Remplissez le formulaire ci-dessous et nous confirmerons votre réservation dans les 4 heures ouvrables.',
@@ -1284,74 +1221,6 @@ const translations = {
     'footer.bottom.rights': '© {year} CREOVA Creative Inc. Tous droits réservés.',
     'footer.bottom.tax': 'Inscription HST/TPS en cours. Prix en CAD.',
 
-    // Home — Hero
-    'home.hero.badge': 'Studio Créatif à Direction Noire — Ontario, Canada',
-    'home.hero.tagline1': 'Photographie · Vidéographie · Design de Marque',
-    'home.hero.tagline2': 'Contenu Numérique · Mode · Événements',
-    "home.hero.body": "Nous aidons les organisations dirigées par des Noirs et des BIPOC à raconter leurs histoires avec de la photographie éditoriale, de la vidéographie cinématographique et du design de marque audacieux.",
-    "home.hero.availability": "Réservations Ouvertes — Places Limitées pour le Printemps & l'Été 2026",
-    'home.hero.badge1': 'Propriété et Gestion Noires',
-    'home.hero.badge2': 'Axé sur la Communauté BIPOC',
-    'home.hero.badge3': 'Basé en Ontario',
-    'home.stat.projects': 'Projets Complétés',
-    'home.stat.communities': 'Communautés Rejointes',
-    'home.stat.years': 'Années en Affaires',
-
-    // Home — SEEN
-    "home.seen.badge": "Bientôt Disponible",
-    "home.seen.desc": "SEEN est notre prochaine plateforme de mode et de culture dédiée à célébrer l'identité noire à travers le style, l'histoire et la communauté.",
-    'home.seen.features': 'Magasiner la collection · Rejoindre la communauté · Accéder aux événements exclusifs',
-    'home.seen.cta': 'Explorer SEEN',
-    'home.seen.f1.label': 'Mode',
-    'home.seen.f1.desc': 'Lancements curatés de designers BIPOC',
-    'home.seen.f2.label': 'Culture',
-    "home.seen.f2.desc": "Célébrer l'identité et la créativité noires",
-    'home.seen.f3.label': 'Communauté',
-    'home.seen.f3.desc': 'Connecter avec des créateurs partageant les mêmes idées',
-    "home.seen.f4.label": "Événements",
-    'home.seen.f4.desc': 'Expériences exclusives en personne et virtuelles',
-
-    // Home — Services
-    'home.services.badge': 'Nos Services',
-    'home.services.heading': 'Services Créatifs pour les Communautés BIPOC',
-    'home.services.sub': 'De la photographie de marque à la vidéo cinématographique, nous offrons une production créative complète adaptée aux entreprises noires et aux narrateurs BIPOC.',
-    'home.services.explore': 'Explorer',
-
-    // Home — Manifesto
-    'home.manifesto.badge': 'Notre Manifeste',
-    "home.manifesto.text": "Nous croyons que chaque histoire noire mérite d'être racontée avec intention, soin et beauté cinématographique. CREOVA existe pour amplifier les voix, les visages et les visions de notre communauté — car la représentation n'est pas une tendance, c'est une nécessité.",
-
-    // Home — Fall Season
-    "home.fall.badge": "Saison Automne 2026",
-    'home.fall.heading': "Une Saison d'Histoires",
-    'home.fall.desc': "De septembre à décembre, nous réservons une sélection intime de projets. Chaque session est abordée comme une collaboration — votre histoire, racontée magnifiquement.",
-    'home.fall.sep.label': 'Septembre',
-    'home.fall.sep.desc': 'Séances identité de marque & portraits éditoriaux',
-    'home.fall.oct.label': 'Octobre',
-    "home.fall.oct.desc": "Événements communautaires & préparation du Mois de l'Histoire des Noirs",
-    'home.fall.nov.label': 'Novembre',
-    'home.fall.nov.desc': 'Contenu de fêtes & portraits de famille',
-    'home.fall.dec.label': 'Décembre',
-    'home.fall.dec.desc': "Campagnes de fin d'année & films bilan annuel",
-    "home.fall.cta": "Voir le Calendrier d'Automne",
-
-    // Home — Editorial
-    "home.editorial.badge": "Un Mot de Notre Part",
-    'home.editorial.quote': 'Nous ne capturons pas seulement des moments.',
-    'home.editorial.quote2': 'Nous les racontons magnifiquement.',
-    'home.editorial.credit': 'CREOVA — Studio Créatif à Direction Noire',
-
-    // Home — CTA
-    'home.cta.badge1': 'Propriété Noire',
-    'home.cta.badge2': 'Basé en Ontario',
-    'home.cta.badge3': 'Communauté BIPOC',
-    'home.cta.heading': 'Prêt à Raconter Votre Histoire ?',
-    'home.cta.desc': "Rejoignez la communauté grandissante d'entreprises noires et de créateurs BIPOC qui font confiance à CREOVA pour donner vie à leur vision.",
-    'home.cta.book': 'Réserver un Appel Découverte',
-    'home.cta.pricing': 'Voir les Tarifs',
-    'home.cta.note': 'Aucun engagement requis',
-    "home.urgency.badge": "Disponibilité Limitée",
-
     // Lead Magnet Modal
     'leadmagnet.error.fields': 'Veuillez remplir tous les champs obligatoires.',
     'leadmagnet.error.submit': 'Échec de la soumission. Veuillez réessayer.',
@@ -1397,6 +1266,27 @@ const translations = {
     'testimonials.value.4': 'Représentation BIPOC',
     'testimonials.value.5': 'Intégrité Artistique',
     'testimonials.value.6': 'Narration Inclusive',
+
+    // Community Insights
+    'insights.heading': 'Perspectives Communautaires',
+    'insights.sub': 'Comprendre la communauté créative BIPOC à travers l\'Ontario et au-delà.',
+    'insights.interest1': 'Photographie',
+    'insights.interest2': 'Mode & Style',
+    'insights.interest3': 'Événements & Rassemblements',
+    'insights.interest4': 'Marque & Design',
+    'insights.content1': 'Narration de marque par photographie authentique',
+    'insights.content2': 'Documentation et couverture d\'événements communautaires',
+    'insights.content3': 'Séances de portraits éditoriaux et de mode',
+    'insights.content4': 'Création de contenu pour les médias sociaux',
+    'insights.content5': 'Célébration culturelle et documentation du patrimoine',
+    'insights.content6': 'Identité de marque et design graphique',
+    'insights.content.heading': 'Ce que Notre Communauté Crée',
+    'insights.global.heading': 'Notre Portée Mondiale',
+    'insights.global.us': 'États-Unis',
+    'insights.global.uk': 'Royaume-Uni',
+    'insights.global.more': 'Et en croissance internationale',
+    'insights.finding.heading': 'Constat Clé',
+    'insights.finding.desc': '9 entrepreneurs BIPOC sur 10 affirment que la représentation visuelle authentique impacte directement la perception de leur marque dans leur communauté.',
 
     // Trust Signals
     'trust.badge': 'Approuvé Par',
