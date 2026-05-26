@@ -10,35 +10,49 @@ export function AuthCallbackPage() {
   const [message, setMessage] = useState('Verifying your account...');
 
   useEffect(() => {
-    const handleCallback = async () => {
-      try {
-        // Get the auth code from URL
-        const { data, error } = await supabase.auth.getSession();
+    let redirectTimer: ReturnType<typeof setTimeout>;
+    let fallbackTimer: ReturnType<typeof setTimeout>;
+    let settled = false;
 
-        if (error) {
-          setStatus('error');
-          setMessage('Authentication failed. Please try again.');
-          setTimeout(() => navigate('/auth'), 3000);
-          return;
-        }
-
-        if (data.session) {
-          setStatus('success');
-          setMessage('Successfully authenticated! Redirecting...');
-          setTimeout(() => navigate('/memberships'), 2000);
-        } else {
-          setStatus('error');
-          setMessage('No active session found.');
-          setTimeout(() => navigate('/auth'), 3000);
-        }
-      } catch {
-        setStatus('error');
-        setMessage('An unexpected error occurred.');
-        setTimeout(() => navigate('/auth'), 3000);
-      }
+    const succeed = () => {
+      if (settled) return;
+      settled = true;
+      setStatus('success');
+      setMessage('Successfully authenticated! Redirecting...');
+      redirectTimer = setTimeout(() => navigate('/memberships'), 2000);
     };
 
-    handleCallback();
+    const fail = (msg: string) => {
+      if (settled) return;
+      settled = true;
+      setStatus('error');
+      setMessage(msg);
+      redirectTimer = setTimeout(() => navigate('/auth'), 3000);
+    };
+
+    // Listen for auth state changes (fires when PKCE code exchange completes)
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN' && session) succeed();
+      else if (event === 'INITIAL_SESSION' && !session && settled === false) {
+        // INITIAL_SESSION fires with null → code exchange not done yet, wait
+      }
+    });
+
+    // Also check immediately in case session already established
+    supabase.auth.getSession().then(({ data, error }) => {
+      if (error) fail('Authentication failed. Please try again.');
+      else if (data.session) succeed();
+      // else: wait for onAuthStateChange to fire after code exchange
+    });
+
+    // Fallback: if nothing resolves in 12 seconds, give up
+    fallbackTimer = setTimeout(() => fail('Authentication timed out. Please try again.'), 12000);
+
+    return () => {
+      subscription.unsubscribe();
+      clearTimeout(redirectTimer);
+      clearTimeout(fallbackTimer);
+    };
   }, [navigate]);
 
   return (

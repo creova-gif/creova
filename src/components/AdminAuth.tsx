@@ -158,18 +158,6 @@ export function AdminAuth({ children }: { children: React.ReactNode }) {
             </div>
           </div>
 
-          {/* Default Password Notice */}
-          <div 
-            className="mt-4 p-4 rounded-xl border text-center"
-            style={{ backgroundColor: 'rgba(177, 100, 59, 0.1)', borderColor: '#B1643B' }}
-          >
-            <p className="text-sm" style={{ color: '#121212' }}>
-              <strong>🔒 Default Password:</strong> <code className="bg-white px-2 py-1 rounded">CREOVA2025!</code>
-            </p>
-            <p className="text-xs mt-2" style={{ color: '#7A6F66' }}>
-              Change this in production by editing /components/AdminAuth.tsx
-            </p>
-          </div>
         </motion.div>
       </div>
     );
