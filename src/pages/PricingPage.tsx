@@ -4,6 +4,8 @@ import { Button } from '../components/ui/button';
 import { CheckCircle2, Check, Target, Award, Shield, Clock, ArrowRight, Star, Users, Briefcase, Package, Plane, PartyPopper, Palette, Plus, Mail, MapPin } from 'lucide-react';
 import { motion } from 'motion/react';
 import { FloatingOrbs } from '../components/FloatingOrbs';
+import { SplitText } from '../components/SplitText';
+import { RevealOnScroll } from '../components/RevealOnScroll';
 import { BookingModal } from '../components/BookingModal';
 import { toast } from 'sonner@2.0.3';
 import { useLanguage } from '../context/LanguageContext';
@@ -77,18 +79,30 @@ export function PricingPage() {
               <p className="text-xs tracking-[0.55em] uppercase" style={{ color: '#A68F59' }}>Transparent Pricing</p>
               <div style={{ height: '1px', width: '50px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
             </div>
-            <h1
-              className="font-light tracking-tight mb-8"
-              style={{ fontSize: 'clamp(36px, 6vw, 76px)', color: '#F5F1EB', lineHeight: 1.1 }}
-            >
-              Real Value.<br />
-              <span style={{
+            <SplitText
+              text="Real Value."
+              tag="h1"
+              mode="chars"
+              stagger={0.03}
+              className="font-light tracking-tight block"
+              style={{ fontSize: 'clamp(56px, 9vw, 120px)', color: '#F5F1EB', lineHeight: 1.0, marginBottom: '0.1em' }}
+            />
+            <SplitText
+              text="Real Results."
+              tag="h1"
+              mode="chars"
+              stagger={0.03}
+              delay={0.18}
+              className="font-light tracking-tight block mb-8"
+              style={{
+                fontSize: 'clamp(56px, 9vw, 120px)',
+                lineHeight: 1.0,
                 backgroundImage: 'linear-gradient(135deg, #F5F1EB 0%, #A68F59 60%)',
                 WebkitBackgroundClip: 'text',
                 backgroundClip: 'text',
                 color: 'transparent'
-              }}>Real Results.</span>
-            </h1>
+              }}
+            />
             <p className="text-lg mb-10 leading-relaxed" style={{ color: '#7A6F66', maxWidth: '520px', margin: '0 auto 40px' }}>
               Our pricing reflects dedicated creative time, strategic thinking, and long-term brand value for Canadian businesses
             </p>

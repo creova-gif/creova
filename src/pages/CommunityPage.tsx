@@ -2,6 +2,8 @@ import { motion } from 'motion/react';
 import { useLanguage } from '../context/LanguageContext';
 import { useNavigate, Link } from 'react-router';
 import { FloatingOrbs } from '../components/FloatingOrbs';
+import { SplitText } from '../components/SplitText';
+import { RevealOnScroll } from '../components/RevealOnScroll';
 import { 
   Star, 
   Crown,
@@ -368,18 +370,30 @@ export function CommunityPage() {
               </p>
               <div style={{ height: '1px', width: '50px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
             </div>
-            <h1
-              className="font-light tracking-tight mb-8"
-              style={{ fontSize: 'clamp(36px, 6vw, 76px)', color: '#F5F1EB', lineHeight: 1.1 }}
-            >
-              {language === 'fr' ? 'Notre' : 'Our'}<br />
-              <span style={{
+            <SplitText
+              text={language === 'fr' ? 'Notre' : 'Our'}
+              tag="h1"
+              mode="chars"
+              stagger={0.03}
+              className="font-light tracking-tight block"
+              style={{ fontSize: 'clamp(56px, 9vw, 120px)', color: '#F5F1EB', lineHeight: 1.0, marginBottom: '0.05em' }}
+            />
+            <SplitText
+              text={language === 'fr' ? 'Communauté' : 'Community'}
+              tag="h1"
+              mode="chars"
+              stagger={0.03}
+              delay={0.14}
+              className="font-light tracking-tight block mb-8"
+              style={{
+                fontSize: 'clamp(56px, 9vw, 120px)',
+                lineHeight: 1.0,
                 backgroundImage: 'linear-gradient(135deg, #F5F1EB 0%, #A68F59 60%)',
                 WebkitBackgroundClip: 'text',
                 backgroundClip: 'text',
                 color: 'transparent'
-              }}>{language === 'fr' ? 'Communauté' : 'Community'}</span>
-            </h1>
+              }}
+            />
             <p className="text-lg mb-10 leading-relaxed" style={{ color: '#7A6F66', maxWidth: '540px', margin: '0 auto 40px' }}>
               {language === 'fr'
                 ? 'Une agence créative transformant des idées en expériences captivantes et une communauté culturelle célébrant l\'excellence créative BIPOC'

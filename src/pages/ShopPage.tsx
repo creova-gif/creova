@@ -6,6 +6,7 @@ import { toast } from 'sonner@2.0.3';
 import { Heart, Eye, Calendar, Package } from 'lucide-react';
 import { motion } from 'motion/react';
 import { FloatingOrbs } from '../components/FloatingOrbs';
+import { SplitText } from '../components/SplitText';
 import { ProductQuickView } from '../components/ProductQuickView';
 import { SizeGuide } from '../components/SizeGuide';
 import { AddToCartDialog } from '../components/AddToCartDialog';
@@ -132,12 +133,14 @@ export function ShopPage() {
               <p className="text-xs tracking-[0.55em] uppercase" style={{ color: '#A68F59' }}>SEEN by CREOVA</p>
             </div>
 
-            <h1
-              className="font-light tracking-tight mb-3"
-              style={{ fontSize: 'clamp(64px, 12vw, 140px)', color: '#F5F1EB', lineHeight: 0.9 }}
-            >
-              SEEN
-            </h1>
+            <SplitText
+              text="SEEN"
+              tag="h1"
+              mode="chars"
+              stagger={0.06}
+              className="font-light tracking-tight block mb-3"
+              style={{ fontSize: 'clamp(96px, 18vw, 200px)', color: '#F5F1EB', lineHeight: 0.88, letterSpacing: '-0.04em' }}
+            />
             <p
               className="text-lg md:text-xl tracking-wide font-light mb-6"
               style={{

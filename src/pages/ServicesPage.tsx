@@ -5,6 +5,8 @@ import { motion } from 'motion/react';
 import { Camera, Users, Package, PartyPopper, Plane, TrendingUp, Palette, Video, Settings, CheckCircle2, AlertCircle, Calendar } from 'lucide-react';
 import { FloatingOrbs } from '../components/FloatingOrbs';
 import { TiltCard } from '../components/TiltCard';
+import { SplitText } from '../components/SplitText';
+import { RevealOnScroll } from '../components/RevealOnScroll';
 
 type ServiceCategory = 'photography' | 'video' | 'brand' | 'social' | 'events' | 'rental' | 'all';
 
@@ -218,18 +220,30 @@ export function ServicesPage() {
               <div style={{ height: '1px', width: '50px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
             </div>
 
-            <h1
-              className="font-light tracking-tight mb-8"
-              style={{ fontSize: 'clamp(36px, 6vw, 76px)', color: '#F5F1EB', lineHeight: 1.1 }}
-            >
-              Full-Service<br />
-              <span style={{
+            <SplitText
+              text="Full-Service"
+              tag="h1"
+              mode="chars"
+              stagger={0.03}
+              className="font-light tracking-tight block"
+              style={{ fontSize: 'clamp(56px, 9vw, 120px)', color: '#F5F1EB', lineHeight: 1.0, marginBottom: '0.1em' }}
+            />
+            <SplitText
+              text="Creative Solutions"
+              tag="h1"
+              mode="chars"
+              stagger={0.03}
+              delay={0.18}
+              className="font-light tracking-tight block mb-8"
+              style={{
+                fontSize: 'clamp(56px, 9vw, 120px)',
+                lineHeight: 1.0,
                 backgroundImage: 'linear-gradient(135deg, #F5F1EB 0%, #A68F59 60%)',
                 WebkitBackgroundClip: 'text',
                 backgroundClip: 'text',
                 color: 'transparent'
-              }}>Creative Solutions</span>
-            </h1>
+              }}
+            />
 
             <p className="text-lg mb-10 leading-relaxed" style={{ color: '#7A6F66', maxWidth: '560px', margin: '0 auto 40px' }}>
               For BIPOC brands, entrepreneurs, and cultural storytellers across Ontario and Canada

@@ -10,6 +10,8 @@ import { MapPin, Phone, Mail, Clock, Send, MessageSquare, Calendar, Star, Award,
 import { motion } from 'motion/react';
 import { toast } from 'sonner@2.0.3';
 import { FloatingOrbs } from '../components/FloatingOrbs';
+import { SplitText } from '../components/SplitText';
+import { RevealOnScroll } from '../components/RevealOnScroll';
 import { projectId, publicAnonKey } from '../utils/supabase/info';
 import { useLanguage } from '../context/LanguageContext';
 import { logger } from '../utils/logger';
@@ -142,12 +144,15 @@ export function ContactPage() {
               <p className="text-xs tracking-[0.55em] uppercase" style={{ color: '#A68F59' }}>{t('contact.badge.getintouch')}</p>
               <div style={{ height: '1px', width: '50px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
             </div>
-            <h1
+            <SplitText
+              text={t('contact.hero.title')}
+              tag="h1"
+              mode="words"
+              stagger={0.08}
+              delay={0.1}
               className="font-light tracking-tight mb-8"
-              style={{ fontSize: 'clamp(36px, 6vw, 72px)', color: '#F5F1EB', lineHeight: 1.1 }}
-            >
-              {t('contact.hero.title')}
-            </h1>
+              style={{ fontSize: 'clamp(52px, 8vw, 110px)', color: '#F5F1EB', lineHeight: 1.05 }}
+            />
             <p className="text-lg mb-10 leading-relaxed" style={{ color: '#7A6F66', maxWidth: '500px', margin: '0 auto 40px' }}>
               {t('contact.hero.subtitle')}
             </p>

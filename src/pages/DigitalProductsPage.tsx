@@ -6,6 +6,7 @@ import { Download, Heart, ChevronDown, Gift, Star, FileText, Camera, Palette } f
 import { motion } from 'motion/react';
 import { LeadMagnetModal } from '../components/LeadMagnetModal';
 import { FloatingOrbs } from '../components/FloatingOrbs';
+import { SplitText } from '../components/SplitText';
 import { useState } from 'react';
 
 const warmGradient = 'linear-gradient(135deg, #A68F59 0%, #B1643B 100%)';
@@ -95,22 +96,31 @@ export function DigitalProductsPage() {
               <div style={{ height: '1px', width: '40px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
             </div>
 
-            <h1 className="font-light tracking-tight mb-3" style={{ fontSize: 'clamp(36px, 8vw, 90px)', color: '#F5F1EB', lineHeight: 1 }}>
-              DIGITAL
-            </h1>
-            <h1
-              className="font-light tracking-tight mb-6"
+            <SplitText
+              text="DIGITAL"
+              tag="h1"
+              mode="chars"
+              stagger={0.04}
+              className="font-light tracking-tight block"
+              style={{ fontSize: 'clamp(64px, 11vw, 140px)', color: '#F5F1EB', lineHeight: 0.95, marginBottom: '0.06em', letterSpacing: '-0.02em' }}
+            />
+            <SplitText
+              text="RESOURCES"
+              tag="h1"
+              mode="chars"
+              stagger={0.04}
+              delay={0.22}
+              className="font-light tracking-tight block mb-6"
               style={{
-                fontSize: 'clamp(36px, 8vw, 90px)',
-                lineHeight: 1,
+                fontSize: 'clamp(64px, 11vw, 140px)',
+                lineHeight: 0.95,
+                letterSpacing: '-0.02em',
                 backgroundImage: warmGradient,
                 WebkitBackgroundClip: 'text',
                 backgroundClip: 'text',
                 color: 'transparent'
               }}
-            >
-              RESOURCES
-            </h1>
+            />
             <p className="text-sm sm:text-base mb-8 max-w-md font-light" style={{ color: '#7A6F66' }}>
               Templates · Presets · Tools for creative entrepreneurs — built with intention.
             </p>

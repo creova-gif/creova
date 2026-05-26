@@ -2,9 +2,9 @@
 
 :root {
   --font-size: 16px;
-  --font-display: 'Playfair Display', Georgia, serif;
-  --font-brand: 'Poppins', 'Lato', sans-serif;
-  --font-body: 'Inter', 'Source Sans 3', sans-serif;
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-brand: 'DM Sans', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
   --background: #ffffff;
   --foreground: oklch(0.145 0 0);
   --card: #ffffff;
@@ -50,10 +50,7 @@ p, span, a, li, label, input, textarea, button {
   font-family: var(--font-body);
 }
 
-/* Smooth scrolling */
-html {
-  scroll-behavior: smooth;
-}
+/* Smooth scroll handled by Lenis */
 
 /* Hide scrollbar for horizontal scroll */
 .scrollbar-hide {

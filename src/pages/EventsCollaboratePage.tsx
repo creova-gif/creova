@@ -6,6 +6,8 @@ import { motion } from 'motion/react';
 import { useCart } from '../context/CartContext';
 import { useLanguage } from '../context/LanguageContext';
 import { FloatingOrbs } from '../components/FloatingOrbs';
+import { SplitText } from '../components/SplitText';
+import { RevealOnScroll } from '../components/RevealOnScroll';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Textarea } from '../components/ui/textarea';
@@ -372,18 +374,30 @@ export function EventsCollaboratePage() {
               <div style={{ height: '1px', flex: 1, backgroundColor: 'rgba(166,143,89,0.4)' }} />
             </div>
 
-            <h1
-              className="font-light tracking-tight mb-8"
-              style={{ fontSize: 'clamp(36px, 6vw, 80px)', color: '#F5F1EB', lineHeight: 1.05 }}
-            >
-              Events, Workshops<br />
-              <span style={{
+            <SplitText
+              text="Events, Workshops"
+              tag="h1"
+              mode="words"
+              stagger={0.07}
+              className="font-light tracking-tight block"
+              style={{ fontSize: 'clamp(52px, 8vw, 110px)', color: '#F5F1EB', lineHeight: 1.0, marginBottom: '0.08em' }}
+            />
+            <SplitText
+              text="& Collaborations"
+              tag="h1"
+              mode="words"
+              stagger={0.07}
+              delay={0.2}
+              className="font-light tracking-tight block mb-8"
+              style={{
+                fontSize: 'clamp(52px, 8vw, 110px)',
+                lineHeight: 1.0,
                 backgroundImage: warmGradient,
                 WebkitBackgroundClip: 'text',
                 backgroundClip: 'text',
                 color: 'transparent'
-              }}>&amp; Collaborations</span>
-            </h1>
+              }}
+            />
 
             <p className="text-lg mb-12 leading-relaxed" style={{ color: '#7A6F66', maxWidth: '540px' }}>
               Join CREOVA's creative community through professional workshops, networking events, and meaningful partnerships across Ontario
