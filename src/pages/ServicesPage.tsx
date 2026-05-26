@@ -22,6 +22,7 @@ export function ServicesPage() {
 
   const services = [
     {
+      id: 'photography',
       category: 'photography' as ServiceCategory,
       icon: Users,
       title: 'Family Portrait Photography',
@@ -55,6 +56,7 @@ export function ServicesPage() {
       ]
     },
     {
+      id: 'aerial',
       category: 'video' as ServiceCategory,
       icon: Plane,
       title: 'Aerial & Drone Photography',
@@ -65,6 +67,7 @@ export function ServicesPage() {
       ]
     },
     {
+      id: 'videography',
       category: 'video' as ServiceCategory,
       icon: Video,
       title: 'Videography & Content Creation',
@@ -92,6 +95,7 @@ export function ServicesPage() {
       ]
     },
     {
+      id: 'social',
       category: 'social' as ServiceCategory,
       icon: TrendingUp,
       title: 'Social Media Management',
@@ -103,6 +107,7 @@ export function ServicesPage() {
       ]
     },
     {
+      id: 'brand',
       category: 'brand' as ServiceCategory,
       icon: Palette,
       title: 'Brand Design & Identity',
@@ -290,6 +295,7 @@ export function ServicesPage() {
             {filteredServices.map((service, index) => (
               <motion.div
                 key={index}
+                id={(service as any).id}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
