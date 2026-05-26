@@ -69,11 +69,11 @@ export function Footer() {
     {
       titleKey: 'footer.col.services',
       links: [
-        { labelKey: 'footer.link.photography', href: '/services' },
-        { labelKey: 'footer.link.videography',  href: '/services' },
-        { labelKey: 'footer.link.brand',         href: '/services' },
-        { labelKey: 'footer.link.aerial',        href: '/services' },
-        { labelKey: 'footer.link.social',        href: '/services' },
+        { labelKey: 'footer.link.photography', href: '/services#photography' },
+        { labelKey: 'footer.link.videography',  href: '/services#videography' },
+        { labelKey: 'footer.link.brand',         href: '/services#brand' },
+        { labelKey: 'footer.link.aerial',        href: '/services#aerial' },
+        { labelKey: 'footer.link.social',        href: '/services#social' },
         { labelKey: 'footer.link.graphic',       href: '/pricing#design' },
       ],
     },
@@ -104,7 +104,7 @@ export function Footer() {
         { label: '@creativeinnovation__',     href: 'https://instagram.com/creativeinnovation__',   external: true },
         { label: 'LinkedIn',                  href: 'https://www.linkedin.com/company/creovaspace/', external: true },
         { label: 'support@creova.ca',         href: 'mailto:support@creova.ca',                     external: true },
-        { label: t('footer.contact.location'), href: '#',                                            external: false },
+        { label: t('footer.contact.location'), href: 'https://maps.google.com/?q=Niagara+Region+Ontario+Canada', external: true },
         { labelKey: 'footer.contact.review',  href: 'https://g.page/r/creova/review',               external: true },
       ],
     },
@@ -434,10 +434,10 @@ export function Footer() {
 
             {/* Legal strip */}
             <div className="flex flex-col items-center gap-1.5 text-center">
-              <p className="text-xs" style={{ color: '#3A3A3A' }}>
+              <p className="text-xs" style={{ color: '#9A9088' }}>
                 {t('footer.bottom.rights').replace('{year}', String(new Date().getFullYear()))}
               </p>
-              <p className="text-xs" style={{ color: '#2C2C2C' }}>
+              <p className="text-xs" style={{ color: '#9A9088' }}>
                 {t('footer.bottom.tax')}
               </p>
             </div>
@@ -468,7 +468,7 @@ export function Footer() {
                     key={href}
                     to={href}
                     className="text-xs transition-opacity duration-200 hover:opacity-70"
-                    style={{ color: '#3A3A3A' }}
+                    style={{ color: '#9A9088' }}
                   >
                     {t(labelKey)}
                   </Link>

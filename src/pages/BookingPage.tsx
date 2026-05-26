@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate, useSearchParams } from 'react-router';
+import { useLanguage } from '../context/LanguageContext';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Textarea } from '../components/ui/textarea';
@@ -9,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Calendar } from '../components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '../components/ui/popover';
 import { motion } from 'motion/react';
-import { Camera, Video, Users, Package, PartyPopper, Palette, TrendingUp, Calendar as CalendarIcon, Clock, CheckCircle2, ArrowLeft, Star, Award } from 'lucide-react';
+import { Camera, Video, Users, Package, PartyPopper, Wind, Palette, TrendingUp, Calendar as CalendarIcon, Clock, CheckCircle2, ArrowLeft, Star, Award } from 'lucide-react';
 import { toast } from 'sonner@2.0.3';
 import { projectId, publicAnonKey } from '../utils/supabase/info';
 import { format } from 'date-fns';
@@ -17,11 +18,14 @@ import { logger } from '../utils/logger';
 
 export function BookingPage() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const { language } = useLanguage();
+  const initialService = searchParams.get('service') || '';
   const [date, setDate] = useState<Date>();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const [formData, setFormData] = useState({
-    service: '',
+    service: initialService,
     package: '',
     name: '',
     email: '',
@@ -76,10 +80,10 @@ export function BookingPage() {
         { id: 'campaign', name: 'Campaign - From $3,000', price: 3000 }
       ]
     },
-    { 
-      id: 'aerial-drone', 
+    {
+      id: 'aerial-drone',
       name: 'Aerial & Drone Photography',
-      icon: PartyPopper,
+      icon: Wind,
       packages: [
         { id: 'aerial-vision', name: 'Aerial Vision Session - From $500', price: 500 }
       ]

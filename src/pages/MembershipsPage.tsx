@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useLanguage } from '../context/LanguageContext';
 import { projectId, publicAnonKey } from '../utils/supabase/info';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router';
@@ -18,7 +19,7 @@ import { Star, Crown, Check, Mail, Loader2, Users, Smartphone, Palette, Zap } fr
 
 export default function MembershipsPage() {
   const navigate = useNavigate();
-  const [language, setLanguage] = useState<'en' | 'fr'>('en');
+  const { language } = useLanguage();
   const [selectedMembership, setSelectedMembership] = useState<'creator' | 'legacy' | null>(null);
   const [showCheckoutDialog, setShowCheckoutDialog] = useState(false);
   const [customerInfo, setCustomerInfo] = useState({ name: '', email: '' });
@@ -271,26 +272,6 @@ export default function MembershipsPage() {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#F5F1EB' }}>
-      {/* Language Toggle */}
-      <div className="fixed top-4 right-4 z-50 flex gap-2">
-        <Button
-          variant={language === 'en' ? 'default' : 'outline'}
-          size="sm"
-          onClick={() => setLanguage('en')}
-          className="bg-[#121212] text-[#F5F1EB] hover:bg-[#B1643B]"
-        >
-          EN
-        </Button>
-        <Button
-          variant={language === 'fr' ? 'default' : 'outline'}
-          size="sm"
-          onClick={() => setLanguage('fr')}
-          className="bg-[#121212] text-[#F5F1EB] hover:bg-[#B1643B]"
-        >
-          FR
-        </Button>
-      </div>
-
       {/* Hero Section */}
       <div className="text-[#F5F1EB] py-24 px-4" style={{ backgroundColor: '#121212' }}>
         <div className="max-w-6xl mx-auto text-center">

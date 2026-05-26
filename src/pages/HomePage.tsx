@@ -42,6 +42,7 @@ function AnimatedStat({ number, label, icon: Icon, delay }: {
     const el = ref.current;
     if (!el) return;
 
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const numericStr = number.replace(/[^0-9.]/g, '');
     const suffix = number.replace(/[0-9.]/g, '');
     const target = parseFloat(numericStr) || 0;
@@ -50,6 +51,11 @@ function AnimatedStat({ number, label, icon: Icon, delay }: {
       (entries) => {
         if (entries[0].isIntersecting && !triggered.current) {
           triggered.current = true;
+          if (prefersReduced) {
+            const display = el.querySelector('[data-counter]');
+            if (display) display.textContent = number;
+            return;
+          }
           const counter = { value: 0 };
           anime({
             targets: counter,
@@ -122,9 +128,9 @@ export function HomePage() {
   ];
 
   const stats = [
-    { number: '15+', label: t('home.stat.projects'), icon: Award },
+    { number: '100+', label: t('home.stat.projects'), icon: Award },
     { number: '5+', label: t('home.stat.communities'), icon: Globe },
-    { number: '1+', label: t('home.stat.years'), icon: Users },
+    { number: '98%', label: 'Client Satisfaction', icon: Heart },
   ];
 
   const marqueeItems = [
@@ -232,20 +238,15 @@ export function HomePage() {
                 <Button size="lg"
                   className="group px-6 py-4 sm:px-8 sm:py-6 rounded-xl text-base sm:text-lg border-2 hover:shadow-2xl transition-all duration-500"
                   style={{ backgroundColor: '#F5F1EB', color: '#121212', borderColor: '#F5F1EB' }} asChild>
-                  <Link to="/services" className="flex items-center gap-2">
-                    {t('home.cta.our.services')}
+                  <Link to="/contact" className="flex items-center gap-2">
+                    {t('home.cta.get.in.touch')}
                     <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </Link>
                 </Button>
                 <Button size="lg" variant="outline"
                   className="px-6 py-4 sm:px-8 sm:py-6 rounded-xl text-base sm:text-lg border-2 backdrop-blur-sm hover:backdrop-blur-md transition-all duration-500"
                   style={{ borderColor: '#A68F59', color: '#A68F59', backgroundColor: 'rgba(166, 143, 89, 0.05)' }} asChild>
-                  <Link to="/experience">{t('home.cta.explore.community')}</Link>
-                </Button>
-                <Button size="lg" variant="ghost"
-                  className="px-6 py-4 sm:px-8 sm:py-6 rounded-xl text-base sm:text-lg border-2 transition-all duration-500"
-                  style={{ borderColor: '#E3DCD3', color: '#7A6F66', backgroundColor: 'transparent' }} asChild>
-                  <Link to="/contact">{t('home.cta.get.in.touch')}</Link>
+                  <Link to="/services">{t('home.cta.our.services')}</Link>
                 </Button>
               </motion.div>
 

@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { X, Gift, Mail } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { motion, AnimatePresence } from 'motion/react';
 import { toast } from 'sonner@2.0.3';
 import { useLanguage } from '../context/LanguageContext';
+import { projectId, publicAnonKey } from '../utils/supabase/info';
 
 export function ExitIntentModal() {
   const { t } = useLanguage();
@@ -12,27 +13,43 @@ export function ExitIntentModal() {
   const [hasShown, setHasShown] = useState(false);
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const hasShownRef = useRef(false);
+
+  const triggerModal = () => {
+    if (hasShownRef.current) return;
+    hasShownRef.current = true;
+    setHasShown(true);
+    setIsVisible(true);
+  };
 
   useEffect(() => {
-    // Only show once per session
     if (hasShown) return;
 
+    // Desktop: exit-intent via mouse leaving top of viewport
     const handleMouseLeave = (e: MouseEvent) => {
-      // Only trigger if mouse leaves from top of viewport (intent to close tab/window)
-      if (e.clientY <= 0 && !hasShown) {
-        setIsVisible(true);
-        setHasShown(true);
-      }
+      if (e.clientY <= 0) triggerModal();
     };
 
-    // Add delay before activating (user needs to be on site for at least 10 seconds)
-    const timer = setTimeout(() => {
+    // Mobile: trigger after 60 seconds on page
+    const mobileTimer = setTimeout(triggerModal, 60000);
+
+    // Both: trigger when user has scrolled 80% of the page
+    const handleScroll = () => {
+      const scrolled = window.scrollY + window.innerHeight;
+      const total = document.documentElement.scrollHeight;
+      if (scrolled / total >= 0.8) triggerModal();
+    };
+
+    const activationTimer = setTimeout(() => {
       document.addEventListener('mouseleave', handleMouseLeave);
+      window.addEventListener('scroll', handleScroll, { passive: true });
     }, 10000);
 
     return () => {
-      clearTimeout(timer);
+      clearTimeout(activationTimer);
+      clearTimeout(mobileTimer);
       document.removeEventListener('mouseleave', handleMouseLeave);
+      window.removeEventListener('scroll', handleScroll);
     };
   }, [hasShown]);
 
@@ -49,14 +66,31 @@ export function ExitIntentModal() {
         return;
       }
 
-      // Store email in localStorage (in production, this would go to your backend)
-      const existingEmails = JSON.parse(localStorage.getItem('exitIntentEmails') || '[]');
-      existingEmails.push({
-        email,
-        timestamp: new Date().toISOString(),
-        type: 'exit_intent_april_2026'
-      });
-      localStorage.setItem('exitIntentEmails', JSON.stringify(existingEmails));
+      // Persist to backend
+      await fetch(
+        `https://${projectId}.supabase.co/functions/v1/make-server-feacf0d8/subscribe-lead-magnet`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${publicAnonKey}`,
+          },
+          body: JSON.stringify({
+            email,
+            name: '',
+            leadMagnetId: 'exit_intent',
+            leadMagnetTitle: 'Exit Intent Offer',
+            subscribedAt: new Date().toISOString(),
+          }),
+        }
+      );
+
+      // Cache locally as backup
+      try {
+        const existing = JSON.parse(localStorage.getItem('exitIntentEmails') || '[]');
+        existing.push({ email, timestamp: new Date().toISOString() });
+        localStorage.setItem('exitIntentEmails', JSON.stringify(existing));
+      } catch {}
 
       toast.success(t('exit.toast.success'));
       

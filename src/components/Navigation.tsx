@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router';
+import { Link, NavLink } from 'react-router';
 import { Menu, X, ShoppingCart, ChevronDown } from 'lucide-react';
 import { Button } from './ui/button';
 import { useCart } from '../context/CartContext';
@@ -54,21 +54,30 @@ export function Navigation() {
             {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center space-x-1">
               {navLinks.map(link => (
-                <Link
+                <NavLink
                   key={link.path}
                   to={link.path}
                   className="px-4 py-2 transition-colors duration-300 text-sm tracking-wide font-medium"
-                  style={{ color: '#4A3E36' }}
+                  style={({ isActive }) => ({
+                    color: '#4A3E36',
+                    borderBottom: isActive ? '2px solid #A68F59' : undefined,
+                    paddingBottom: isActive ? '2px' : undefined,
+                  })}
                   onMouseEnter={(e) => e.currentTarget.style.color = '#B1643B'}
                   onMouseLeave={(e) => e.currentTarget.style.color = '#4A3E36'}
                 >
-                  {link.name}
-                </Link>
+                  {({ isActive }) => (
+                    <span aria-current={isActive ? 'page' : undefined}>
+                      {link.name}
+                    </span>
+                  )}
+                </NavLink>
               ))}
 
               {/* SEEN Platform Link */}
               <Link
                 to="/seen"
+                title="SEEN — CREOVA Community Platform"
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium tracking-wide transition-all duration-300 hover:opacity-80 ml-2"
                 style={{ backgroundColor: '#121212', color: '#F5F1EB', border: '1px solid rgba(166,143,89,0.4)' }}
               >
@@ -85,6 +94,15 @@ export function Navigation() {
                 <button
                   className="px-4 py-2 transition-colors duration-300 text-sm tracking-wide font-medium flex items-center hover:bg-transparent"
                   style={{ color: pricingDropdownOpen ? '#B1643B' : '#4A3E36' }}
+                  aria-haspopup="true"
+                  aria-expanded={pricingDropdownOpen}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      setPricingDropdownOpen(!pricingDropdownOpen);
+                    }
+                    if (e.key === 'Escape') setPricingDropdownOpen(false);
+                  }}
                 >
                   {t('nav.pricing')}
                   <ChevronDown className={`w-4 h-4 ml-1 transition-transform duration-200 ${pricingDropdownOpen ? 'rotate-180' : ''}`} />
@@ -194,6 +212,14 @@ export function Navigation() {
                   {link.name}
                 </Link>
               ))}
+
+              {/* Memberships & Booking - Mobile only */}
+              <Link to="/memberships" onClick={() => setIsOpen(false)} className="block py-3 px-4 text-sm tracking-wide" style={{ color: '#4A3E36' }}>
+                Memberships
+              </Link>
+              <Link to="/booking" onClick={() => setIsOpen(false)} className="block py-3 px-4 text-sm tracking-wide" style={{ color: '#4A3E36' }}>
+                Book a Session
+              </Link>
 
               {/* Book a Call - Mobile */}
               <Link
