@@ -241,7 +241,10 @@ export function ContactPage() {
                 </div>
 
                 <div>
-                  <Label htmlFor="phone">{t('contact.form.label.phone')}</Label>
+                  <Label htmlFor="phone">
+                    {t('contact.form.label.phone')}
+                    <span className="text-xs ml-1" style={{ color: '#7A6F66' }}>({t('form.optional')})</span>
+                  </Label>
                   <Input
                     id="phone"
                     type="tel"
@@ -276,7 +279,10 @@ export function ContactPage() {
 
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
-                    <Label htmlFor="budget">{t('contact.form.label.budget')}</Label>
+                    <Label htmlFor="budget">
+                      {t('contact.form.label.budget')}
+                      <span className="text-xs ml-1" style={{ color: '#7A6F66' }}>({t('form.optional')})</span>
+                    </Label>
                     <Input
                       id="budget"
                       value={formData.budget}
@@ -286,7 +292,10 @@ export function ContactPage() {
                   </div>
 
                   <div>
-                    <Label htmlFor="timeline">{t('contact.form.label.timeline')}</Label>
+                    <Label htmlFor="timeline">
+                      {t('contact.form.label.timeline')}
+                      <span className="text-xs ml-1" style={{ color: '#7A6F66' }}>({t('form.optional')})</span>
+                    </Label>
                     <Input
                       id="timeline"
                       value={formData.timeline}
