@@ -479,33 +479,30 @@ export function CommunityPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {services.map((service, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="p-7 rounded-xl transition-all duration-300"
-                style={{ border: '1px solid rgba(166,143,89,0.18)', backgroundColor: 'rgba(166,143,89,0.04)' }}
-                onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLElement).style.borderColor = 'rgba(166,143,89,0.4)';
-                  (e.currentTarget as HTMLElement).style.backgroundColor = 'rgba(166,143,89,0.08)';
-                }}
-                onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLElement).style.borderColor = 'rgba(166,143,89,0.18)';
-                  (e.currentTarget as HTMLElement).style.backgroundColor = 'rgba(166,143,89,0.04)';
-                }}
-              >
+              <RevealOnScroll key={index} mode='3d' delay={index * 0.1}>
                 <div
-                  className="w-11 h-11 rounded-lg flex items-center justify-center mb-5"
-                  style={{ border: '1px solid rgba(177,100,59,0.35)', backgroundColor: 'rgba(177,100,59,0.1)' }}
+                  className="p-7 rounded-xl transition-all duration-300"
+                  style={{ border: '1px solid rgba(166,143,89,0.18)', backgroundColor: 'rgba(166,143,89,0.04)' }}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLElement).style.borderColor = 'rgba(166,143,89,0.4)';
+                    (e.currentTarget as HTMLElement).style.backgroundColor = 'rgba(166,143,89,0.08)';
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLElement).style.borderColor = 'rgba(166,143,89,0.18)';
+                    (e.currentTarget as HTMLElement).style.backgroundColor = 'rgba(166,143,89,0.04)';
+                  }}
                 >
-                  <service.icon className="w-5 h-5" style={{ color: '#B1643B' }} />
+                  <div
+                    className="w-11 h-11 rounded-lg flex items-center justify-center mb-5"
+                    style={{ border: '1px solid rgba(177,100,59,0.35)', backgroundColor: 'rgba(177,100,59,0.1)' }}
+                  >
+                    <service.icon className="w-5 h-5" style={{ color: '#B1643B' }} />
+                  </div>
+                  <div style={{ height: '1px', width: '24px', backgroundColor: 'rgba(166,143,89,0.4)', marginBottom: '14px' }} />
+                  <h3 className="text-lg mb-2 tracking-tight" style={{ color: '#F5F1EB' }}>{service.title}</h3>
+                  <p className="text-sm leading-relaxed" style={{ color: '#7A6F66' }}>{service.description}</p>
                 </div>
-                <div style={{ height: '1px', width: '24px', backgroundColor: 'rgba(166,143,89,0.4)', marginBottom: '14px' }} />
-                <h3 className="text-lg mb-2 tracking-tight" style={{ color: '#F5F1EB' }}>{service.title}</h3>
-                <p className="text-sm leading-relaxed" style={{ color: '#7A6F66' }}>{service.description}</p>
-              </motion.div>
+              </RevealOnScroll>
             ))}
           </div>
         </div>
@@ -624,16 +621,12 @@ export function CommunityPage() {
               const isAvailable = tier.available;
               
               return (
-                <motion.div
-                  key={tier.name}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
+                <RevealOnScroll key={tier.name} mode='3d' delay={index * 0.12}>
+                <div
                   className={`relative rounded-3xl p-8 border-2 h-full flex flex-col ${
                     isAvailable ? 'shadow-2xl' : 'shadow-lg'
                   }`}
-                  style={{ 
+                  style={{
                     backgroundColor: '#FFFFFF',
                     borderColor: isAvailable ? tier.color : '#E3DCD3'
                   }}
@@ -750,7 +743,8 @@ export function CommunityPage() {
                       </Button>
                     </div>
                   )}
-                </motion.div>
+                </div>
+                </RevealOnScroll>
               );
             })}
           </div>
@@ -780,22 +774,19 @@ export function CommunityPage() {
             {communityBenefits.map((benefit, index) => {
               const Icon = benefit.icon;
               return (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                  className="rounded-2xl p-6 border-2 hover:shadow-xl transition-all duration-300 group"
-                  style={{ backgroundColor: '#F5F1EB', borderColor: '#E3DCD3' }}
-                >
-                  <div className="w-12 h-12 rounded-xl mb-4 flex items-center justify-center group-hover:scale-110 transition-transform"
-                       style={{ backgroundColor: 'rgba(166, 143, 89, 0.1)' }}>
-                    <Icon className="w-6 h-6" style={{ color: '#A68F59' }} />
+                <RevealOnScroll key={index} mode='3d' delay={index * 0.08}>
+                  <div
+                    className="rounded-2xl p-6 border-2 hover:shadow-xl transition-all duration-300 group"
+                    style={{ backgroundColor: '#F5F1EB', borderColor: '#E3DCD3' }}
+                  >
+                    <div className="w-12 h-12 rounded-xl mb-4 flex items-center justify-center group-hover:scale-110 transition-transform"
+                         style={{ backgroundColor: 'rgba(166, 143, 89, 0.1)' }}>
+                      <Icon className="w-6 h-6" style={{ color: '#A68F59' }} />
+                    </div>
+                    <h3 className="text-xl mb-2" style={{ color: '#121212' }}>{benefit.title}</h3>
+                    <p className="leading-relaxed" style={{ color: '#7A6F66' }}>{benefit.description}</p>
                   </div>
-                  <h3 className="text-xl mb-2" style={{ color: '#121212' }}>{benefit.title}</h3>
-                  <p className="leading-relaxed" style={{ color: '#7A6F66' }}>{benefit.description}</p>
-                </motion.div>
+                </RevealOnScroll>
               );
             })}
           </div>
@@ -823,12 +814,8 @@ export function CommunityPage() {
 
           <div className="grid md:grid-cols-3 gap-8">
             {communityPartners.map((partner, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
+              <RevealOnScroll key={index} mode='3d' delay={index * 0.12}>
+              <div
                 className="rounded-2xl overflow-hidden border-2 hover:shadow-xl transition-all duration-300 group"
                 style={{ borderColor: '#E3DCD3', backgroundColor: '#FFFFFF' }}
               >
@@ -880,7 +867,8 @@ export function CommunityPage() {
                     </Button>
                   )}
                 </div>
-              </motion.div>
+              </div>
+              </RevealOnScroll>
             ))}
           </div>
         </div>

@@ -343,8 +343,8 @@ export function ServicesPage() {
                 <div className="p-6" style={{ backgroundColor: '#F9F6F1' }}>
                   <div className={`grid ${service.packages.length === 4 ? 'md:grid-cols-4' : 'md:grid-cols-3'} gap-4`}>
                     {service.packages.map((pkg, pkgIndex) => (
+                      <RevealOnScroll key={pkgIndex} mode='3d' delay={pkgIndex * 0.1}>
                       <TiltCard
-                        key={pkgIndex}
                         maxAngle={5}
                         spotlight
                         spotlightColor="rgba(166,143,89,0.1)"
@@ -406,6 +406,7 @@ export function ServicesPage() {
                           </Button>
                         </div>
                       </TiltCard>
+                      </RevealOnScroll>
                     ))}
                   </div>
 
@@ -648,33 +649,30 @@ export function ServicesPage() {
               { title: 'Returning Clients', desc: '15% off all services', discount: '15% OFF' },
               { title: 'Referral Bonus', desc: '$25 credit for you & referral', discount: '$25' }
             ].map((item, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="p-8 rounded-2xl text-center transition-all duration-300"
-                style={{ border: '1px solid rgba(166,143,89,0.2)', backgroundColor: 'rgba(166,143,89,0.05)' }}
-                onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLElement).style.borderColor = 'rgba(166,143,89,0.45)';
-                  (e.currentTarget as HTMLElement).style.backgroundColor = 'rgba(166,143,89,0.09)';
-                }}
-                onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLElement).style.borderColor = 'rgba(166,143,89,0.2)';
-                  (e.currentTarget as HTMLElement).style.backgroundColor = 'rgba(166,143,89,0.05)';
-                }}
-              >
+              <RevealOnScroll key={index} mode='3d' delay={index * 0.12}>
                 <div
-                  className="text-4xl font-light tracking-tight mb-4"
-                  style={{ color: '#A68F59' }}
+                  className="p-8 rounded-2xl text-center transition-all duration-300"
+                  style={{ border: '1px solid rgba(166,143,89,0.2)', backgroundColor: 'rgba(166,143,89,0.05)' }}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLElement).style.borderColor = 'rgba(166,143,89,0.45)';
+                    (e.currentTarget as HTMLElement).style.backgroundColor = 'rgba(166,143,89,0.09)';
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLElement).style.borderColor = 'rgba(166,143,89,0.2)';
+                    (e.currentTarget as HTMLElement).style.backgroundColor = 'rgba(166,143,89,0.05)';
+                  }}
                 >
-                  {item.discount}
+                  <div
+                    className="text-4xl font-light tracking-tight mb-4"
+                    style={{ color: '#A68F59' }}
+                  >
+                    {item.discount}
+                  </div>
+                  <div style={{ height: '1px', width: '32px', backgroundColor: 'rgba(166,143,89,0.4)', margin: '0 auto 16px' }} />
+                  <h3 className="text-lg mb-2 tracking-tight" style={{ color: '#F5F1EB' }}>{item.title}</h3>
+                  <p className="text-sm" style={{ color: '#7A6F66' }}>{item.desc}</p>
                 </div>
-                <div style={{ height: '1px', width: '32px', backgroundColor: 'rgba(166,143,89,0.4)', margin: '0 auto 16px' }} />
-                <h3 className="text-lg mb-2 tracking-tight" style={{ color: '#F5F1EB' }}>{item.title}</h3>
-                <p className="text-sm" style={{ color: '#7A6F66' }}>{item.desc}</p>
-              </motion.div>
+              </RevealOnScroll>
             ))}
           </div>
 

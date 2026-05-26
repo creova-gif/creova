@@ -214,34 +214,31 @@ export function PricingPage() {
                 description: 'We\'re not here to just "make content" — we build brands with meaning'
               }
             ].map((item, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1, duration: 0.5 }}
-                className="group bg-white border-2 rounded-2xl p-8 text-center hover:shadow-2xl transition-all duration-500"
-                style={{ borderColor: '#E3DCD3' }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = '#B1643B';
-                  e.currentTarget.style.transform = 'translateY(-4px)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = '#E3DCD3';
-                  e.currentTarget.style.transform = 'translateY(0)';
-                }}
-              >
-                <div className="w-14 h-14 rounded-2xl mx-auto mb-6 flex items-center justify-center group-hover:scale-110 transition-transform duration-500" 
-                     style={{ backgroundColor: 'rgba(177, 100, 59, 0.1)' }}>
-                  <item.icon className="w-7 h-7" style={{ color: '#B1643B' }} />
+              <RevealOnScroll key={index} mode='3d' delay={index * 0.1}>
+                <div
+                  className="group bg-white border-2 rounded-2xl p-8 text-center hover:shadow-2xl transition-all duration-500"
+                  style={{ borderColor: '#E3DCD3' }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = '#B1643B';
+                    e.currentTarget.style.transform = 'translateY(-4px)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = '#E3DCD3';
+                    e.currentTarget.style.transform = 'translateY(0)';
+                  }}
+                >
+                  <div className="w-14 h-14 rounded-2xl mx-auto mb-6 flex items-center justify-center group-hover:scale-110 transition-transform duration-500"
+                       style={{ backgroundColor: 'rgba(177, 100, 59, 0.1)' }}>
+                    <item.icon className="w-7 h-7" style={{ color: '#B1643B' }} />
+                  </div>
+                  <h3 className="text-xl mb-3" style={{ color: '#121212' }}>
+                    {item.title}
+                  </h3>
+                  <p className="text-sm leading-relaxed" style={{ color: '#7A6F66' }}>
+                    {item.description}
+                  </p>
                 </div>
-                <h3 className="text-xl mb-3" style={{ color: '#121212' }}>
-                  {item.title}
-                </h3>
-                <p className="text-sm leading-relaxed" style={{ color: '#7A6F66' }}>
-                  {item.description}
-                </p>
-              </motion.div>
+              </RevealOnScroll>
             ))}
           </div>
         </div>
@@ -342,12 +339,8 @@ export function PricingPage() {
               { name: 'Timeless Bonds', price: '$650', time: '1.5 hours', photos: '25 photos', popular: true, priceNum: 650 },
               { name: 'Legacy Heirloom', price: '$950', time: '2 hours', photos: '40+ photos', popular: false, priceNum: 950 }
             ].map((pkg, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1, duration: 0.5 }}
+              <RevealOnScroll key={index} mode='3d' delay={index * 0.1}>
+              <div
                 className={`relative bg-white rounded-2xl p-8 text-center transition-all duration-500 hover:shadow-2xl ${
                   pkg.popular ? 'border-2' : 'border'
                 }`}
@@ -391,7 +384,8 @@ export function PricingPage() {
                 >
                   Book Session
                 </Button>
-              </motion.div>
+              </div>
+              </RevealOnScroll>
             ))}
           </div>
         </div>
@@ -442,12 +436,8 @@ export function PricingPage() {
                 highlighted: false
               }
             ].map((pkg, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.15, duration: 0.5 }}
+              <RevealOnScroll key={index} mode='3d' delay={index * 0.12}>
+              <div
                 className={`relative bg-white rounded-2xl p-8 transition-all duration-500 hover:shadow-2xl ${
                   pkg.highlighted ? 'border-2' : 'border'
                 }`}
@@ -495,7 +485,8 @@ export function PricingPage() {
                 >
                   <Link to="/booking">Get Started</Link>
                 </Button>
-              </motion.div>
+              </div>
+              </RevealOnScroll>
             ))}
           </div>
         </div>
@@ -800,12 +791,8 @@ export function PricingPage() {
               { name: 'Signature Story', price: '$1,350', time: '6 hours' },
               { name: 'Heritage Experience', price: '$2,550', time: '8-10 hours' }
             ].map((pkg, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1, duration: 0.5 }}
+              <RevealOnScroll key={index} mode='3d' delay={index * 0.1}>
+              <div
                 className="bg-white border-2 rounded-2xl p-8 text-center hover:shadow-2xl transition-all duration-500"
                 style={{ borderColor: '#E3DCD3' }}
                 onMouseEnter={(e) => {
@@ -825,7 +812,7 @@ export function PricingPage() {
                   <Clock className="w-4 h-4" />
                   <span>{pkg.time}</span>
                 </div>
-                <Button 
+                <Button
                   asChild
                   className="w-full rounded-xl py-6 transition-all duration-300"
                   style={{ backgroundColor: '#F5F1EB', color: '#121212' }}
@@ -842,7 +829,8 @@ export function PricingPage() {
                 >
                   <Link to="/booking">Book Event</Link>
                 </Button>
-              </motion.div>
+              </div>
+              </RevealOnScroll>
             ))}
           </div>
 
@@ -903,12 +891,8 @@ export function PricingPage() {
               { name: 'Visual Starter Identity', price: '$1,200', desc: 'Foundation system' },
               { name: 'Signature Identity Suite', price: '$3,000+', desc: 'Full visual world' }
             ].map((pkg, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1, duration: 0.5 }}
+              <RevealOnScroll key={index} mode='3d' delay={index * 0.1}>
+              <div
                 className="bg-white border-2 rounded-2xl p-8 text-center hover:shadow-2xl transition-all duration-500"
                 style={{ borderColor: '#E3DCD3' }}
                 onMouseEnter={(e) => {
@@ -925,7 +909,7 @@ export function PricingPage() {
                   <span className="text-5xl" style={{ color: '#121212' }}>{pkg.price}</span>
                 </div>
                 <p className="text-sm mb-8" style={{ color: '#7A6F66' }}>{pkg.desc}</p>
-                <Button 
+                <Button
                   asChild
                   className="w-full rounded-xl py-6 transition-all duration-300"
                   style={{ backgroundColor: '#F5F1EB', color: '#121212' }}
@@ -942,7 +926,8 @@ export function PricingPage() {
                 >
                   <Link to="/booking">Get Quote</Link>
                 </Button>
-              </motion.div>
+              </div>
+              </RevealOnScroll>
             ))}
           </div>
         </div>
