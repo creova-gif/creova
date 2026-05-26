@@ -2,13 +2,12 @@ import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router';
 import { projectId, publicAnonKey } from '../utils/supabase/info';
 
-// Google Analytics Measurement ID - Add your GA4 ID here
-const GA_MEASUREMENT_ID = 'G-XXXXXXXXXX'; // TODO: Replace with your actual Google Analytics 4 Measurement ID
+const GA_MEASUREMENT_ID = import.meta.env.VITE_GA_MEASUREMENT_ID ?? '';
 
 // Load Google Analytics script
 const loadGoogleAnalytics = () => {
-  if (typeof window === 'undefined' || !GA_MEASUREMENT_ID || GA_MEASUREMENT_ID === 'G-XXXXXXXXXX') {
-    return; // Skip if no valid GA ID
+  if (typeof window === 'undefined' || !GA_MEASUREMENT_ID || !GA_MEASUREMENT_ID.startsWith('G-')) {
+    return;
   }
 
   // Check if already loaded

@@ -17,8 +17,7 @@ import { CreditCard, Lock, CheckCircle2, ArrowLeft, Loader2 } from 'lucide-react
 import { toast } from 'sonner@2.0.3';
 import { projectId, publicAnonKey } from '../utils/supabase/info';
 
-// Initialize Stripe - Replace with your actual publishable key
-const stripePromise = loadStripe('pk_test_51QVaLrH4xQb5VKlC9vOvF9dXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX');
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY ?? '');
 
 interface CheckoutFormProps {
   clientSecret: string;
