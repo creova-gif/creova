@@ -434,10 +434,10 @@ export function Footer() {
 
             {/* Legal strip */}
             <div className="flex flex-col items-center gap-1.5 text-center">
-              <p className="text-xs" style={{ color: '#3A3A3A' }}>
+              <p className="text-xs" style={{ color: '#9A9088' }}>
                 {t('footer.bottom.rights').replace('{year}', String(new Date().getFullYear()))}
               </p>
-              <p className="text-xs" style={{ color: '#2C2C2C' }}>
+              <p className="text-xs" style={{ color: '#9A9088' }}>
                 {t('footer.bottom.tax')}
               </p>
             </div>
@@ -468,7 +468,7 @@ export function Footer() {
                     key={href}
                     to={href}
                     className="text-xs transition-opacity duration-200 hover:opacity-70"
-                    style={{ color: '#3A3A3A' }}
+                    style={{ color: '#9A9088' }}
                   >
                     {t(labelKey)}
                   </Link>
