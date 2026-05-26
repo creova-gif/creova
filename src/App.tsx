@@ -1,5 +1,4 @@
 import { lazy, Suspense, useEffect } from 'react';
-import Lenis from 'lenis';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router';
 import { AnimatePresence } from 'motion/react';
 import { PageTransition } from './components/PageTransition';
@@ -109,11 +108,14 @@ function AnimatedRoutes() {
 
 function LenisProvider() {
   useEffect(() => {
-    const lenis = new Lenis({ lerp: 0.08, smoothWheel: true });
     let raf: number;
-    const loop = (time: number) => { lenis.raf(time); raf = requestAnimationFrame(loop); };
-    raf = requestAnimationFrame(loop);
-    return () => { cancelAnimationFrame(raf); lenis.destroy(); };
+    let lenis: any;
+    import('lenis').then(({ default: Lenis }) => {
+      lenis = new Lenis({ lerp: 0.08, smoothWheel: true });
+      const loop = (time: number) => { lenis.raf(time); raf = requestAnimationFrame(loop); };
+      raf = requestAnimationFrame(loop);
+    }).catch(() => {});
+    return () => { cancelAnimationFrame(raf); lenis?.destroy(); };
   }, []);
   return null;
 }

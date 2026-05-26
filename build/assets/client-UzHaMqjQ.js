@@ -1,1 +1,0 @@
-import{c as t}from"./supabase-vendor-CBbQvT6l.js";import{a as s,p as a}from"./index-JubGSDtO.js";const o=`https://${a}.supabase.co`;let e=null;function r(){return e||(e=t(o,s,{auth:{persistSession:!0,autoRefreshToken:!0,detectSessionInUrl:!0,storageKey:"creova-auth-token"}})),e}const p=r();export{p as s};
