@@ -220,7 +220,7 @@ function AppContent() {
         {t('a11y.skip.content')}
       </a>
       
-      <div key={currentLang} className="min-h-screen flex flex-col bg-white overflow-x-hidden">
+      <div className="min-h-screen flex flex-col bg-white overflow-x-hidden">
         <ContactInfoBanner />
         <Navigation />
         <main id="main-content" className="flex-grow">
