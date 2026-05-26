@@ -4,14 +4,7 @@ import { Home, Mail } from 'lucide-react';
 
 export function NotFoundPage() {
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.4, ease: 'easeOut' }}
-      className="min-h-screen flex items-center justify-center px-6 py-24"
-      style={{ backgroundColor: '#121212' }}
-    >
+    <div className="min-h-screen flex items-center justify-center px-6 py-24 bg-[#121212]">
       <div className="text-center max-w-lg mx-auto">
         {/* 404 number */}
         <motion.p
@@ -86,6 +79,6 @@ export function NotFoundPage() {
           </Link>
         </motion.div>
       </div>
-    </motion.div>
+    </div>
   );
 }
