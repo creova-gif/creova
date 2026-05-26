@@ -14,7 +14,7 @@ import { Eye, EyeOff, Mail, Lock, User, ArrowLeft, Sparkles, Users, Smartphone, 
 import { useLanguage } from '../context/LanguageContext';
 import { logger } from '../utils/logger';
 
-type AuthMode = 'login' | 'signup';
+type AuthMode = 'login' | 'signup' | 'forgot';
 
 export function AuthPage() {
   const navigate = useNavigate();
@@ -181,6 +181,30 @@ export function AuthPage() {
     }
   };
 
+  const handleForgotPassword = async () => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!formData.email || !emailRegex.test(formData.email)) {
+      toast.error('Please enter a valid email address');
+      return;
+    }
+    setIsLoading(true);
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(formData.email, {
+        redirectTo: window.location.origin + '/auth/callback'
+      });
+      if (error) {
+        toast.error('Failed to send reset email: ' + error.message);
+      } else {
+        toast.success('Password reset email sent!', { description: 'Check your inbox and follow the link to reset your password.' });
+        setMode('login');
+      }
+    } catch {
+      toast.error('An error occurred. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const handleOAuthLogin = async (provider: 'google' | 'facebook' | 'github' | 'apple') => {
     try {
       const { data, error } = await supabase.auth.signInWithOAuth({
@@ -236,11 +260,13 @@ export function AuthPage() {
             </div>
 
             <h1 className="text-4xl md:text-5xl mb-4" style={{ color: '#F5F1EB' }}>
-              {mode === 'login' ? 'Welcome Back' : 'Join the CREOVA Family'}
+              {mode === 'login' ? 'Welcome Back' : mode === 'forgot' ? 'Reset Password' : 'Join the CREOVA Family'}
             </h1>
             <p className="text-lg max-w-2xl mx-auto" style={{ color: '#E3DCD3' }}>
               {mode === 'login'
                 ? 'Sign in to access your membership, SEEN collection, and exclusive community benefits'
+                : mode === 'forgot'
+                ? 'Enter your email to receive a password reset link'
                 : 'Free to join — get community access, SEEN app early entry, and exclusive member perks'}
             </p>
           </motion.div>
@@ -497,13 +523,37 @@ export function AuthPage() {
                 {/* Forgot Password */}
                 {mode === 'login' && (
                   <div className="text-center">
-                    <a
-                      href="mailto:support@creova.ca?subject=Password%20Reset%20Request"
+                    <button
+                      type="button"
+                      onClick={() => setMode('forgot')}
                       className="text-sm underline"
                       style={{ color: '#A68F59' }}
                     >
-                      Forgot your password? Email us to reset
-                    </a>
+                      Forgot your password?
+                    </button>
+                  </div>
+                )}
+
+                {/* Forgot Password Form */}
+                {mode === 'forgot' && (
+                  <div className="space-y-4">
+                    <p className="text-sm text-center" style={{ color: '#7A6F66' }}>
+                      Enter your email and we'll send a reset link.
+                    </p>
+                    <button
+                      type="button"
+                      disabled={isLoading}
+                      onClick={handleForgotPassword}
+                      className="w-full py-4 rounded-lg text-base font-medium text-white transition-opacity disabled:opacity-50"
+                      style={{ background: 'linear-gradient(135deg, #A68F59 0%, #B1643B 100%)', boxShadow: '0 4px 14px rgba(166,143,89,0.35)' }}
+                    >
+                      {isLoading ? 'Sending...' : 'Send Reset Link'}
+                    </button>
+                    <div className="text-center">
+                      <button type="button" onClick={() => setMode('login')} className="text-sm underline" style={{ color: '#7A6F66' }}>
+                        Back to login
+                      </button>
+                    </div>
                   </div>
                 )}
               </form>

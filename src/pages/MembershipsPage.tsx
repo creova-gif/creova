@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
+import { PageSEO } from '../components/PageSEO';
 import { projectId, publicAnonKey } from '../utils/supabase/info';
 import { toast } from 'sonner@2.0.3';
 import { useNavigate } from 'react-router';
@@ -272,6 +273,10 @@ export default function MembershipsPage() {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#F5F1EB' }}>
+      <PageSEO
+        title="Memberships"
+        description="Join the CREOVA creative family. Free community membership, or upgrade to Creator ($199/yr) or Legacy ($499/yr) for exclusive discounts, mentorship, and benefits."
+      />
       {/* Hero Section */}
       <div className="text-[#F5F1EB] py-24 px-4" style={{ backgroundColor: '#121212' }}>
         <div className="max-w-6xl mx-auto text-center">

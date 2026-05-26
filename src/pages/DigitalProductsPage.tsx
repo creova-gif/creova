@@ -1,5 +1,6 @@
 import { useLanguage } from '../context/LanguageContext';
 import { Button } from '../components/ui/button';
+import { PageSEO } from '../components/PageSEO';
 import { useCart } from '../context/CartContext';
 import { toast } from 'sonner@2.0.3';
 import { Download, Heart, ChevronDown, Gift, Star, FileText, Camera, Palette } from 'lucide-react';
@@ -73,6 +74,10 @@ export function DigitalProductsPage() {
 
   return (
     <div style={{ backgroundColor: '#F5F1EB' }}>
+      <PageSEO
+        title="Digital Products"
+        description="Premium templates, presets, and tools for creatives — brand kits, social media templates, Lightroom presets, content calendars, and more. Launching Summer 2026."
+      />
 
       {/* Hero — editorial dark */}
       <section className="relative overflow-hidden" style={{ backgroundColor: '#0A0A0A' }}>
@@ -163,6 +168,12 @@ export function DigitalProductsPage() {
       {/* Products Grid */}
       <section className="py-10" style={{ backgroundColor: '#FFFFFF' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {filteredProducts.length === 0 && (
+            <div className="py-20 text-center">
+              <p className="text-lg mb-2" style={{ color: '#121212' }}>No products in this category yet</p>
+              <p className="text-sm" style={{ color: '#7A6F66' }}>New digital products dropping Summer 2026.</p>
+            </div>
+          )}
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-10">
             {filteredProducts.map((product, index) => (
               <motion.div

@@ -1,5 +1,6 @@
 import { useRef, useEffect } from 'react';
 import { Link } from 'react-router';
+import { PageSEO } from '../components/PageSEO';
 import { Button } from '../components/ui/button';
 import {
   Camera, Video, Palette, TrendingUp, ShoppingBag, Calendar,
@@ -144,6 +145,10 @@ export function HomePage() {
 
   return (
     <div className="overflow-x-hidden" style={{ backgroundColor: '#F5F1EB' }}>
+      <PageSEO
+        title="BIPOC-Led Creative Agency in Ontario"
+        description="CREOVA is a BIPOC-led creative agency offering photography, videography, brand design, and social media services across Ontario and Canada."
+      />
 
       {/* Hero */}
       <section

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router';
+import { PageSEO } from '../components/PageSEO';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Textarea } from '../components/ui/textarea';
@@ -120,6 +121,10 @@ export function ContactPage() {
 
   return (
     <div style={{ backgroundColor: '#F5F1EB' }}>
+      <PageSEO
+        title="Contact Us"
+        description="Get in touch with CREOVA. Book a consultation, ask about our creative services, or start your photography, videography, or brand design project today."
+      />
       {/* Hero Section — Editorial */}
       <section className="relative overflow-hidden" style={{ backgroundColor: '#0A0A0A' }}>
         <FloatingOrbs />

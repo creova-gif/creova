@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
+import { PageSEO } from '../components/PageSEO';
 import { Button } from '../components/ui/button';
 import { CheckCircle2, Check, Target, Award, Shield, Clock, ArrowRight, Star, Users, Briefcase, Package, Plane, PartyPopper, Palette, Plus, Mail, MapPin } from 'lucide-react';
 import { motion } from 'motion/react';
@@ -41,6 +42,10 @@ export function PricingPage() {
 
   return (
     <div style={{ backgroundColor: '#F5F1EB' }}>
+      <PageSEO
+        title="Pricing"
+        description="Transparent pricing for photography, videography, brand design, social media, and event coverage. Packages starting from $450 across Ontario."
+      />
       {/* Availability Banner */}
       <div className="relative z-40 py-3 px-4 text-center" style={{ backgroundColor: '#121212', borderBottom: '1px solid rgba(166,143,89,0.25)' }}>
         <p className="text-xs sm:text-sm tracking-wide" style={{ color: '#E3DCD3' }}>

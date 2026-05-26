@@ -6,7 +6,7 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { toast } from 'sonner@2.0.3';
 
-const ADMIN_PASSWORD = 'CREOVA2025!'; // Change this in production!
+const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || 'CREOVA2025!';
 
 export function AdminAuth({ children }: { children: React.ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);

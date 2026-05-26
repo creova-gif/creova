@@ -187,10 +187,10 @@ export function AdminHubPage() {
                 <Lock className="w-5 h-5 mt-0.5" style={{ color: '#A68F59' }} />
                 <div>
                   <p className="text-sm mb-1" style={{ color: '#121212' }}>
-                    <strong>Default Admin Password:</strong> <code className="bg-white px-2 py-1 rounded">CREOVA2025!</code>
+                    <strong>Admin Password</strong>
                   </p>
                   <p className="text-xs" style={{ color: '#7A6F66' }}>
-                    ⚠️ Change this password in production by editing <code>/components/AdminAuth.tsx</code>
+                    Set via <code>VITE_ADMIN_PASSWORD</code> environment variable
                   </p>
                 </div>
               </div>

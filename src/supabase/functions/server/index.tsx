@@ -623,11 +623,11 @@ app.post("/make-server-feacf0d8/create-subscription-checkout", rateLimit(5, 6000
     // Define pricing for each membership tier
     const membershipPricing = {
       creator: {
-        price: 29900, // $299 CAD in cents
+        price: 19900, // $199 CAD in cents
         name: "CREOVA Creator Membership"
       },
       legacy: {
-        price: 59900, // $599 CAD in cents
+        price: 49900, // $499 CAD in cents
         name: "CREOVA Legacy Membership"
       }
     };
@@ -747,6 +747,41 @@ app.post("/make-server-feacf0d8/submit-contact", async (c) => {
     });
 
     console.log(`Contact form submitted: ${contactId} from ${email}`);
+
+    // Fire-and-forget confirmation emails
+    const emailApiKey = Deno.env.get('EMAIL_SERVICE_API_KEY');
+    if (emailApiKey) {
+      const contactEmailData: ContactEmailData = { name, email, phone, service, message, budget, timeline };
+      (async () => {
+        try {
+          await Promise.all([
+            fetch('https://api.resend.com/emails', {
+              method: 'POST',
+              headers: { 'Authorization': `Bearer ${emailApiKey}`, 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                from: 'CREOVA <support@creova.ca>',
+                to: [email],
+                subject: "We've received your message — CREOVA",
+                html: `<div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#121212"><h2 style="color:#A68F59">Thanks for reaching out, ${name}!</h2><p>We've received your message and will get back to you within 1–2 business days.</p><p style="color:#7A6F66;font-size:14px">In the meantime, follow us on Instagram <a href="https://www.instagram.com/creova.ca" style="color:#A68F59">@creova.ca</a></p><p>— The CREOVA Team</p></div>`
+              })
+            }),
+            fetch('https://api.resend.com/emails', {
+              method: 'POST',
+              headers: { 'Authorization': `Bearer ${emailApiKey}`, 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                from: 'CREOVA <support@creova.one>',
+                to: ['support@creova.one'],
+                subject: `📧 New Contact: ${service || 'General Inquiry'} — ${name}`,
+                html: adminContactNotification(contactEmailData),
+                reply_to: email
+              })
+            })
+          ]);
+        } catch (e) {
+          console.error('Failed to send contact emails:', e);
+        }
+      })();
+    }
 
     return c.json({
       contactId,
@@ -870,6 +905,53 @@ app.post("/make-server-feacf0d8/submit-booking", async (c) => {
     });
 
     console.log(`Booking submitted: ${bookingId} by ${name} (${email}) for ${service}`);
+
+    // Fire-and-forget confirmation emails
+    const emailApiKey = Deno.env.get('EMAIL_SERVICE_API_KEY');
+    if (emailApiKey) {
+      const emailData: BookingEmailData = {
+        customerName: name,
+        customerEmail: email,
+        customerPhone: phone,
+        service,
+        package: packageName || 'Standard',
+        preferredDate: preferredDate || '',
+        preferredTime: preferredTime || '',
+        location: location || '',
+        numberOfPeople,
+        specialRequests,
+        amount: 0
+      };
+      (async () => {
+        try {
+          await Promise.all([
+            fetch('https://api.resend.com/emails', {
+              method: 'POST',
+              headers: { 'Authorization': `Bearer ${emailApiKey}`, 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                from: 'CREOVA Bookings <bookings@creova.ca>',
+                to: [email],
+                subject: 'Booking Request Received — CREOVA',
+                html: getBookingConfirmationTemplate('en', emailData)
+              })
+            }),
+            fetch('https://api.resend.com/emails', {
+              method: 'POST',
+              headers: { 'Authorization': `Bearer ${emailApiKey}`, 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                from: 'CREOVA <support@creova.one>',
+                to: ['support@creova.one'],
+                subject: `🎬 New Booking: ${service} — ${name}`,
+                html: adminBookingNotification(emailData),
+                reply_to: email
+              })
+            })
+          ]);
+        } catch (e) {
+          console.error('Failed to send booking emails:', e);
+        }
+      })();
+    }
 
     return c.json({
       bookingId,

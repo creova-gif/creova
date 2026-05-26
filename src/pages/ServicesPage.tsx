@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
+import { PageSEO } from '../components/PageSEO';
 import { Button } from '../components/ui/button';
 import { motion } from 'motion/react';
 import { Camera, Users, Package, PartyPopper, Plane, TrendingUp, Palette, Video, Settings, CheckCircle2, AlertCircle, Calendar } from 'lucide-react';
@@ -26,7 +27,7 @@ export function ServicesPage() {
 
   const services = [
     {
-      id: 'photography',
+      id: 'family-portraits',
       category: 'photography' as ServiceCategory,
       icon: Users,
       title: 'Family Portrait Photography',
@@ -38,6 +39,7 @@ export function ServicesPage() {
       ]
     },
     {
+      id: 'brand-photography',
       category: 'photography' as ServiceCategory,
       icon: Camera,
       title: 'Brand Photography & Headshots',
@@ -49,6 +51,7 @@ export function ServicesPage() {
       ]
     },
     {
+      id: 'product-photography',
       category: 'photography' as ServiceCategory,
       icon: Package,
       title: 'Product Photography',
@@ -60,7 +63,7 @@ export function ServicesPage() {
       ]
     },
     {
-      id: 'aerial',
+      id: 'aerial-drone',
       category: 'video' as ServiceCategory,
       icon: Plane,
       title: 'Aerial & Drone Photography',
@@ -88,6 +91,7 @@ export function ServicesPage() {
       ]
     },
     {
+      id: 'event-coverage',
       category: 'events' as ServiceCategory,
       icon: PartyPopper,
       title: 'Event Coverage',
@@ -99,7 +103,7 @@ export function ServicesPage() {
       ]
     },
     {
-      id: 'social',
+      id: 'social-media',
       category: 'social' as ServiceCategory,
       icon: TrendingUp,
       title: 'Social Media Management',
@@ -111,7 +115,7 @@ export function ServicesPage() {
       ]
     },
     {
-      id: 'brand',
+      id: 'brand-design',
       category: 'brand' as ServiceCategory,
       icon: Palette,
       title: 'Brand Design & Identity',
@@ -123,6 +127,7 @@ export function ServicesPage() {
       ]
     },
     {
+      id: 'event-conference-design',
       category: 'brand' as ServiceCategory,
       icon: Calendar,
       title: 'Event & Conference Design',
@@ -134,6 +139,7 @@ export function ServicesPage() {
       ]
     },
     {
+      id: 'event-design-retainer',
       category: 'brand' as ServiceCategory,
       icon: Calendar,
       title: 'Event Design Retainer',
@@ -190,6 +196,10 @@ export function ServicesPage() {
 
   return (
     <div style={{ backgroundColor: '#F5F1EB' }}>
+      <PageSEO
+        title="Creative Services"
+        description="Professional photography, videography, brand design, social media management, and event coverage for BIPOC entrepreneurs and brands across Ontario."
+      />
 
       {/* Hero Section — Editorial */}
       <section className="relative overflow-hidden" style={{ backgroundColor: '#0A0A0A' }}>
@@ -392,7 +402,7 @@ export function ServicesPage() {
                           <Button
                             className="w-full mt-auto text-sm py-5 rounded-lg transition-all duration-300"
                             style={{ backgroundColor: '#121212', color: '#F5F1EB' }}
-                            onClick={() => navigate(service.category === 'rental' ? '/rental' : '/booking')}
+                            onClick={() => navigate(service.category === 'rental' ? '/rental' : `/booking${service.id ? `?service=${service.id}` : ''}`)}
                             onMouseEnter={(e) => {
                               e.currentTarget.style.backgroundColor = '#A68F59';
                               e.currentTarget.style.color = '#121212';

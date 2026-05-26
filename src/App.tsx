@@ -124,10 +124,12 @@ function LenisProvider() {
 
 function AppContent() {
   const { language, t, isChanging } = useLanguage();
-  
+  const location = useLocation();
+
   const currentLang = language || 'en';
   const ogLocale = currentLang === 'fr' ? 'fr_CA' : 'en_CA';
   const ogLocaleAlternate = currentLang === 'fr' ? 'en_CA' : 'fr_CA';
+  const canonicalUrl = `https://creova.ca${location.pathname}`;
   
   return (
     <>
@@ -138,13 +140,13 @@ function AppContent() {
         <meta property="og:title" content={t('seo.og.title')} />
         <meta property="og:description" content={t('seo.og.description')} />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://creova.ca" />
+        <meta property="og:url" content={canonicalUrl} />
         <meta property="og:locale" content={ogLocale} />
         <meta property="og:locale:alternate" content={ogLocaleAlternate} />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={t('seo.og.title')} />
         <meta name="twitter:description" content={t('seo.og.description')} />
-        <link rel="canonical" href="https://creova.ca" />
+        <link rel="canonical" href={canonicalUrl} />
         <meta name="geo.region" content="CA-ON" />
         <meta name="geo.placename" content="Ontario, Niagara Region" />
         <meta name="geo.position" content="43.0896;-79.0849" />

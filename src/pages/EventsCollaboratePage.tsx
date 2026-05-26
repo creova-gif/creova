@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { toast } from 'sonner@2.0.3';
+import { PageSEO } from '../components/PageSEO';
 import { Calendar, MapPin, Users, Clock, Lightbulb, Handshake, Star, ArrowRight, Award, FileText, ExternalLink, Check } from 'lucide-react';
 import photoSpotlight1 from '../assets/photo-event-networking.jpg';
 import { motion } from 'motion/react';
@@ -342,6 +343,10 @@ export function EventsCollaboratePage() {
 
   return (
     <div style={{ backgroundColor: '#F5F1EB' }}>
+      <PageSEO
+        title="Experience & Events"
+        description="Attend CREOVA's events, workshops, and creative experiences across Ontario. Collaborate with BIPOC creatives and cultural storytellers."
+      />
 
       {/* Hero — Editorial with warm gradient accent */}
       <section className="relative overflow-hidden" style={{ backgroundColor: '#0A0A0A' }}>

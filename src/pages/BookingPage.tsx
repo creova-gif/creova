@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
+import { PageSEO } from '../components/PageSEO';
 import { useLanguage } from '../context/LanguageContext';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
@@ -23,6 +24,7 @@ export function BookingPage() {
   const initialService = searchParams.get('service') || '';
   const [date, setDate] = useState<Date>();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     service: initialService,
@@ -204,31 +206,7 @@ export function BookingPage() {
       const data = await response.json();
 
       if (response.ok) {
-        toast.success('Booking request submitted!', {
-          description: 'We\'ll contact you within 24 hours to confirm your session.'
-        });
-        
-        // Reset form
-        setFormData({
-          service: '',
-          package: '',
-          name: '',
-          email: '',
-          phone: '',
-          preferredTime: '',
-          location: '',
-          numberOfPeople: '',
-          specialRequests: '',
-          budget: '',
-          hearAboutUs: ''
-        });
-        setDate(undefined);
-        setCaptchaToken(null);
-
-        // Redirect to confirmation
-        setTimeout(() => {
-          navigate('/');
-        }, 2000);
+        setIsSubmitted(true);
       } else {
         throw new Error(data.error || 'Failed to submit booking');
       }
@@ -241,8 +219,52 @@ export function BookingPage() {
     }
   };
 
+  if (isSubmitted) {
+    return (
+      <div className="min-h-screen flex items-center justify-center px-4" style={{ backgroundColor: '#F5F1EB' }}>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6 }}
+          className="text-center max-w-md"
+        >
+          <div
+            className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6"
+            style={{ backgroundColor: 'rgba(166,143,89,0.12)', border: '1px solid rgba(166,143,89,0.3)' }}
+          >
+            <CheckCircle2 className="w-10 h-10" style={{ color: '#A68F59' }} />
+          </div>
+          <h1 className="text-3xl font-light mb-3" style={{ color: '#121212' }}>Booking Request Received</h1>
+          <p className="text-base mb-8 leading-relaxed" style={{ color: '#7A6F66' }}>
+            Thank you! We'll reach out within 24 hours to confirm your session and discuss details.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <Button
+              onClick={() => navigate('/')}
+              className="px-8 py-3 rounded-xl"
+              style={{ backgroundColor: '#121212', color: '#F5F1EB' }}
+            >
+              Back to Home
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() => navigate('/services')}
+              className="px-8 py-3 rounded-xl"
+            >
+              Explore Services
+            </Button>
+          </div>
+        </motion.div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#F5F1EB' }}>
+      <PageSEO
+        title="Book a Session"
+        description="Book your photography, videography, brand design, or social media session with CREOVA. Professional creative services across Ontario starting from $450."
+      />
       {/* Hero — Editorial */}
       <section className="relative overflow-hidden" style={{ backgroundColor: '#0A0A0A' }}>
         <div className="absolute inset-0 pointer-events-none" style={{

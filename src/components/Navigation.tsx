@@ -12,7 +12,8 @@ import creovaLogo from '../assets/creova-logo.png';
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
-  const [pricingDropdownOpen, setPricingDropdownOpen] = useState(false);
+  const [pricingDesktopOpen, setPricingDesktopOpen] = useState(false);
+  const [pricingMobileOpen, setPricingMobileOpen] = useState(false);
   const { totalItems } = useCart();
   const { t } = useLanguage();
 
@@ -90,27 +91,27 @@ export function Navigation() {
               {/* Pricing Dropdown */}
               <div 
                 className="relative"
-                onMouseEnter={() => setPricingDropdownOpen(true)}
-                onMouseLeave={() => setPricingDropdownOpen(false)}
+                onMouseEnter={() => setPricingDesktopOpen(true)}
+                onMouseLeave={() => setPricingDesktopOpen(false)}
               >
                 <button
                   className="px-4 py-2 transition-colors duration-300 text-sm tracking-wide font-medium flex items-center hover:bg-transparent"
-                  style={{ color: pricingDropdownOpen ? '#B1643B' : '#4A3E36' }}
+                  style={{ color: pricingDesktopOpen ? '#B1643B' : '#4A3E36' }}
                   aria-haspopup="true"
-                  aria-expanded={pricingDropdownOpen}
+                  aria-expanded={pricingDesktopOpen}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
                       e.preventDefault();
-                      setPricingDropdownOpen(!pricingDropdownOpen);
+                      setPricingDesktopOpen(!pricingDesktopOpen);
                     }
-                    if (e.key === 'Escape') setPricingDropdownOpen(false);
+                    if (e.key === 'Escape') setPricingDesktopOpen(false);
                   }}
                 >
                   {t('nav.pricing')}
-                  <ChevronDown className={`w-4 h-4 ml-1 transition-transform duration-200 ${pricingDropdownOpen ? 'rotate-180' : ''}`} />
+                  <ChevronDown className={`w-4 h-4 ml-1 transition-transform duration-200 ${pricingDesktopOpen ? 'rotate-180' : ''}`} />
                 </button>
 
-                {pricingDropdownOpen && (
+                {pricingDesktopOpen && (
                   <div 
                     className="absolute left-0 mt-0 w-80 rounded-lg shadow-2xl overflow-hidden z-50"
                     style={{ backgroundColor: '#FFFFFF', border: '1px solid #E3DCD3' }}
@@ -119,7 +120,7 @@ export function Navigation() {
                       <Link
                         key={category.path}
                         to={category.path}
-                        onClick={() => setPricingDropdownOpen(false)}
+                        onClick={() => setPricingDesktopOpen(false)}
                         className={`block px-5 py-3 transition-all duration-200 ${index === 0 ? 'border-b-2' : ''}`}
                         style={{ 
                           borderColor: index === 0 ? '#A68F59' : 'transparent',
@@ -250,15 +251,15 @@ export function Navigation() {
               {/* Mobile Pricing Accordion */}
               <div>
                 <button
-                  onClick={() => setPricingDropdownOpen(!pricingDropdownOpen)}
+                  onClick={() => setPricingMobileOpen(!pricingMobileOpen)}
                   className="w-full flex items-center justify-between py-3 px-4 transition-colors text-sm tracking-wide"
                   style={{ color: '#4A3E36' }}
                 >
                   {t('nav.pricing')}
-                  <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${pricingDropdownOpen ? 'rotate-180' : ''}`} />
+                  <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${pricingMobileOpen ? 'rotate-180' : ''}`} />
                 </button>
 
-                {pricingDropdownOpen && (
+                {pricingMobileOpen && (
                   <div className="py-2 pl-4 space-y-1" style={{ backgroundColor: '#F5F1EB' }}>
                     {pricingCategories.map((category, index) => (
                       <Link
@@ -266,7 +267,7 @@ export function Navigation() {
                         to={category.path}
                         onClick={() => {
                           setIsOpen(false);
-                          setPricingDropdownOpen(false);
+                          setPricingMobileOpen(false);
                         }}
                         className={`block py-2 px-4 transition-colors ${index === 0 ? 'border-b pb-3 mb-2' : ''}`}
                         style={{ 

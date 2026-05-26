@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { PageSEO } from '../components/PageSEO';
 import { ExternalLink, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router';
 import { FloatingOrbs } from '../components/FloatingOrbs';
@@ -230,6 +231,10 @@ export function WorkPage() {
 
   return (
     <div style={{ backgroundColor: '#0A0A0A' }}>
+      <PageSEO
+        title="Our Work"
+        description="Explore CREOVA's portfolio of photography, videography, brand design, and creative campaigns for BIPOC entrepreneurs and cultural brands across Canada."
+      />
 
       {/* Hero */}
       <section className="relative overflow-hidden" style={{ backgroundColor: '#080808' }}>

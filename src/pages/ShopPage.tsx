@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Button } from '../components/ui/button';
 import { useCart } from '../context/CartContext';
+import { PageSEO } from '../components/PageSEO';
 import { useLanguage } from '../context/LanguageContext';
 import { toast } from 'sonner@2.0.3';
 import { Heart, Eye, Calendar, Package } from 'lucide-react';
@@ -78,10 +79,16 @@ export function ShopPage() {
   const filteredProducts = filter === 'all' ? products : products.filter(p => p.category === filter);
 
   const handleAddToCart = (product: typeof products[0]) => {
-    const size = selectedSizes[product.id] || product.sizes[0];
+    const hasMultipleSizes = product.sizes.length > 1 || (product.sizes.length === 1 && product.sizes[0] !== 'One Size');
+    const size = selectedSizes[product.id];
+    if (hasMultipleSizes && !size) {
+      toast.error('Please select a size before adding to bag');
+      return;
+    }
+    const finalSize = size || product.sizes[0];
     const color = selectedColors[product.id] || { name: product.colors[0], hex: colorPalette[product.colors[0] as keyof typeof colorPalette] };
-    addItem({ id: `${product.id}-${size}-${color.name}`, name: `${product.name} - ${size} - ${color.name}`, price: product.price, type: 'clothing', image: product.image });
-    toast.success('Added to bag', { description: `${product.name} (${size}, ${color.name})` });
+    addItem({ id: `${product.id}-${finalSize}-${color.name}`, name: `${product.name} - ${finalSize} - ${color.name}`, price: product.price, type: 'clothing', image: product.image });
+    toast.success('Added to bag', { description: `${product.name} (${finalSize}, ${color.name})` });
   };
 
   const filterTabs = [
@@ -96,6 +103,10 @@ export function ShopPage() {
 
   return (
     <div style={{ backgroundColor: '#F5F1EB' }}>
+      <PageSEO
+        title="Shop — SEEN Collection"
+        description="Culturally rich streetwear and accessories from the SEEN Collection by CREOVA. Graphic tees, hoodies, jackets, and accessories. Pre-order Summer 2026."
+      />
 
       {/* Announcement banner — warm gradient */}
       <motion.div
@@ -193,6 +204,12 @@ export function ShopPage() {
       {/* Products Grid */}
       <section className="py-10" style={{ backgroundColor: '#FFFFFF' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {filteredProducts.length === 0 && (
+            <div className="py-20 text-center">
+              <p className="text-lg mb-2" style={{ color: '#121212' }}>No items in this category yet</p>
+              <p className="text-sm" style={{ color: '#7A6F66' }}>Check back soon — new drops coming.</p>
+            </div>
+          )}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-10">
             {filteredProducts.map((product, index) => (
               <motion.div

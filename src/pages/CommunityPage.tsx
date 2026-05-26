@@ -1,5 +1,6 @@
 import { motion } from 'motion/react';
 import { useLanguage } from '../context/LanguageContext';
+import { PageSEO } from '../components/PageSEO';
 import { useNavigate, Link } from 'react-router';
 import { FloatingOrbs } from '../components/FloatingOrbs';
 import { SplitText } from '../components/SplitText';
@@ -344,6 +345,10 @@ export function CommunityPage() {
 
   return (
     <div style={{ backgroundColor: '#F5F1EB' }}>
+      <PageSEO
+        title="Community"
+        description="Join the CREOVA community — a home for BIPOC creatives, entrepreneurs, and cultural storytellers across Canada. Connect, collaborate, and grow."
+      />
       {/* Hero Section — Editorial */}
       <section className="relative overflow-hidden" style={{ backgroundColor: '#0A0A0A' }}>
         <FloatingOrbs />
