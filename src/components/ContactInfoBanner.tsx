@@ -38,7 +38,7 @@ export function ContactInfoBanner() {
               <Phone className="w-3 h-3" style={{ color: '#A68F59' }} />
             </div>
             <div className="min-w-0">
-              <p className="text-[9px] tracking-[0.3em] uppercase leading-none mb-0.5" style={{ color: '#4A3E36' }}>{t('banner.call')}</p>
+              <p className="text-xs tracking-[0.3em] uppercase leading-none mb-0.5" style={{ color: '#4A3E36' }}>{t('banner.call')}</p>
               <p className="text-xs truncate group-hover:opacity-70 transition-opacity" style={{ color: '#E3DCD3' }}>+1 (437) 260-8925</p>
             </div>
           </a>
@@ -52,7 +52,7 @@ export function ContactInfoBanner() {
               <Mail className="w-3 h-3" style={{ color: '#A68F59' }} />
             </div>
             <div className="min-w-0">
-              <p className="text-[9px] tracking-[0.3em] uppercase leading-none mb-0.5" style={{ color: '#4A3E36' }}>{t('banner.email')}</p>
+              <p className="text-xs tracking-[0.3em] uppercase leading-none mb-0.5" style={{ color: '#4A3E36' }}>{t('banner.email')}</p>
               <p className="text-xs truncate group-hover:opacity-70 transition-opacity" style={{ color: '#E3DCD3' }}>support@creova.ca</p>
             </div>
           </a>
@@ -70,10 +70,10 @@ export function ContactInfoBanner() {
                   <item.icon className="w-3.5 h-3.5" style={{ color: '#A68F59' }} />
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="text-[8px] tracking-[0.4em] uppercase leading-none mb-1" style={{ color: '#4A3E36' }}>
+                  <p className="text-[10px] tracking-[0.4em] uppercase leading-none mb-1" style={{ color: '#4A3E36' }}>
                     {item.label}
                   </p>
-                  <p className="text-[11px] tracking-wide truncate leading-none transition-colors duration-200 group-hover:text-[#A68F59]"
+                  <p className="text-xs tracking-wide truncate leading-none transition-colors duration-200 group-hover:text-[#A68F59]"
                     style={{ color: '#C8C0B8' }}>
                     {item.value}
                   </p>
