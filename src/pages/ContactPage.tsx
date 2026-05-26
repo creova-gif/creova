@@ -9,6 +9,7 @@ import { Captcha } from '../components/Captcha';
 import { MapPin, Phone, Mail, Clock, Send, MessageSquare, Calendar, Star, Award, Globe, Linkedin } from 'lucide-react';
 import { motion } from 'motion/react';
 import { toast } from 'sonner@2.0.3';
+import { FloatingOrbs } from '../components/FloatingOrbs';
 import { projectId, publicAnonKey } from '../utils/supabase/info';
 import { useLanguage } from '../context/LanguageContext';
 import { logger } from '../utils/logger';
@@ -119,6 +120,7 @@ export function ContactPage() {
     <div style={{ backgroundColor: '#F5F1EB' }}>
       {/* Hero Section — Editorial */}
       <section className="relative overflow-hidden" style={{ backgroundColor: '#0A0A0A' }}>
+        <FloatingOrbs />
         <div className="absolute inset-0 pointer-events-none" style={{
           background: `radial-gradient(ellipse 55% 80% at 20% 50%, rgba(166,143,89,0.09) 0%, transparent 60%),
                        radial-gradient(ellipse 40% 60% at 80% 60%, rgba(177,100,59,0.07) 0%, transparent 55%)`
@@ -192,7 +194,7 @@ export function ContactPage() {
                       variant="outline"
                       style={{ borderColor: 'rgba(166,143,89,0.4)', color: '#A68F59', backgroundColor: 'transparent' }}
                       onClick={() => {
-                        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+                        window.dispatchEvent(new CustomEvent('sankofa:open'));
                       }}
                     >
                       {t('contact.book.btn.chat')}

@@ -3,8 +3,9 @@ import { Button } from '../components/ui/button';
 import { useCart } from '../context/CartContext';
 import { useLanguage } from '../context/LanguageContext';
 import { toast } from 'sonner@2.0.3';
-import { Heart, ChevronDown, Eye, Calendar, Package } from 'lucide-react';
+import { Heart, Eye, Calendar, Package } from 'lucide-react';
 import { motion } from 'motion/react';
+import { FloatingOrbs } from '../components/FloatingOrbs';
 import { ProductQuickView } from '../components/ProductQuickView';
 import { SizeGuide } from '../components/SizeGuide';
 import { AddToCartDialog } from '../components/AddToCartDialog';
@@ -111,6 +112,7 @@ export function ShopPage() {
 
       {/* Hero — editorial dark with SEEN headline */}
       <section className="relative overflow-hidden" style={{ backgroundColor: '#0A0A0A' }}>
+        <FloatingOrbs />
         <div className="absolute inset-0 pointer-events-none" style={{
           background: `radial-gradient(ellipse 60% 80% at 15% 50%, rgba(166,143,89,0.08) 0%, transparent 55%),
                        radial-gradient(ellipse 40% 60% at 88% 70%, rgba(177,100,59,0.07) 0%, transparent 55%)`
@@ -181,10 +183,6 @@ export function ShopPage() {
                 </button>
               ))}
             </div>
-            <button className="hidden md:flex items-center gap-1 text-xs tracking-widest pr-2" style={{ color: '#4A3E36' }}>
-              SORT
-              <ChevronDown className="w-3 h-3" />
-            </button>
           </div>
         </div>
       </section>

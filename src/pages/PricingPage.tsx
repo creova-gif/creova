@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router';
 import { Button } from '../components/ui/button';
 import { CheckCircle2, Check, Target, Award, Shield, Clock, ArrowRight, Star, Users, Briefcase, Package, Plane, PartyPopper, Palette, Plus, Mail, MapPin } from 'lucide-react';
 import { motion } from 'motion/react';
+import { FloatingOrbs } from '../components/FloatingOrbs';
 import { BookingModal } from '../components/BookingModal';
 import { toast } from 'sonner@2.0.3';
 import { useLanguage } from '../context/LanguageContext';
@@ -54,6 +55,7 @@ export function PricingPage() {
 
       {/* Hero Section — Editorial */}
       <section className="relative overflow-hidden" style={{ backgroundColor: '#0A0A0A' }}>
+        <FloatingOrbs />
         <div className="absolute inset-0 pointer-events-none" style={{
           background: `radial-gradient(ellipse 55% 80% at 20% 50%, rgba(166,143,89,0.09) 0%, transparent 60%),
                        radial-gradient(ellipse 40% 60% at 80% 60%, rgba(177,100,59,0.07) 0%, transparent 55%)`

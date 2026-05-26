@@ -2,7 +2,7 @@ import { X, Minus, Plus, Trash2, ShoppingBag } from 'lucide-react';
 import { Button } from './ui/button';
 import { useCart } from '../context/CartContext';
 import { useLanguage } from '../context/LanguageContext';
-import { toast } from 'sonner';
+import { toast } from 'sonner@2.0.3';
 import { useNavigate } from 'react-router';
 import { motion, AnimatePresence } from 'motion/react';
 

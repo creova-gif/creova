@@ -1,6 +1,7 @@
 import { motion } from 'motion/react';
 import { useLanguage } from '../context/LanguageContext';
 import { useNavigate, Link } from 'react-router';
+import { FloatingOrbs } from '../components/FloatingOrbs';
 import { 
   Star, 
   Crown,
@@ -31,10 +32,8 @@ export function CommunityPage() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [notifyEmails, setNotifyEmails] = useState<{ [key: string]: string }>({
-    'Creator': '',
-    'Legacy': '',
-    'Créateur': '',
-    'Héritage': ''
+    'creator': '',
+    'legacy': ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -221,6 +220,7 @@ export function CommunityPage() {
 
   const tiers = [
     {
+      id: 'community',
       name: language === 'fr' ? 'Communauté' : 'Community',
       subtitle: language === 'fr' ? 'Rejoignez la famille' : 'Join the Family',
       price: language === 'fr' ? 'Gratuit' : 'Free',
@@ -248,6 +248,7 @@ export function CommunityPage() {
       ]
     },
     {
+      id: 'creator',
       name: language === 'fr' ? 'Créateur' : 'Creator',
       subtitle: language === 'fr' ? 'Pour les visionnaires' : 'For Visionaries',
       price: '$49/month',
@@ -281,6 +282,7 @@ export function CommunityPage() {
       ]
     },
     {
+      id: 'legacy',
       name: language === 'fr' ? 'Héritage' : 'Legacy',
       subtitle: language === 'fr' ? 'Les icônes culturelles' : 'Cultural Icons',
       price: '$149/month',
@@ -342,6 +344,7 @@ export function CommunityPage() {
     <div style={{ backgroundColor: '#F5F1EB' }}>
       {/* Hero Section — Editorial */}
       <section className="relative overflow-hidden" style={{ backgroundColor: '#0A0A0A' }}>
+        <FloatingOrbs />
         <div className="absolute inset-0 pointer-events-none" style={{
           background: `radial-gradient(ellipse 55% 80% at 20% 50%, rgba(166,143,89,0.09) 0%, transparent 60%),
                        radial-gradient(ellipse 40% 60% at 80% 60%, rgba(177,100,59,0.07) 0%, transparent 55%)`
@@ -714,13 +717,13 @@ export function CommunityPage() {
                       <Input
                         type="email"
                         placeholder={language === 'fr' ? 'Votre email' : 'Your email'}
-                        value={notifyEmails[tier.name]}
-                        onChange={(e) => setNotifyEmails(prev => ({ ...prev, [tier.name]: e.target.value }))}
+                        value={notifyEmails[tier.id]}
+                        onChange={(e) => setNotifyEmails(prev => ({ ...prev, [tier.id]: e.target.value }))}
                         className="rounded-xl"
                         style={{ borderColor: tier.color }}
                       />
-                      <Button 
-                        onClick={() => handleNotifyMeLaunch(tier.name)}
+                      <Button
+                        onClick={() => handleNotifyMeLaunch(tier.id)}
                         className="w-full rounded-xl py-6 text-lg border-2"
                         style={{ 
                           backgroundColor: 'transparent',

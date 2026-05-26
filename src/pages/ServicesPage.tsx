@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router';
 import { Button } from '../components/ui/button';
 import { motion } from 'motion/react';
 import { Camera, Users, Package, PartyPopper, Plane, TrendingUp, Palette, Video, Settings, CheckCircle2, AlertCircle, Calendar } from 'lucide-react';
+import { FloatingOrbs } from '../components/FloatingOrbs';
+import { TiltCard } from '../components/TiltCard';
 
 type ServiceCategory = 'photography' | 'video' | 'brand' | 'social' | 'events' | 'rental' | 'all';
 
@@ -189,6 +191,7 @@ export function ServicesPage() {
 
       {/* Hero Section — Editorial */}
       <section className="relative overflow-hidden" style={{ backgroundColor: '#0A0A0A' }}>
+        <FloatingOrbs />
         {/* Ambient gold radials */}
         <div className="absolute inset-0 pointer-events-none" style={{
           background: `radial-gradient(ellipse 55% 80% at 20% 50%, rgba(166,143,89,0.09) 0%, transparent 60%),
@@ -326,19 +329,20 @@ export function ServicesPage() {
                 <div className="p-6" style={{ backgroundColor: '#F9F6F1' }}>
                   <div className={`grid ${service.packages.length === 4 ? 'md:grid-cols-4' : 'md:grid-cols-3'} gap-4`}>
                     {service.packages.map((pkg, pkgIndex) => (
-                      <motion.div
+                      <TiltCard
                         key={pkgIndex}
-                        whileHover={{ y: -4 }}
-                        transition={{ duration: 0.25 }}
-                        className="flex flex-col rounded-xl overflow-hidden"
+                        maxAngle={5}
+                        spotlight
+                        spotlightColor="rgba(166,143,89,0.1)"
+                        className="flex flex-col rounded-xl overflow-hidden transition-shadow duration-300"
                         style={{ border: '1px solid rgba(18,18,18,0.1)', backgroundColor: '#FFFFFF' }}
-                        onMouseEnter={(e) => {
-                          (e.currentTarget as HTMLElement).style.borderColor = 'rgba(166,143,89,0.5)';
-                          (e.currentTarget as HTMLElement).style.boxShadow = '0 8px 32px rgba(166,143,89,0.1)';
+                        onMouseEnter={(e: React.MouseEvent<HTMLDivElement>) => {
+                          e.currentTarget.style.borderColor = 'rgba(166,143,89,0.5)';
+                          e.currentTarget.style.boxShadow = '0 8px 32px rgba(166,143,89,0.1)';
                         }}
-                        onMouseLeave={(e) => {
-                          (e.currentTarget as HTMLElement).style.borderColor = 'rgba(18,18,18,0.1)';
-                          (e.currentTarget as HTMLElement).style.boxShadow = 'none';
+                        onMouseLeave={(e: React.MouseEvent<HTMLDivElement>) => {
+                          e.currentTarget.style.borderColor = 'rgba(18,18,18,0.1)';
+                          e.currentTarget.style.boxShadow = 'none';
                         }}
                       >
                         {/* Top stripe */}
@@ -387,7 +391,7 @@ export function ServicesPage() {
                             {service.category === 'rental' ? 'Reserve Equipment' : 'Book Session'}
                           </Button>
                         </div>
-                      </motion.div>
+                      </TiltCard>
                     ))}
                   </div>
 

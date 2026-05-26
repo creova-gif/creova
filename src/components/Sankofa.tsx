@@ -34,6 +34,12 @@ export function Sankofa() {
   }, [messages]);
 
   useEffect(() => {
+    const handleOpen = () => setIsOpen(true);
+    window.addEventListener('sankofa:open', handleOpen);
+    return () => window.removeEventListener('sankofa:open', handleOpen);
+  }, []);
+
+  useEffect(() => {
     if (isOpen && messages.length === 0) {
       // Welcome message when first opened
       const welcomeMsg: Message = {

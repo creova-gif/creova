@@ -1,6 +1,6 @@
 import { useState, useRef, useCallback } from 'react';
 import { Link } from 'react-router';
-import { motion, useMotionValue, useSpring, useTransform } from 'motion/react';
+import { motion, useMotionValue, useSpring, useTransform, useReducedMotion } from 'motion/react';
 import { ArrowRight, Play, Globe, Shield, Mic, BookOpen, Heart, Star, ChevronDown, Lock, Layers, Award } from 'lucide-react';
 import seenForyou from '../assets/seen-foryou.jpg';
 import seenOnboard from '../assets/seen-onboard.jpg';
@@ -60,6 +60,7 @@ const pillars = [
 
 function AppPreview3D() {
   const stageRef = useRef<HTMLDivElement>(null);
+  const prefersReduced = useReducedMotion();
 
   const rawX = useMotionValue(0);
   const rawY = useMotionValue(0);
@@ -68,14 +69,15 @@ function AppPreview3D() {
   const springY = useSpring(rawY, { stiffness: 60, damping: 20 });
 
   // MacBook: tilted left, mouse adds dynamic pitch/yaw
-  const mbRotateY = useTransform(springX, [-1, 1], [-38, -14]);
-  const mbRotateX = useTransform(springY, [-1, 1], [14, 2]);
+  const mbRotateY = useTransform(springX, [-1, 1], prefersReduced ? [-26, -26] : [-38, -14]);
+  const mbRotateX = useTransform(springY, [-1, 1], prefersReduced ? [8, 8] : [14, 2]);
 
   // iPhone: opposite tilt, pops toward viewer
-  const ipRotateY = useTransform(springX, [-1, 1], [10, 28]);
-  const ipRotateX = useTransform(springY, [-1, 1], [-10, 2]);
+  const ipRotateY = useTransform(springX, [-1, 1], prefersReduced ? [19, 19] : [10, 28]);
+  const ipRotateX = useTransform(springY, [-1, 1], prefersReduced ? [-4, -4] : [-10, 2]);
 
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    if (prefersReduced) return;
     const el = stageRef.current;
     if (!el) return;
     const { left, top, width, height } = el.getBoundingClientRect();

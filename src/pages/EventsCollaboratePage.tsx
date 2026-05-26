@@ -5,6 +5,7 @@ import photoSpotlight1 from '../assets/photo-event-networking.jpg';
 import { motion } from 'motion/react';
 import { useCart } from '../context/CartContext';
 import { useLanguage } from '../context/LanguageContext';
+import { FloatingOrbs } from '../components/FloatingOrbs';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Textarea } from '../components/ui/textarea';
@@ -342,6 +343,7 @@ export function EventsCollaboratePage() {
 
       {/* Hero — Editorial with warm gradient accent */}
       <section className="relative overflow-hidden" style={{ backgroundColor: '#0A0A0A' }}>
+        <FloatingOrbs />
         {/* Left ambient glow */}
         <div className="absolute inset-0 pointer-events-none" style={{
           background: `radial-gradient(ellipse 55% 80% at 10% 50%, rgba(166,143,89,0.1) 0%, transparent 55%),

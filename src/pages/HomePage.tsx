@@ -28,6 +28,9 @@ import photoServiceEvents from '../assets/photo-service-events.jpg';
 import photoServiceVideography from '../assets/photo-service-videography.jpg';
 import photoCollage2 from '../assets/photo-collage-2.jpg';
 import anime from 'animejs';
+import { FloatingOrbs } from '../components/FloatingOrbs';
+import { Magnetic } from '../components/Magnetic';
+import { TiltCard } from '../components/TiltCard';
 
 function AnimatedStat({ number, label, icon: Icon, delay }: {
   number: string;
@@ -165,6 +168,7 @@ export function HomePage() {
           backgroundImage: `radial-gradient(circle at 30% 50%, #A68F59 0%, transparent 50%),
                             radial-gradient(circle at 70% 70%, #B1643B 0%, transparent 60%)`,
         }} />
+        <FloatingOrbs />
 
         <motion.div
           className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 z-10 w-full"
@@ -235,19 +239,23 @@ export function HomePage() {
 
               <motion.div className="flex flex-wrap gap-4"
                 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.4, duration: 0.8 }}>
-                <Button size="lg"
-                  className="group px-6 py-4 sm:px-8 sm:py-6 rounded-xl text-base sm:text-lg border-2 hover:shadow-2xl transition-all duration-500"
-                  style={{ backgroundColor: '#F5F1EB', color: '#121212', borderColor: '#F5F1EB' }} asChild>
-                  <Link to="/contact" className="flex items-center gap-2">
-                    {t('home.cta.get.in.touch')}
-                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                  </Link>
-                </Button>
-                <Button size="lg" variant="outline"
-                  className="px-6 py-4 sm:px-8 sm:py-6 rounded-xl text-base sm:text-lg border-2 backdrop-blur-sm hover:backdrop-blur-md transition-all duration-500"
-                  style={{ borderColor: '#A68F59', color: '#A68F59', backgroundColor: 'rgba(166, 143, 89, 0.05)' }} asChild>
-                  <Link to="/services">{t('home.cta.our.services')}</Link>
-                </Button>
+                <Magnetic strength={0.22}>
+                  <Button size="lg"
+                    className="group px-6 py-4 sm:px-8 sm:py-6 rounded-xl text-base sm:text-lg border-2 hover:shadow-2xl transition-all duration-500"
+                    style={{ backgroundColor: '#F5F1EB', color: '#121212', borderColor: '#F5F1EB' }} asChild>
+                    <Link to="/contact" className="flex items-center gap-2">
+                      {t('home.cta.get.in.touch')}
+                      <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                    </Link>
+                  </Button>
+                </Magnetic>
+                <Magnetic strength={0.22}>
+                  <Button size="lg" variant="outline"
+                    className="px-6 py-4 sm:px-8 sm:py-6 rounded-xl text-base sm:text-lg border-2 backdrop-blur-sm hover:backdrop-blur-md transition-all duration-500"
+                    style={{ borderColor: '#A68F59', color: '#A68F59', backgroundColor: 'rgba(166, 143, 89, 0.05)' }} asChild>
+                    <Link to="/services">{t('home.cta.our.services')}</Link>
+                  </Button>
+                </Magnetic>
               </motion.div>
 
               <motion.div
@@ -276,12 +284,13 @@ export function HomePage() {
                   { src: teamPhoto, alt: 'CREOVA Together', offset: 'mt-16', rotate: 1 },
                   { src: heroImage3, alt: 'CREOVA Community', offset: '', rotate: -1 },
                 ].map((img, i) => (
-                  <motion.div key={i}
+                  <TiltCard
+                    key={i}
+                    maxAngle={10}
                     className={`aspect-[3/4] overflow-hidden rounded-3xl shadow-2xl ${img.offset}`}
-                    whileHover={{ scale: 1.03, rotateZ: img.rotate }}
-                    transition={{ duration: 0.4 }}>
+                  >
                     <img src={img.src} alt={img.alt} className="w-full h-full object-cover" />
-                  </motion.div>
+                  </TiltCard>
                 ))}
               </div>
             </motion.div>
@@ -324,6 +333,7 @@ export function HomePage() {
 
       {/* SEEN Platform Teaser */}
       <section className="relative overflow-hidden" style={{ backgroundColor: '#121212' }}>
+        <FloatingOrbs />
         <div className="absolute inset-0 opacity-20">
           <div className="absolute inset-0" style={{
             backgroundImage: `radial-gradient(circle at 70% 50%, #A68F59 0%, transparent 55%),
@@ -349,12 +359,14 @@ export function HomePage() {
               <p className="text-sm mb-10" style={{ color: '#7A6F66' }}>
                 {t('home.seen.features')}
               </p>
-              <Link to="/seen"
-                className="inline-flex items-center gap-3 px-8 py-4 rounded-xl text-base font-medium tracking-wide transition-all duration-500 hover:shadow-2xl group"
-                style={{ backgroundColor: '#F5F1EB', color: '#121212' }}>
-                {t('home.seen.cta')}
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </Link>
+              <Magnetic strength={0.22}>
+                <Link to="/seen"
+                  className="inline-flex items-center gap-3 px-8 py-4 rounded-xl text-base font-medium tracking-wide transition-all duration-500 hover:shadow-2xl group"
+                  style={{ backgroundColor: '#F5F1EB', color: '#121212' }}>
+                  {t('home.seen.cta')}
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </Magnetic>
             </motion.div>
             <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 1, delay: 0.2 }} viewport={{ once: true }}
@@ -406,16 +418,21 @@ export function HomePage() {
               <motion.div key={index}
                 initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: index * 0.08 }} viewport={{ once: true }}>
-                <Link to={feature.link}
-                  className="group relative block overflow-hidden rounded-3xl transition-all duration-700 hover:shadow-2xl hover:scale-[1.02]"
-                  style={{ height: '380px' }}>
+                <TiltCard
+                  spotlight
+                  spotlightColor="rgba(166,143,89,0.14)"
+                  maxAngle={6}
+                  className="group rounded-3xl overflow-hidden transition-shadow duration-700 hover:shadow-2xl"
+                  style={{ height: '380px' }}
+                >
+                  <Link to={feature.link} className="absolute inset-0 z-10" aria-label={feature.title} />
                   <img src={feature.image} alt={feature.title}
                     className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                     style={{ objectPosition: feature.objectPosition || 'center center' }} />
                   <div className="absolute inset-0" style={{
                     background: 'linear-gradient(to top, rgba(18,18,18,0.95) 0%, rgba(18,18,18,0.5) 50%, rgba(18,18,18,0.1) 100%)',
                   }} />
-                  <div className="absolute inset-0 p-8 flex flex-col justify-end">
+                  <div className="absolute inset-0 p-8 flex flex-col justify-end z-[3]">
                     <div className="w-11 h-11 rounded-2xl flex items-center justify-center mb-4 transition-transform duration-500 group-hover:scale-110"
                       style={{ backgroundColor: 'rgba(166, 143, 89, 0.15)', border: `1px solid rgba(166,143,89,0.3)` }}>
                       <feature.icon className="w-5 h-5" style={{ color: feature.accent }} />
@@ -430,7 +447,7 @@ export function HomePage() {
                     <div className="h-px mt-3 w-0 group-hover:w-full transition-all duration-700"
                       style={{ backgroundColor: feature.accent }} />
                   </div>
-                </Link>
+                </TiltCard>
               </motion.div>
             ))}
           </div>
