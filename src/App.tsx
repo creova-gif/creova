@@ -42,6 +42,7 @@ const AnalyticsDashboardPage = lazy(() => import('./pages/AnalyticsDashboardPage
 const RefundManagementPage = lazy(() => import('./pages/RefundManagementPage').then(m => ({ default: m.RefundManagementPage })));
 const AdminHubPage = lazy(() => import('./pages/AdminHubPage').then(m => ({ default: m.AdminHubPage })));
 const DatabaseAccessPage = lazy(() => import('./pages/DatabaseAccessPage').then(m => ({ default: m.DatabaseAccessPage })));
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage').then(m => ({ default: m.NotFoundPage })));
 
 function PageLoader() {
   return (
@@ -94,7 +95,7 @@ function AnimatedRoutes() {
             <Route path="/checkout" element={<CheckoutPage />} />
             <Route path="/order-confirmation" element={<OrderConfirmationPage />} />
             <Route path="/payment-success" element={<PaymentSuccessPage />} />
-            <Route path="*" element={<Navigate to="/" replace />} />
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </PageTransition>
       </AnimatePresence>
