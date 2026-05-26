@@ -68,7 +68,7 @@ export function Sankofa() {
       membership: "Adhésion CREOVA - Rejoignez la famille!\n\nCOMMUNAUTÉ (Gratuit)\n• 10% sur première commande\n• Infolettre exclusive\n• Événements communautaires\n\nCRÉATEUR (299$/an)\n• 20% sur ateliers & événements\n• 15% sur marchandise SEEN (Été 2026)\n• Rencontres mensuelles créateurs\n• Révision trimestrielle portfolio\n• Accès anticipé aux produits\n\nLEGACY (599$/an)\n• 30% sur ateliers & événements\n• 25% sur marchandise\n• Mentorat trimestriel 1-à-1\n• Séance photo annuelle gratuite\n• Opportunités de co-marketing\n\nVisitez /memberships pour plus!",
       location: "Basé en Ontario, Canada\n• Voyages partout au Canada\n• Déplacements internationaux disponibles\n\nPour les services hors ville, des frais de déplacement peuvent s'appliquer.",
       payment: "Nous acceptons:\n\n• Cartes de crédit/débit\n• Apple Pay\n• Google Pay\n• Paiement Stripe\n\nPaiement sécurisé: 50% d'acompte + solde avant livraison.",
-      default: "I can help you with:\n\n• Pricing & packages\n• Booking sessions\n• SEEN Merchandise (Summer 2026)\n• Digital Products (Summer 2026)\n• Service details\n• Equipment rentals\n• Location & travel\n• Payment info\n\nWhat would you like to know?"
+      default: "Je peux vous aider avec:\n\n• Tarifs & forfaits\n• Réservation de sessions\n• Marchandise SEEN (Été 2026)\n• Produits numériques (Été 2026)\n• Détails des services\n• Location d'équipement\n• Localisation & déplacements\n• Informations de paiement\n\nQue souhaitez-vous savoir?"
     } : {
       // English responses
       greeting: "Hello! How can I help you with CREOVA services today?",
