@@ -454,8 +454,106 @@ export function HomePage() {
         </div>
       </section>
 
-      {/* Platforms We Create For — svgl logos */}
+      {/* Trusted By — real client logos */}
       <ClientLogos />
+
+      {/* Selected Work */}
+      <section className="py-24 relative overflow-hidden" style={{ backgroundColor: '#0A0A0A' }}>
+        <div className="absolute inset-0 pointer-events-none" style={{
+          background: 'radial-gradient(ellipse 50% 60% at 50% 0%, rgba(166,143,89,0.07) 0%, transparent 60%)'
+        }} />
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          {/* Header */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-12"
+          >
+            <div>
+              <div className="flex items-center gap-4 mb-3">
+                <div style={{ height: '1px', width: '40px', backgroundColor: '#A68F59' }} />
+                <span className="text-xs tracking-[0.45em] uppercase" style={{ color: '#A68F59' }}>Selected Work</span>
+              </div>
+              <h2 className="text-4xl md:text-5xl font-light tracking-tight" style={{ color: '#F5F1EB' }}>
+                Events we've shot
+              </h2>
+            </div>
+            <Link
+              to="/work"
+              className="inline-flex items-center gap-2 text-sm tracking-wide transition-colors duration-300 flex-shrink-0"
+              style={{ color: '#A68F59' }}
+              onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = '#F5F1EB'}
+              onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = '#A68F59'}
+            >
+              View all 10 galleries
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </motion.div>
+
+          {/* 2×3 preview grid */}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {[
+              { title: 'Afro Caribbean Night', subtitle: 'Part II', org: 'BSSC', image: '/card-blackprint-session.jpg', pos: 'center 30%', url: 'https://creova.pixieset.com/afrocaribbeannightpart2/', accent: '#B1643B' },
+              { title: 'Hoop for Stars', subtitle: 'BLSA × BUGA', org: 'BLSA · BUGA', image: '/card-blsa.jpg', pos: 'center 35%', url: 'https://creova.pixieset.com/hoopforstarsblsaxbuga/', accent: '#A68F59' },
+              { title: 'FBF Podcast Stocks', subtitle: 'Brand Photography', org: 'Future Black Female', image: '/card-fbf.jpg', pos: 'center 20%', url: 'https://creova.pixieset.com/futureblackfemalefbfpodcaststocks/', accent: '#B1643B' },
+              { title: 'Level Up Symposium', subtitle: 'Brock University', org: 'Brock University', image: '/card-justin-panel.jpg', pos: 'center 25%', url: 'https://creova.pixieset.com/levelupsymposiumbrockuniversity/', accent: '#A68F59' },
+              { title: 'MASLAB × Always Carnival', subtitle: 'Cultural Night', org: 'BSSC', image: '/community-photo.jpg', pos: 'center 25%', url: 'https://creova.pixieset.com/maslabbsscxalwayscarnival/', accent: '#A68F59' },
+              { title: 'BLSA Photoshoot', subtitle: 'Brand & Portraits', org: 'BLSA', image: '/photo-beyond-agency.jpg', pos: 'center 25%', url: 'https://creova.pixieset.com/blsaphotoshoot/', accent: '#B1643B' },
+            ].map((item, i) => (
+              <motion.a
+                key={i}
+                href={item.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.08, duration: 0.6 }}
+                whileHover={{ scale: 1.02 }}
+                className="group relative block overflow-hidden rounded-xl cursor-pointer"
+                style={{ aspectRatio: '4/3', backgroundColor: '#111' }}
+              >
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  loading="lazy"
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  style={{ objectPosition: item.pos }}
+                />
+                <div className="absolute inset-0" style={{
+                  background: 'linear-gradient(to top, rgba(10,10,10,0.9) 0%, rgba(10,10,10,0.2) 60%, transparent 100%)'
+                }} />
+                <div className="absolute bottom-0 left-0 right-0 p-5">
+                  <div className="w-6 mb-2" style={{ height: '1px', backgroundColor: item.accent }} />
+                  <p className="text-[10px] tracking-[0.25em] uppercase mb-1" style={{ color: item.accent }}>{item.org}</p>
+                  <h3 className="text-base tracking-tight leading-tight" style={{ color: '#F5F1EB' }}>{item.title}</h3>
+                  <p className="text-xs mt-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ color: 'rgba(245,241,235,0.5)' }}>{item.subtitle}</p>
+                </div>
+              </motion.a>
+            ))}
+          </div>
+
+          <div className="text-center mt-10">
+            <Link
+              to="/work"
+              className="inline-flex items-center gap-3 px-8 py-4 rounded-xl text-sm tracking-wide transition-all duration-300"
+              style={{ border: '1px solid rgba(166,143,89,0.35)', color: '#A68F59', backgroundColor: 'transparent' }}
+              onMouseEnter={e => {
+                (e.currentTarget as HTMLElement).style.backgroundColor = 'rgba(166,143,89,0.1)';
+                (e.currentTarget as HTMLElement).style.borderColor = 'rgba(166,143,89,0.6)';
+              }}
+              onMouseLeave={e => {
+                (e.currentTarget as HTMLElement).style.backgroundColor = 'transparent';
+                (e.currentTarget as HTMLElement).style.borderColor = 'rgba(166,143,89,0.35)';
+              }}
+            >
+              Browse all galleries
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
 
       {/* Scroll Scrub Manifesto */}
       <section className="py-32 px-6 relative overflow-hidden" style={{ backgroundColor: '#0A0A0A' }}>

@@ -17,6 +17,7 @@ export function Navigation() {
   const { t } = useLanguage();
 
   const navLinks = [
+    { name: 'Work', path: '/work' },
     { name: t('nav.services'), path: '/services' },
     { name: t('nav.shop'), path: '/shop' },
     { name: t('nav.digital'), path: '/digital-products' },

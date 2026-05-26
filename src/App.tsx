@@ -45,6 +45,7 @@ const AnalyticsDashboardPage = lazy(() => import('./pages/AnalyticsDashboardPage
 const RefundManagementPage = lazy(() => import('./pages/RefundManagementPage').then(m => ({ default: m.RefundManagementPage })));
 const AdminHubPage = lazy(() => import('./pages/AdminHubPage').then(m => ({ default: m.AdminHubPage })));
 const DatabaseAccessPage = lazy(() => import('./pages/DatabaseAccessPage').then(m => ({ default: m.DatabaseAccessPage })));
+const WorkPage = lazy(() => import('./pages/WorkPage').then(m => ({ default: m.WorkPage })));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage').then(m => ({ default: m.NotFoundPage })));
 
 function PageLoader() {
@@ -71,6 +72,7 @@ function AnimatedRoutes() {
         <PageTransition locationKey={location.pathname}>
           <Routes location={location}>
             <Route path="/" element={<HomePage />} />
+            <Route path="/work" element={<WorkPage />} />
             <Route path="/services" element={<ServicesPage />} />
             <Route path="/pricing" element={<PricingPage />} />
             <Route path="/shop" element={<ShopPage />} />
