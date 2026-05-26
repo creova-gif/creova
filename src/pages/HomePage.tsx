@@ -42,6 +42,7 @@ function AnimatedStat({ number, label, icon: Icon, delay }: {
     const el = ref.current;
     if (!el) return;
 
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const numericStr = number.replace(/[^0-9.]/g, '');
     const suffix = number.replace(/[0-9.]/g, '');
     const target = parseFloat(numericStr) || 0;
@@ -50,6 +51,11 @@ function AnimatedStat({ number, label, icon: Icon, delay }: {
       (entries) => {
         if (entries[0].isIntersecting && !triggered.current) {
           triggered.current = true;
+          if (prefersReduced) {
+            const display = el.querySelector('[data-counter]');
+            if (display) display.textContent = number;
+            return;
+          }
           const counter = { value: 0 };
           anime({
             targets: counter,

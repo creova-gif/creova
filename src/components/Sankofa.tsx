@@ -15,6 +15,7 @@ interface Message {
 }
 
 export function Sankofa() {
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const [isOpen, setIsOpen] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -189,7 +190,7 @@ export function Sankofa() {
               />
               
               {/* Pulse animation */}
-              <span className="absolute inset-0 rounded-full animate-ping opacity-20" style={{ backgroundColor: '#B1643B' }} />
+              <span className={`absolute inset-0 rounded-full opacity-20${prefersReduced ? '' : ' animate-ping'}`} style={{ backgroundColor: '#B1643B' }} />
             </Button>
           </motion.div>
         )}

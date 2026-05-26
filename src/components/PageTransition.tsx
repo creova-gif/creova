@@ -1,4 +1,4 @@
-import { motion } from 'motion/react';
+import { motion, useReducedMotion } from 'motion/react';
 
 interface PageTransitionProps {
   children: React.ReactNode;
@@ -19,11 +19,18 @@ const variants = {
   },
 };
 
+const reducedVariants = {
+  initial: { opacity: 0 },
+  enter: { opacity: 1, transition: { duration: 0.15 } },
+  exit: { opacity: 0, transition: { duration: 0.1 } },
+};
+
 export function PageTransition({ children, locationKey }: PageTransitionProps) {
+  const prefersReduced = useReducedMotion();
   return (
     <motion.div
       key={locationKey}
-      variants={variants}
+      variants={prefersReduced ? reducedVariants : variants}
       initial="initial"
       animate="enter"
       exit="exit"
