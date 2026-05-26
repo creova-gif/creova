@@ -112,7 +112,7 @@ function LenisProvider() {
   useEffect(() => {
     let raf: number;
     let lenis: any;
-    import('lenis').then(({ default: Lenis }) => {
+    import(/* @vite-ignore */ 'lenis').then(({ default: Lenis }) => {
       lenis = new Lenis({ lerp: 0.08, smoothWheel: true });
       const loop = (time: number) => { lenis.raf(time); raf = requestAnimationFrame(loop); };
       raf = requestAnimationFrame(loop);
