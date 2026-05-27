@@ -418,7 +418,6 @@ export function CommunityPage() {
             </motion.div>
           </div>
         </div>
-        </div>
       </section>
 
       {/* Mission Statement */}
