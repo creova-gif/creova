@@ -10,6 +10,10 @@ secrets.yml
 *.key
 id_rsa
 
+# Build output
+build/
+dist/
+
 # Node.js
 node_modules/
 npm-debug.log
