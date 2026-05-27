@@ -4,10 +4,8 @@ import { useCart } from '../context/CartContext';
 import { PageSEO } from '../components/PageSEO';
 import { useLanguage } from '../context/LanguageContext';
 import { toast } from 'sonner@2.0.3';
-import { Heart, Eye, Calendar, Package } from 'lucide-react';
+import { Heart, Eye, Calendar, Package, Shirt, Tag, Sparkles } from 'lucide-react';
 import { motion } from 'motion/react';
-import { FloatingOrbs } from '../components/FloatingOrbs';
-import { SplitText } from '../components/SplitText';
 import { ProductQuickView } from '../components/ProductQuickView';
 import { SizeGuide } from '../components/SizeGuide';
 import { AddToCartDialog } from '../components/AddToCartDialog';
@@ -122,59 +120,114 @@ export function ShopPage() {
         </span>
       </motion.div>
 
-      {/* Hero — editorial dark with SEEN headline */}
-      <section className="relative overflow-hidden" style={{ backgroundColor: '#0A0A0A' }}>
-        <FloatingOrbs />
+      {/* Hero — editorial asymmetric split */}
+      <section className="relative overflow-hidden" style={{ backgroundColor: '#0A0A0A', minHeight: '440px' }}>
+        {/* Subtle ambient glow */}
         <div className="absolute inset-0 pointer-events-none" style={{
-          background: `radial-gradient(ellipse 60% 80% at 15% 50%, rgba(166,143,89,0.08) 0%, transparent 55%),
-                       radial-gradient(ellipse 40% 60% at 88% 70%, rgba(177,100,59,0.07) 0%, transparent 55%)`
+          background: `radial-gradient(ellipse 50% 80% at 0% 50%, rgba(166,143,89,0.07) 0%, transparent 60%),
+                       radial-gradient(ellipse 35% 55% at 100% 30%, rgba(177,100,59,0.05) 0%, transparent 60%)`
         }} />
-        <div className="absolute inset-0 pointer-events-none" style={{
-          backgroundImage: 'radial-gradient(circle, rgba(166,143,89,0.04) 1px, transparent 1px)',
-          backgroundSize: '28px 28px'
-        }} />
-        <div className="absolute bottom-0 left-0 right-0" style={{ height: '1px', backgroundColor: 'rgba(166,143,89,0.25)' }} />
-        {/* Warm gradient left accent stripe */}
-        <div className="absolute left-0 top-0 bottom-0 w-1.5" style={{ background: warmGradient }} />
+        {/* Left accent stripe */}
+        <div className="absolute left-0 top-0 bottom-0 w-1" style={{ background: warmGradient }} />
+        <div className="absolute bottom-0 left-0 right-0" style={{ height: '1px', backgroundColor: 'rgba(166,143,89,0.2)' }} />
 
-        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9 }}>
-            <div className="flex items-center gap-5 mb-8">
-              <div style={{ height: '1px', width: '50px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
-              <p className="text-xs tracking-[0.55em] uppercase" style={{ color: '#A68F59' }}>SEEN by CREOVA</p>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-[1fr_auto] gap-0 items-center py-16 sm:py-24">
+
+            {/* LEFT — typographic headline */}
+            <div className="relative">
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6 }}
+                className="flex items-center gap-3 mb-6"
+              >
+                <div style={{ height: '1px', width: '32px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
+                <span className="text-[10px] tracking-[0.5em] uppercase" style={{ color: '#A68F59' }}>SEEN by CREOVA</span>
+              </motion.div>
+
+              {/* MASSIVE "SEEN." */}
+              <motion.h1
+                initial={{ opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.1 }}
+                className="font-light leading-none tracking-tighter"
+                style={{ fontSize: 'clamp(80px, 16vw, 200px)', color: '#F5F1EB', letterSpacing: '-0.04em' }}
+              >
+                SEEN.
+              </motion.h1>
+
+              {/* Small italic tagline */}
+              <motion.h2
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.22 }}
+                className="italic leading-none tracking-wide mb-8"
+                style={{
+                  fontSize: 'clamp(16px, 2.8vw, 36px)',
+                  backgroundImage: warmGradient,
+                  WebkitBackgroundClip: 'text',
+                  backgroundClip: 'text',
+                  color: 'transparent',
+                }}
+              >
+                A Season of Soft Power.
+              </motion.h2>
+
+              <motion.div
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-xs tracking-widest"
+                style={{ backgroundColor: 'rgba(166,143,89,0.1)', border: '1px solid rgba(166,143,89,0.3)', color: '#A68F59' }}
+              >
+                <Calendar className="w-3.5 h-3.5" />
+                Pre-Order · Ships Summer 2026
+              </motion.div>
             </div>
 
-            <SplitText
-              text="SEEN"
-              tag="h1"
-              mode="chars"
-              stagger={0.06}
-              className="font-light tracking-tight block mb-3"
-              style={{ fontSize: 'clamp(96px, 18vw, 200px)', color: '#F5F1EB', lineHeight: 0.88, letterSpacing: '-0.04em' }}
-            />
-            <p
-              className="text-lg md:text-xl tracking-wide font-light mb-6"
-              style={{
-                backgroundImage: warmGradient,
-                WebkitBackgroundClip: 'text',
-                backgroundClip: 'text',
-                color: 'transparent'
-              }}
+            {/* RIGHT — collection stats */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.7, delay: 0.3 }}
+              className="hidden md:flex flex-col gap-3 w-60 ml-16"
             >
-              A SEASON OF SOFT POWER
-            </p>
-            <p className="text-sm mb-8 max-w-md" style={{ color: '#4A3E36' }}>
-              Artist collaborations · Creative partnerships · Curated by CREOVA
-            </p>
-
-            <div
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs tracking-wide"
-              style={{ backgroundColor: 'rgba(166,143,89,0.12)', border: '1px solid rgba(166,143,89,0.3)', color: '#A68F59' }}
-            >
-              <Calendar className="w-3.5 h-3.5" />
-              Pre-Order · Ships Summer 2026
-            </div>
-          </motion.div>
+              {[
+                { icon: Shirt, label: 'Apparel', count: '12+', desc: 'Tees · Hoodies · Hats', color: '#A68F59' },
+                { icon: Tag, label: 'Limited Drops', count: '3', desc: 'Seasonal collections', color: '#B1643B' },
+                { icon: Sparkles, label: 'Collaborations', count: '5+', desc: 'Artist partnerships', color: '#A68F59' },
+              ].map((cat, i) => (
+                <motion.div
+                  key={cat.label}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 + i * 0.1 }}
+                  className="flex items-center gap-4 px-5 py-4 rounded-xl"
+                  style={{
+                    backgroundColor: 'rgba(245,241,235,0.04)',
+                    border: '1px solid rgba(166,143,89,0.12)',
+                  }}
+                >
+                  <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
+                    style={{ backgroundColor: 'rgba(166,143,89,0.1)', border: `1px solid ${cat.color}30` }}>
+                    <cat.icon className="w-4 h-4" style={{ color: cat.color }} />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="text-sm font-medium" style={{ color: '#F5F1EB' }}>{cat.label}</span>
+                      <span className="text-xs font-semibold" style={{ color: cat.color }}>{cat.count}</span>
+                    </div>
+                    <p className="text-[11px] mt-0.5" style={{ color: 'rgba(245,241,235,0.3)' }}>{cat.desc}</p>
+                  </div>
+                </motion.div>
+              ))}
+              <div className="mt-1 flex items-center gap-2 px-1">
+                <span className="w-1.5 h-1.5 rounded-full animate-pulse flex-shrink-0" style={{ backgroundColor: '#A68F59' }} />
+                <span className="text-[10px] tracking-wide" style={{ color: 'rgba(245,241,235,0.25)' }}>Launching Summer 2026</span>
+              </div>
+            </motion.div>
+          </div>
         </div>
       </section>
 
@@ -182,7 +235,7 @@ export function ShopPage() {
       <section className="sticky z-40 py-0" style={{ top: '64px', backgroundColor: '#0E0E0E', borderBottom: '1px solid rgba(166,143,89,0.15)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
-            <div className="flex overflow-x-auto">
+            <div className="flex overflow-x-auto scrollbar-hide">
               {filterTabs.map((item) => (
                 <button
                   key={item.value}
@@ -226,12 +279,14 @@ export function ShopPage() {
                   <img
                     src={product.image}
                     alt={product.name}
+                    loading="lazy"
                     className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
                     style={{ opacity: hoveredProduct === product.id ? 0 : 1, filter: 'blur(8px)' }}
                   />
                   <img
                     src={product.hoverImage}
                     alt={product.name}
+                    loading="lazy"
                     className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
                     style={{ opacity: hoveredProduct === product.id ? 1 : 0, filter: 'blur(8px)' }}
                   />

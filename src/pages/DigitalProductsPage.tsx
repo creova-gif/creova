@@ -202,7 +202,7 @@ export function DigitalProductsPage() {
       <section className="sticky z-40" style={{ top: '64px', backgroundColor: '#0E0E0E', borderBottom: '1px solid rgba(166,143,89,0.15)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
-            <div className="flex overflow-x-auto" style={{ WebkitOverflowScrolling: 'touch' }}>
+            <div className="flex overflow-x-auto scrollbar-hide" style={{ WebkitOverflowScrolling: 'touch' }}>
               {filterTabs.map((item) => (
                 <button
                   key={item.value}
@@ -249,6 +249,7 @@ export function DigitalProductsPage() {
                   <img
                     src={product.image}
                     alt={product.name}
+                    loading="lazy"
                     className="absolute inset-0 w-full h-full object-cover transition-all duration-500"
                     style={{
                       opacity: hoveredProduct === product.id ? 0.85 : 1,

@@ -570,7 +570,7 @@ export function CommunityPage() {
                   <div className="flex items-end justify-between">
                     <div>
                       <p className="text-[10px] tracking-[0.2em] font-semibold mb-1" style={{ color: '#A68F59', fontFamily: 'var(--font-brand)' }}>BROCK UNIVERSITY</p>
-                      <h4 className="text-lg font-bold leading-tight" style={{ color: '#FFFFFF', fontFamily: 'var(--font-display)' }}>BLACK STUDENT<br />ASSOCIATION</h4>
+                      <h4 className="text-lg italic leading-tight" style={{ color: '#FFFFFF', fontFamily: 'var(--font-display)' }}>BLACK STUDENT<br />ASSOCIATION</h4>
                     </div>
                     <div className="text-right space-y-1">
                       <div className="flex flex-col items-end">
@@ -837,7 +837,7 @@ export function CommunityPage() {
                     <div className="flex items-end justify-between">
                       <div>
                         <p className="text-[10px] tracking-[0.2em] font-semibold mb-1" style={{ color: '#A68F59', fontFamily: 'var(--font-brand)' }}>{partner.captionLeft.line1}</p>
-                        <h4 className="text-lg font-bold leading-tight whitespace-pre-line" style={{ color: '#FFFFFF', fontFamily: 'var(--font-display)' }}>{partner.captionLeft.line2}</h4>
+                        <h4 className="text-lg italic leading-tight whitespace-pre-line" style={{ color: '#FFFFFF', fontFamily: 'var(--font-display)' }}>{partner.captionLeft.line2}</h4>
                       </div>
                     </div>
                   </div>

@@ -265,70 +265,114 @@ export function BookingPage() {
         title="Book a Session"
         description="Book your photography, videography, brand design, or social media session with CREOVA. Professional creative services across Ontario starting from $450."
       />
-      {/* Hero — Editorial */}
-      <section className="relative overflow-hidden" style={{ backgroundColor: '#0A0A0A' }}>
+      {/* Hero — Editorial asymmetric */}
+      <section className="relative overflow-hidden" style={{ backgroundColor: '#0A0A0A', minHeight: '400px' }}>
         <div className="absolute inset-0 pointer-events-none" style={{
-          background: `radial-gradient(ellipse 55% 80% at 15% 50%, rgba(166,143,89,0.09) 0%, transparent 60%),
-                       radial-gradient(ellipse 40% 60% at 85% 60%, rgba(177,100,59,0.07) 0%, transparent 55%)`
+          background: `radial-gradient(ellipse 50% 80% at 0% 50%, rgba(166,143,89,0.07) 0%, transparent 60%),
+                       radial-gradient(ellipse 35% 55% at 100% 30%, rgba(177,100,59,0.05) 0%, transparent 60%)`
         }} />
-        <div className="absolute inset-0 pointer-events-none" style={{
-          backgroundImage: 'radial-gradient(circle, rgba(166,143,89,0.06) 1px, transparent 1px)',
-          backgroundSize: '28px 28px'
-        }} />
-        <div className="absolute bottom-0 left-0 right-0" style={{ height: '1px', backgroundColor: 'rgba(166,143,89,0.3)' }} />
+        <div className="absolute bottom-0 left-0 right-0" style={{ height: '1px', backgroundColor: 'rgba(166,143,89,0.2)' }} />
+        <div className="absolute top-0 left-0 right-0" style={{ height: '3px', background: 'linear-gradient(135deg, #A68F59 0%, #B1643B 100%)' }} />
 
-        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-28">
-          <Button
-            variant="ghost"
-            onClick={() => navigate('/pricing')}
-            className="mb-10 text-sm"
-            style={{ color: 'rgba(166,143,89,0.7)' }}
-          >
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Back
-          </Button>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-[1fr_auto] gap-0 items-center py-14 sm:py-20">
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, ease: 'easeOut' }}
-            className="text-center"
-          >
-            <div className="flex items-center justify-center gap-5 mb-10">
-              <div style={{ height: '1px', width: '50px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
-              <p className="text-xs tracking-[0.55em] uppercase" style={{ color: '#A68F59' }}>Professional Creative Services</p>
-              <div style={{ height: '1px', width: '50px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
+            {/* LEFT — typographic headline */}
+            <div>
+              <Button
+                variant="ghost"
+                onClick={() => navigate('/pricing')}
+                className="mb-8 text-xs px-0 tracking-widest uppercase"
+                style={{ color: 'rgba(166,143,89,0.6)' }}
+              >
+                <ArrowLeft className="w-3.5 h-3.5 mr-2" />
+                Back to Pricing
+              </Button>
+
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6 }}
+                className="flex items-center gap-3 mb-6"
+              >
+                <div style={{ height: '1px', width: '32px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
+                <span className="text-[10px] tracking-[0.5em] uppercase" style={{ color: '#A68F59' }}>Professional Creative Services</span>
+              </motion.div>
+
+              {/* MASSIVE "Book" */}
+              <motion.h1
+                initial={{ opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.1 }}
+                className="font-light leading-none tracking-tighter"
+                style={{ fontSize: 'clamp(64px, 12vw, 160px)', color: '#F5F1EB' }}
+              >
+                Book.
+              </motion.h1>
+
+              {/* Small italic */}
+              <motion.h2
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.22 }}
+                className="italic leading-none tracking-tight mb-8"
+                style={{
+                  fontSize: 'clamp(20px, 3.2vw, 42px)',
+                  backgroundImage: 'linear-gradient(135deg, #A68F59 0%, #B1643B 100%)',
+                  WebkitBackgroundClip: 'text',
+                  backgroundClip: 'text',
+                  color: 'transparent',
+                }}
+              >
+                / Your Session.
+              </motion.h2>
+
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.4 }}
+                className="text-sm font-light max-w-sm"
+                style={{ color: 'rgba(245,241,235,0.4)' }}
+              >
+                Share your vision — we'll respond within 24 hours.
+              </motion.p>
             </div>
 
-            <h1
-              className="font-light tracking-tight mb-8"
-              style={{ fontSize: 'clamp(36px, 6vw, 72px)', color: '#F5F1EB', lineHeight: 1.1 }}
+            {/* RIGHT — trust signals */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.7, delay: 0.3 }}
+              className="hidden md:flex flex-col gap-3 w-56 ml-16"
             >
-              Book Your<br />
-              <span style={{
-                backgroundImage: 'linear-gradient(135deg, #F5F1EB 0%, #A68F59 60%)',
-                WebkitBackgroundClip: 'text',
-                backgroundClip: 'text',
-                color: 'transparent'
-              }}>Session</span>
-            </h1>
-            <p className="text-lg leading-relaxed" style={{ color: '#7A6F66', maxWidth: '500px', margin: '0 auto 40px' }}>
-              Let's start a conversation about your creative project. Share your vision — this is just the beginning of your story.
-            </p>
-
-            <div className="flex flex-wrap justify-center gap-8">
               {[
-                { icon: Award, text: '20+ Projects Delivered' },
-                { icon: CheckCircle2, text: 'BIPOC-Led Team' },
-                { icon: Star, text: '5-Star Reviews' }
-              ].map((badge, i) => (
-                <span key={i} className="flex items-center gap-2.5">
-                  <badge.icon className="w-4 h-4" style={{ color: '#A68F59' }} />
-                  <span className="text-sm tracking-wide" style={{ color: '#7A6F66' }}>{badge.text}</span>
-                </span>
+                { icon: Award, label: '20+ Projects', desc: 'Delivered across Ontario' },
+                { icon: CheckCircle2, label: 'BIPOC-Led', desc: 'Diverse creative team' },
+                { icon: Star, label: '5.0 ★ Rating', desc: 'Google verified reviews' },
+              ].map((item, i) => (
+                <motion.div
+                  key={item.label}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 + i * 0.1 }}
+                  className="flex items-center gap-4 px-5 py-4 rounded-xl"
+                  style={{
+                    backgroundColor: 'rgba(245,241,235,0.04)',
+                    border: '1px solid rgba(166,143,89,0.12)',
+                  }}
+                >
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
+                    style={{ backgroundColor: 'rgba(166,143,89,0.1)' }}>
+                    <item.icon className="w-4 h-4" style={{ color: '#A68F59' }} />
+                  </div>
+                  <div>
+                    <div className="text-sm font-medium" style={{ color: '#F5F1EB' }}>{item.label}</div>
+                    <p className="text-[11px] mt-0.5" style={{ color: 'rgba(245,241,235,0.3)' }}>{item.desc}</p>
+                  </div>
+                </motion.div>
               ))}
-            </div>
-          </motion.div>
+            </motion.div>
+          </div>
         </div>
       </section>
 
