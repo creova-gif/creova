@@ -123,12 +123,12 @@ export function HomePage() {
   const heroOpacityOut = useTransform(heroScrollY, [0, 0.7], [1, 0]);
 
   const features = [
-    { icon: Camera, title: t('home.feature.1.title'), description: t('home.feature.1.desc'), link: '/services', image: photoServicePhotography, objectPosition: 'center 25%', accent: '#A68F59' },
-    { icon: Video, title: t('home.feature.2.title'), description: t('home.feature.2.desc'), link: '/services', image: photoServiceVideography, objectPosition: 'center top', accent: '#B1643B' },
-    { icon: Palette, title: t('home.feature.3.title'), description: t('home.feature.3.desc'), link: '/services', image: photoCommunity2, objectPosition: 'center 20%', accent: '#A68F59' },
-    { icon: TrendingUp, title: t('home.feature.4.title'), description: t('home.feature.4.desc'), link: '/services', image: photoSocialLaptop, objectPosition: 'center top', accent: '#B1643B' },
-    { icon: ShoppingBag, title: t('home.feature.5.title'), description: t('home.feature.5.desc'), link: '/shop', image: photoEvent1, objectPosition: 'center top', accent: '#A68F59' },
-    { icon: Calendar, title: t('home.feature.6.title'), description: t('home.feature.6.desc'), link: '/experience', image: photoServiceEvents, objectPosition: 'center 40%', accent: '#B1643B' },
+    { icon: Camera, title: t('home.feature.1.title'), description: t('home.feature.1.desc'), link: '/services', image: photoServicePhotography, objectPosition: 'center 25%', accent: '#A68F59', startingPrice: '$450' },
+    { icon: Video, title: t('home.feature.2.title'), description: t('home.feature.2.desc'), link: '/services', image: photoServiceVideography, objectPosition: 'center top', accent: '#B1643B', startingPrice: '$500' },
+    { icon: Palette, title: t('home.feature.3.title'), description: t('home.feature.3.desc'), link: '/services', image: photoCommunity2, objectPosition: 'center 20%', accent: '#A68F59', startingPrice: '$750' },
+    { icon: TrendingUp, title: t('home.feature.4.title'), description: t('home.feature.4.desc'), link: '/services', image: photoSocialLaptop, objectPosition: 'center top', accent: '#B1643B', startingPrice: '$950/mo' },
+    { icon: ShoppingBag, title: t('home.feature.5.title'), description: t('home.feature.5.desc'), link: '/shop', image: photoEvent1, objectPosition: 'center top', accent: '#A68F59', startingPrice: '$15' },
+    { icon: Calendar, title: t('home.feature.6.title'), description: t('home.feature.6.desc'), link: '/experience', image: photoServiceEvents, objectPosition: 'center 40%', accent: '#B1643B', startingPrice: '$750' },
   ];
 
   const stats = [
@@ -438,9 +438,15 @@ export function HomePage() {
                     background: 'linear-gradient(to top, rgba(18,18,18,0.95) 0%, rgba(18,18,18,0.5) 50%, rgba(18,18,18,0.1) 100%)',
                   }} />
                   <div className="absolute inset-0 p-8 flex flex-col justify-end z-[3]">
-                    <div className="w-11 h-11 rounded-2xl flex items-center justify-center mb-4 transition-transform duration-500 group-hover:scale-110"
-                      style={{ backgroundColor: 'rgba(166, 143, 89, 0.15)', border: `1px solid rgba(166,143,89,0.3)` }}>
-                      <feature.icon className="w-5 h-5" style={{ color: feature.accent }} />
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="w-11 h-11 rounded-2xl flex items-center justify-center transition-transform duration-500 group-hover:scale-110"
+                        style={{ backgroundColor: 'rgba(166, 143, 89, 0.15)', border: `1px solid rgba(166,143,89,0.3)` }}>
+                        <feature.icon className="w-5 h-5" style={{ color: feature.accent }} />
+                      </div>
+                      <span className="text-xs font-semibold tracking-wide px-2.5 py-1 rounded-full"
+                        style={{ backgroundColor: 'rgba(18,18,18,0.7)', color: feature.accent, border: `1px solid ${feature.accent}40`, backdropFilter: 'blur(4px)' }}>
+                        From {feature.startingPrice}
+                      </span>
                     </div>
                     <h3 className="text-2xl mb-2 tracking-tight" style={{ color: '#F5F1EB' }}>{feature.title}</h3>
                     <p className="text-sm leading-relaxed mb-4" style={{ color: '#E3DCD3' }}>{feature.description}</p>
@@ -759,6 +765,51 @@ export function HomePage() {
 
       <TrustSignals />
       <TestimonialsSection />
+
+      {/* Google Reviews CTA */}
+      <section className="py-16 relative overflow-hidden" style={{ backgroundColor: '#F5F1EB' }}>
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="flex flex-col sm:flex-row items-center justify-between gap-8 rounded-3xl p-8 md:p-10"
+            style={{ backgroundColor: '#FFFFFF', border: '1px solid #E3DCD3', boxShadow: '0 4px 40px rgba(18,18,18,0.06)' }}
+          >
+            <div className="flex flex-col sm:flex-row items-center gap-6">
+              {/* Google G */}
+              <div className="flex-shrink-0 w-14 h-14 rounded-2xl flex items-center justify-center text-2xl font-bold select-none"
+                style={{ background: 'linear-gradient(135deg, #4285F4 0%, #34A853 33%, #FBBC05 66%, #EA4335 100%)', color: '#FFFFFF' }}>
+                G
+              </div>
+              <div className="text-center sm:text-left">
+                <div className="flex items-center justify-center sm:justify-start gap-1 mb-1">
+                  {[...Array(5)].map((_, i) => (
+                    <svg key={i} className="w-5 h-5" fill="#FBBC05" viewBox="0 0 20 20">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                  ))}
+                  <span className="ml-1 text-sm font-semibold" style={{ color: '#121212' }}>5.0</span>
+                </div>
+                <p className="text-sm font-medium" style={{ color: '#121212' }}>Rated 5 stars on Google</p>
+                <p className="text-xs mt-0.5" style={{ color: '#7A6F66' }}>Happy with our work? Share your experience.</p>
+              </div>
+            </div>
+            <a
+              href="https://g.page/r/creova/review"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-shrink-0 inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold tracking-wide transition-all duration-300 hover:opacity-90 hover:shadow-lg hover:-translate-y-px"
+              style={{ backgroundColor: '#121212', color: '#F5F1EB' }}
+            >
+              Leave a Review
+              <ArrowRight className="w-4 h-4" />
+            </a>
+          </motion.div>
+        </div>
+      </section>
+
       <CaseStudy />
 
       {/* Urgency + Mini Conversion Block */}
