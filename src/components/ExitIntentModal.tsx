@@ -180,7 +180,7 @@ export function ExitIntentModal() {
                       }}>
                         Wait —
                       </h2>
-                      <h2 className="font-semibold leading-none tracking-tight mb-6" style={{
+                      <h2 className="italic leading-none tracking-tight mb-6" style={{
                         fontSize: 'clamp(2.4rem, 5vw, 3.2rem)',
                         backgroundImage: 'linear-gradient(95deg, #A68F59 0%, #E3DCD3 70%)',
                         WebkitBackgroundClip: 'text',

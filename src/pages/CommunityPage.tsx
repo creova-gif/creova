@@ -371,7 +371,7 @@ export function CommunityPage() {
               <h1 className="font-light tracking-tight leading-none mb-2" style={{ fontSize: 'clamp(3rem, 7vw, 7rem)', color: '#F5F1EB' }}>
                 {language === 'fr' ? 'Notre' : 'Our'}
               </h1>
-              <h1 className="font-semibold tracking-tight leading-none mb-8" style={{
+              <h1 className="italic tracking-tight leading-none mb-8" style={{
                 fontSize: 'clamp(3rem, 7vw, 7rem)',
                 backgroundImage: 'linear-gradient(95deg, #A68F59 0%, #E3DCD3 65%)',
                 WebkitBackgroundClip: 'text',

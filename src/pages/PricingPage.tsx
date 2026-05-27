@@ -81,7 +81,7 @@ export function PricingPage() {
               <h1 className="font-light tracking-tight leading-none mb-3" style={{ fontSize: 'clamp(3.2rem, 7vw, 7rem)', color: '#F5F1EB' }}>
                 Real Value.
               </h1>
-              <h1 className="font-semibold tracking-tight leading-none mb-8" style={{
+              <h1 className="italic tracking-tight leading-none mb-8" style={{
                 fontSize: 'clamp(3.2rem, 7vw, 7rem)',
                 backgroundImage: 'linear-gradient(95deg, #A68F59 0%, #E3DCD3 65%)',
                 WebkitBackgroundClip: 'text',

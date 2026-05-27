@@ -353,7 +353,7 @@ export function HomePage() {
                 <span className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: '#A68F59' }} />
                 <span className="text-xs tracking-[0.4em] uppercase" style={{ color: '#A68F59' }}>{t('home.seen.badge')}</span>
               </div>
-              <h2 className="font-bold leading-none mb-6 tracking-tight" style={{
+              <h2 className="italic leading-none mb-6 tracking-tight" style={{
                 fontSize: 'clamp(4rem, 10vw, 7rem)', color: 'transparent',
                 backgroundImage: 'linear-gradient(135deg, #F5F1EB 0%, #A68F59 55%, #B1643B 100%)',
                 WebkitBackgroundClip: 'text', backgroundClip: 'text',
