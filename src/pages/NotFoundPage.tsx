@@ -1,81 +1,91 @@
 import { Link } from 'react-router';
 import { motion } from 'motion/react';
-import { Home, Mail } from 'lucide-react';
+import { Home, Mail, ArrowRight } from 'lucide-react';
+
+const warmGradient = 'linear-gradient(135deg, #A68F59 0%, #B1643B 100%)';
 
 export function NotFoundPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center px-6 py-24 bg-[#121212]">
-      <div className="text-center max-w-lg mx-auto">
-        {/* 404 number */}
-        <motion.p
-          initial={{ opacity: 0, y: -20 }}
+    <div className="min-h-screen flex items-center justify-center px-6 py-24 overflow-hidden" style={{ backgroundColor: '#0A0A0A' }}>
+      {/* Ambient glow */}
+      <div className="absolute inset-0 pointer-events-none" style={{
+        background: `radial-gradient(ellipse 60% 60% at 50% 50%, rgba(166,143,89,0.06) 0%, transparent 70%)`
+      }} />
+
+      <div className="relative max-w-2xl mx-auto">
+        {/* Eyebrow */}
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6 }}
+          className="flex items-center gap-3 mb-8"
+        >
+          <div style={{ height: '1px', width: '32px', background: warmGradient }} />
+          <span className="text-[10px] tracking-[0.5em] uppercase" style={{ color: '#A68F59' }}>CREOVA · Error</span>
+        </motion.div>
+
+        {/* Giant "404" scale contrast */}
+        <motion.h1
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="text-8xl font-bold leading-none tracking-tight"
-          style={{ color: '#A68F59' }}
-          aria-hidden="true"
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          className="font-light leading-none tracking-tighter"
+          style={{ fontSize: 'clamp(100px, 22vw, 280px)', color: '#F5F1EB' }}
+          aria-label="404"
         >
           404
-        </motion.p>
-
-        {/* Divider */}
-        <motion.div
-          initial={{ scaleX: 0 }}
-          animate={{ scaleX: 1 }}
-          transition={{ duration: 0.5, delay: 0.25 }}
-          className="mx-auto my-6 h-px w-16"
-          style={{ backgroundColor: '#A68F59', opacity: 0.5 }}
-        />
-
-        {/* Heading */}
-        <motion.h1
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          className="text-3xl font-semibold tracking-wide mb-4"
-          style={{ color: '#F5F1EB' }}
-        >
-          Page not found
         </motion.h1>
 
-        {/* Body copy */}
+        {/* Small italic sub-line */}
         <motion.p
-          initial={{ opacity: 0, y: 10 }}
+          initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          className="text-base leading-relaxed mb-10"
-          style={{ color: '#7A6F66' }}
+          transition={{ duration: 0.7, delay: 0.18 }}
+          className="italic leading-none mb-10"
+          style={{
+            fontSize: 'clamp(18px, 3vw, 36px)',
+            backgroundImage: warmGradient,
+            WebkitBackgroundClip: 'text',
+            backgroundClip: 'text',
+            color: 'transparent',
+          }}
         >
-          The page you're looking for doesn't exist or may have been moved.
-          Let's get you back on track.
+          / This page doesn't exist.
         </motion.p>
 
-        {/* CTA buttons */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.35 }}
+          className="text-sm font-light leading-relaxed mb-10 max-w-xs"
+          style={{ color: 'rgba(245,241,235,0.35)' }}
+        >
+          The page you're looking for has moved or never existed. Let's get you somewhere real.
+        </motion.p>
+
+        {/* CTAs */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.5 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4"
+          transition={{ duration: 0.5, delay: 0.45 }}
+          className="flex flex-col sm:flex-row items-start gap-3"
         >
           <Link
             to="/"
-            className="inline-flex items-center gap-2 px-7 py-3 rounded text-sm font-medium tracking-wide transition-opacity hover:opacity-80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-            style={{ backgroundColor: '#A68F59', color: '#121212' }}
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm tracking-wide font-medium transition-all duration-300 hover:opacity-90 hover:-translate-y-px"
+            style={{ background: warmGradient, color: '#F5F1EB' }}
           >
-            <Home size={16} />
+            <Home size={14} />
             Go Home
           </Link>
           <Link
             to="/contact"
-            className="inline-flex items-center gap-2 px-7 py-3 rounded text-sm font-medium tracking-wide border transition-opacity hover:opacity-80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-            style={{
-              borderColor: '#A68F59',
-              color: '#F5F1EB',
-              backgroundColor: 'transparent',
-            }}
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm tracking-wide transition-all duration-300 hover:opacity-70"
+            style={{ border: '1px solid rgba(166,143,89,0.3)', color: '#A68F59' }}
           >
-            <Mail size={16} />
+            <Mail size={14} />
             Contact Us
+            <ArrowRight size={14} />
           </Link>
         </motion.div>
       </div>

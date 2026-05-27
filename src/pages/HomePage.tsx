@@ -679,7 +679,7 @@ export function HomePage() {
             </div>
             <div className="leading-none mb-2 select-none" style={{
               fontSize: 'clamp(100px, 14vw, 180px)', color: 'rgba(166,143,89,0.12)',
-              fontFamily: 'Georgia, "Times New Roman", serif', lineHeight: '0.6', marginBottom: '-10px',
+              fontFamily: 'var(--font-display)', lineHeight: '0.6', marginBottom: '-10px',
             }}>"</div>
             <motion.h2
               className="font-light italic text-center"

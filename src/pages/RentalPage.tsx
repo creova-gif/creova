@@ -9,7 +9,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '../components/ui/popove
 import { Checkbox } from '../components/ui/checkbox';
 import { Captcha } from '../components/Captcha';
 import { motion } from 'motion/react';
-import { Camera, Video, Lightbulb, Mic, Package, Calendar as CalendarIcon, Clock, CheckCircle2, ArrowLeft, Star, Award, AlertCircle, ShieldCheck } from 'lucide-react';
+import { Camera, Video, Lightbulb, Mic, Package, Calendar as CalendarIcon, Clock, CheckCircle2, ArrowLeft, Star, Award, AlertCircle, ShieldCheck, Zap } from 'lucide-react';
 import { toast } from 'sonner@2.0.3';
 import { projectId, publicAnonKey } from '../utils/supabase/info';
 import { format, differenceInDays } from 'date-fns';
@@ -270,51 +270,113 @@ export function RentalPage() {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#F5F1EB' }}>
-      {/* Hero */}
-      <section className="relative py-20 overflow-hidden" style={{ backgroundColor: '#121212' }}>
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Button
-            variant="ghost"
-            onClick={() => navigate(-1)}
-            className="mb-6 text-sm"
-            style={{ color: '#E3DCD3' }}
-          >
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Back
-          </Button>
+      {/* Hero — editorial asymmetric split */}
+      <section className="relative overflow-hidden" style={{ backgroundColor: '#0A0A0A', minHeight: '420px' }}>
+        <div className="absolute inset-0 pointer-events-none" style={{
+          background: `radial-gradient(ellipse 50% 80% at 0% 50%, rgba(166,143,89,0.07) 0%, transparent 60%),
+                       radial-gradient(ellipse 35% 55% at 100% 30%, rgba(177,100,59,0.05) 0%, transparent 60%)`
+        }} />
+        <div className="absolute top-0 left-0 right-0" style={{ height: '3px', background: 'linear-gradient(135deg, #A68F59 0%, #B1643B 100%)' }} />
+        <div className="absolute bottom-0 left-0 right-0" style={{ height: '1px', backgroundColor: 'rgba(166,143,89,0.2)' }} />
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-center"
-          >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6" style={{ backgroundColor: 'rgba(166, 143, 89, 0.1)', border: '1px solid #A68F59' }}>
-              <Package className="w-4 h-4" style={{ color: '#A68F59' }} />
-              <span className="text-sm tracking-wide" style={{ color: '#A68F59' }}>Professional Equipment Rental</span>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-[1fr_auto] gap-0 items-center py-14 sm:py-20">
+
+            {/* LEFT */}
+            <div>
+              <Button
+                variant="ghost"
+                onClick={() => navigate(-1)}
+                className="mb-8 text-xs px-0 tracking-widest uppercase"
+                style={{ color: 'rgba(166,143,89,0.6)' }}
+              >
+                <ArrowLeft className="w-3.5 h-3.5 mr-2" />
+                Back
+              </Button>
+
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6 }}
+                className="flex items-center gap-3 mb-6"
+              >
+                <div style={{ height: '1px', width: '32px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
+                <span className="text-[10px] tracking-[0.5em] uppercase" style={{ color: '#A68F59' }}>Equipment Rental</span>
+              </motion.div>
+
+              <motion.h1
+                initial={{ opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.1 }}
+                className="font-light leading-none tracking-tighter"
+                style={{ fontSize: 'clamp(64px, 12vw, 160px)', color: '#F5F1EB' }}
+              >
+                Rent.
+              </motion.h1>
+
+              <motion.h2
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.22 }}
+                className="italic leading-none tracking-tight mb-8"
+                style={{
+                  fontSize: 'clamp(18px, 3vw, 40px)',
+                  backgroundImage: 'linear-gradient(135deg, #A68F59 0%, #B1643B 100%)',
+                  WebkitBackgroundClip: 'text',
+                  backgroundClip: 'text',
+                  color: 'transparent',
+                }}
+              >
+                / Pro-Grade Gear.
+              </motion.h2>
+
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.4 }}
+                className="text-sm font-light max-w-sm"
+                style={{ color: 'rgba(245,241,235,0.4)' }}
+              >
+                Cameras · Lighting · Audio — for your next creative project.
+              </motion.p>
             </div>
 
-            <h1 className="text-4xl md:text-5xl lg:text-6xl mb-6" style={{ color: '#F5F1EB' }}>
-              Reserve Equipment
-            </h1>
-            <p className="text-lg md:text-xl max-w-2xl mx-auto" style={{ color: '#E3DCD3' }}>
-              Access CREOVA's professional-grade cameras, lighting, and audio equipment. Perfect for your next creative project.
-            </p>
-
-            {/* Trust Badges */}
-            <div className="flex flex-wrap justify-center gap-6 mt-8">
+            {/* RIGHT — gear stat tiles */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.7, delay: 0.3 }}
+              className="hidden md:flex flex-col gap-3 w-56 ml-16"
+            >
               {[
-                { icon: Award, text: 'Pro-Grade Equipment' },
-                { icon: ShieldCheck, text: 'Fully Insured' },
-                { icon: CheckCircle2, text: '48hr Booking' }
-              ].map((badge, i) => (
-                <div key={i} className="flex items-center gap-2">
-                  <badge.icon className="w-5 h-5" style={{ color: '#A68F59' }} />
-                  <span className="text-sm" style={{ color: '#E3DCD3' }}>{badge.text}</span>
-                </div>
+                { icon: Camera, label: 'Photography Kit', desc: '$150/day · $350 deposit', color: '#A68F59' },
+                { icon: Video, label: 'Creator Kit', desc: '$175/day · $400 deposit', color: '#B1643B' },
+                { icon: Lightbulb, label: 'Lighting Kit', desc: '$85/day · $200 deposit', color: '#A68F59' },
+                { icon: Zap, label: 'Multi-day savings', desc: 'Up to 15% off 7+ days', color: '#B1643B' },
+              ].map((item, i) => (
+                <motion.div
+                  key={item.label}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 + i * 0.08 }}
+                  className="flex items-center gap-3 px-4 py-3.5 rounded-xl"
+                  style={{
+                    backgroundColor: 'rgba(245,241,235,0.04)',
+                    border: '1px solid rgba(166,143,89,0.12)',
+                  }}
+                >
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
+                    style={{ backgroundColor: 'rgba(166,143,89,0.1)' }}>
+                    <item.icon className="w-3.5 h-3.5" style={{ color: item.color }} />
+                  </div>
+                  <div>
+                    <div className="text-xs font-medium" style={{ color: '#F5F1EB' }}>{item.label}</div>
+                    <p className="text-[10px] mt-0.5" style={{ color: 'rgba(245,241,235,0.3)' }}>{item.desc}</p>
+                  </div>
+                </motion.div>
               ))}
-            </div>
-          </motion.div>
+            </motion.div>
+          </div>
         </div>
       </section>
 
