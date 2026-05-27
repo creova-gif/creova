@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react';
 import { Phone, Mail, MapPin, Clock } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useLanguage } from '../context/LanguageContext';
@@ -6,6 +7,18 @@ const warmGradient = 'linear-gradient(135deg, #A68F59 0%, #B1643B 100%)';
 
 export function ContactInfoBanner() {
   const { t } = useLanguage();
+  const [hidden, setHidden] = useState(false);
+  const lastY = useRef(0);
+
+  useEffect(() => {
+    const onScroll = () => {
+      const y = window.scrollY;
+      setHidden(y > 40 && y > lastY.current);
+      lastY.current = y;
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   const contactInfo = [
     { icon: Phone, label: t('banner.call'), value: '+1 (437) 260-8925', href: 'tel:+14372608925' },
@@ -17,10 +30,9 @@ export function ContactInfoBanner() {
   return (
     <motion.div
       initial={{ opacity: 0, y: -10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-      className="sticky top-0 z-[60]"
-      style={{ backgroundColor: '#0A0A0A', borderBottom: '1px solid rgba(166,143,89,0.18)' }}
+      animate={{ opacity: hidden ? 0 : 1, y: hidden ? -8 : 0, height: hidden ? 0 : 'auto' }}
+      transition={{ duration: 0.28, ease: [0.4, 0, 0.2, 1] }}
+      style={{ backgroundColor: '#0A0A0A', borderBottom: '1px solid rgba(166,143,89,0.18)', overflow: 'hidden' }}
     >
       {/* Warm gradient top stripe */}
       <div style={{ height: '2px', background: warmGradient }} />

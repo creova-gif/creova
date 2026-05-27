@@ -243,8 +243,10 @@ function AppContent() {
       </a>
       
       <div className="min-h-screen flex flex-col bg-white overflow-x-hidden">
-        <ContactInfoBanner />
-        <Navigation />
+        <div className="sticky top-0 z-50 flex flex-col">
+          <ContactInfoBanner />
+          <Navigation />
+        </div>
         <main id="main-content" className="flex-grow">
           <AnimatedRoutes />
         </main>

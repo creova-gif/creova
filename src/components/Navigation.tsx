@@ -40,7 +40,7 @@ export function Navigation() {
 
   return (
     <>
-      <nav className="sticky top-[52px] z-50 border-b bg-[#F5F1EB]" style={{ borderColor: '#E3DCD3' }}>
+      <nav className="border-b bg-[#F5F1EB]" style={{ borderColor: '#E3DCD3' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
@@ -60,14 +60,23 @@ export function Navigation() {
                 <NavLink
                   key={link.path}
                   to={link.path}
-                  className="px-4 py-2 transition-colors duration-300 text-sm tracking-wide font-medium"
+                  className="px-3.5 py-1.5 rounded-lg transition-all duration-250 text-sm tracking-wide font-medium"
                   style={({ isActive }) => ({
-                    color: '#4A3E36',
-                    borderBottom: isActive ? '2px solid #A68F59' : undefined,
-                    paddingBottom: isActive ? '2px' : undefined,
+                    color: isActive ? '#B1643B' : '#4A3E36',
+                    backgroundColor: isActive ? 'rgba(177,100,59,0.08)' : 'transparent',
                   })}
-                  onMouseEnter={(e) => e.currentTarget.style.color = '#B1643B'}
-                  onMouseLeave={(e) => e.currentTarget.style.color = '#4A3E36'}
+                  onMouseEnter={(e) => {
+                    if (!e.currentTarget.getAttribute('aria-current')) {
+                      e.currentTarget.style.color = '#B1643B';
+                      e.currentTarget.style.backgroundColor = 'rgba(177,100,59,0.05)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!e.currentTarget.getAttribute('aria-current')) {
+                      e.currentTarget.style.color = '#4A3E36';
+                      e.currentTarget.style.backgroundColor = 'transparent';
+                    }
+                  }}
                 >
                   {({ isActive }) => (
                     <span aria-current={isActive ? 'page' : undefined}>
