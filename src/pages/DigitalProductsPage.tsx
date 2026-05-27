@@ -3,11 +3,9 @@ import { Button } from '../components/ui/button';
 import { PageSEO } from '../components/PageSEO';
 import { useCart } from '../context/CartContext';
 import { toast } from 'sonner@2.0.3';
-import { Download, Heart, ChevronDown, Gift, Star, FileText, Camera, Palette } from 'lucide-react';
+import { Download, Heart, ChevronDown, Gift, Star, FileText, Camera, Palette, Package, Sliders, Wrench } from 'lucide-react';
 import { motion } from 'motion/react';
 import { LeadMagnetModal } from '../components/LeadMagnetModal';
-import { FloatingOrbs } from '../components/FloatingOrbs';
-import { SplitText } from '../components/SplitText';
 import { useState } from 'react';
 
 const warmGradient = 'linear-gradient(135deg, #A68F59 0%, #B1643B 100%)';
@@ -79,68 +77,129 @@ export function DigitalProductsPage() {
         description="Premium templates, presets, and tools for creatives — brand kits, social media templates, Lightroom presets, content calendars, and more. Launching Summer 2026."
       />
 
-      {/* Hero — editorial dark */}
-      <section className="relative overflow-hidden" style={{ backgroundColor: '#0A0A0A' }}>
-        <FloatingOrbs />
+      {/* Hero — editorial asymmetric split */}
+      <section className="relative overflow-hidden" style={{ backgroundColor: '#0A0A0A', minHeight: '480px' }}>
+        {/* Subtle ambient glows */}
         <div className="absolute inset-0 pointer-events-none" style={{
-          background: `radial-gradient(ellipse 55% 70% at 10% 60%, rgba(166,143,89,0.08) 0%, transparent 55%),
-                       radial-gradient(ellipse 45% 55% at 90% 30%, rgba(177,100,59,0.07) 0%, transparent 55%)`
-        }} />
-        <div className="absolute inset-0 pointer-events-none" style={{
-          backgroundImage: 'radial-gradient(circle, rgba(166,143,89,0.04) 1px, transparent 1px)',
-          backgroundSize: '28px 28px'
+          background: `radial-gradient(ellipse 50% 80% at 0% 50%, rgba(166,143,89,0.07) 0%, transparent 60%),
+                       radial-gradient(ellipse 40% 60% at 100% 20%, rgba(177,100,59,0.05) 0%, transparent 60%)`
         }} />
         <div className="absolute top-0 left-0 right-0" style={{ height: '3px', background: warmGradient }} />
-        <div className="absolute bottom-0 left-0 right-0" style={{ height: '1px', backgroundColor: 'rgba(166,143,89,0.25)' }} />
+        <div className="absolute bottom-0 left-0 right-0" style={{ height: '1px', backgroundColor: 'rgba(166,143,89,0.2)' }} />
 
-        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9 }}>
-            <div className="flex items-center gap-5 mb-8">
-              <div style={{ height: '1px', width: '40px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
-              <p className="text-xs tracking-[0.55em] uppercase" style={{ color: '#A68F59' }}>CREOVA Digital Studio</p>
-              <div style={{ height: '1px', width: '40px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-[1fr_auto] gap-0 items-center py-16 sm:py-24">
+
+            {/* LEFT — typographic headline */}
+            <div className="relative">
+              {/* Eyebrow */}
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6 }}
+                className="flex items-center gap-3 mb-6"
+              >
+                <div style={{ height: '1px', width: '32px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
+                <span className="text-[10px] tracking-[0.5em] uppercase" style={{ color: '#A68F59' }}>CREOVA Digital Studio</span>
+              </motion.div>
+
+              {/* MASSIVE "Digital." */}
+              <motion.h1
+                initial={{ opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.1 }}
+                className="font-light leading-none tracking-tighter"
+                style={{ fontSize: 'clamp(72px, 13vw, 180px)', color: '#F5F1EB' }}
+              >
+                Digital.
+              </motion.h1>
+
+              {/* Small italic "/ Resources." */}
+              <motion.h1
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.22 }}
+                className="italic leading-none tracking-tight mb-8"
+                style={{
+                  fontSize: 'clamp(22px, 3.5vw, 46px)',
+                  backgroundImage: warmGradient,
+                  WebkitBackgroundClip: 'text',
+                  backgroundClip: 'text',
+                  color: 'transparent',
+                }}
+              >
+                / Resources.
+              </motion.h1>
+
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.4 }}
+                className="text-sm font-light max-w-sm mb-8"
+                style={{ color: 'rgba(245,241,235,0.4)' }}
+              >
+                Templates · Presets · Tools built for creative entrepreneurs.
+              </motion.p>
+
+              <motion.div
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-xs tracking-widest uppercase"
+                style={{ background: warmGradient, color: '#FFFFFF' }}
+              >
+                <Download className="w-3.5 h-3.5" />
+                Coming Summer 2026 — Join waitlist
+              </motion.div>
             </div>
 
-            <SplitText
-              text="DIGITAL"
-              tag="h1"
-              mode="chars"
-              stagger={0.04}
-              className="font-light tracking-tight block"
-              style={{ fontSize: 'clamp(64px, 11vw, 140px)', color: '#F5F1EB', lineHeight: 0.95, marginBottom: '0.06em', letterSpacing: '-0.02em' }}
-            />
-            <SplitText
-              text="RESOURCES"
-              tag="h1"
-              mode="chars"
-              stagger={0.04}
-              delay={0.22}
-              className="font-light tracking-tight block mb-6"
-              style={{
-                fontSize: 'clamp(64px, 11vw, 140px)',
-                lineHeight: 0.95,
-                letterSpacing: '-0.02em',
-                backgroundImage: warmGradient,
-                WebkitBackgroundClip: 'text',
-                backgroundClip: 'text',
-                color: 'transparent'
-              }}
-            />
-            <p className="text-sm sm:text-base mb-8 max-w-md font-light" style={{ color: '#7A6F66' }}>
-              Templates · Presets · Tools for creative entrepreneurs — built with intention.
-            </p>
-
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs tracking-wide"
-              style={{ background: warmGradient, color: '#FFFFFF' }}>
-              <Download className="w-3.5 h-3.5" />
-              Coming Summer 2026 — Join the waitlist
-            </div>
-          </motion.div>
+            {/* RIGHT — product category tiles */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.7, delay: 0.3 }}
+              className="hidden md:flex flex-col gap-3 w-64 ml-16"
+            >
+              {[
+                { icon: Package, label: 'Templates', count: '12+', desc: 'Canva · Notion · InDesign', color: '#A68F59' },
+                { icon: Sliders, label: 'Presets', count: '30+', desc: 'Lightroom · Mobile', color: '#B1643B' },
+                { icon: Wrench, label: 'Tools', count: '8+', desc: 'Workbooks · Guides', color: '#A68F59' },
+              ].map((cat, i) => (
+                <motion.div
+                  key={cat.label}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 + i * 0.1 }}
+                  className="flex items-center gap-4 px-5 py-4 rounded-xl"
+                  style={{
+                    backgroundColor: 'rgba(245,241,235,0.04)',
+                    border: '1px solid rgba(166,143,89,0.12)',
+                  }}
+                >
+                  <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
+                    style={{ backgroundColor: 'rgba(166,143,89,0.1)', border: `1px solid ${cat.color}30` }}>
+                    <cat.icon className="w-4 h-4" style={{ color: cat.color }} />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="text-sm font-medium" style={{ color: '#F5F1EB' }}>{cat.label}</span>
+                      <span className="text-xs font-semibold" style={{ color: cat.color }}>{cat.count}</span>
+                    </div>
+                    <p className="text-[11px] mt-0.5" style={{ color: 'rgba(245,241,235,0.3)' }}>{cat.desc}</p>
+                  </div>
+                </motion.div>
+              ))}
+              <div className="mt-1 flex items-center gap-2 px-1">
+                <span className="w-1.5 h-1.5 rounded-full animate-pulse flex-shrink-0" style={{ backgroundColor: '#A68F59' }} />
+                <span className="text-[10px] tracking-wide" style={{ color: 'rgba(245,241,235,0.25)' }}>Launching Summer 2026</span>
+              </div>
+            </motion.div>
+          </div>
         </div>
       </section>
 
       {/* Dark filter bar */}
-      <section className="sticky top-0 z-40" style={{ backgroundColor: '#0E0E0E', borderBottom: '1px solid rgba(166,143,89,0.15)' }}>
+      <section className="sticky z-40" style={{ top: '64px', backgroundColor: '#0E0E0E', borderBottom: '1px solid rgba(166,143,89,0.15)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             <div className="flex overflow-x-auto" style={{ WebkitOverflowScrolling: 'touch' }}>

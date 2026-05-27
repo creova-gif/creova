@@ -6,8 +6,6 @@ import photoSpotlight1 from '../assets/photo-event-networking.jpg';
 import { motion } from 'motion/react';
 import { useCart } from '../context/CartContext';
 import { useLanguage } from '../context/LanguageContext';
-import { FloatingOrbs } from '../components/FloatingOrbs';
-import { SplitText } from '../components/SplitText';
 import { RevealOnScroll } from '../components/RevealOnScroll';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
@@ -348,75 +346,74 @@ export function EventsCollaboratePage() {
         description="Attend CREOVA's events, workshops, and creative experiences across Ontario. Collaborate with BIPOC creatives and cultural storytellers."
       />
 
-      {/* Hero — Editorial with warm gradient accent */}
+      {/* Hero — Asymmetric scale-contrast editorial */}
       <section className="relative overflow-hidden" style={{ backgroundColor: '#0A0A0A' }}>
-        <FloatingOrbs />
-        {/* Left ambient glow */}
-        <div className="absolute inset-0 pointer-events-none" style={{
-          background: `radial-gradient(ellipse 55% 80% at 10% 50%, rgba(166,143,89,0.1) 0%, transparent 55%),
-                       radial-gradient(ellipse 40% 60% at 85% 70%, rgba(177,100,59,0.08) 0%, transparent 55%)`
-        }} />
-        {/* Dot texture */}
-        <div className="absolute inset-0 pointer-events-none" style={{
-          backgroundImage: 'radial-gradient(circle, rgba(166,143,89,0.05) 1px, transparent 1px)',
-          backgroundSize: '28px 28px'
-        }} />
-        {/* Warm gradient right stripe — the signature element */}
-        <div className="absolute right-0 top-0 bottom-0 w-1.5" style={{ background: warmGradient }} />
-        {/* Bottom hairline */}
-        <div className="absolute bottom-0 left-0 right-0" style={{ height: '1px', backgroundColor: 'rgba(166,143,89,0.3)' }} />
+        <div className="absolute left-0 top-0 bottom-0 w-1" style={{ background: warmGradient }} />
+        <div className="absolute bottom-0 left-0 right-0 h-px" style={{ backgroundColor: 'rgba(166,143,89,0.25)' }} />
 
-        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-28">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, ease: 'easeOut' }}
-          >
-            {/* Editorial label */}
-            <div className="flex items-center gap-5 mb-10">
-              <div style={{ height: '1px', flex: 1, backgroundColor: 'rgba(166,143,89,0.4)' }} />
-              <p className="text-xs tracking-[0.55em] uppercase" style={{ color: '#A68F59' }}>Experience</p>
-              <div style={{ height: '1px', flex: 1, backgroundColor: 'rgba(166,143,89,0.4)' }} />
-            </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-[1.4fr_1fr] gap-0 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+              className="py-24 pr-0 lg:pr-16"
+              style={{ borderRight: '1px solid rgba(166,143,89,0.1)' }}
+            >
+              <div className="flex items-center gap-4 mb-8">
+                <div className="w-10 h-px" style={{ backgroundColor: '#A68F59' }} />
+                <span className="text-xs tracking-[0.45em] uppercase" style={{ color: '#A68F59' }}>Experience</span>
+              </div>
+              {/* Scale contrast: MASSIVE first line, small italic second */}
+              <h1 className="font-light leading-none tracking-tighter mb-1" style={{ fontSize: 'clamp(64px, 12vw, 160px)', color: '#F5F1EB' }}>
+                Events &
+              </h1>
+              <div className="flex items-end gap-4 mb-8">
+                <h1 className="italic leading-none tracking-tight" style={{
+                  fontSize: 'clamp(22px, 3.5vw, 42px)',
+                  backgroundImage: warmGradient,
+                  WebkitBackgroundClip: 'text',
+                  backgroundClip: 'text',
+                  color: 'transparent',
+                }}>
+                  / Collaborations.
+                </h1>
+              </div>
+              <p className="text-base leading-relaxed max-w-md" style={{ color: '#7A6F66' }}>
+                Join CREOVA's creative community through professional workshops, networking events, and meaningful partnerships across Ontario.
+              </p>
+            </motion.div>
 
-            <SplitText
-              text="Events, Workshops"
-              tag="h1"
-              mode="words"
-              stagger={0.07}
-              className="font-light tracking-tight block"
-              style={{ fontSize: 'clamp(52px, 8vw, 110px)', color: '#F5F1EB', lineHeight: 1.0, marginBottom: '0.08em' }}
-            />
-            <SplitText
-              text="& Collaborations"
-              tag="h1"
-              mode="words"
-              stagger={0.07}
-              delay={0.2}
-              className="font-light tracking-tight block mb-8"
-              style={{
-                fontSize: 'clamp(52px, 8vw, 110px)',
-                lineHeight: 1.0,
-                backgroundImage: warmGradient,
-                WebkitBackgroundClip: 'text',
-                backgroundClip: 'text',
-                color: 'transparent'
-              }}
-            />
-
-            <p className="text-lg mb-12 leading-relaxed" style={{ color: '#7A6F66', maxWidth: '540px' }}>
-              Join CREOVA's creative community through professional workshops, networking events, and meaningful partnerships across Ontario
-            </p>
-
-            <div className="flex flex-wrap gap-8">
-              {['Photography Workshops', 'BIPOC Creative Events', 'Brand Partnerships'].map((tag, i) => (
-                <span key={i} className="flex items-center gap-3">
-                  <span className="text-sm tracking-wider" style={{ color: '#A68F59' }}>{tag}</span>
-                  {i < 2 && <span style={{ width: '1px', height: '14px', backgroundColor: 'rgba(166,143,89,0.3)', display: 'inline-block' }} />}
-                </span>
+            {/* Right: experience type tiles */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 1, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+              className="py-16 pl-0 lg:pl-12 grid grid-cols-2 gap-3"
+            >
+              {[
+                { icon: Calendar, label: 'Cultural Events', count: '10+' },
+                { icon: Lightbulb, label: 'Workshops', count: 'Quarterly' },
+                { icon: Handshake, label: 'Brand Collabs', count: 'Open' },
+                { icon: Users, label: 'Community', count: '500+' },
+              ].map((item, i) => (
+                <motion.div
+                  key={item.label}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.28 + i * 0.07 }}
+                  className="p-5 rounded-2xl flex flex-col gap-3"
+                  style={{ backgroundColor: 'rgba(245,241,235,0.03)', border: '1px solid rgba(166,143,89,0.1)' }}
+                >
+                  <item.icon className="w-5 h-5" style={{ color: '#A68F59' }} />
+                  <div>
+                    <div className="text-xl font-light" style={{ color: '#F5F1EB' }}>{item.count}</div>
+                    <div className="text-xs tracking-wide uppercase mt-0.5" style={{ color: 'rgba(245,241,235,0.35)' }}>{item.label}</div>
+                  </div>
+                </motion.div>
               ))}
-            </div>
-          </motion.div>
+            </motion.div>
+          </div>
         </div>
       </section>
 

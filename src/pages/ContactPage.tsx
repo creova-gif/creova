@@ -147,26 +147,50 @@ export function ContactPage() {
                 </span>
               </motion.div>
 
-              <motion.h1
+              <motion.div
                 initial={{ opacity: 0, y: 24 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-                className="font-light leading-none tracking-tighter"
-                style={{ fontSize: 'clamp(48px, 9vw, 116px)' }}
               >
-                <span className="block" style={{ color: '#F5F1EB' }}>Let's</span>
-                <span
-                  className="block"
-                  style={{
-                    backgroundImage: 'linear-gradient(95deg, #B1643B 0%, #A68F59 100%)',
-                    WebkitBackgroundClip: 'text',
-                    backgroundClip: 'text',
-                    color: 'transparent',
-                  }}
+                {/* Massive "Let's" */}
+                <motion.span
+                  className="block font-light leading-none tracking-tighter cursor-default select-none"
+                  style={{ fontSize: 'clamp(72px, 14vw, 190px)', color: '#F5F1EB' }}
+                  whileHover={{ x: 6, color: 'rgba(245,241,235,0.7)' }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 30 }}
                 >
-                  Connect.
-                </span>
-              </motion.h1>
+                  Let's
+                </motion.span>
+                {/* Small italic "Connect." — the scale contrast */}
+                <div className="flex items-end justify-between gap-4">
+                  <motion.span
+                    className="block italic leading-none tracking-tight cursor-default select-none"
+                    style={{
+                      fontSize: 'clamp(20px, 3.2vw, 42px)',
+                      backgroundImage: 'linear-gradient(95deg, #B1643B 0%, #A68F59 100%)',
+                      WebkitBackgroundClip: 'text',
+                      backgroundClip: 'text',
+                      color: 'transparent',
+                    }}
+                    whileHover={{ x: 10 }}
+                    transition={{ type: 'spring', stiffness: 300, damping: 28 }}
+                  >
+                    Connect.
+                  </motion.span>
+                  {/* Live response signal */}
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.9 }}
+                    className="hidden sm:flex items-center gap-2 pb-1 flex-shrink-0"
+                  >
+                    <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: '#A68F59' }} />
+                    <span className="text-[9px] tracking-[0.4em] uppercase" style={{ color: 'rgba(245,241,235,0.25)' }}>
+                      Replies within 24 hrs
+                    </span>
+                  </motion.div>
+                </div>
+              </motion.div>
 
               <motion.p
                 initial={{ opacity: 0, y: 12 }}
