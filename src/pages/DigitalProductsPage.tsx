@@ -55,12 +55,12 @@ export function DigitalProductsPage() {
   };
 
   const filterTabs = [
-    { label: 'ALL', value: 'all' },
-    { label: 'BRANDING', value: 'branding' },
-    { label: 'CONTENT', value: 'content' },
-    { label: 'BUSINESS', value: 'business' },
-    { label: 'PHOTOGRAPHY', value: 'photography' },
-    { label: 'VIDEO', value: 'video' }
+    { label: t('digital.filter.all').toUpperCase(), value: 'all' },
+    { label: t('digital.filter.branding').toUpperCase(), value: 'branding' },
+    { label: t('digital.filter.content').toUpperCase(), value: 'content' },
+    { label: t('digital.filter.business').toUpperCase(), value: 'business' },
+    { label: t('digital.filter.photography').toUpperCase(), value: 'photography' },
+    { label: t('digital.filter.video').toUpperCase(), value: 'video' }
   ];
 
   const typeColor: Record<string, string> = {

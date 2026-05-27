@@ -179,6 +179,12 @@ const translations = {
     'digital.title': 'Digital Resources for Creative Entrepreneurs',
     'digital.subtitle': 'Templates, Presets, Tools & Business Resources',
     'digital.description': 'Download professional Canva templates, Lightroom presets, social media templates, and business tools designed for BIPOC entrepreneurs and creatives.',
+    'digital.filter.all': 'All',
+    'digital.filter.branding': 'Branding',
+    'digital.filter.content': 'Content',
+    'digital.filter.business': 'Business',
+    'digital.filter.photography': 'Photography',
+    'digital.filter.video': 'Video',
     
     // Experience - SEO
     'experience.title': 'Creative Workshops & Community Events',
@@ -889,6 +895,12 @@ const translations = {
     'digital.title': 'Ressources Numériques pour Entrepreneurs Créatifs',
     'digital.subtitle': 'Modèles, Préréglages, Outils & Ressources Commerciales',
     'digital.description': 'Téléchargez des modèles Canva professionnels, des préréglages Lightroom, des modèles de médias sociaux et des outils commerciaux conçus pour les entrepreneurs et créatifs BIPOC.',
+    'digital.filter.all': 'Tout',
+    'digital.filter.branding': 'Identité de marque',
+    'digital.filter.content': 'Contenu',
+    'digital.filter.business': 'Affaires',
+    'digital.filter.photography': 'Photographie',
+    'digital.filter.video': 'Vidéo',
     
     // Experience - SEO
     'experience.title': 'Ateliers Créatifs & Événements Communautaires',

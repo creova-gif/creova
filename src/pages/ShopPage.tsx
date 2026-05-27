@@ -92,13 +92,13 @@ export function ShopPage() {
   };
 
   const filterTabs = [
-    { label: 'ALL', value: 'all' },
-    { label: 'TEES', value: 'tees' },
-    { label: 'HOODIES', value: 'hoodies' },
-    { label: 'JACKETS', value: 'jackets' },
-    { label: 'PANTS', value: 'pants' },
-    { label: 'SETS', value: 'sets' },
-    { label: 'ACCESSORIES', value: 'accessories' }
+    { label: t('shop.filter.all').toUpperCase(), value: 'all' },
+    { label: t('shop.filter.tees').toUpperCase(), value: 'tees' },
+    { label: t('shop.filter.hoodies').toUpperCase(), value: 'hoodies' },
+    { label: t('shop.filter.jackets').toUpperCase(), value: 'jackets' },
+    { label: t('shop.filter.pants').toUpperCase(), value: 'pants' },
+    { label: t('shop.filter.sets').toUpperCase(), value: 'sets' },
+    { label: t('shop.filter.accessories').toUpperCase(), value: 'accessories' }
   ];
 
   return (
