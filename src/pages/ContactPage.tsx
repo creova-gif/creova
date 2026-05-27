@@ -10,8 +10,6 @@ import { Captcha } from '../components/Captcha';
 import { MapPin, Phone, Mail, Clock, Send, MessageSquare, Calendar, Star, Award, Globe, Linkedin } from 'lucide-react';
 import { motion } from 'motion/react';
 import { toast } from 'sonner@2.0.3';
-import { FloatingOrbs } from '../components/FloatingOrbs';
-import { SplitText } from '../components/SplitText';
 import { RevealOnScroll } from '../components/RevealOnScroll';
 import { projectId, publicAnonKey } from '../utils/supabase/info';
 import { useLanguage } from '../context/LanguageContext';
@@ -125,51 +123,90 @@ export function ContactPage() {
         title="Contact Us"
         description="Get in touch with CREOVA. Book a consultation, ask about our creative services, or start your photography, videography, or brand design project today."
       />
-      {/* Hero Section — Editorial */}
-      <section className="relative overflow-hidden" style={{ backgroundColor: '#0A0A0A' }}>
-        <FloatingOrbs />
-        <div className="absolute inset-0 pointer-events-none" style={{
-          background: `radial-gradient(ellipse 55% 80% at 20% 50%, rgba(166,143,89,0.09) 0%, transparent 60%),
-                       radial-gradient(ellipse 40% 60% at 80% 60%, rgba(177,100,59,0.07) 0%, transparent 55%)`
-        }} />
-        <div className="absolute inset-0 pointer-events-none" style={{
-          backgroundImage: 'radial-gradient(circle, rgba(166,143,89,0.06) 1px, transparent 1px)',
-          backgroundSize: '28px 28px'
-        }} />
-        <div className="absolute bottom-0 left-0 right-0" style={{ height: '1px', backgroundColor: 'rgba(166,143,89,0.3)' }} />
+      {/* Hero — full-width dark with large email CTA treatment */}
+      <section
+        className="relative overflow-hidden"
+        style={{ backgroundColor: '#080808', borderBottom: '1px solid rgba(166,143,89,0.15)' }}
+      >
+        {/* Top accent stripe */}
+        <div style={{ height: '2px', background: 'linear-gradient(90deg, #A68F59, #B1643B, transparent)' }} />
 
-        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-28 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, ease: 'easeOut' }}
-          >
-            <div className="flex items-center justify-center gap-5 mb-10">
-              <div style={{ height: '1px', width: '50px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
-              <p className="text-xs tracking-[0.55em] uppercase" style={{ color: '#A68F59' }}>{t('contact.badge.getintouch')}</p>
-              <div style={{ height: '1px', width: '50px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
-            </div>
-            <SplitText
-              text={t('contact.hero.title')}
-              tag="h1"
-              mode="words"
-              stagger={0.08}
-              delay={0.1}
-              className="font-light tracking-tight mb-8"
-              style={{ fontSize: 'clamp(52px, 8vw, 110px)', color: '#F5F1EB', lineHeight: 1.05 }}
-            />
-            <p className="text-lg mb-10 leading-relaxed" style={{ color: '#7A6F66', maxWidth: '500px', margin: '0 auto 40px' }}>
-              {t('contact.hero.subtitle')}
-            </p>
-            <div className="flex flex-wrap gap-6 justify-center items-center">
-              {[t('contact.tag.book'), t('contact.tag.collaborate'), t('contact.tag.inquiries')].map((tag, i) => (
-                <span key={i} className="flex items-center gap-3">
-                  <span className="text-sm tracking-wider" style={{ color: '#A68F59' }}>{tag}</span>
-                  {i < 2 && <span style={{ width: '1px', height: '14px', backgroundColor: 'rgba(166,143,89,0.3)', display: 'inline-block' }} />}
+        <div className="relative max-w-7xl mx-auto px-6 lg:px-12 py-20 lg:py-28">
+          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-10">
+            {/* Left: headline */}
+            <div>
+              <motion.div
+                initial={{ opacity: 0, x: -16 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6 }}
+                className="flex items-center gap-3 mb-8"
+              >
+                <div style={{ width: '32px', height: '1px', backgroundColor: '#A68F59' }} />
+                <span className="text-[10px] tracking-[0.5em] uppercase" style={{ color: '#A68F59' }}>
+                  {t('contact.badge.getintouch')}
                 </span>
-              ))}
+              </motion.div>
+
+              <motion.h1
+                initial={{ opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+                className="font-light leading-none tracking-tighter"
+                style={{ fontSize: 'clamp(48px, 9vw, 116px)' }}
+              >
+                <span className="block" style={{ color: '#F5F1EB' }}>Let's</span>
+                <span
+                  className="block"
+                  style={{
+                    backgroundImage: 'linear-gradient(95deg, #B1643B 0%, #A68F59 100%)',
+                    WebkitBackgroundClip: 'text',
+                    backgroundClip: 'text',
+                    color: 'transparent',
+                  }}
+                >
+                  Connect.
+                </span>
+              </motion.h1>
+
+              <motion.p
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.35 }}
+                className="mt-6 text-base leading-relaxed max-w-sm"
+                style={{ color: 'rgba(245,241,235,0.42)' }}
+              >
+                {t('contact.hero.subtitle')}
+              </motion.p>
             </div>
-          </motion.div>
+
+            {/* Right: contact info tiles */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.4 }}
+              className="grid grid-cols-2 gap-3 lg:w-72 flex-shrink-0"
+            >
+              {[
+                { icon: Phone, label: 'Call Us', value: '+1 (437) 260-8925', href: 'tel:+14372608925' },
+                { icon: Mail, label: 'Email', value: 'support@creova.ca', href: 'mailto:support@creova.ca' },
+                { icon: MapPin, label: 'Location', value: 'Niagara, Ontario', href: null },
+                { icon: Clock, label: 'Hours', value: 'Mon–Fri 9AM–6PM', href: null },
+              ].map(({ icon: Icon, label, value, href }) => {
+                const inner = (
+                  <div className="flex flex-col gap-2 p-4 rounded-xl border transition-colors" style={{ backgroundColor: 'rgba(255,255,255,0.03)', borderColor: 'rgba(166,143,89,0.12)' }}>
+                    <Icon className="w-4 h-4" style={{ color: '#A68F59' }} />
+                    <div className="text-[9px] tracking-[0.3em] uppercase" style={{ color: 'rgba(245,241,235,0.3)' }}>{label}</div>
+                    <div className="text-xs leading-tight" style={{ color: 'rgba(245,241,235,0.7)' }}>{value}</div>
+                  </div>
+                );
+                return href ? (
+                  <a key={label} href={href} className="block hover:opacity-80 transition-opacity">{inner}</a>
+                ) : (
+                  <div key={label}>{inner}</div>
+                );
+              })}
+            </motion.div>
+          </div>
         </div>
       </section>
 

@@ -4,9 +4,7 @@ import { PageSEO } from '../components/PageSEO';
 import { Button } from '../components/ui/button';
 import { motion } from 'motion/react';
 import { Camera, Users, Package, PartyPopper, Plane, TrendingUp, Palette, Video, Settings, CheckCircle2, AlertCircle, Calendar } from 'lucide-react';
-import { FloatingOrbs } from '../components/FloatingOrbs';
 import { TiltCard } from '../components/TiltCard';
-import { SplitText } from '../components/SplitText';
 import { RevealOnScroll } from '../components/RevealOnScroll';
 
 type ServiceCategory = 'photography' | 'video' | 'brand' | 'social' | 'events' | 'rental' | 'all';
@@ -201,73 +199,103 @@ export function ServicesPage() {
         description="Professional photography, videography, brand design, social media management, and event coverage for BIPOC entrepreneurs and brands across Ontario."
       />
 
-      {/* Hero Section — Editorial */}
-      <section className="relative overflow-hidden" style={{ backgroundColor: '#0A0A0A' }}>
-        <FloatingOrbs />
-        {/* Ambient gold radials */}
-        <div className="absolute inset-0 pointer-events-none" style={{
-          background: `radial-gradient(ellipse 55% 80% at 20% 50%, rgba(166,143,89,0.09) 0%, transparent 60%),
-                       radial-gradient(ellipse 40% 60% at 80% 60%, rgba(177,100,59,0.07) 0%, transparent 55%)`
-        }} />
-        {/* Fine dot texture */}
-        <div className="absolute inset-0 pointer-events-none" style={{
-          backgroundImage: 'radial-gradient(circle, rgba(166,143,89,0.06) 1px, transparent 1px)',
-          backgroundSize: '28px 28px'
-        }} />
-        {/* Bottom hairline */}
-        <div className="absolute bottom-0 left-0 right-0" style={{ height: '1px', backgroundColor: 'rgba(166,143,89,0.3)' }} />
+      {/* Hero — Asymmetric editorial split */}
+      <section
+        className="relative overflow-hidden"
+        style={{ backgroundColor: '#0A0A0A', minHeight: '480px' }}
+      >
+        {/* Warm left accent stripe */}
+        <div
+          className="absolute left-0 top-0 bottom-0 w-1"
+          style={{ background: 'linear-gradient(to bottom, #A68F59, #B1643B)' }}
+        />
+        {/* Subtle diagonal rule */}
+        <div
+          className="absolute inset-0 pointer-events-none hidden lg:block"
+          style={{
+            background: 'linear-gradient(105deg, rgba(166,143,89,0.04) 0%, transparent 50%)'
+          }}
+        />
+        <div className="absolute bottom-0 left-0 right-0" style={{ height: '1px', backgroundColor: 'rgba(166,143,89,0.18)' }} />
 
-        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-28 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, ease: 'easeOut' }}
-          >
-            {/* Editorial label */}
-            <div className="flex items-center justify-center gap-5 mb-10">
-              <div style={{ height: '1px', width: '50px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
-              <p className="text-xs tracking-[0.55em] uppercase" style={{ color: '#A68F59' }}>Creative Solutions</p>
-              <div style={{ height: '1px', width: '50px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
-            </div>
+        <div className="relative max-w-7xl mx-auto px-6 lg:px-12 py-20 lg:py-28">
+          <div className="flex flex-col lg:flex-row lg:items-end lg:gap-16">
 
-            <SplitText
-              text="Full-Service"
-              tag="h1"
-              mode="chars"
-              stagger={0.03}
-              className="font-light tracking-tight block"
-              style={{ fontSize: 'clamp(56px, 9vw, 120px)', color: '#F5F1EB', lineHeight: 1.0, marginBottom: '0.1em' }}
-            />
-            <SplitText
-              text="Creative Solutions"
-              tag="h1"
-              mode="chars"
-              stagger={0.03}
-              delay={0.18}
-              className="font-light tracking-tight block mb-8"
-              style={{
-                fontSize: 'clamp(56px, 9vw, 120px)',
-                lineHeight: 1.0,
-                backgroundImage: 'linear-gradient(135deg, #F5F1EB 0%, #A68F59 60%)',
-                WebkitBackgroundClip: 'text',
-                backgroundClip: 'text',
-                color: 'transparent'
-              }}
-            />
-
-            <p className="text-lg mb-10 leading-relaxed" style={{ color: '#7A6F66', maxWidth: '560px', margin: '0 auto 40px' }}>
-              For BIPOC brands, entrepreneurs, and cultural storytellers across Ontario and Canada
-            </p>
-
-            <div className="flex flex-wrap gap-6 justify-center items-center">
-              {['Photography', 'Videography', 'Brand Design', 'Social Media'].map((tag, i) => (
-                <span key={i} className="flex items-center gap-3">
-                  <span className="text-sm tracking-wider" style={{ color: '#A68F59' }}>{tag}</span>
-                  {i < 3 && <span style={{ width: '1px', height: '14px', backgroundColor: 'rgba(166,143,89,0.3)', display: 'inline-block' }} />}
+            {/* Left: title block */}
+            <div className="flex-1">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                className="flex items-center gap-3 mb-8"
+              >
+                <div style={{ width: '32px', height: '1px', backgroundColor: '#A68F59' }} />
+                <span className="text-[10px] tracking-[0.5em] uppercase" style={{ color: '#A68F59' }}>
+                  Creative Solutions
                 </span>
-              ))}
+              </motion.div>
+
+              <motion.h1
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+                className="font-light leading-none tracking-tighter"
+                style={{ fontSize: 'clamp(48px, 9vw, 116px)' }}
+              >
+                <span className="block" style={{ color: '#F5F1EB' }}>What</span>
+                <span
+                  className="block"
+                  style={{
+                    backgroundImage: 'linear-gradient(95deg, #A68F59 0%, #E3DCD3 65%)',
+                    WebkitBackgroundClip: 'text',
+                    backgroundClip: 'text',
+                    color: 'transparent',
+                  }}
+                >
+                  We Build.
+                </span>
+              </motion.h1>
+
+              <motion.p
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.35 }}
+                className="mt-6 text-base leading-relaxed max-w-sm"
+                style={{ color: 'rgba(245,241,235,0.45)' }}
+              >
+                Photography, video, brand design, social media, and events — for BIPOC brands across Ontario.
+              </motion.p>
             </div>
-          </motion.div>
+
+            {/* Right: category count tiles */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.4 }}
+              className="grid grid-cols-3 lg:grid-cols-2 gap-3 mt-12 lg:mt-0 lg:w-64 flex-shrink-0"
+            >
+              {[
+                { icon: Camera, label: 'Photography', n: '3' },
+                { icon: Video, label: 'Video & Drone', n: '2' },
+                { icon: Palette, label: 'Brand Design', n: '3' },
+                { icon: TrendingUp, label: 'Social Media', n: '3' },
+                { icon: PartyPopper, label: 'Events', n: '3' },
+                { icon: Package, label: 'Rental', n: '5' },
+              ].map(({ icon: Icon, label, n }) => (
+                <div
+                  key={label}
+                  className="flex flex-col gap-2 p-3 rounded-xl border"
+                  style={{ backgroundColor: 'rgba(255,255,255,0.03)', borderColor: 'rgba(166,143,89,0.12)' }}
+                >
+                  <Icon className="w-4 h-4" style={{ color: '#A68F59' }} />
+                  <div className="text-lg font-light" style={{ color: '#F5F1EB' }}>{n}</div>
+                  <div className="text-[9px] tracking-[0.25em] uppercase leading-tight" style={{ color: 'rgba(245,241,235,0.35)' }}>
+                    {label}
+                  </div>
+                </div>
+              ))}
+            </motion.div>
+          </div>
         </div>
       </section>
 

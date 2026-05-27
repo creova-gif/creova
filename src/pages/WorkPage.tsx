@@ -424,7 +424,7 @@ export function WorkPage() {
       <div
         className="sticky z-40"
         style={{
-          top: 0,
+          top: '64px',
           backgroundColor: '#0E0E0E',
           borderBottom: '1px solid rgba(166,143,89,0.12)',
         }}

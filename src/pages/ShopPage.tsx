@@ -179,7 +179,7 @@ export function ShopPage() {
       </section>
 
       {/* Dark filter bar */}
-      <section className="sticky top-0 z-40 py-0" style={{ backgroundColor: '#0E0E0E', borderBottom: '1px solid rgba(166,143,89,0.15)' }}>
+      <section className="sticky z-40 py-0" style={{ top: '64px', backgroundColor: '#0E0E0E', borderBottom: '1px solid rgba(166,143,89,0.15)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             <div className="flex overflow-x-auto">

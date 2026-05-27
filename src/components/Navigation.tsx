@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, NavLink } from 'react-router';
-import { Menu, X, ShoppingCart, ChevronDown } from 'lucide-react';
+import { Menu, X, ShoppingCart, ChevronDown, ArrowUpRight } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
 import { Button } from './ui/button';
 import { useCart } from '../context/CartContext';
 import { useLanguage } from '../context/LanguageContext';
@@ -17,11 +18,17 @@ export function Navigation() {
   const { totalItems } = useCart();
   const { t } = useLanguage();
 
+  // Lock body scroll while drawer open
+  useEffect(() => {
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [isOpen]);
+
   const navLinks = [
     { name: 'Work', path: '/work' },
     { name: t('nav.services'), path: '/services' },
     { name: t('nav.shop'), path: '/shop' },
-    { name: t('nav.digital'), path: '/digital-products' },
+    { name: 'Digital', path: '/digital-products' },
     { name: t('nav.experience'), path: '/experience' },
     { name: t('nav.community'), path: '/community' },
     { name: t('nav.contact'), path: '/contact' },
@@ -205,98 +212,154 @@ export function Navigation() {
             </div>
           </div>
 
-          {/* Mobile Navigation */}
-          {isOpen && (
-            <div className="lg:hidden py-4 space-y-1 border-t" style={{ borderColor: '#E3DCD3' }}>
-              {/* Language Switcher - Mobile */}
-              <div className="px-4 py-3 border-b" style={{ borderColor: '#E3DCD3' }}>
-                <LanguageSwitcher />
-              </div>
-              
-              {navLinks.map(link => (
-                <Link
+        </div>
+      </nav>
+
+      {/* ── FULL-SCREEN MOBILE DRAWER ── */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, x: '100%' }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: '100%' }}
+            transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
+            className="fixed inset-0 z-[200] lg:hidden flex flex-col overflow-y-auto"
+            style={{ backgroundColor: '#080808' }}
+          >
+            {/* Header row */}
+            <div
+              className="flex items-center justify-between px-6 py-4 flex-shrink-0 border-b"
+              style={{ borderColor: 'rgba(166,143,89,0.12)' }}
+            >
+              <Link to="/" onClick={() => setIsOpen(false)}>
+                <img src={creovaLogo} alt="CREOVA" className="h-10 w-auto" />
+              </Link>
+              <button
+                onClick={() => setIsOpen(false)}
+                aria-label="Close menu"
+                className="w-10 h-10 flex items-center justify-center rounded-full transition-colors"
+                style={{ color: '#F5F1EB', backgroundColor: 'rgba(245,241,235,0.06)' }}
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Nav links — large editorial */}
+            <div className="flex-1 px-6 py-6">
+              {[...navLinks, { name: 'Memberships', path: '/memberships' }, { name: 'Book a Session', path: '/booking' }].map((link, i) => (
+                <motion.div
                   key={link.path}
-                  to={link.path}
-                  onClick={() => setIsOpen(false)}
-                  className="block py-3 px-4 transition-colors text-sm tracking-wide"
-                  style={{ color: '#4A3E36' }}
-                  onMouseEnter={(e) => e.currentTarget.style.color = '#B1643B'}
-                  onMouseLeave={(e) => e.currentTarget.style.color = '#4A3E36'}
+                  initial={{ opacity: 0, x: 24 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.04 + 0.05, duration: 0.3 }}
                 >
-                  {link.name}
-                </Link>
+                  <Link
+                    to={link.path}
+                    onClick={() => setIsOpen(false)}
+                    className="flex items-center justify-between py-4 border-b group"
+                    style={{ borderColor: 'rgba(166,143,89,0.08)' }}
+                  >
+                    <span
+                      className="font-light tracking-tight transition-colors duration-200 group-hover:text-[#A68F59]"
+                      style={{ fontSize: 'clamp(24px, 6vw, 34px)', color: '#F5F1EB' }}
+                    >
+                      {link.name}
+                    </span>
+                    <ArrowUpRight
+                      className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-all duration-200 -translate-x-1 group-hover:translate-x-0"
+                      style={{ color: '#A68F59' }}
+                    />
+                  </Link>
+                </motion.div>
               ))}
 
-              {/* Memberships & Booking - Mobile only */}
-              <Link to="/memberships" onClick={() => setIsOpen(false)} className="block py-3 px-4 text-sm tracking-wide" style={{ color: '#4A3E36' }}>
-                Memberships
-              </Link>
-              <Link to="/booking" onClick={() => setIsOpen(false)} className="block py-3 px-4 text-sm tracking-wide" style={{ color: '#4A3E36' }}>
-                Book a Session
-              </Link>
+              {/* Pricing sub-links */}
+              <motion.div
+                initial={{ opacity: 0, x: 24 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: (navLinks.length + 2) * 0.04 + 0.05, duration: 0.3 }}
+              >
+                <button
+                  onClick={() => setPricingMobileOpen(!pricingMobileOpen)}
+                  className="w-full flex items-center justify-between py-4 border-b"
+                  style={{ borderColor: 'rgba(166,143,89,0.08)' }}
+                >
+                  <span className="font-light tracking-tight" style={{ fontSize: 'clamp(24px, 6vw, 34px)', color: '#F5F1EB' }}>
+                    {t('nav.pricing')}
+                  </span>
+                  <ChevronDown
+                    className={`w-5 h-5 transition-transform duration-200 ${pricingMobileOpen ? 'rotate-180' : ''}`}
+                    style={{ color: '#A68F59' }}
+                  />
+                </button>
+                <AnimatePresence>
+                  {pricingMobileOpen && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.25 }}
+                      className="overflow-hidden"
+                    >
+                      <div className="pl-4 py-2 space-y-1">
+                        {pricingCategories.map(cat => (
+                          <Link
+                            key={cat.path}
+                            to={cat.path}
+                            onClick={() => { setIsOpen(false); setPricingMobileOpen(false); }}
+                            className="block py-2.5 px-3 rounded-lg transition-colors"
+                            style={{ color: 'rgba(245,241,235,0.6)' }}
+                            onMouseEnter={e => e.currentTarget.style.color = '#A68F59'}
+                            onMouseLeave={e => e.currentTarget.style.color = 'rgba(245,241,235,0.6)'}
+                          >
+                            <div className="text-sm">{cat.name}</div>
+                            <div className="text-xs mt-0.5" style={{ color: 'rgba(245,241,235,0.3)' }}>{cat.description}</div>
+                          </Link>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
 
-              {/* Book a Call - Mobile */}
+              {/* SEEN link */}
+              <motion.div
+                initial={{ opacity: 0, x: 24 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: (navLinks.length + 3) * 0.04 + 0.05, duration: 0.3 }}
+              >
+                <Link
+                  to="/seen"
+                  onClick={() => setIsOpen(false)}
+                  className="flex items-center gap-3 py-4 border-b"
+                  style={{ borderColor: 'rgba(166,143,89,0.08)' }}
+                >
+                  <span className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: '#A68F59' }} />
+                  <span className="font-light tracking-tight" style={{ fontSize: 'clamp(24px, 6vw, 34px)', color: '#A68F59' }}>
+                    SEEN
+                  </span>
+                </Link>
+              </motion.div>
+            </div>
+
+            {/* Bottom bar */}
+            <div className="px-6 pb-10 pt-6 flex-shrink-0 space-y-4 border-t" style={{ borderColor: 'rgba(166,143,89,0.12)' }}>
               <Link
                 to="/contact"
                 onClick={() => setIsOpen(false)}
-                className="flex items-center gap-2 mx-4 my-2 px-5 py-3 rounded-xl text-sm font-semibold tracking-wide text-center justify-center"
-                style={{ backgroundColor: '#121212', color: '#F5F1EB' }}
+                className="flex items-center justify-center gap-2 py-4 rounded-xl text-sm font-semibold tracking-wide"
+                style={{ backgroundColor: '#B1643B', color: '#F5F1EB' }}
               >
-                <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: '#A68F59' }} />
+                <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: '#F5F1EB' }} />
                 {t('nav.book.call.mobile')}
               </Link>
-
-              {/* SEEN - Mobile */}
-              <Link
-                to="/seen"
-                onClick={() => setIsOpen(false)}
-                className="flex items-center gap-2 py-3 px-4 text-sm font-medium tracking-wide"
-                style={{ color: '#A68F59' }}
-              >
-                <span className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: '#A68F59' }} />
-                {t('nav.seen.label')}
-              </Link>
-
-              {/* Mobile Pricing Accordion */}
-              <div>
-                <button
-                  onClick={() => setPricingMobileOpen(!pricingMobileOpen)}
-                  className="w-full flex items-center justify-between py-3 px-4 transition-colors text-sm tracking-wide"
-                  style={{ color: '#4A3E36' }}
-                >
-                  {t('nav.pricing')}
-                  <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${pricingMobileOpen ? 'rotate-180' : ''}`} />
-                </button>
-
-                {pricingMobileOpen && (
-                  <div className="py-2 pl-4 space-y-1" style={{ backgroundColor: '#F5F1EB' }}>
-                    {pricingCategories.map((category, index) => (
-                      <Link
-                        key={category.path}
-                        to={category.path}
-                        onClick={() => {
-                          setIsOpen(false);
-                          setPricingMobileOpen(false);
-                        }}
-                        className={`block py-2 px-4 transition-colors ${index === 0 ? 'border-b pb-3 mb-2' : ''}`}
-                        style={{ 
-                          color: '#4A3E36',
-                          borderColor: index === 0 ? '#A68F59' : 'transparent'
-                        }}
-                      >
-                        <div className="text-sm">{category.name}</div>
-                        <div className="text-xs mt-0.5" style={{ color: '#7A6F66' }}>
-                          {category.description}
-                        </div>
-                      </Link>
-                    ))}
-                  </div>
-                )}
+              <div className="flex justify-center">
+                <LanguageSwitcher />
               </div>
             </div>
-          )}
-        </div>
-      </nav>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} />
     </>
