@@ -4,8 +4,6 @@ import { PageSEO } from '../components/PageSEO';
 import { Button } from '../components/ui/button';
 import { CheckCircle2, Check, Target, Award, Shield, Clock, ArrowRight, Star, Users, Briefcase, Package, Plane, PartyPopper, Palette, Plus, Mail, MapPin } from 'lucide-react';
 import { motion } from 'motion/react';
-import { FloatingOrbs } from '../components/FloatingOrbs';
-import { SplitText } from '../components/SplitText';
 import { RevealOnScroll } from '../components/RevealOnScroll';
 import { BookingModal } from '../components/BookingModal';
 import { toast } from 'sonner@2.0.3';
@@ -60,66 +58,86 @@ export function PricingPage() {
         </p>
       </div>
 
-      {/* Hero Section — Editorial */}
+      {/* Hero Section — Asymmetric Editorial */}
       <section className="relative overflow-hidden" style={{ backgroundColor: '#0A0A0A' }}>
-        <FloatingOrbs />
-        <div className="absolute inset-0 pointer-events-none" style={{
-          background: `radial-gradient(ellipse 55% 80% at 20% 50%, rgba(166,143,89,0.09) 0%, transparent 60%),
-                       radial-gradient(ellipse 40% 60% at 80% 60%, rgba(177,100,59,0.07) 0%, transparent 55%)`
-        }} />
-        <div className="absolute inset-0 pointer-events-none" style={{
-          backgroundImage: 'radial-gradient(circle, rgba(166,143,89,0.06) 1px, transparent 1px)',
-          backgroundSize: '28px 28px'
-        }} />
-        <div className="absolute bottom-0 left-0 right-0" style={{ height: '1px', backgroundColor: 'rgba(166,143,89,0.3)' }} />
+        {/* Left accent stripe */}
+        <div className="absolute left-0 top-0 bottom-0 w-1" style={{ background: 'linear-gradient(to bottom, #A68F59, #B1643B, transparent)' }} />
+        <div className="absolute bottom-0 left-0 right-0 h-px" style={{ backgroundColor: 'rgba(166,143,89,0.3)' }} />
 
-        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-28 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, ease: 'easeOut' }}
-          >
-            <div className="flex items-center justify-center gap-5 mb-10">
-              <div style={{ height: '1px', width: '50px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
-              <p className="text-xs tracking-[0.55em] uppercase" style={{ color: '#A68F59' }}>Transparent Pricing</p>
-              <div style={{ height: '1px', width: '50px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
-            </div>
-            <SplitText
-              text="Real Value."
-              tag="h1"
-              mode="chars"
-              stagger={0.03}
-              className="font-light tracking-tight block"
-              style={{ fontSize: 'clamp(56px, 9vw, 120px)', color: '#F5F1EB', lineHeight: 1.0, marginBottom: '0.1em' }}
-            />
-            <SplitText
-              text="Real Results."
-              tag="h1"
-              mode="chars"
-              stagger={0.03}
-              delay={0.18}
-              className="font-light tracking-tight block mb-8"
-              style={{
-                fontSize: 'clamp(56px, 9vw, 120px)',
-                lineHeight: 1.0,
-                backgroundImage: 'linear-gradient(135deg, #F5F1EB 0%, #A68F59 60%)',
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-[1.2fr_1fr] gap-0 items-stretch min-h-[420px]">
+            {/* Left: headline */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+              className="py-24 pr-0 lg:pr-16 flex flex-col justify-center"
+              style={{ borderRight: '1px solid rgba(166,143,89,0.1)' }}
+            >
+              <div className="flex items-center gap-4 mb-8">
+                <div className="w-10 h-px" style={{ backgroundColor: '#A68F59' }} />
+                <span className="text-xs tracking-[0.45em] uppercase" style={{ color: '#A68F59' }}>Transparent Pricing</span>
+              </div>
+              <h1 className="font-light tracking-tight leading-none mb-3" style={{ fontSize: 'clamp(3.2rem, 7vw, 7rem)', color: '#F5F1EB' }}>
+                Real Value.
+              </h1>
+              <h1 className="font-semibold tracking-tight leading-none mb-8" style={{
+                fontSize: 'clamp(3.2rem, 7vw, 7rem)',
+                backgroundImage: 'linear-gradient(95deg, #A68F59 0%, #E3DCD3 65%)',
                 WebkitBackgroundClip: 'text',
                 backgroundClip: 'text',
-                color: 'transparent'
-              }}
-            />
-            <p className="text-lg mb-10 leading-relaxed" style={{ color: '#7A6F66', maxWidth: '520px', margin: '0 auto 40px' }}>
-              Our pricing reflects dedicated creative time, strategic thinking, and long-term brand value for Canadian businesses
-            </p>
-            <div className="flex flex-wrap gap-6 justify-center items-center">
-              {['Professional Equipment', 'Expert Editing', 'Commercial License'].map((tag, i) => (
-                <span key={i} className="flex items-center gap-3">
-                  <span className="text-sm tracking-wider" style={{ color: '#A68F59' }}>{tag}</span>
-                  {i < 2 && <span style={{ width: '1px', height: '14px', backgroundColor: 'rgba(166,143,89,0.3)', display: 'inline-block' }} />}
-                </span>
+                color: 'transparent',
+              }}>
+                Real Results.
+              </h1>
+              <p className="text-base leading-relaxed max-w-lg" style={{ color: '#7A6F66' }}>
+                Dedicated creative time, strategic thinking, and long-term brand value — transparent pricing for every Canadian business.
+              </p>
+              <div className="flex flex-wrap gap-6 mt-8">
+                {['Pro Equipment', 'Expert Editing', 'Commercial License'].map((tag, i) => (
+                  <div key={i} className="flex items-center gap-2">
+                    <div className="w-1 h-1 rounded-full" style={{ backgroundColor: '#A68F59' }} />
+                    <span className="text-sm" style={{ color: 'rgba(245,241,235,0.5)' }}>{tag}</span>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* Right: price anchor cards */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 1, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+              className="py-16 pl-0 lg:pl-12 flex flex-col justify-center gap-3"
+            >
+              {[
+                { label: 'Photography', range: 'from $450', icon: '📷' },
+                { label: 'Videography', range: 'from $500', icon: '🎥' },
+                { label: 'Brand & Design', range: 'from $750', icon: '🎨' },
+                { label: 'Events', range: 'from $750', icon: '🎉' },
+                { label: 'Social Media', range: 'from $950/mo', icon: '📱' },
+                { label: 'Aerial', range: 'from $600', icon: '🚁' },
+              ].map((item, i) => (
+                <motion.button
+                  key={item.label}
+                  initial={{ opacity: 0, x: 16 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.2 + i * 0.06 }}
+                  onClick={() => scrollToSection(`#${item.label.toLowerCase().split(' ')[0]}`)}
+                  className="flex items-center justify-between px-4 py-3 rounded-xl text-left transition-all duration-200 group"
+                  style={{ backgroundColor: 'rgba(245,241,235,0.03)', border: '1px solid rgba(166,143,89,0.1)' }}
+                  onMouseEnter={e => (e.currentTarget.style.backgroundColor = 'rgba(166,143,89,0.07)')}
+                  onMouseLeave={e => (e.currentTarget.style.backgroundColor = 'rgba(245,241,235,0.03)')}
+                >
+                  <div className="flex items-center gap-3">
+                    <span className="text-base">{item.icon}</span>
+                    <span className="text-sm font-medium" style={{ color: '#F5F1EB' }}>{item.label}</span>
+                  </div>
+                  <span className="text-xs font-semibold" style={{ color: '#A68F59' }}>{item.range}</span>
+                </motion.button>
               ))}
-            </div>
-          </motion.div>
+            </motion.div>
+          </div>
         </div>
       </section>
 

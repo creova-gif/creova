@@ -2,8 +2,6 @@ import { motion } from 'motion/react';
 import { useLanguage } from '../context/LanguageContext';
 import { PageSEO } from '../components/PageSEO';
 import { useNavigate, Link } from 'react-router';
-import { FloatingOrbs } from '../components/FloatingOrbs';
-import { SplitText } from '../components/SplitText';
 import { RevealOnScroll } from '../components/RevealOnScroll';
 import { 
   Star, 
@@ -349,74 +347,77 @@ export function CommunityPage() {
         title="Community"
         description="Join the CREOVA community — a home for BIPOC creatives, entrepreneurs, and cultural storytellers across Canada. Connect, collaborate, and grow."
       />
-      {/* Hero Section — Editorial */}
+      {/* Hero Section — Asymmetric Editorial */}
       <section className="relative overflow-hidden" style={{ backgroundColor: '#0A0A0A' }}>
-        <FloatingOrbs />
-        <div className="absolute inset-0 pointer-events-none" style={{
-          background: `radial-gradient(ellipse 55% 80% at 20% 50%, rgba(166,143,89,0.09) 0%, transparent 60%),
-                       radial-gradient(ellipse 40% 60% at 80% 60%, rgba(177,100,59,0.07) 0%, transparent 55%)`
-        }} />
-        <div className="absolute inset-0 pointer-events-none" style={{
-          backgroundImage: 'radial-gradient(circle, rgba(166,143,89,0.06) 1px, transparent 1px)',
-          backgroundSize: '28px 28px'
-        }} />
-        <div className="absolute bottom-0 left-0 right-0" style={{ height: '1px', backgroundColor: 'rgba(166,143,89,0.3)' }} />
+        <div className="absolute left-0 top-0 bottom-0 w-1" style={{ background: 'linear-gradient(to bottom, transparent, #A68F59, transparent)' }} />
+        <div className="absolute bottom-0 left-0 right-0 h-px" style={{ backgroundColor: 'rgba(166,143,89,0.25)' }} />
 
-        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-28 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, ease: 'easeOut' }}
-          >
-            <div className="flex items-center justify-center gap-5 mb-10">
-              <div style={{ height: '1px', width: '50px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
-              <p className="text-xs tracking-[0.55em] uppercase" style={{ color: '#A68F59' }}>
-                {language === 'fr' ? 'Bienvenue' : 'Welcome'}
-              </p>
-              <div style={{ height: '1px', width: '50px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
-            </div>
-            <SplitText
-              text={language === 'fr' ? 'Notre' : 'Our'}
-              tag="h1"
-              mode="chars"
-              stagger={0.03}
-              className="font-light tracking-tight block"
-              style={{ fontSize: 'clamp(56px, 9vw, 120px)', color: '#F5F1EB', lineHeight: 1.0, marginBottom: '0.05em' }}
-            />
-            <SplitText
-              text={language === 'fr' ? 'Communauté' : 'Community'}
-              tag="h1"
-              mode="chars"
-              stagger={0.03}
-              delay={0.14}
-              className="font-light tracking-tight block mb-8"
-              style={{
-                fontSize: 'clamp(56px, 9vw, 120px)',
-                lineHeight: 1.0,
-                backgroundImage: 'linear-gradient(135deg, #F5F1EB 0%, #A68F59 60%)',
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-0 items-center">
+            {/* Left: headline + description */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+              className="py-24 pr-0 lg:pr-16"
+              style={{ borderRight: '1px solid rgba(166,143,89,0.1)' }}
+            >
+              <div className="flex items-center gap-4 mb-8">
+                <div className="w-10 h-px" style={{ backgroundColor: '#A68F59' }} />
+                <span className="text-xs tracking-[0.45em] uppercase" style={{ color: '#A68F59' }}>
+                  {language === 'fr' ? 'Bienvenue' : 'Welcome'}
+                </span>
+              </div>
+              <h1 className="font-light tracking-tight leading-none mb-2" style={{ fontSize: 'clamp(3rem, 7vw, 7rem)', color: '#F5F1EB' }}>
+                {language === 'fr' ? 'Notre' : 'Our'}
+              </h1>
+              <h1 className="font-semibold tracking-tight leading-none mb-8" style={{
+                fontSize: 'clamp(3rem, 7vw, 7rem)',
+                backgroundImage: 'linear-gradient(95deg, #A68F59 0%, #E3DCD3 65%)',
                 WebkitBackgroundClip: 'text',
                 backgroundClip: 'text',
-                color: 'transparent'
-              }}
-            />
-            <p className="text-lg mb-10 leading-relaxed" style={{ color: '#7A6F66', maxWidth: '540px', margin: '0 auto 40px' }}>
-              {language === 'fr'
-                ? 'Une agence créative transformant des idées en expériences captivantes et une communauté culturelle célébrant l\'excellence créative BIPOC'
-                : 'A creative agency transforming ideas into engaging experiences and a cultural movement celebrating BIPOC creative excellence'}
-            </p>
-            <div className="flex flex-wrap gap-6 justify-center items-center">
+                color: 'transparent',
+              }}>
+                {language === 'fr' ? 'Communauté.' : 'Community.'}
+              </h1>
+              <p className="text-base leading-relaxed max-w-lg" style={{ color: '#7A6F66' }}>
+                {language === 'fr'
+                  ? 'Une agence créative transformant des idées en expériences captivantes et une communauté culturelle célébrant l\'excellence créative BIPOC'
+                  : 'A creative agency transforming ideas into engaging experiences and a cultural movement celebrating BIPOC creative excellence'}
+              </p>
+            </motion.div>
+
+            {/* Right: community stat tiles */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 1, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+              className="py-16 pl-0 lg:pl-12 grid grid-cols-2 gap-3"
+            >
               {[
-                language === 'fr' ? 'Excellence Créative' : 'Creative Excellence',
-                language === 'fr' ? 'Communauté BIPOC' : 'BIPOC Community',
-                language === 'fr' ? 'Impact Culturel' : 'Cultural Impact'
-              ].map((tag, i) => (
-                <span key={i} className="flex items-center gap-3">
-                  <span className="text-sm tracking-wider" style={{ color: '#A68F59' }}>{tag}</span>
-                  {i < 2 && <span style={{ width: '1px', height: '14px', backgroundColor: 'rgba(166,143,89,0.3)', display: 'inline-block' }} />}
-                </span>
+                { value: '5+', label: language === 'fr' ? 'Communautés' : 'Communities', icon: Users },
+                { value: '100+', label: language === 'fr' ? 'Projets' : 'Projects', icon: Award },
+                { value: 'BIPOC', label: language === 'fr' ? 'Dirigée' : 'Led', icon: Heart },
+                { value: 'ON', label: language === 'fr' ? 'Canada' : 'Canada', icon: Star },
+              ].map((stat, i) => (
+                <motion.div
+                  key={stat.label}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.25 + i * 0.07 }}
+                  className="p-5 rounded-2xl flex flex-col gap-3"
+                  style={{ backgroundColor: 'rgba(245,241,235,0.03)', border: '1px solid rgba(166,143,89,0.1)' }}
+                >
+                  <stat.icon className="w-5 h-5" style={{ color: '#A68F59' }} />
+                  <div>
+                    <div className="text-2xl font-semibold" style={{ color: '#F5F1EB' }}>{stat.value}</div>
+                    <div className="text-xs tracking-wide uppercase mt-0.5" style={{ color: 'rgba(245,241,235,0.35)' }}>{stat.label}</div>
+                  </div>
+                </motion.div>
               ))}
-            </div>
-          </motion.div>
+            </motion.div>
+          </div>
+        </div>
         </div>
       </section>
 

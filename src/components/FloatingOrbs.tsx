@@ -1,4 +1,4 @@
-import { motion } from 'motion/react';
+import { motion, useReducedMotion } from 'motion/react';
 
 interface OrbConfig {
   size: number;
@@ -50,8 +50,10 @@ const orbs: OrbConfig[] = [
 ];
 
 export function FloatingOrbs() {
+  const prefersReduced = useReducedMotion();
+
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+    <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
       {orbs.map((orb, i) => (
         <motion.div
           key={i}
@@ -65,13 +67,14 @@ export function FloatingOrbs() {
             translateY: '-50%',
             background: `radial-gradient(circle, ${orb.color} 0%, transparent 68%)`,
             filter: 'blur(48px)',
+            willChange: 'transform',
           }}
-          animate={{
+          animate={prefersReduced ? {} : {
             x: orb.path.x,
             y: orb.path.y,
             scale: [1, 1.06, 0.96, 1.03, 1],
           }}
-          transition={{
+          transition={prefersReduced ? {} : {
             duration: orb.duration,
             delay: orb.delay,
             repeat: Infinity,

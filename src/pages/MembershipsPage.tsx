@@ -16,7 +16,8 @@ import {
   DialogTitle,
   DialogDescription,
 } from '../components/ui/dialog';
-import { Star, Crown, Check, Mail, Loader2, Users, Smartphone, Palette, Zap } from 'lucide-react';
+import { Star, Crown, Check, Mail, Loader2, Users, Smartphone, Palette, Zap, ArrowRight } from 'lucide-react';
+import { motion } from 'motion/react';
 
 export default function MembershipsPage() {
   const navigate = useNavigate();
@@ -277,16 +278,87 @@ export default function MembershipsPage() {
         title="Memberships"
         description="Join the CREOVA creative family. Free community membership, or upgrade to Creator ($199/yr) or Legacy ($499/yr) for exclusive discounts, mentorship, and benefits."
       />
-      {/* Hero Section */}
-      <div className="text-[#F5F1EB] py-24 px-4" style={{ backgroundColor: '#121212' }}>
-        <div className="max-w-6xl mx-auto text-center">
-          <div className="inline-block px-4 py-2 rounded-full mb-6 text-sm tracking-widest uppercase" style={{ backgroundColor: '#B1643B', color: '#F5F1EB' }}>
-            {t.availableBadge}
+      {/* Hero Section — Editorial */}
+      <section className="relative overflow-hidden" style={{ backgroundColor: '#0A0A0A' }}>
+        <div className="absolute left-0 top-0 bottom-0 w-1" style={{ background: 'linear-gradient(to bottom, transparent, #B1643B, #A68F59, transparent)' }} />
+        <div className="absolute bottom-0 left-0 right-0 h-px" style={{ backgroundColor: 'rgba(166,143,89,0.25)' }} />
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-[1.3fr_1fr] gap-0 items-center">
+            {/* Left: headline */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+              className="py-24 pr-0 lg:pr-16"
+              style={{ borderRight: '1px solid rgba(166,143,89,0.1)' }}
+            >
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.2, duration: 0.6 }}
+                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full mb-8"
+                style={{ backgroundColor: 'rgba(177,100,59,0.12)', border: '1px solid rgba(177,100,59,0.3)' }}
+              >
+                <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: '#B1643B' }} />
+                <span className="text-xs tracking-[0.3em] uppercase font-medium" style={{ color: '#B1643B' }}>{t.availableBadge}</span>
+              </motion.div>
+              <h1 className="font-light tracking-tight leading-none mb-2" style={{ fontSize: 'clamp(3rem, 7vw, 7rem)', color: '#F5F1EB' }}>
+                {language === 'fr' ? 'Rejoignez' : 'Join the'}
+              </h1>
+              <h1 className="font-semibold tracking-tight leading-none mb-8" style={{
+                fontSize: 'clamp(3rem, 7vw, 7rem)',
+                backgroundImage: 'linear-gradient(95deg, #A68F59 0%, #E3DCD3 65%)',
+                WebkitBackgroundClip: 'text',
+                backgroundClip: 'text',
+                color: 'transparent',
+              }}>
+                {language === 'fr' ? 'Famille.' : 'Family.'}
+              </h1>
+              <p className="text-base leading-relaxed max-w-lg" style={{ color: '#7A6F66' }}>
+                {t.subtitle}
+              </p>
+            </motion.div>
+
+            {/* Right: tier preview */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 1, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+              className="py-16 pl-0 lg:pl-12 flex flex-col gap-3"
+            >
+              {[
+                { icon: Users, label: language === 'fr' ? 'Communauté' : 'Community', price: language === 'fr' ? 'Gratuit' : 'Free', accent: '#7A6F66' },
+                { icon: Star, label: 'Creator', price: '$199/yr', accent: '#A68F59' },
+                { icon: Crown, label: 'Legacy', price: '$499/yr', accent: '#B1643B' },
+              ].map((tier, i) => (
+                <motion.div
+                  key={tier.label}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 + i * 0.08 }}
+                  className="flex items-center justify-between px-4 py-3.5 rounded-xl"
+                  style={{ backgroundColor: 'rgba(245,241,235,0.03)', border: `1px solid ${tier.accent}22` }}
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: `${tier.accent}15` }}>
+                      <tier.icon className="w-4 h-4" style={{ color: tier.accent }} />
+                    </div>
+                    <span className="text-sm font-medium" style={{ color: '#F5F1EB' }}>{tier.label}</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="text-sm font-semibold" style={{ color: tier.accent }}>{tier.price}</span>
+                    <ArrowRight className="w-3.5 h-3.5 opacity-40" style={{ color: '#F5F1EB' }} />
+                  </div>
+                </motion.div>
+              ))}
+              <p className="text-[10px] mt-2" style={{ color: 'rgba(245,241,235,0.25)' }}>
+                * CAD. 13% HST applies. Auto-renews annually.
+              </p>
+            </motion.div>
           </div>
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl mb-6" style={{ color: '#F5F1EB' }}>{t.title}</h1>
-          <p className="text-base sm:text-xl max-w-2xl mx-auto" style={{ color: '#E3DCD3' }}>{t.subtitle}</p>
         </div>
-      </div>
+      </section>
 
       {/* SEEN App Early Access Banner */}
       <div className="py-6 px-4" style={{ backgroundColor: '#A68F59' }}>

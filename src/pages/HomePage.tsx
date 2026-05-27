@@ -294,7 +294,7 @@ export function HomePage() {
                     maxAngle={10}
                     className={`aspect-[3/4] overflow-hidden rounded-3xl shadow-2xl ${img.offset}`}
                   >
-                    <img src={img.src} alt={img.alt} className="w-full h-full object-cover" />
+                    <img src={img.src} alt={img.alt} className="w-full h-full object-cover" loading="eager" />
                   </TiltCard>
                 ))}
               </div>
@@ -433,7 +433,8 @@ export function HomePage() {
                   <Link to={feature.link} className="absolute inset-0 z-10" aria-label={feature.title} />
                   <img src={feature.image} alt={feature.title}
                     className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                    style={{ objectPosition: feature.objectPosition || 'center center' }} />
+                    style={{ objectPosition: feature.objectPosition || 'center center' }}
+                    loading="lazy" />
                   <div className="absolute inset-0" style={{
                     background: 'linear-gradient(to top, rgba(18,18,18,0.95) 0%, rgba(18,18,18,0.5) 50%, rgba(18,18,18,0.1) 100%)',
                   }} />
@@ -595,20 +596,20 @@ export function HomePage() {
               transition={{ duration: 1 }} viewport={{ once: true }} className="grid grid-cols-2 gap-4">
               <div className="space-y-4">
                 <div className="relative overflow-hidden rounded-3xl aspect-[4/5]">
-                  <img src={heroImage1} alt="CREOVA community portrait" className="w-full h-full object-cover" style={{ objectPosition: 'center 20%' }} />
+                  <img src={heroImage1} alt="CREOVA community portrait" className="w-full h-full object-cover" style={{ objectPosition: 'center 20%' }} loading="lazy" />
                   <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(18,18,18,0.4) 0%, transparent 60%)' }} />
                 </div>
                 <div className="relative overflow-hidden rounded-3xl aspect-square">
-                  <img src="/community-chess-new.jpg" alt="CREOVA community chess session" className="w-full h-full object-cover" style={{ objectPosition: 'center 40%' }} />
+                  <img src="/community-chess-new.jpg" alt="CREOVA community chess session" className="w-full h-full object-cover" style={{ objectPosition: 'center 40%' }} loading="lazy" />
                 </div>
               </div>
               <div className="space-y-4 pt-8">
                 <div className="relative overflow-hidden rounded-3xl aspect-square">
-                  <img src={photoCollage2} alt="CREOVA community members" className="w-full h-full object-cover" style={{ objectPosition: 'center 20%' }} />
+                  <img src={photoCollage2} alt="CREOVA community members" className="w-full h-full object-cover" style={{ objectPosition: 'center 20%' }} loading="lazy" />
                   <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(18,18,18,0.3) 0%, transparent 70%)' }} />
                 </div>
                 <div className="relative overflow-hidden rounded-3xl aspect-[4/5]">
-                  <img src={teamPhoto} alt="CREOVA team in atrium" className="w-full h-full object-cover" style={{ objectPosition: 'center 30%' }} />
+                  <img src={teamPhoto} alt="CREOVA team in atrium" className="w-full h-full object-cover" style={{ objectPosition: 'center 30%' }} loading="lazy" />
                 </div>
               </div>
             </motion.div>
