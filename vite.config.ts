@@ -80,18 +80,13 @@
       outDir: 'build',
       sourcemap: false,
       minify: 'esbuild',
+      chunkSizeWarningLimit: 1000,
       rollupOptions: {
         output: {
           manualChunks(id) {
             if (id.includes('node_modules')) {
-              if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) {
-                return 'react-vendor';
-              }
-              if (id.includes('framer-motion') || id.includes('motion') || id.includes('animejs')) {
+              if (id.includes('framer-motion') || id.includes('/motion/') || id.includes('animejs')) {
                 return 'animation-vendor';
-              }
-              if (id.includes('lucide-react') || id.includes('@radix-ui') || id.includes('embla-carousel')) {
-                return 'ui-vendor';
               }
               if (id.includes('@supabase') || id.includes('@jsr/supabase')) {
                 return 'supabase-vendor';
