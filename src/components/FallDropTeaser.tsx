@@ -167,7 +167,7 @@ export function FallDropTeaser() {
             >
               <Lock className="w-2.5 h-2.5" style={{ color: '#B1643B' }} />
               <span className="text-[9px] tracking-[0.4em] uppercase font-medium" style={{ color: '#B1643B' }}>
-                Classified · FW 2026
+                Classified · Fall/Winter Capsule · Vol. 01
               </span>
             </motion.div>
 
@@ -180,7 +180,7 @@ export function FallDropTeaser() {
               className="font-light leading-none tracking-tighter"
               style={{ fontSize: 'clamp(48px, 8vw, 112px)', color: '#F5F1EB' }}
             >
-              Coming.
+              SEEN.
             </motion.h2>
             <motion.p
               initial={{ opacity: 0, y: 12 }}
@@ -196,7 +196,7 @@ export function FallDropTeaser() {
                 color: 'transparent',
               }}
             >
-              / Fall 2026.
+              / Fall/Winter Capsule.
             </motion.p>
 
             <motion.p
@@ -305,8 +305,11 @@ export function FallDropTeaser() {
           transition={{ duration: 0.6 }}
           className="max-w-xl"
         >
-          <p className="text-[10px] tracking-[0.4em] uppercase mb-3" style={{ color: 'rgba(166,143,89,0.6)' }}>
-            Early Access
+          <p className="text-[10px] tracking-[0.4em] uppercase mb-1" style={{ color: 'rgba(166,143,89,0.6)' }}>
+            Early Access · FW Capsule
+          </p>
+          <p className="text-xs mb-4 font-light" style={{ color: 'rgba(245,241,235,0.3)' }}>
+            Be first in line when SEEN Fall/Winter 2026 drops.
           </p>
 
           <AnimatePresence mode="wait">
@@ -371,10 +374,10 @@ export function FallDropTeaser() {
         {/* Bottom stamp */}
         <div className="mt-16 pt-8 border-t flex flex-wrap items-center justify-between gap-4" style={{ borderColor: 'rgba(166,143,89,0.1)' }}>
           <span className="text-[9px] tracking-[0.5em] uppercase" style={{ color: 'rgba(245,241,235,0.15)' }}>
-            CREOVA · FW 2026 Production · Vol. 01 · Confidential
+            SEEN · Fall/Winter Capsule · Vol. 01 · Apparel · Footwear · Accessories
           </span>
           <span className="text-[9px] tracking-[0.5em] uppercase" style={{ color: 'rgba(245,241,235,0.15)' }}>
-            Studio CREOVA · 23.05.2026
+            Studio CREOVA · FW 2026 · Confidential
           </span>
         </div>
       </div>

@@ -49,7 +49,7 @@ export function DigitalProductsPage() {
 
   const handlePurchase = (product: typeof digitalProducts[0]) => {
     addItem({ id: product.id, name: product.name, price: product.price, type: 'digital', image: product.image });
-    toast.success('Added to waitlist!', { description: `${product.name} — You'll be notified at launch this Fall 2026` });
+    toast.success('Added to waitlist!', { description: `${product.name} — You'll be notified at launch this July 2026` });
   };
 
   const filterTabs = [
@@ -74,7 +74,7 @@ export function DigitalProductsPage() {
     <div style={{ backgroundColor: '#F5F1EB' }}>
       <PageSEO
         title="Digital Products"
-        description="Premium templates, presets, and tools for creatives — brand kits, social media templates, Lightroom presets, content calendars, and more. Launching Fall 2026."
+        description="Premium templates, presets, and tools for creatives — brand kits, social media templates, Lightroom presets, content calendars, and more. Launching July 2026."
       />
 
       {/* Hero — editorial asymmetric split */}
@@ -101,6 +101,7 @@ export function DigitalProductsPage() {
               >
                 <div style={{ height: '1px', width: '32px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
                 <span className="text-[10px] tracking-[0.5em] uppercase" style={{ color: '#A68F59' }}>CREOVA Digital Studio</span>
+                <span className="text-[9px] tracking-[0.3em] uppercase px-2 py-0.5 rounded-sm ml-2" style={{ backgroundColor: 'rgba(166,143,89,0.12)', border: '1px solid rgba(166,143,89,0.25)', color: '#A68F59' }}>July 2026</span>
               </motion.div>
 
               {/* MASSIVE "Digital." */}
@@ -149,7 +150,7 @@ export function DigitalProductsPage() {
                 style={{ background: warmGradient, color: '#FFFFFF' }}
               >
                 <Download className="w-3.5 h-3.5" />
-                Coming Fall 2026 — Join waitlist
+                Coming July 2026 — Join waitlist
               </motion.div>
             </div>
 
@@ -191,7 +192,7 @@ export function DigitalProductsPage() {
               ))}
               <div className="mt-1 flex items-center gap-2 px-1">
                 <span className="w-1.5 h-1.5 rounded-full animate-pulse flex-shrink-0" style={{ backgroundColor: '#A68F59' }} />
-                <span className="text-[10px] tracking-wide" style={{ color: 'rgba(245,241,235,0.25)' }}>Launching Fall 2026</span>
+                <span className="text-[10px] tracking-wide" style={{ color: 'rgba(245,241,235,0.25)' }}>Launching July 2026</span>
               </div>
             </motion.div>
           </div>
@@ -230,7 +231,7 @@ export function DigitalProductsPage() {
           {filteredProducts.length === 0 && (
             <div className="py-20 text-center">
               <p className="text-lg mb-2" style={{ color: '#121212' }}>No products in this category yet</p>
-              <p className="text-sm" style={{ color: '#7A6F66' }}>New digital products dropping Fall 2026.</p>
+              <p className="text-sm" style={{ color: '#7A6F66' }}>New digital products dropping July 2026.</p>
             </div>
           )}
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-10">
@@ -414,7 +415,7 @@ export function DigitalProductsPage() {
                       disabled
                     >
                       <Gift className="w-3 h-3" />
-                      Coming Fall 2026
+                      Coming July 2026
                     </button>
                   </div>
                 </div>

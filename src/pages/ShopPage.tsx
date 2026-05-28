@@ -103,8 +103,8 @@ export function ShopPage() {
   return (
     <div style={{ backgroundColor: '#F5F1EB' }}>
       <PageSEO
-        title="Shop — SEEN Collection"
-        description="Culturally rich streetwear and accessories from the SEEN Collection by CREOVA. Graphic tees, hoodies, jackets, and accessories. Pre-order Fall 2026."
+        title="Shop — SEEN Fall/Winter Capsule"
+        description="SEEN by CREOVA — Vol. 01 Fall/Winter 2026 capsule collection. 14 styles of culturally rich streetwear, footwear and accessories. Pre-order now, ships Fall 2026."
       />
 
       {/* Announcement banner — warm gradient */}
@@ -116,7 +116,7 @@ export function ShopPage() {
       >
         <span className="flex items-center justify-center gap-3">
           <Package className="w-3.5 h-3.5" />
-          Pre-Order Now — SEEN Collection Launching Fall 2026
+          Pre-Order Now — SEEN Fall/Winter Capsule · Vol. 01 · Ships Fall 2026
           <Calendar className="w-3.5 h-3.5" />
         </span>
       </motion.div>
@@ -183,7 +183,7 @@ export function ShopPage() {
                 style={{ backgroundColor: 'rgba(166,143,89,0.1)', border: '1px solid rgba(166,143,89,0.3)', color: '#A68F59' }}
               >
                 <Calendar className="w-3.5 h-3.5" />
-                Pre-Order · Ships Fall 2026
+                Pre-Order · FW Capsule · Ships Fall 2026
               </motion.div>
             </div>
 
@@ -225,7 +225,7 @@ export function ShopPage() {
               ))}
               <div className="mt-1 flex items-center gap-2 px-1">
                 <span className="w-1.5 h-1.5 rounded-full animate-pulse flex-shrink-0" style={{ backgroundColor: '#A68F59' }} />
-                <span className="text-[10px] tracking-wide" style={{ color: 'rgba(245,241,235,0.25)' }}>Launching Fall 2026</span>
+                <span className="text-[10px] tracking-wide" style={{ color: 'rgba(245,241,235,0.25)' }}>FW Capsule · Vol. 01 · Fall 2026</span>
               </div>
             </motion.div>
           </div>
