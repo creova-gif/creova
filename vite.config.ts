@@ -83,16 +83,9 @@
       chunkSizeWarningLimit: 1000,
       rollupOptions: {
         output: {
-          manualChunks(id) {
-            if (id.includes('node_modules')) {
-              if (id.includes('framer-motion') || id.includes('/motion/') || id.includes('animejs')) {
-                return 'animation-vendor';
-              }
-              if (id.includes('@supabase') || id.includes('@jsr/supabase')) {
-                return 'supabase-vendor';
-              }
-              return 'vendor';
-            }
+          manualChunks: {
+            'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+            'animation-vendor': ['framer-motion'],
           }
         }
       }
