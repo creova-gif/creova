@@ -228,7 +228,7 @@ export function ExitIntentModal() {
                     className="relative mt-8 flex gap-6"
                   >
                     <div>
-                      <div className="text-xl font-semibold" style={{ color: '#A68F59' }}>100+</div>
+                      <div className="text-xl font-semibold" style={{ color: '#A68F59' }}>50+</div>
                       <div className="text-[10px] tracking-wide uppercase" style={{ color: 'rgba(245,241,235,0.35)' }}>Projects</div>
                     </div>
                     <div className="w-px self-stretch" style={{ backgroundColor: 'rgba(166,143,89,0.15)' }} />

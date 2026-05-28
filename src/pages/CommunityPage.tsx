@@ -396,7 +396,7 @@ export function CommunityPage() {
             >
               {[
                 { value: '5+', label: language === 'fr' ? 'Communautés' : 'Communities', icon: Users },
-                { value: '100+', label: language === 'fr' ? 'Projets' : 'Projects', icon: Award },
+                { value: '50+', label: language === 'fr' ? 'Projets' : 'Projects', icon: Award },
                 { value: 'BIPOC', label: language === 'fr' ? 'Dirigée' : 'Led', icon: Heart },
                 { value: 'ON', label: language === 'fr' ? 'Canada' : 'Canada', icon: Star },
               ].map((stat, i) => (

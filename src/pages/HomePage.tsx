@@ -133,7 +133,7 @@ export function HomePage() {
   ];
 
   const stats = [
-    { number: '100+', label: t('home.stat.projects'), icon: Award },
+    { number: '50+', label: t('home.stat.projects'), icon: Award },
     { number: '5+', label: t('home.stat.communities'), icon: Globe },
     { number: '98%', label: 'Client Satisfaction', icon: Heart },
   ];
