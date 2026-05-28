@@ -32,6 +32,7 @@ import anime from 'animejs';
 import { FloatingOrbs } from '../components/FloatingOrbs';
 import { Magnetic } from '../components/Magnetic';
 import { TiltCard } from '../components/TiltCard';
+import { FallDropTeaser } from '../components/FallDropTeaser';
 
 function AnimatedStat({ number, label, icon: Icon, delay }: {
   number: string;
@@ -810,6 +811,8 @@ export function HomePage() {
           </motion.div>
         </div>
       </section>
+
+      <FallDropTeaser />
 
       <CaseStudy />
 
