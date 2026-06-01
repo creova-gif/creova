@@ -390,39 +390,58 @@ export function ServicesPage() {
                   </div>
                 </div>
 
-                {/* Package cards — cream */}
-                <div className="p-6" style={{ backgroundColor: '#F9F6F1' }}>
+                {/* Package cards — cinematic dark */}
+                <div className="p-6" style={{ backgroundColor: '#0E0E0E' }}>
                   <div className={`grid ${service.packages.length === 4 ? 'md:grid-cols-4' : 'md:grid-cols-3'} gap-4`}>
                     {service.packages.map((pkg, pkgIndex) => (
                       <RevealOnScroll key={pkgIndex} mode='3d' delay={pkgIndex * 0.1}>
                       <TiltCard
-                        maxAngle={5}
+                        maxAngle={4}
                         spotlight
-                        spotlightColor="rgba(166,143,89,0.1)"
-                        className="flex flex-col rounded-xl overflow-hidden transition-shadow duration-300"
-                        style={{ border: '1px solid rgba(18,18,18,0.1)', backgroundColor: '#FFFFFF' }}
+                        spotlightColor="rgba(166,143,89,0.06)"
+                        className="relative flex flex-col rounded-2xl overflow-hidden transition-all duration-500 group"
+                        style={{ border: '1px solid rgba(166,143,89,0.1)', backgroundColor: '#161412' }}
                         onMouseEnter={(e: React.MouseEvent<HTMLDivElement>) => {
-                          e.currentTarget.style.borderColor = 'rgba(166,143,89,0.5)';
-                          e.currentTarget.style.boxShadow = '0 8px 32px rgba(166,143,89,0.1)';
+                          e.currentTarget.style.borderColor = 'rgba(166,143,89,0.45)';
+                          e.currentTarget.style.boxShadow = '0 24px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(166,143,89,0.12)';
                         }}
                         onMouseLeave={(e: React.MouseEvent<HTMLDivElement>) => {
-                          e.currentTarget.style.borderColor = 'rgba(18,18,18,0.1)';
+                          e.currentTarget.style.borderColor = 'rgba(166,143,89,0.1)';
                           e.currentTarget.style.boxShadow = 'none';
                         }}
                       >
-                        {/* Top stripe */}
-                        <div style={{ height: '2px', backgroundColor: '#A68F59', opacity: 0.5 }} />
+                        {/* Left accent bar — reveals on hover */}
+                        <div
+                          className="absolute left-0 top-0 bottom-0 w-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                          style={{ backgroundColor: '#A68F59' }}
+                        />
 
-                        <div className="p-6 flex flex-col flex-1">
-                          <p className="text-xs tracking-[0.3em] uppercase mb-2" style={{ color: '#A68F59' }}>{pkg.name}</p>
-                          <p className="text-sm italic mb-1" style={{ color: '#7A6F66' }}>
+                        <div className="p-7 flex flex-col flex-1">
+                          {/* Package name */}
+                          <p className="text-[10px] tracking-[0.5em] uppercase mb-3" style={{ color: '#A68F59' }}>{pkg.name}</p>
+
+                          {/* Tagline — large, editorial */}
+                          <p className="text-lg font-light leading-snug mb-6" style={{ color: '#F5F1EB' }}>
                             {'deposit' in pkg ? (pkg as RentalPackage).capacity : (pkg as ServicePackage).tagline}
                           </p>
 
+                          {/* Gold rule */}
+                          <div className="mb-6" style={{ height: '1px', backgroundColor: 'rgba(166,143,89,0.2)' }} />
+
+                          {/* Features */}
+                          <ul className="space-y-3 text-sm flex-1 mb-7">
+                            {pkg.features.map((feature, featIndex) => (
+                              <li key={featIndex} className="flex items-start gap-3">
+                                <span className="mt-2 flex-shrink-0 w-1 h-1 rounded-full" style={{ backgroundColor: '#A68F59' }} />
+                                <span style={{ color: 'rgba(245,241,235,0.5)' }}>{feature}</span>
+                              </li>
+                            ))}
+                          </ul>
+
                           {/* Deposit for rentals */}
                           {('deposit' in pkg) && (
-                            <div className="flex items-center gap-2 mb-4 mt-2 px-3 py-2 rounded-lg"
-                                 style={{ backgroundColor: 'rgba(177,100,59,0.08)', border: '1px solid rgba(177,100,59,0.2)' }}>
+                            <div className="flex items-center gap-2 mb-5 px-3 py-2 rounded-lg"
+                                 style={{ backgroundColor: 'rgba(177,100,59,0.1)', border: '1px solid rgba(177,100,59,0.2)' }}>
                               <AlertCircle className="w-3.5 h-3.5 flex-shrink-0" style={{ color: '#B1643B' }} />
                               <span className="text-xs" style={{ color: '#B1643B' }}>
                                 Deposit: {(pkg as RentalPackage).deposit}
@@ -430,30 +449,21 @@ export function ServicesPage() {
                             </div>
                           )}
 
-                          {/* Thin divider */}
-                          <div className="my-4" style={{ height: '1px', backgroundColor: 'rgba(18,18,18,0.08)' }} />
-
-                          <ul className="space-y-2.5 text-sm flex-1 mb-6" style={{ color: '#4A3E36' }}>
-                            {pkg.features.map((feature, featIndex) => (
-                              <li key={featIndex} className="flex items-start gap-2.5">
-                                <span className="mt-1.5 flex-shrink-0 w-1.5 h-1.5 rounded-full" style={{ backgroundColor: '#A68F59' }} />
-                                <span>{feature}</span>
-                              </li>
-                            ))}
-                          </ul>
-
-                          <div className="flex flex-col gap-3 mt-auto">
+                          {/* CTAs */}
+                          <div className="flex flex-col gap-2 mt-auto">
                             <Button
-                              className="w-full text-sm py-5 rounded-lg transition-all duration-300"
-                              style={{ backgroundColor: '#121212', color: '#F5F1EB' }}
+                              className="w-full text-sm py-5 rounded-xl transition-all duration-300"
+                              style={{ backgroundColor: 'rgba(166,143,89,0.12)', color: '#A68F59', border: '1px solid rgba(166,143,89,0.25)' }}
                               onClick={() => navigate(service.category === 'rental' ? '/rental' : `/booking${'id' in service && service.id ? `?service=${service.id}` : ''}`)}
                               onMouseEnter={(e) => {
                                 e.currentTarget.style.backgroundColor = '#A68F59';
                                 e.currentTarget.style.color = '#121212';
+                                e.currentTarget.style.borderColor = '#A68F59';
                               }}
                               onMouseLeave={(e) => {
-                                e.currentTarget.style.backgroundColor = '#121212';
-                                e.currentTarget.style.color = '#F5F1EB';
+                                e.currentTarget.style.backgroundColor = 'rgba(166,143,89,0.12)';
+                                e.currentTarget.style.color = '#A68F59';
+                                e.currentTarget.style.borderColor = 'rgba(166,143,89,0.25)';
                               }}
                             >
                               {service.category === 'rental' ? 'Reserve Equipment' : 'Start a Project'}
@@ -462,7 +472,7 @@ export function ServicesPage() {
                               <button
                                 type="button"
                                 aria-label={`View pricing for ${pkg.name}`}
-                                className="w-full text-xs py-2 tracking-wide transition-opacity duration-200 hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#A68F59] opacity-60 rounded"
+                                className="w-full text-xs py-2 tracking-wide transition-opacity duration-200 hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#A68F59] opacity-40 rounded"
                                 style={{ color: '#A68F59' }}
                                 onClick={() => navigate('/pricing')}
                               >
@@ -478,16 +488,16 @@ export function ServicesPage() {
 
                   {/* Add-Ons for Video */}
                   {service.addOns && (
-                    <div className="mt-6 pt-6" style={{ borderTop: '1px solid rgba(18,18,18,0.08)' }}>
-                      <p className="text-xs tracking-[0.35em] uppercase mb-4" style={{ color: '#7A6F66' }}>Add-Ons</p>
+                    <div className="mt-6 pt-6" style={{ borderTop: '1px solid rgba(166,143,89,0.12)' }}>
+                      <p className="text-xs tracking-[0.35em] uppercase mb-4" style={{ color: 'rgba(166,143,89,0.6)' }}>Add-Ons</p>
                       <div className="flex flex-wrap gap-3">
                         {service.addOns.map((addOn, addOnIndex) => (
                           <div
                             key={addOnIndex}
                             className="flex items-center gap-3 px-5 py-3 rounded-xl"
-                            style={{ backgroundColor: '#F5F1EB', border: '1px solid rgba(18,18,18,0.1)' }}
+                            style={{ backgroundColor: 'rgba(166,143,89,0.06)', border: '1px solid rgba(166,143,89,0.15)' }}
                           >
-                            <span className="text-sm" style={{ color: '#121212' }}>{addOn.name}</span>
+                            <span className="text-sm" style={{ color: 'rgba(245,241,235,0.7)' }}>{addOn.name}</span>
                             <span className="text-sm" style={{ color: '#A68F59' }}>{addOn.price}</span>
                           </div>
                         ))}
