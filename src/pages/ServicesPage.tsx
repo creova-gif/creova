@@ -966,12 +966,12 @@ export function ServicesPage() {
             ))}
           </div>
 
-          <div className="text-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
               size="lg"
               className="px-10 py-6 rounded-xl text-sm tracking-wide transition-all duration-300"
               style={{ backgroundColor: '#A68F59', color: '#121212' }}
-              onClick={() => navigate('/contact')}
+              onClick={() => navigate('/booking')}
               onMouseEnter={(e) => {
                 e.currentTarget.style.backgroundColor = '#F5F1EB';
                 e.currentTarget.style.transform = 'translateY(-2px)';
@@ -981,7 +981,24 @@ export function ServicesPage() {
                 e.currentTarget.style.transform = 'translateY(0)';
               }}
             >
-              Get Started Today
+              Start a Project
+            </Button>
+            <Button
+              size="lg"
+              variant="outline"
+              className="px-10 py-6 rounded-xl text-sm tracking-wide transition-all duration-300 border"
+              style={{ backgroundColor: 'transparent', borderColor: 'rgba(166,143,89,0.4)', color: '#A68F59' }}
+              onClick={() => navigate('/pricing')}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = '#A68F59';
+                e.currentTarget.style.transform = 'translateY(-2px)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = 'rgba(166,143,89,0.4)';
+                e.currentTarget.style.transform = 'translateY(0)';
+              }}
+            >
+              See Pricing
             </Button>
           </div>
         </div>
