@@ -501,6 +501,82 @@ export function ServicesPage() {
         </div>
       </section>
 
+      {/* Our Process */}
+      <section className="py-24 relative overflow-hidden" style={{ backgroundColor: '#0A0A0A' }}>
+        <div className="absolute top-0 left-0 right-0" style={{ height: '1px', backgroundColor: 'rgba(166,143,89,0.3)' }} />
+        <div className="absolute bottom-0 left-0 right-0" style={{ height: '1px', backgroundColor: 'rgba(166,143,89,0.15)' }} />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mb-16"
+          >
+            <div className="flex items-center gap-4 mb-4">
+              <div className="w-10 h-px" style={{ backgroundColor: '#A68F59' }} />
+              <span className="text-[10px] tracking-[0.5em] uppercase" style={{ color: '#A68F59' }}>How We Work</span>
+            </div>
+            <h2 className="text-4xl font-light tracking-tight" style={{ color: '#F5F1EB' }}>
+              From first call to final delivery
+            </h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-4 gap-0 relative">
+            {/* Connector line desktop */}
+            <div className="hidden md:block absolute top-8 left-[12.5%] right-[12.5%] h-px" style={{ backgroundColor: 'rgba(166,143,89,0.2)' }} />
+            {[
+              { step: '01', title: 'Discover', desc: 'We learn your brand, goals, and vision in a free 30-minute call. No obligation.' },
+              { step: '02', title: 'Create', desc: 'We plan the shoot or design sprint, execute with intent, and bring your story to life.' },
+              { step: '03', title: 'Deliver', desc: 'You receive your final files — edited, licensed, and ready to publish within agreed timelines.' },
+              { step: '04', title: 'Grow', desc: 'We stay in your corner. Returning clients get priority booking, discounts, and ongoing support.' },
+            ].map((item, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1, duration: 0.6 }}
+                className="relative text-center px-6 py-8"
+              >
+                <div
+                  className="w-16 h-16 rounded-full mx-auto mb-6 flex items-center justify-center relative z-10"
+                  style={{ backgroundColor: '#0A0A0A', border: '1px solid rgba(166,143,89,0.35)' }}
+                >
+                  <span className="text-xs tracking-[0.25em]" style={{ color: '#A68F59' }}>{item.step}</span>
+                </div>
+                <h3 className="text-xl tracking-tight mb-3" style={{ color: '#F5F1EB' }}>{item.title}</h3>
+                <p className="text-sm leading-relaxed" style={{ color: '#7A6F66' }}>{item.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.5 }}
+            className="mt-16 text-center"
+          >
+            <Button
+              size="lg"
+              className="px-10 py-6 rounded-xl text-sm tracking-wide transition-all duration-300"
+              style={{ backgroundColor: '#A68F59', color: '#121212' }}
+              onClick={() => navigate('/contact')}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = '#F5F1EB';
+                e.currentTarget.style.transform = 'translateY(-2px)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = '#A68F59';
+                e.currentTarget.style.transform = 'translateY(0)';
+              }}
+            >
+              Book a Free Discovery Call
+            </Button>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Drone & Video Preview */}
       {(activeTab === 'video' || activeTab === 'all') && (
         <section className="relative overflow-hidden" style={{ backgroundColor: '#0A0A0A' }}>
