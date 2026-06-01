@@ -5,7 +5,6 @@ import { Button } from '../components/ui/button';
 import { motion, AnimatePresence } from 'motion/react';
 import { Camera, Users, Package, PartyPopper, Plane, TrendingUp, Palette, Video, Settings, CheckCircle2, AlertCircle, Calendar, ArrowRight } from 'lucide-react';
 import { TiltCard } from '../components/TiltCard';
-import { RevealOnScroll } from '../components/RevealOnScroll';
 
 type ServiceCategory = 'photography' | 'video' | 'brand' | 'social' | 'events' | 'rental' | 'all';
 
@@ -21,6 +20,70 @@ interface RentalPackage {
   features: string[];
 }
 type AnyPackage = ServicePackage | RentalPackage;
+
+function WorkTile({ label, src, aspect, index, onClick }: {
+  label: string; src: string; aspect: string; index: number; onClick: () => void;
+}) {
+  const [loaded, setLoaded] = useState(false);
+  const [errored, setErrored] = useState(false);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true }}
+      transition={{ delay: index * 0.06, duration: 0.5 }}
+      className={`relative overflow-hidden rounded-2xl group cursor-pointer ${aspect}`}
+      style={{ backgroundColor: '#161412' }}
+      onClick={onClick}
+      role="button"
+      tabIndex={0}
+      aria-label={`View ${label} work`}
+      onKeyDown={(e) => e.key === 'Enter' && onClick()}
+    >
+      {/* Placeholder shown until image loads or if missing */}
+      {(!loaded || errored) && (
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 p-4"
+             style={{ border: '1px dashed rgba(166,143,89,0.2)' }}>
+          <div className="w-8 h-8 rounded-full flex items-center justify-center"
+               style={{ backgroundColor: 'rgba(166,143,89,0.08)', border: '1px solid rgba(166,143,89,0.2)' }}>
+            <span className="text-xs" style={{ color: '#A68F59' }}>+</span>
+          </div>
+          <p className="text-[10px] tracking-[0.3em] uppercase text-center" style={{ color: 'rgba(166,143,89,0.35)' }}>
+            {label}
+          </p>
+          <p className="text-[9px] text-center" style={{ color: 'rgba(245,241,235,0.2)' }}>
+            {src}
+          </p>
+        </div>
+      )}
+
+      {/* Actual photo */}
+      <img
+        src={src}
+        alt={label}
+        loading="lazy"
+        onLoad={() => setLoaded(true)}
+        onError={() => setErrored(true)}
+        className={`absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 ${loaded && !errored ? 'opacity-100' : 'opacity-0'}`}
+      />
+
+      {/* Overlay + label */}
+      {loaded && !errored && (
+        <>
+          <div className="absolute inset-0"
+               style={{ background: 'linear-gradient(to top, rgba(10,10,10,0.8) 0%, transparent 55%)' }} />
+          <div className="absolute inset-0 flex flex-col justify-end p-5">
+            <span className="text-xs tracking-[0.3em] uppercase translate-y-2 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300"
+                  style={{ color: '#A68F59' }}>
+              {label}
+            </span>
+          </div>
+        </>
+      )}
+    </motion.div>
+  );
+}
 
 export function ServicesPage() {
   const [activeTab, setActiveTab] = useState<ServiceCategory>('all');
@@ -592,82 +655,17 @@ export function ServicesPage() {
             </button>
           </motion.div>
 
-          {/* Asymmetric masonry: row 1 = tall-left + stacked-right, row 2 = stacked-left + tall-right */}
+          {/* Asymmetric masonry grid */}
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
             {[
-              {
-                label: 'Brand Photography',
-                img: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=800&q=80',
-                aspect: 'aspect-[3/4] md:row-span-2',
-              },
-              {
-                label: 'Event Coverage',
-                img: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=800&q=80',
-                aspect: 'aspect-[4/3]',
-              },
-              {
-                label: 'Aerial Vision',
-                img: 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=800&q=80',
-                aspect: 'aspect-square',
-              },
-              {
-                label: 'Creative Direction',
-                img: 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=800&q=80',
-                aspect: 'aspect-[4/3]',
-              },
-              {
-                label: 'Brand Design',
-                img: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=800&q=80',
-                aspect: 'aspect-[3/4] md:row-span-2',
-              },
-              {
-                label: 'Product Photography',
-                img: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=80',
-                aspect: 'aspect-square',
-              },
+              { label: 'Brand Photography',   src: '/work/photo-1.jpg', aspect: 'aspect-[3/4] md:row-span-2' },
+              { label: 'Event Coverage',      src: '/work/photo-2.jpg', aspect: 'aspect-[4/3]' },
+              { label: 'Aerial Vision',       src: '/work/photo-3.jpg', aspect: 'aspect-square' },
+              { label: 'Creative Direction',  src: '/work/photo-4.jpg', aspect: 'aspect-[4/3]' },
+              { label: 'Brand Design',        src: '/work/photo-5.jpg', aspect: 'aspect-[3/4] md:row-span-2' },
+              { label: 'Product Photography', src: '/work/photo-6.jpg', aspect: 'aspect-square' },
             ].map((item, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, scale: 0.97 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.07, duration: 0.6 }}
-                className={`relative overflow-hidden rounded-2xl group cursor-pointer ${item.aspect}`}
-                style={{ backgroundColor: '#111' }}
-                onClick={() => navigate('/work')}
-                role="button"
-                tabIndex={0}
-                aria-label={`View ${item.label} work`}
-                onKeyDown={(e) => e.key === 'Enter' && navigate('/work')}
-              >
-                {/* Photo */}
-                <img
-                  src={item.img}
-                  alt={item.label}
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  loading="lazy"
-                />
-
-                {/* Dark overlay — heavier at rest, lightens on hover */}
-                <div
-                  className="absolute inset-0 transition-opacity duration-500"
-                  style={{ background: 'linear-gradient(to top, rgba(10,10,10,0.85) 0%, rgba(10,10,10,0.35) 60%, rgba(10,10,10,0.15) 100%)' }}
-                />
-                <div
-                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                  style={{ backgroundColor: 'rgba(10,10,10,0.2)' }}
-                />
-
-                {/* Label */}
-                <div className="absolute inset-0 flex flex-col justify-end p-5">
-                  <span
-                    className="text-xs tracking-[0.3em] uppercase translate-y-2 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-400"
-                    style={{ color: '#A68F59' }}
-                  >
-                    {item.label}
-                  </span>
-                </div>
-              </motion.div>
+              <WorkTile key={i} {...item} index={i} onClick={() => navigate('/work')} />
             ))}
           </div>
         </div>
@@ -717,29 +715,32 @@ export function ServicesPage() {
                 accent: '#A68F59',
               },
             ].map((item, i) => (
-              <RevealOnScroll key={i} mode="3d" delay={i * 0.12}>
-                <div
-                  className="p-8 rounded-2xl flex flex-col gap-6 h-full transition-all duration-300"
-                  style={{ border: `1px solid ${item.accent}22`, backgroundColor: 'rgba(255,255,255,0.02)' }}
-                  onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLElement).style.borderColor = `${item.accent}44`;
-                    (e.currentTarget as HTMLElement).style.backgroundColor = 'rgba(255,255,255,0.04)';
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLElement).style.borderColor = `${item.accent}22`;
-                    (e.currentTarget as HTMLElement).style.backgroundColor = 'rgba(255,255,255,0.02)';
-                  }}
-                >
-                  <div style={{ width: '32px', height: '2px', backgroundColor: item.accent }} />
-                  <p className="text-base leading-relaxed flex-1" style={{ color: '#E3DCD3' }}>
-                    "{item.quote}"
-                  </p>
-                  <div>
-                    <p className="text-sm font-medium" style={{ color: '#F5F1EB' }}>{item.author}</p>
-                    <p className="text-xs mt-0.5" style={{ color: '#7A6F66' }}>{item.role}</p>
-                  </div>
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1, duration: 0.5 }}
+                className="p-8 rounded-2xl flex flex-col gap-6 h-full transition-all duration-300"
+                style={{ border: `1px solid ${item.accent}22`, backgroundColor: 'rgba(255,255,255,0.02)' }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLElement).style.borderColor = `${item.accent}44`;
+                  (e.currentTarget as HTMLElement).style.backgroundColor = 'rgba(255,255,255,0.04)';
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLElement).style.borderColor = `${item.accent}22`;
+                  (e.currentTarget as HTMLElement).style.backgroundColor = 'rgba(255,255,255,0.02)';
+                }}
+              >
+                <div style={{ width: '32px', height: '2px', backgroundColor: item.accent }} />
+                <p className="text-base leading-relaxed flex-1" style={{ color: '#E3DCD3' }}>
+                  "{item.quote}"
+                </p>
+                <div>
+                  <p className="text-sm font-medium" style={{ color: '#F5F1EB' }}>{item.author}</p>
+                  <p className="text-xs mt-0.5" style={{ color: '#7A6F66' }}>{item.role}</p>
                 </div>
-              </RevealOnScroll>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -959,30 +960,30 @@ export function ServicesPage() {
               { title: 'Returning Clients', desc: '15% off all services', discount: '15% OFF' },
               { title: 'Referral Bonus', desc: '$25 credit for you & referral', discount: '$25' }
             ].map((item, index) => (
-              <RevealOnScroll key={index} mode='3d' delay={index * 0.12}>
-                <div
-                  className="p-8 rounded-2xl text-center transition-all duration-300"
-                  style={{ border: '1px solid rgba(166,143,89,0.2)', backgroundColor: 'rgba(166,143,89,0.05)' }}
-                  onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLElement).style.borderColor = 'rgba(166,143,89,0.45)';
-                    (e.currentTarget as HTMLElement).style.backgroundColor = 'rgba(166,143,89,0.09)';
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLElement).style.borderColor = 'rgba(166,143,89,0.2)';
-                    (e.currentTarget as HTMLElement).style.backgroundColor = 'rgba(166,143,89,0.05)';
-                  }}
-                >
-                  <div
-                    className="text-4xl font-light tracking-tight mb-4"
-                    style={{ color: '#A68F59' }}
-                  >
-                    {item.discount}
-                  </div>
-                  <div style={{ height: '1px', width: '32px', backgroundColor: 'rgba(166,143,89,0.4)', margin: '0 auto 16px' }} />
-                  <h3 className="text-lg mb-2 tracking-tight" style={{ color: '#F5F1EB' }}>{item.title}</h3>
-                  <p className="text-sm" style={{ color: '#7A6F66' }}>{item.desc}</p>
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1, duration: 0.5 }}
+                className="p-8 rounded-2xl text-center transition-all duration-300"
+                style={{ border: '1px solid rgba(166,143,89,0.2)', backgroundColor: 'rgba(166,143,89,0.05)' }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLElement).style.borderColor = 'rgba(166,143,89,0.45)';
+                  (e.currentTarget as HTMLElement).style.backgroundColor = 'rgba(166,143,89,0.09)';
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLElement).style.borderColor = 'rgba(166,143,89,0.2)';
+                  (e.currentTarget as HTMLElement).style.backgroundColor = 'rgba(166,143,89,0.05)';
+                }}
+              >
+                <div className="text-4xl font-light tracking-tight mb-4" style={{ color: '#A68F59' }}>
+                  {item.discount}
                 </div>
-              </RevealOnScroll>
+                <div style={{ height: '1px', width: '32px', backgroundColor: 'rgba(166,143,89,0.4)', margin: '0 auto 16px' }} />
+                <h3 className="text-lg mb-2 tracking-tight" style={{ color: '#F5F1EB' }}>{item.title}</h3>
+                <p className="text-sm" style={{ color: '#7A6F66' }}>{item.desc}</p>
+              </motion.div>
             ))}
           </div>
 
