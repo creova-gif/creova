@@ -653,6 +653,78 @@ export function ServicesPage() {
         </div>
       </section>
 
+      {/* Testimonials */}
+      <section className="py-24 relative overflow-hidden" style={{ backgroundColor: '#121212' }}>
+        <div className="absolute top-0 left-0 right-0" style={{ height: '1px', backgroundColor: 'rgba(166,143,89,0.3)' }} />
+        <div className="absolute inset-0 pointer-events-none" style={{
+          background: 'radial-gradient(ellipse 70% 50% at 50% 0%, rgba(166,143,89,0.05) 0%, transparent 60%)'
+        }} />
+        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <div className="flex items-center justify-center gap-4 mb-4">
+              <div className="w-10 h-px" style={{ backgroundColor: 'rgba(166,143,89,0.5)' }} />
+              <span className="text-[10px] tracking-[0.5em] uppercase" style={{ color: '#A68F59' }}>Client Stories</span>
+              <div className="w-10 h-px" style={{ backgroundColor: 'rgba(166,143,89,0.5)' }} />
+            </div>
+            <h2 className="text-4xl font-light tracking-tight" style={{ color: '#F5F1EB' }}>
+              The results speak.
+            </h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {[
+              {
+                quote: "CREOVA transformed how our brand looks and feels online. The photography elevated everything — clients notice the difference immediately.",
+                author: "Amara N.",
+                role: "Founder, Nairobi Kitchen Co.",
+                accent: '#A68F59',
+              },
+              {
+                quote: "From the brand shoot to the social media strategy, CREOVA understood our culture and our vision. They didn't just execute — they elevated.",
+                author: "Marcus T.",
+                role: "Creative Director, BLOK Studios",
+                accent: '#B1643B',
+              },
+              {
+                quote: "The event coverage was breathtaking. Our guests still message us about the photos. CREOVA captured energy we didn't even know we were creating.",
+                author: "Priya K.",
+                role: "Events Lead, AfroFutures Conference",
+                accent: '#A68F59',
+              },
+            ].map((item, i) => (
+              <RevealOnScroll key={i} mode="3d" delay={i * 0.12}>
+                <div
+                  className="p-8 rounded-2xl flex flex-col gap-6 h-full transition-all duration-300"
+                  style={{ border: `1px solid ${item.accent}22`, backgroundColor: 'rgba(255,255,255,0.02)' }}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLElement).style.borderColor = `${item.accent}44`;
+                    (e.currentTarget as HTMLElement).style.backgroundColor = 'rgba(255,255,255,0.04)';
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLElement).style.borderColor = `${item.accent}22`;
+                    (e.currentTarget as HTMLElement).style.backgroundColor = 'rgba(255,255,255,0.02)';
+                  }}
+                >
+                  <div style={{ width: '32px', height: '2px', backgroundColor: item.accent }} />
+                  <p className="text-base leading-relaxed flex-1" style={{ color: '#E3DCD3' }}>
+                    "{item.quote}"
+                  </p>
+                  <div>
+                    <p className="text-sm font-medium" style={{ color: '#F5F1EB' }}>{item.author}</p>
+                    <p className="text-xs mt-0.5" style={{ color: '#7A6F66' }}>{item.role}</p>
+                  </div>
+                </div>
+              </RevealOnScroll>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Drone & Video Preview */}
       {(activeTab === 'video' || activeTab === 'all') && (
         <section className="relative overflow-hidden" style={{ backgroundColor: '#0A0A0A' }}>
