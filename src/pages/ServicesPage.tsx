@@ -31,9 +31,9 @@ export function ServicesPage() {
       title: 'Family Portrait Photography',
       description: 'Capture your family\'s legacy with culturally informed, beautifully crafted portraits.',
       packages: [
-        { name: 'Mini Memories', price: '$450', features: ['45-minute session', '10 edited photos', 'Up to 5 family members', 'Online gallery delivery'] },
-        { name: 'Timeless Bonds', price: '$650', features: ['1.5-hour session', '25 edited photos', 'Up to 10 family members', 'Print release included'] },
-        { name: 'Legacy Heirloom', price: '$950', features: ['2-hour session', '40+ edited photos', 'Up to 15 family members', 'Custom album option'] }
+        { name: 'Mini Memories', tagline: 'Perfect first impression', features: ['45-minute session', '10 edited photos', 'Up to 5 family members', 'Online gallery delivery'] },
+        { name: 'Timeless Bonds', tagline: "Your family's story, beautifully told", features: ['1.5-hour session', '25 edited photos', 'Up to 10 family members', 'Print release included'] },
+        { name: 'Legacy Heirloom', tagline: 'Generational moments, forever preserved', features: ['2-hour session', '40+ edited photos', 'Up to 15 family members', 'Custom album option'] }
       ]
     },
     {
@@ -43,9 +43,9 @@ export function ServicesPage() {
       title: 'Brand Photography & Headshots',
       description: 'Professional headshots and brand photography for entrepreneurs and teams.',
       packages: [
-        { name: 'Profile Pro', price: '$750', features: ['1-1.5 hour session', 'Up to 10 team members', '1 retouched headshot each', 'Neutral or branded backgrounds'] },
-        { name: 'Workspace Stories', price: '$1,100', features: ['2-hour session', 'Up to 15 team members', '20+ edited images', 'Candid + posed shots'] },
-        { name: 'Brand Vision Suite', price: '$1,600', features: ['3-4 hours coverage', '50+ curated photos', 'Team + culture shots', 'Optional 1-min video (+$300)'] }
+        { name: 'Profile Pro', tagline: 'Clean authority for your team', features: ['1-1.5 hour session', 'Up to 10 team members', '1 retouched headshot each', 'Neutral or branded backgrounds'] },
+        { name: 'Workspace Stories', tagline: 'Culture captured authentically', features: ['2-hour session', 'Up to 15 team members', '20+ edited images', 'Candid + posed shots'] },
+        { name: 'Brand Vision Suite', tagline: 'Full brand world in one session', features: ['3-4 hours coverage', '50+ curated photos', 'Team + culture shots', 'Optional 1-min video (+$300)'] }
       ]
     },
     {
@@ -55,9 +55,9 @@ export function ServicesPage() {
       title: 'Product Photography',
       description: 'Strategic content that helps your product sell and speak for itself.',
       packages: [
-        { name: 'E-commerce Essentials', price: '$600', features: ['15 styled product photos', 'White background + lifestyle', 'Basic retouching & color correction', 'Web-optimized files', 'Commercial license included'] },
-        { name: 'Product Pro Kit', price: '$950', features: ['25 styled product photos', '1-minute product video', 'Studio + lifestyle shots', 'Advanced retouching', 'Commercial license included', 'Social media formats'] },
-        { name: 'Lifestyle Collection', price: '$1,400', features: ['40+ product photos', '2-3 minute product video', 'Multiple lifestyle settings', 'Premium retouching', 'Full commercial rights', 'Rush delivery available'] }
+        { name: 'E-commerce Essentials', tagline: 'Products that sell themselves', features: ['15 styled product photos', 'White background + lifestyle', 'Basic retouching & color correction', 'Web-optimized files', 'Commercial license included'] },
+        { name: 'Product Pro Kit', tagline: 'Content that converts', features: ['25 styled product photos', '1-minute product video', 'Studio + lifestyle shots', 'Advanced retouching', 'Commercial license included', 'Social media formats'] },
+        { name: 'Lifestyle Collection', tagline: 'Premium brand presence', features: ['40+ product photos', '2-3 minute product video', 'Multiple lifestyle settings', 'Premium retouching', 'Full commercial rights', 'Rush delivery available'] }
       ]
     },
     {
@@ -67,8 +67,8 @@ export function ServicesPage() {
       title: 'Aerial & Drone Photography',
       description: 'Cinematic perspectives that elevate your brand from above.',
       packages: [
-        { name: 'Aerial Vision Session', price: 'From $500', features: ['1-hour drone session', '20+ aerial photos', '30-60 sec cinematic video', 'Basic colour grading', 'Licensed & insured'] },
-        { name: 'Aerial Cinematic Experience', price: 'From $900', features: ['2-hour advanced session', '40+ premium photos', '1-2 min cinematic reel', 'Sound design included', 'Advanced colour grading', 'Licensed & insured'] }
+        { name: 'Aerial Vision Session', tagline: 'Perspective that commands attention', features: ['1-hour drone session', '20+ aerial photos', '30-60 sec cinematic video', 'Basic colour grading', 'Licensed & insured'] },
+        { name: 'Aerial Cinematic Experience', tagline: 'Cinematic storytelling from above', features: ['2-hour advanced session', '40+ premium photos', '1-2 min cinematic reel', 'Sound design included', 'Advanced colour grading', 'Licensed & insured'] }
       ]
     },
     {
@@ -78,10 +78,10 @@ export function ServicesPage() {
       title: 'Videography & Content Creation',
       description: 'Professional video production for brands, events, and marketing campaigns.',
       packages: [
-        { name: 'Starter', price: '$500', features: ['2 hours shoot time', '1-2 short-form videos', 'Basic editing', 'Social media ready'] },
-        { name: 'Creator', price: '$850', features: ['4 hours shoot time', '3-5 short-form videos', 'Social media optimization', 'Music & captions included'] },
-        { name: 'Pro', price: 'From $1,500', features: ['8 hours shoot time', '1 long-form video (2-3 min)', '5-7 short-form clips', 'Professional color grading'] },
-        { name: 'Campaign', price: 'From $3,000', features: ['2+ days production', 'Multi-video campaign', 'Storyboarding & scripting', 'Unlimited revisions'] }
+        { name: 'Starter', tagline: 'Social-first, brand-forward', features: ['2 hours shoot time', '1-2 short-form videos', 'Basic editing', 'Social media ready'] },
+        { name: 'Creator', tagline: 'Content engine for growth', features: ['4 hours shoot time', '3-5 short-form videos', 'Social media optimization', 'Music & captions included'] },
+        { name: 'Pro', tagline: 'Flagship brand film', features: ['8 hours shoot time', '1 long-form video (2-3 min)', '5-7 short-form clips', 'Professional color grading'] },
+        { name: 'Campaign', tagline: 'Full production, end-to-end', features: ['2+ days production', 'Multi-video campaign', 'Storyboarding & scripting', 'Unlimited revisions'] }
       ],
       addOns: [
         { name: 'Extra location', price: '$150-$250' },
@@ -95,9 +95,9 @@ export function ServicesPage() {
       title: 'Event Coverage',
       description: 'Weddings, cultural events, ceremonies, and celebrations captured beautifully.',
       packages: [
-        { name: 'Essence Package', price: '$750', features: ['3 hours coverage', '50+ images or 2-3 min video', '1 location', 'Online gallery'] },
-        { name: 'Signature Story', price: '$1,350', features: ['6 hours hybrid coverage', '100+ images', '3-5 min highlight film', 'Multi-location'] },
-        { name: 'Heritage Experience', price: '$2,550', features: ['8-10 hours coverage', '200+ images', '5-7 min cinematic film', 'Drone footage included'] }
+        { name: 'Essence Package', tagline: 'Every key moment captured', features: ['3 hours coverage', '50+ images or 2-3 min video', '1 location', 'Online gallery'] },
+        { name: 'Signature Story', tagline: 'Full narrative, beautifully cut', features: ['6 hours hybrid coverage', '100+ images', '3-5 min highlight film', 'Multi-location'] },
+        { name: 'Heritage Experience', tagline: 'Cinematic legacy documentation', features: ['8-10 hours coverage', '200+ images', '5-7 min cinematic film', 'Drone footage included'] }
       ]
     },
     {
@@ -107,9 +107,9 @@ export function ServicesPage() {
       title: 'Social Media Management',
       description: 'Strategic, creative, and consistent social media for cultural brands.',
       packages: [
-        { name: 'Starter Plan', price: '$950/mo', features: ['12 curated posts', '1 platform', '1 strategy call/month', 'Basic analytics'] },
-        { name: 'Growth Plan', price: '$1,500/mo', features: ['20+ posts', '1-2 platforms', 'Engagement management', 'Weekly analytics reports'] },
-        { name: 'Creator+ Plan', price: 'From $2,500/mo', features: ['Cross-platform growth', 'Full content production', 'Paid ad setup & management', 'Dedicated account manager'] }
+        { name: 'Starter Plan', tagline: 'Consistent presence, zero stress', features: ['12 curated posts', '1 platform', '1 strategy call/month', 'Basic analytics'] },
+        { name: 'Growth Plan', tagline: 'Community built, engagement owned', features: ['20+ posts', '1-2 platforms', 'Engagement management', 'Weekly analytics reports'] },
+        { name: 'Creator+ Plan', tagline: 'Full-service growth partner', features: ['Cross-platform growth', 'Full content production', 'Paid ad setup & management', 'Dedicated account manager'] }
       ]
     },
     {
@@ -119,9 +119,9 @@ export function ServicesPage() {
       title: 'Brand Design & Identity',
       description: 'Bold, strategic identities for creators and cultural brands who lead with vision.',
       packages: [
-        { name: 'Brand Essentials Kit', price: '$600', features: ['3 custom templates', 'Color palette + fonts', 'Mini style guide', 'Social media kit'] },
-        { name: 'Visual Starter Identity', price: '$1,200', features: ['Logo wordmark/symbol', 'Starter brand guide', '5 branded visuals', 'Business card design'] },
-        { name: 'Signature Identity Suite', price: 'From $3,000', features: ['Full logo suite', 'Comprehensive brand guide', 'Complete asset kit', '3 months support'] }
+        { name: 'Brand Essentials Kit', tagline: 'Identity starter pack', features: ['3 custom templates', 'Color palette + fonts', 'Mini style guide', 'Social media kit'] },
+        { name: 'Visual Starter Identity', tagline: 'Foundation built to scale', features: ['Logo wordmark/symbol', 'Starter brand guide', '5 branded visuals', 'Business card design'] },
+        { name: 'Signature Identity Suite', tagline: 'Your complete brand world', features: ['Full logo suite', 'Comprehensive brand guide', 'Complete asset kit', '3 months support'] }
       ]
     },
     {
@@ -131,9 +131,9 @@ export function ServicesPage() {
       title: 'Event & Conference Design',
       description: 'Specialized design services for organizers, institutions, universities, and corporate events.',
       packages: [
-        { name: 'Event Essentials Package', price: '$600', features: ['1 Event Poster / Main Key Visual', '6 Social Media Graphics', '1 Digital Flyer (PNG + PDF)', '1 Event Banner/Header', 'Up to 3 revisions', 'Delivery: 5–7 days', 'Best for small events & workshops'] },
-        { name: 'Standard Event Branding', price: '$1,200', features: ['Full Event Key Visual', '12 Social Media Graphics', '3 Posters or Flyers', 'Digital Promo Kit for Speakers', 'Event Schedule / Program (2–3 pages)', 'Web Banner Package', 'Up to 5 revisions', 'Delivery: 7–10 days'] },
-        { name: 'Full Event Identity Suite', price: '$2,500', features: ['Event Branding Consultation', 'Custom Hero Key Visual', '20 Social Media Graphics', 'Event Program Booklet (6–10 pages)', 'Stage Graphics (4–6 slides)', 'Web Banner Set', 'Up to 7 revisions', 'Delivery: 2–3 weeks'] }
+        { name: 'Event Essentials Package', tagline: 'Launch-ready in days', features: ['1 Event Poster / Main Key Visual', '6 Social Media Graphics', '1 Digital Flyer (PNG + PDF)', '1 Event Banner/Header', 'Up to 3 revisions', 'Delivery: 5–7 days', 'Best for small events & workshops'] },
+        { name: 'Standard Event Branding', tagline: 'Professional presence across all channels', features: ['Full Event Key Visual', '12 Social Media Graphics', '3 Posters or Flyers', 'Digital Promo Kit for Speakers', 'Event Schedule / Program (2–3 pages)', 'Web Banner Package', 'Up to 5 revisions', 'Delivery: 7–10 days'] },
+        { name: 'Full Event Identity Suite', tagline: 'Immersive, end-to-end event design', features: ['Event Branding Consultation', 'Custom Hero Key Visual', '20 Social Media Graphics', 'Event Program Booklet (6–10 pages)', 'Stage Graphics (4–6 slides)', 'Web Banner Set', 'Up to 7 revisions', 'Delivery: 2–3 weeks'] }
       ]
     },
     {
@@ -143,9 +143,9 @@ export function ServicesPage() {
       title: 'Event Design Retainer',
       description: 'Monthly design support for universities, organizations & companies with ongoing events.',
       packages: [
-        { name: 'Starter', price: '$450/mo', features: ['6 graphics/month', '1 poster/flyer', '48–72h turnaround', 'Perfect for small organizations'] },
-        { name: 'Growth', price: '$850/mo', features: ['12 graphics/month', '2 posters/flyers', 'Monthly strategy session', 'Priority delivery', 'For mid-size organizations'] },
-        { name: 'Premium', price: '$1,600/mo', features: ['Unlimited event design requests', '1 active project at a time', 'Creative direction support', 'Weekly check-ins', 'For large institutions'] }
+        { name: 'Starter', tagline: 'Always-on design support', features: ['6 graphics/month', '1 poster/flyer', '48–72h turnaround', 'Perfect for small organizations'] },
+        { name: 'Growth', tagline: 'Priority pipeline, reliably delivered', features: ['12 graphics/month', '2 posters/flyers', 'Monthly strategy session', 'Priority delivery', 'For mid-size organizations'] },
+        { name: 'Premium', tagline: 'Dedicated creative direction', features: ['Unlimited event design requests', '1 active project at a time', 'Creative direction support', 'Weekly check-ins', 'For large institutions'] }
       ]
     },
     {
@@ -154,35 +154,35 @@ export function ServicesPage() {
       title: 'Equipment Rental',
       description: 'Professional camera, lighting, and audio equipment for your creative projects.',
       packages: [
-        { 
-          name: 'DJI Osmo Creator Kit', 
-          price: '$175/day', 
+        {
+          name: 'DJI Osmo Creator Kit',
+          capacity: 'Creator content',
           deposit: '$400',
-          features: ['DJI Osmo Pocket 3 or Action 5 Pro', 'Wireless Mic System (2x transmitters)', 'Extension Rod & Tripod', 'Extra Batteries & Storage', 'Protective Carry Case'] 
+          features: ['DJI Osmo Pocket 3 or Action 5 Pro', 'Wireless Mic System (2x transmitters)', 'Extension Rod & Tripod', 'Extra Batteries & Storage', 'Protective Carry Case']
         },
-        { 
-          name: 'Photography Kit', 
-          price: '$150/day', 
+        {
+          name: 'Photography Kit',
+          capacity: 'Photography projects',
           deposit: '$300',
-          features: ['DSLR or Mirrorless Camera', '2-3 Lenses (24-70mm, 50mm)', 'SD Cards & Batteries', 'Camera Bag'] 
+          features: ['DSLR or Mirrorless Camera', '2-3 Lenses (24-70mm, 50mm)', 'SD Cards & Batteries', 'Camera Bag']
         },
-        { 
-          name: 'Videography Kit', 
-          price: '$250/day', 
+        {
+          name: 'Videography Kit',
+          capacity: 'Video productions',
           deposit: '$500',
-          features: ['Cinema Camera or DSLR', 'Gimbal Stabilizer', 'Shotgun Microphone', 'LED Light Panel', 'Tripod & Accessories'] 
+          features: ['Cinema Camera or DSLR', 'Gimbal Stabilizer', 'Shotgun Microphone', 'LED Light Panel', 'Tripod & Accessories']
         },
-        { 
-          name: 'Lighting Package', 
-          price: '$100/day', 
+        {
+          name: 'Lighting Package',
+          capacity: 'Studio shoots',
           deposit: '$200',
-          features: ['2x LED Panels or Strobes', 'Light Stands', 'Softboxes/Modifiers', 'Power cables & accessories'] 
+          features: ['2x LED Panels or Strobes', 'Light Stands', 'Softboxes/Modifiers', 'Power cables & accessories']
         },
-        { 
-          name: 'Audio Package', 
-          price: '$75/day', 
+        {
+          name: 'Audio Package',
+          capacity: 'Audio capture',
           deposit: '$150',
-          features: ['Wireless Lavalier Mic', 'Shotgun Microphone', 'Audio Recorder', 'Boom Pole & Accessories'] 
+          features: ['Wireless Lavalier Mic', 'Shotgun Microphone', 'Audio Recorder', 'Boom Pole & Accessories']
         }
       ]
     }
@@ -402,7 +402,7 @@ export function ServicesPage() {
 
                         <div className="p-6 flex flex-col flex-1">
                           <p className="text-xs tracking-[0.3em] uppercase mb-2" style={{ color: '#A68F59' }}>{pkg.name}</p>
-                          <p className="text-3xl tracking-tight mb-1" style={{ color: '#121212' }}>{pkg.price}</p>
+                          <p className="text-sm italic mb-1" style={{ color: '#7A6F66' }}>{(pkg as any).tagline || (pkg as any).capacity}</p>
 
                           {/* Deposit for rentals */}
                           {('deposit' in pkg) && (
@@ -427,21 +427,32 @@ export function ServicesPage() {
                             ))}
                           </ul>
 
-                          <Button
-                            className="w-full mt-auto text-sm py-5 rounded-lg transition-all duration-300"
-                            style={{ backgroundColor: '#121212', color: '#F5F1EB' }}
-                            onClick={() => navigate(service.category === 'rental' ? '/rental' : `/booking${service.id ? `?service=${service.id}` : ''}`)}
-                            onMouseEnter={(e) => {
-                              e.currentTarget.style.backgroundColor = '#A68F59';
-                              e.currentTarget.style.color = '#121212';
-                            }}
-                            onMouseLeave={(e) => {
-                              e.currentTarget.style.backgroundColor = '#121212';
-                              e.currentTarget.style.color = '#F5F1EB';
-                            }}
-                          >
-                            {service.category === 'rental' ? 'Reserve Equipment' : 'Book Session'}
-                          </Button>
+                          <div className="flex flex-col gap-2 mt-auto">
+                            <Button
+                              className="w-full text-sm py-5 rounded-lg transition-all duration-300"
+                              style={{ backgroundColor: '#121212', color: '#F5F1EB' }}
+                              onClick={() => navigate(service.category === 'rental' ? '/rental' : `/booking${(service as any).id ? `?service=${(service as any).id}` : ''}`)}
+                              onMouseEnter={(e) => {
+                                e.currentTarget.style.backgroundColor = '#A68F59';
+                                e.currentTarget.style.color = '#121212';
+                              }}
+                              onMouseLeave={(e) => {
+                                e.currentTarget.style.backgroundColor = '#121212';
+                                e.currentTarget.style.color = '#F5F1EB';
+                              }}
+                            >
+                              {service.category === 'rental' ? 'Reserve Equipment' : 'Start a Project'}
+                            </Button>
+                            {service.category !== 'rental' && (
+                              <button
+                                className="w-full text-xs py-2 tracking-wide transition-opacity duration-200 hover:opacity-100 opacity-60"
+                                style={{ color: '#A68F59' }}
+                                onClick={() => navigate('/pricing')}
+                              >
+                                View pricing →
+                              </button>
+                            )}
+                          </div>
                         </div>
                       </TiltCard>
                       </RevealOnScroll>
