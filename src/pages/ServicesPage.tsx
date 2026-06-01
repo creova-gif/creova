@@ -357,155 +357,108 @@ export function ServicesPage() {
       </section>
 
       {/* Services List */}
-      <section id="services-list" className="py-16" style={{ backgroundColor: '#F5F1EB' }}>
+      <section id="services-list" className="py-20" style={{ backgroundColor: '#0A0A0A' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="space-y-12">
+          <div className="grid md:grid-cols-2 gap-5">
             {filteredServices.map((service, index) => (
-              <motion.div
-                key={index}
-                id={'id' in service ? service.id : undefined}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.08, duration: 0.6 }}
-                className="overflow-hidden rounded-2xl"
-                style={{ border: '1px solid rgba(18,18,18,0.12)' }}
-              >
-                {/* Service header — dark */}
-                <div className="relative overflow-hidden px-8 py-7" style={{ backgroundColor: '#121212' }}>
-                  <div className="absolute inset-0 pointer-events-none" style={{
-                    background: 'radial-gradient(ellipse 60% 100% at 0% 50%, rgba(166,143,89,0.07) 0%, transparent 60%)'
-                  }} />
-                  <div className="relative flex items-center gap-5">
-                    <div
-                      className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
-                      style={{ border: '1px solid rgba(166,143,89,0.3)', backgroundColor: 'rgba(166,143,89,0.08)' }}
-                    >
-                      <service.icon className="w-5 h-5" style={{ color: '#A68F59' }} />
-                    </div>
-                    <div>
-                      <h2 className="text-2xl tracking-tight mb-1" style={{ color: '#F5F1EB' }}>{service.title}</h2>
-                      <p className="text-sm leading-relaxed" style={{ color: '#7A6F66' }}>{service.description}</p>
-                    </div>
-                  </div>
-                </div>
+              <RevealOnScroll key={index} mode="3d" delay={index * 0.06}>
+                <TiltCard
+                  maxAngle={3}
+                  spotlight
+                  spotlightColor="rgba(166,143,89,0.06)"
+                  className="relative flex flex-col rounded-2xl overflow-hidden transition-all duration-500 group cursor-pointer h-full"
+                  style={{ backgroundColor: '#161412', border: '1px solid rgba(166,143,89,0.1)' }}
+                  onMouseEnter={(e: React.MouseEvent<HTMLDivElement>) => {
+                    e.currentTarget.style.borderColor = 'rgba(166,143,89,0.4)';
+                    e.currentTarget.style.boxShadow = '0 24px 60px rgba(0,0,0,0.5)';
+                  }}
+                  onMouseLeave={(e: React.MouseEvent<HTMLDivElement>) => {
+                    e.currentTarget.style.borderColor = 'rgba(166,143,89,0.1)';
+                    e.currentTarget.style.boxShadow = 'none';
+                  }}
+                >
+                  {/* Left accent bar */}
+                  <div
+                    className="absolute left-0 top-0 bottom-0 w-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                    style={{ backgroundColor: '#A68F59' }}
+                  />
 
-                {/* Package cards — cinematic dark */}
-                <div className="p-6" style={{ backgroundColor: '#0E0E0E' }}>
-                  <div className={`grid ${service.packages.length === 4 ? 'md:grid-cols-4' : 'md:grid-cols-3'} gap-4`}>
-                    {service.packages.map((pkg, pkgIndex) => (
-                      <RevealOnScroll key={pkgIndex} mode='3d' delay={pkgIndex * 0.1}>
-                      <TiltCard
-                        maxAngle={4}
-                        spotlight
-                        spotlightColor="rgba(166,143,89,0.06)"
-                        className="relative flex flex-col rounded-2xl overflow-hidden transition-all duration-500 group"
-                        style={{ border: '1px solid rgba(166,143,89,0.1)', backgroundColor: '#161412' }}
-                        onMouseEnter={(e: React.MouseEvent<HTMLDivElement>) => {
-                          e.currentTarget.style.borderColor = 'rgba(166,143,89,0.45)';
-                          e.currentTarget.style.boxShadow = '0 24px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(166,143,89,0.12)';
+                  <div className="p-8 flex flex-col flex-1">
+                    {/* Icon + category */}
+                    <div className="flex items-center gap-4 mb-6">
+                      <div
+                        className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
+                        style={{ backgroundColor: 'rgba(166,143,89,0.1)', border: '1px solid rgba(166,143,89,0.2)' }}
+                      >
+                        <service.icon className="w-5 h-5" style={{ color: '#A68F59' }} />
+                      </div>
+                      <span className="text-[10px] tracking-[0.45em] uppercase" style={{ color: 'rgba(166,143,89,0.6)' }}>
+                        {service.category === 'rental' ? 'Equipment' : service.category}
+                      </span>
+                    </div>
+
+                    {/* Title */}
+                    <h2 className="text-2xl font-light tracking-tight mb-3" style={{ color: '#F5F1EB' }}>
+                      {service.title}
+                    </h2>
+
+                    {/* Description */}
+                    <p className="text-sm leading-relaxed mb-6" style={{ color: 'rgba(245,241,235,0.45)' }}>
+                      {service.description}
+                    </p>
+
+                    {/* Package count pill */}
+                    <div className="flex items-center gap-2 mb-8">
+                      <div className="h-px flex-1" style={{ backgroundColor: 'rgba(166,143,89,0.12)' }} />
+                      <span
+                        className="text-[10px] tracking-[0.3em] uppercase px-3 py-1 rounded-full"
+                        style={{ color: '#A68F59', backgroundColor: 'rgba(166,143,89,0.08)', border: '1px solid rgba(166,143,89,0.15)' }}
+                      >
+                        {service.packages.length} {service.category === 'rental' ? 'kits' : 'packages'}
+                      </span>
+                      <div className="h-px flex-1" style={{ backgroundColor: 'rgba(166,143,89,0.12)' }} />
+                    </div>
+
+                    {/* CTAs */}
+                    <div className="flex gap-3 mt-auto">
+                      <Button
+                        className="flex-1 text-sm py-5 rounded-xl transition-all duration-300"
+                        style={{ backgroundColor: 'rgba(166,143,89,0.12)', color: '#A68F59', border: '1px solid rgba(166,143,89,0.25)' }}
+                        onClick={() => navigate(service.category === 'rental' ? '/rental' : `/booking${'id' in service && service.id ? `?service=${service.id}` : ''}`)}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.backgroundColor = '#A68F59';
+                          e.currentTarget.style.color = '#121212';
+                          e.currentTarget.style.borderColor = '#A68F59';
                         }}
-                        onMouseLeave={(e: React.MouseEvent<HTMLDivElement>) => {
-                          e.currentTarget.style.borderColor = 'rgba(166,143,89,0.1)';
-                          e.currentTarget.style.boxShadow = 'none';
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.backgroundColor = 'rgba(166,143,89,0.12)';
+                          e.currentTarget.style.color = '#A68F59';
+                          e.currentTarget.style.borderColor = 'rgba(166,143,89,0.25)';
                         }}
                       >
-                        {/* Left accent bar — reveals on hover */}
-                        <div
-                          className="absolute left-0 top-0 bottom-0 w-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                          style={{ backgroundColor: '#A68F59' }}
-                        />
-
-                        <div className="p-7 flex flex-col flex-1">
-                          {/* Package name */}
-                          <p className="text-[10px] tracking-[0.5em] uppercase mb-3" style={{ color: '#A68F59' }}>{pkg.name}</p>
-
-                          {/* Tagline — large, editorial */}
-                          <p className="text-lg font-light leading-snug mb-6" style={{ color: '#F5F1EB' }}>
-                            {'deposit' in pkg ? (pkg as RentalPackage).capacity : (pkg as ServicePackage).tagline}
-                          </p>
-
-                          {/* Gold rule */}
-                          <div className="mb-6" style={{ height: '1px', backgroundColor: 'rgba(166,143,89,0.2)' }} />
-
-                          {/* Features */}
-                          <ul className="space-y-3 text-sm flex-1 mb-7">
-                            {pkg.features.map((feature, featIndex) => (
-                              <li key={featIndex} className="flex items-start gap-3">
-                                <span className="mt-2 flex-shrink-0 w-1 h-1 rounded-full" style={{ backgroundColor: '#A68F59' }} />
-                                <span style={{ color: 'rgba(245,241,235,0.5)' }}>{feature}</span>
-                              </li>
-                            ))}
-                          </ul>
-
-                          {/* Deposit for rentals */}
-                          {('deposit' in pkg) && (
-                            <div className="flex items-center gap-2 mb-5 px-3 py-2 rounded-lg"
-                                 style={{ backgroundColor: 'rgba(177,100,59,0.1)', border: '1px solid rgba(177,100,59,0.2)' }}>
-                              <AlertCircle className="w-3.5 h-3.5 flex-shrink-0" style={{ color: '#B1643B' }} />
-                              <span className="text-xs" style={{ color: '#B1643B' }}>
-                                Deposit: {(pkg as RentalPackage).deposit}
-                              </span>
-                            </div>
-                          )}
-
-                          {/* CTAs */}
-                          <div className="flex flex-col gap-2 mt-auto">
-                            <Button
-                              className="w-full text-sm py-5 rounded-xl transition-all duration-300"
-                              style={{ backgroundColor: 'rgba(166,143,89,0.12)', color: '#A68F59', border: '1px solid rgba(166,143,89,0.25)' }}
-                              onClick={() => navigate(service.category === 'rental' ? '/rental' : `/booking${'id' in service && service.id ? `?service=${service.id}` : ''}`)}
-                              onMouseEnter={(e) => {
-                                e.currentTarget.style.backgroundColor = '#A68F59';
-                                e.currentTarget.style.color = '#121212';
-                                e.currentTarget.style.borderColor = '#A68F59';
-                              }}
-                              onMouseLeave={(e) => {
-                                e.currentTarget.style.backgroundColor = 'rgba(166,143,89,0.12)';
-                                e.currentTarget.style.color = '#A68F59';
-                                e.currentTarget.style.borderColor = 'rgba(166,143,89,0.25)';
-                              }}
-                            >
-                              {service.category === 'rental' ? 'Reserve Equipment' : 'Start a Project'}
-                            </Button>
-                            {service.category !== 'rental' && (
-                              <button
-                                type="button"
-                                aria-label={`View pricing for ${pkg.name}`}
-                                className="w-full text-xs py-2 tracking-wide transition-opacity duration-200 hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#A68F59] opacity-40 rounded"
-                                style={{ color: '#A68F59' }}
-                                onClick={() => navigate('/pricing')}
-                              >
-                                View pricing →
-                              </button>
-                            )}
-                          </div>
-                        </div>
-                      </TiltCard>
-                      </RevealOnScroll>
-                    ))}
-                  </div>
-
-                  {/* Add-Ons for Video */}
-                  {service.addOns && (
-                    <div className="mt-6 pt-6" style={{ borderTop: '1px solid rgba(166,143,89,0.12)' }}>
-                      <p className="text-xs tracking-[0.35em] uppercase mb-4" style={{ color: 'rgba(166,143,89,0.6)' }}>Add-Ons</p>
-                      <div className="flex flex-wrap gap-3">
-                        {service.addOns.map((addOn, addOnIndex) => (
-                          <div
-                            key={addOnIndex}
-                            className="flex items-center gap-3 px-5 py-3 rounded-xl"
-                            style={{ backgroundColor: 'rgba(166,143,89,0.06)', border: '1px solid rgba(166,143,89,0.15)' }}
-                          >
-                            <span className="text-sm" style={{ color: 'rgba(245,241,235,0.7)' }}>{addOn.name}</span>
-                            <span className="text-sm" style={{ color: '#A68F59' }}>{addOn.price}</span>
-                          </div>
-                        ))}
-                      </div>
+                        Start a Project
+                      </Button>
+                      <button
+                        type="button"
+                        aria-label={`See packages for ${service.title}`}
+                        className="flex-1 text-sm py-5 rounded-xl tracking-wide transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#A68F59]"
+                        style={{ color: 'rgba(245,241,235,0.45)', border: '1px solid rgba(245,241,235,0.08)' }}
+                        onClick={() => navigate('/pricing')}
+                        onMouseEnter={(e) => {
+                          (e.currentTarget as HTMLElement).style.color = '#F5F1EB';
+                          (e.currentTarget as HTMLElement).style.borderColor = 'rgba(245,241,235,0.2)';
+                        }}
+                        onMouseLeave={(e) => {
+                          (e.currentTarget as HTMLElement).style.color = 'rgba(245,241,235,0.45)';
+                          (e.currentTarget as HTMLElement).style.borderColor = 'rgba(245,241,235,0.08)';
+                        }}
+                      >
+                        See Packages
+                      </button>
                     </div>
-                  )}
-                </div>
-              </motion.div>
+                  </div>
+                </TiltCard>
+              </RevealOnScroll>
             ))}
           </div>
         </div>
