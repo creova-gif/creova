@@ -523,7 +523,7 @@ export function ServicesPage() {
 
           <div className="grid md:grid-cols-4 gap-0 relative">
             {/* Connector line desktop */}
-            <div className="hidden md:block absolute top-8 left-[12.5%] right-[12.5%] h-px" style={{ backgroundColor: 'rgba(166,143,89,0.2)' }} />
+            <div className="hidden md:block absolute top-16 left-[12.5%] right-[12.5%] h-px" style={{ backgroundColor: 'rgba(166,143,89,0.2)' }} />
             {[
               { step: '01', title: 'Discover', desc: 'We learn your brand, goals, and vision in a free 30-minute call. No obligation.' },
               { step: '02', title: 'Create', desc: 'We plan the shoot or design sprint, execute with intent, and bring your story to life.' },
