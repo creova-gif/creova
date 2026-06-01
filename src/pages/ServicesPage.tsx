@@ -21,69 +21,6 @@ interface RentalPackage {
 }
 type AnyPackage = ServicePackage | RentalPackage;
 
-function WorkTile({ label, src, aspect, index, onClick }: {
-  label: string; src: string; aspect: string; index: number; onClick: () => void;
-}) {
-  const [loaded, setLoaded] = useState(false);
-  const [errored, setErrored] = useState(false);
-
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      viewport={{ once: true }}
-      transition={{ delay: index * 0.06, duration: 0.5 }}
-      className={`relative overflow-hidden rounded-2xl group cursor-pointer ${aspect}`}
-      style={{ backgroundColor: '#161412' }}
-      onClick={onClick}
-      role="button"
-      tabIndex={0}
-      aria-label={`View ${label} work`}
-      onKeyDown={(e) => e.key === 'Enter' && onClick()}
-    >
-      {/* Placeholder shown until image loads or if missing */}
-      {(!loaded || errored) && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 p-4"
-             style={{ border: '1px dashed rgba(166,143,89,0.2)' }}>
-          <div className="w-8 h-8 rounded-full flex items-center justify-center"
-               style={{ backgroundColor: 'rgba(166,143,89,0.08)', border: '1px solid rgba(166,143,89,0.2)' }}>
-            <span className="text-xs" style={{ color: '#A68F59' }}>+</span>
-          </div>
-          <p className="text-[10px] tracking-[0.3em] uppercase text-center" style={{ color: 'rgba(166,143,89,0.35)' }}>
-            {label}
-          </p>
-          <p className="text-[9px] text-center" style={{ color: 'rgba(245,241,235,0.2)' }}>
-            {src}
-          </p>
-        </div>
-      )}
-
-      {/* Actual photo */}
-      <img
-        src={src}
-        alt={label}
-        loading="lazy"
-        onLoad={() => setLoaded(true)}
-        onError={() => setErrored(true)}
-        className={`absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 ${loaded && !errored ? 'opacity-100' : 'opacity-0'}`}
-      />
-
-      {/* Overlay + label */}
-      {loaded && !errored && (
-        <>
-          <div className="absolute inset-0"
-               style={{ background: 'linear-gradient(to top, rgba(10,10,10,0.8) 0%, transparent 55%)' }} />
-          <div className="absolute inset-0 flex flex-col justify-end p-5">
-            <span className="text-xs tracking-[0.3em] uppercase translate-y-2 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300"
-                  style={{ color: '#A68F59' }}>
-              {label}
-            </span>
-          </div>
-        </>
-      )}
-    </motion.div>
-  );
-}
 
 export function ServicesPage() {
   const [activeTab, setActiveTab] = useState<ServiceCategory>('all');
@@ -627,45 +564,70 @@ export function ServicesPage() {
         </div>
       </section>
 
-      {/* Work Showcase */}
-      <section className="py-24" style={{ backgroundColor: '#F5F1EB' }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Marquee + Stats */}
+      <section className="overflow-hidden" style={{ backgroundColor: '#0A0A0A', borderTop: '1px solid rgba(166,143,89,0.15)', borderBottom: '1px solid rgba(166,143,89,0.15)' }}>
+        {/* Row 1 — scrolls left */}
+        <div className="py-5 flex" style={{ borderBottom: '1px solid rgba(166,143,89,0.08)' }}>
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="flex flex-col md:flex-row md:items-end md:justify-between mb-14 gap-4"
+            animate={{ x: ['0%', '-50%'] }}
+            transition={{ duration: 28, repeat: Infinity, ease: 'linear' }}
+            className="flex gap-10 whitespace-nowrap flex-shrink-0"
           >
-            <div>
-              <div className="flex items-center gap-4 mb-4">
-                <div className="w-10 h-px" style={{ backgroundColor: 'rgba(18,18,18,0.25)' }} />
-                <span className="text-[10px] tracking-[0.5em] uppercase" style={{ color: '#A68F59' }}>Selected Work</span>
+            {[...Array(2)].map((_, rep) => (
+              <div key={rep} className="flex gap-10 items-center">
+                {['Brand Photography', 'Event Coverage', 'Aerial Vision', 'Social Media', 'Brand Identity', 'Product Photography', 'Videography', 'Creative Direction', 'Graphic Design', 'Equipment Rental'].map((item) => (
+                  <span key={item} className="flex items-center gap-10">
+                    <span className="text-sm tracking-[0.3em] uppercase" style={{ color: 'rgba(245,241,235,0.35)' }}>{item}</span>
+                    <span className="w-1 h-1 rounded-full flex-shrink-0" style={{ backgroundColor: '#A68F59' }} />
+                  </span>
+                ))}
               </div>
-              <h2 className="text-4xl font-light tracking-tight" style={{ color: '#121212' }}>
-                Built with intention.
-              </h2>
-            </div>
-            <button
-              type="button"
-              className="text-sm tracking-wide underline underline-offset-4 transition-opacity hover:opacity-70 self-start md:self-auto"
-              style={{ color: '#A68F59' }}
-              onClick={() => navigate('/work')}
-            >
-              View full portfolio →
-            </button>
+            ))}
           </motion.div>
+        </div>
 
-          {/* Asymmetric masonry grid */}
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
+        {/* Row 2 — scrolls right */}
+        <div className="py-5 flex">
+          <motion.div
+            animate={{ x: ['-50%', '0%'] }}
+            transition={{ duration: 34, repeat: Infinity, ease: 'linear' }}
+            className="flex gap-10 whitespace-nowrap flex-shrink-0"
+          >
+            {[...Array(2)].map((_, rep) => (
+              <div key={rep} className="flex gap-10 items-center">
+                {['Ontario & Beyond', 'BIPOC Brands', 'Cultural Storytelling', 'Licensed & Insured', 'Commercial Rights Included', 'Strategy-Led', 'On-Location', 'Studio & Lifestyle', 'Pro Equipment', 'Editorial Quality'].map((item) => (
+                  <span key={item} className="flex items-center gap-10">
+                    <span className="text-sm tracking-[0.3em] uppercase italic" style={{ color: 'rgba(166,143,89,0.4)' }}>{item}</span>
+                    <span className="w-1 h-1 rounded-full flex-shrink-0" style={{ backgroundColor: 'rgba(166,143,89,0.3)' }} />
+                  </span>
+                ))}
+              </div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Stats bar */}
+      <section className="py-16" style={{ backgroundColor: '#F5F1EB', borderBottom: '1px solid rgba(18,18,18,0.08)' }}>
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-0 md:divide-x" style={{ '--tw-divide-opacity': 1 } as React.CSSProperties}>
             {[
-              { label: 'Brand Photography',   src: '/work/photo-1.jpg', aspect: 'aspect-[3/4] md:row-span-2' },
-              { label: 'Event Coverage',      src: '/work/photo-2.jpg', aspect: 'aspect-[4/3]' },
-              { label: 'Aerial Vision',       src: '/work/photo-3.jpg', aspect: 'aspect-square' },
-              { label: 'Creative Direction',  src: '/work/photo-4.jpg', aspect: 'aspect-[4/3]' },
-              { label: 'Brand Design',        src: '/work/photo-5.jpg', aspect: 'aspect-[3/4] md:row-span-2' },
-              { label: 'Product Photography', src: '/work/photo-6.jpg', aspect: 'aspect-square' },
-            ].map((item, i) => (
-              <WorkTile key={i} {...item} index={i} onClick={() => navigate('/work')} />
+              { n: '10+', label: 'Services offered' },
+              { n: '3', label: 'Package tiers' },
+              { n: 'Ontario', label: 'Based, travel Canada-wide' },
+              { n: '100%', label: 'Commercial rights included' },
+            ].map((stat, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.08, duration: 0.5 }}
+                className="text-center md:px-8"
+              >
+                <p className="text-4xl font-light tracking-tight mb-2" style={{ color: '#121212' }}>{stat.n}</p>
+                <p className="text-xs tracking-[0.3em] uppercase" style={{ color: 'rgba(18,18,18,0.4)' }}>{stat.label}</p>
+              </motion.div>
             ))}
           </div>
         </div>
