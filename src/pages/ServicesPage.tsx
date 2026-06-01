@@ -592,39 +592,76 @@ export function ServicesPage() {
             </button>
           </motion.div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+          {/* Asymmetric masonry: row 1 = tall-left + stacked-right, row 2 = stacked-left + tall-right */}
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
             {[
-              { label: 'Brand Photography', aspect: 'aspect-[4/5]', bg: '#1A1612' },
-              { label: 'Event Coverage', aspect: 'aspect-[4/3]', bg: '#120F0C' },
-              { label: 'Aerial Vision', aspect: 'aspect-square', bg: '#0E0C09' },
-              { label: 'Social Media', aspect: 'aspect-[4/3]', bg: '#1C1108' },
-              { label: 'Brand Design', aspect: 'aspect-[4/5]', bg: '#110E0B' },
-              { label: 'Product Photography', aspect: 'aspect-square', bg: '#15110D' },
+              {
+                label: 'Brand Photography',
+                img: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=800&q=80',
+                aspect: 'aspect-[3/4] md:row-span-2',
+              },
+              {
+                label: 'Event Coverage',
+                img: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=800&q=80',
+                aspect: 'aspect-[4/3]',
+              },
+              {
+                label: 'Aerial Vision',
+                img: 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=800&q=80',
+                aspect: 'aspect-square',
+              },
+              {
+                label: 'Creative Direction',
+                img: 'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=800&q=80',
+                aspect: 'aspect-[4/3]',
+              },
+              {
+                label: 'Brand Design',
+                img: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=800&q=80',
+                aspect: 'aspect-[3/4] md:row-span-2',
+              },
+              {
+                label: 'Product Photography',
+                img: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=80',
+                aspect: 'aspect-square',
+              },
             ].map((item, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, scale: 0.97 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.07, duration: 0.5 }}
+                transition={{ delay: i * 0.07, duration: 0.6 }}
                 className={`relative overflow-hidden rounded-2xl group cursor-pointer ${item.aspect}`}
-                style={{ backgroundColor: item.bg }}
+                style={{ backgroundColor: '#111' }}
                 onClick={() => navigate('/work')}
                 role="button"
                 tabIndex={0}
                 aria-label={`View ${item.label} work`}
                 onKeyDown={(e) => e.key === 'Enter' && navigate('/work')}
               >
+                {/* Photo */}
+                <img
+                  src={item.img}
+                  alt={item.label}
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  loading="lazy"
+                />
+
+                {/* Dark overlay — heavier at rest, lightens on hover */}
                 <div
-                  className="absolute inset-0 opacity-10"
-                  style={{ background: `radial-gradient(ellipse at ${i % 2 === 0 ? '30%' : '70%'} 40%, #A68F59 0%, transparent 60%)` }}
+                  className="absolute inset-0 transition-opacity duration-500"
+                  style={{ background: 'linear-gradient(to top, rgba(10,10,10,0.85) 0%, rgba(10,10,10,0.35) 60%, rgba(10,10,10,0.15) 100%)' }}
                 />
                 <div
-                  className="absolute inset-0 flex flex-col justify-end p-5"
-                  style={{ background: 'linear-gradient(to top, rgba(10,10,10,0.8) 0%, transparent 60%)' }}
-                >
+                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                  style={{ backgroundColor: 'rgba(10,10,10,0.2)' }}
+                />
+
+                {/* Label */}
+                <div className="absolute inset-0 flex flex-col justify-end p-5">
                   <span
-                    className="text-xs tracking-[0.3em] uppercase opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300"
+                    className="text-xs tracking-[0.3em] uppercase translate-y-2 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-400"
                     style={{ color: '#A68F59' }}
                   >
                     {item.label}
@@ -633,10 +670,6 @@ export function ServicesPage() {
               </motion.div>
             ))}
           </div>
-
-          <p className="text-center text-xs mt-6" style={{ color: 'rgba(18,18,18,0.3)' }}>
-            Portfolio photos load here — add images to <code>public/work/</code> and replace the placeholder divs.
-          </p>
         </div>
       </section>
 
