@@ -577,6 +577,82 @@ export function ServicesPage() {
         </div>
       </section>
 
+      {/* Work Showcase */}
+      <section className="py-24" style={{ backgroundColor: '#F5F1EB' }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="flex flex-col md:flex-row md:items-end md:justify-between mb-14 gap-4"
+          >
+            <div>
+              <div className="flex items-center gap-4 mb-4">
+                <div className="w-10 h-px" style={{ backgroundColor: 'rgba(18,18,18,0.25)' }} />
+                <span className="text-[10px] tracking-[0.5em] uppercase" style={{ color: '#A68F59' }}>Selected Work</span>
+              </div>
+              <h2 className="text-4xl font-light tracking-tight" style={{ color: '#121212' }}>
+                Built with intention.
+              </h2>
+            </div>
+            <button
+              type="button"
+              className="text-sm tracking-wide underline underline-offset-4 transition-opacity hover:opacity-70 self-start md:self-auto"
+              style={{ color: '#A68F59' }}
+              onClick={() => navigate('/work')}
+            >
+              View full portfolio →
+            </button>
+          </motion.div>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            {[
+              { label: 'Brand Photography', aspect: 'aspect-[4/5]', bg: '#1A1612' },
+              { label: 'Event Coverage', aspect: 'aspect-[4/3]', bg: '#120F0C' },
+              { label: 'Aerial Vision', aspect: 'aspect-square', bg: '#0E0C09' },
+              { label: 'Social Media', aspect: 'aspect-[4/3]', bg: '#1C1108' },
+              { label: 'Brand Design', aspect: 'aspect-[4/5]', bg: '#110E0B' },
+              { label: 'Product Photography', aspect: 'aspect-square', bg: '#15110D' },
+            ].map((item, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, scale: 0.97 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.07, duration: 0.5 }}
+                className={`relative overflow-hidden rounded-2xl group cursor-pointer ${item.aspect}`}
+                style={{ backgroundColor: item.bg }}
+                onClick={() => navigate('/work')}
+                role="button"
+                tabIndex={0}
+                aria-label={`View ${item.label} work`}
+                onKeyDown={(e) => e.key === 'Enter' && navigate('/work')}
+              >
+                <div
+                  className="absolute inset-0 opacity-10"
+                  style={{ background: `radial-gradient(ellipse at ${i % 2 === 0 ? '30%' : '70%'} 40%, #A68F59 0%, transparent 60%)` }}
+                />
+                <div
+                  className="absolute inset-0 flex flex-col justify-end p-5"
+                  style={{ background: 'linear-gradient(to top, rgba(10,10,10,0.8) 0%, transparent 60%)' }}
+                >
+                  <span
+                    className="text-xs tracking-[0.3em] uppercase opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300"
+                    style={{ color: '#A68F59' }}
+                  >
+                    {item.label}
+                  </span>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          <p className="text-center text-xs mt-6" style={{ color: 'rgba(18,18,18,0.3)' }}>
+            Portfolio photos load here — add images to <code>public/work/</code> and replace the placeholder divs.
+          </p>
+        </div>
+      </section>
+
       {/* Drone & Video Preview */}
       {(activeTab === 'video' || activeTab === 'all') && (
         <section className="relative overflow-hidden" style={{ backgroundColor: '#0A0A0A' }}>
