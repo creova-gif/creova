@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { PageSEO } from '../components/PageSEO';
 import { Button } from '../components/ui/button';
-import { motion } from 'motion/react';
-import { Camera, Users, Package, PartyPopper, Plane, TrendingUp, Palette, Video, Settings, CheckCircle2, AlertCircle, Calendar } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
+import { Camera, Users, Package, PartyPopper, Plane, TrendingUp, Palette, Video, Settings, CheckCircle2, AlertCircle, Calendar, ArrowRight } from 'lucide-react';
 import { TiltCard } from '../components/TiltCard';
 import { RevealOnScroll } from '../components/RevealOnScroll';
 
@@ -24,6 +24,7 @@ type AnyPackage = ServicePackage | RentalPackage;
 
 export function ServicesPage() {
   const [activeTab, setActiveTab] = useState<ServiceCategory>('all');
+  const [hoveredService, setHoveredService] = useState<number | null>(null);
   const navigate = useNavigate();
 
   const tabs = [
@@ -356,109 +357,132 @@ export function ServicesPage() {
         </div>
       </section>
 
-      {/* Services List */}
-      <section id="services-list" className="py-20" style={{ backgroundColor: '#0A0A0A' }}>
+      {/* Services List — editorial numbered list */}
+      <section id="services-list" style={{ backgroundColor: '#0A0A0A' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 gap-5">
+          <div style={{ borderTop: '1px solid rgba(166,143,89,0.15)' }}>
             {filteredServices.map((service, index) => (
-              <RevealOnScroll key={index} mode="3d" delay={index * 0.06}>
-                <TiltCard
-                  maxAngle={3}
-                  spotlight
-                  spotlightColor="rgba(166,143,89,0.06)"
-                  className="relative flex flex-col rounded-2xl overflow-hidden transition-all duration-500 group cursor-pointer h-full"
-                  style={{ backgroundColor: '#161412', border: '1px solid rgba(166,143,89,0.1)' }}
-                  onMouseEnter={(e: React.MouseEvent<HTMLDivElement>) => {
-                    e.currentTarget.style.borderColor = 'rgba(166,143,89,0.4)';
-                    e.currentTarget.style.boxShadow = '0 24px 60px rgba(0,0,0,0.5)';
+              <motion.div
+                key={index}
+                id={'id' in service ? service.id : undefined}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.04, duration: 0.5 }}
+                onMouseEnter={() => setHoveredService(index)}
+                onMouseLeave={() => setHoveredService(null)}
+                className="relative cursor-pointer"
+                style={{ borderBottom: '1px solid rgba(166,143,89,0.15)' }}
+              >
+                {/* Hover wash */}
+                <div
+                  className="absolute inset-0 pointer-events-none transition-opacity duration-400"
+                  style={{
+                    background: 'linear-gradient(90deg, rgba(166,143,89,0.05) 0%, transparent 70%)',
+                    opacity: hoveredService === index ? 1 : 0
                   }}
-                  onMouseLeave={(e: React.MouseEvent<HTMLDivElement>) => {
-                    e.currentTarget.style.borderColor = 'rgba(166,143,89,0.1)';
-                    e.currentTarget.style.boxShadow = 'none';
-                  }}
-                >
-                  {/* Left accent bar */}
-                  <div
-                    className="absolute left-0 top-0 bottom-0 w-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                    style={{ backgroundColor: '#A68F59' }}
-                  />
+                />
 
-                  <div className="p-8 flex flex-col flex-1">
-                    {/* Icon + category */}
-                    <div className="flex items-center gap-4 mb-6">
-                      <div
-                        className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
-                        style={{ backgroundColor: 'rgba(166,143,89,0.1)', border: '1px solid rgba(166,143,89,0.2)' }}
-                      >
-                        <service.icon className="w-5 h-5" style={{ color: '#A68F59' }} />
-                      </div>
-                      <span className="text-[10px] tracking-[0.45em] uppercase" style={{ color: 'rgba(166,143,89,0.6)' }}>
-                        {service.category === 'rental' ? 'Equipment' : service.category}
-                      </span>
-                    </div>
+                {/* Main row */}
+                <div className="relative flex items-center gap-5 md:gap-10 py-7 md:py-9">
+                  {/* Number */}
+                  <span
+                    className="text-xs tracking-[0.4em] flex-shrink-0 w-8 transition-colors duration-300"
+                    style={{ color: hoveredService === index ? '#A68F59' : 'rgba(166,143,89,0.3)' }}
+                  >
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
 
-                    {/* Title */}
-                    <h2 className="text-2xl font-light tracking-tight mb-3" style={{ color: '#F5F1EB' }}>
-                      {service.title}
-                    </h2>
+                  {/* Title */}
+                  <h2
+                    className="flex-1 font-light tracking-tight transition-colors duration-300"
+                    style={{
+                      fontSize: 'clamp(1.4rem, 3vw, 2.4rem)',
+                      color: hoveredService === index ? '#F5F1EB' : 'rgba(245,241,235,0.55)'
+                    }}
+                  >
+                    {service.title}
+                  </h2>
 
-                    {/* Description */}
-                    <p className="text-sm leading-relaxed mb-6" style={{ color: 'rgba(245,241,235,0.45)' }}>
-                      {service.description}
-                    </p>
-
-                    {/* Package count pill */}
-                    <div className="flex items-center gap-2 mb-8">
-                      <div className="h-px flex-1" style={{ backgroundColor: 'rgba(166,143,89,0.12)' }} />
-                      <span
-                        className="text-[10px] tracking-[0.3em] uppercase px-3 py-1 rounded-full"
-                        style={{ color: '#A68F59', backgroundColor: 'rgba(166,143,89,0.08)', border: '1px solid rgba(166,143,89,0.15)' }}
-                      >
-                        {service.packages.length} {service.category === 'rental' ? 'kits' : 'packages'}
-                      </span>
-                      <div className="h-px flex-1" style={{ backgroundColor: 'rgba(166,143,89,0.12)' }} />
-                    </div>
-
-                    {/* CTAs */}
-                    <div className="flex gap-3 mt-auto">
-                      <Button
-                        className="flex-1 text-sm py-5 rounded-xl transition-all duration-300"
-                        style={{ backgroundColor: 'rgba(166,143,89,0.12)', color: '#A68F59', border: '1px solid rgba(166,143,89,0.25)' }}
-                        onClick={() => navigate(service.category === 'rental' ? '/rental' : `/booking${'id' in service && service.id ? `?service=${service.id}` : ''}`)}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.backgroundColor = '#A68F59';
-                          e.currentTarget.style.color = '#121212';
-                          e.currentTarget.style.borderColor = '#A68F59';
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.backgroundColor = 'rgba(166,143,89,0.12)';
-                          e.currentTarget.style.color = '#A68F59';
-                          e.currentTarget.style.borderColor = 'rgba(166,143,89,0.25)';
-                        }}
-                      >
-                        Start a Project
-                      </Button>
-                      <button
-                        type="button"
-                        aria-label={`See packages for ${service.title}`}
-                        className="flex-1 text-sm py-5 rounded-xl tracking-wide transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#A68F59]"
-                        style={{ color: 'rgba(245,241,235,0.45)', border: '1px solid rgba(245,241,235,0.08)' }}
-                        onClick={() => navigate('/pricing')}
-                        onMouseEnter={(e) => {
-                          (e.currentTarget as HTMLElement).style.color = '#F5F1EB';
-                          (e.currentTarget as HTMLElement).style.borderColor = 'rgba(245,241,235,0.2)';
-                        }}
-                        onMouseLeave={(e) => {
-                          (e.currentTarget as HTMLElement).style.color = 'rgba(245,241,235,0.45)';
-                          (e.currentTarget as HTMLElement).style.borderColor = 'rgba(245,241,235,0.08)';
-                        }}
-                      >
-                        See Packages
-                      </button>
+                  {/* Right: category + arrow */}
+                  <div className="flex items-center gap-4 flex-shrink-0">
+                    <span
+                      className="text-[10px] tracking-[0.4em] uppercase hidden md:block transition-opacity duration-300"
+                      style={{ color: '#A68F59', opacity: hoveredService === index ? 1 : 0.35 }}
+                    >
+                      {service.category === 'rental' ? 'Equipment' : service.category}
+                    </span>
+                    <div
+                      className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-300"
+                      style={{
+                        border: '1px solid rgba(166,143,89,0.25)',
+                        backgroundColor: hoveredService === index ? 'rgba(166,143,89,0.12)' : 'transparent',
+                        transform: hoveredService === index ? 'translateX(4px)' : 'translateX(0)'
+                      }}
+                    >
+                      <ArrowRight className="w-3.5 h-3.5" style={{ color: '#A68F59' }} />
                     </div>
                   </div>
-                </TiltCard>
-              </RevealOnScroll>
+                </div>
+
+                {/* Expandable: description + CTAs */}
+                <AnimatePresence>
+                  {hoveredService === index && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
+                      className="overflow-hidden"
+                    >
+                      <div className="pb-8 pl-[3.25rem] md:pl-[4.5rem] flex flex-col sm:flex-row sm:items-center gap-5">
+                        <p
+                          className="text-sm leading-relaxed flex-1 max-w-xl"
+                          style={{ color: 'rgba(245,241,235,0.45)' }}
+                        >
+                          {service.description}
+                        </p>
+                        <div className="flex gap-3 flex-shrink-0">
+                          <Button
+                            className="text-sm px-6 py-4 rounded-xl transition-all duration-300"
+                            style={{ backgroundColor: 'rgba(166,143,89,0.12)', color: '#A68F59', border: '1px solid rgba(166,143,89,0.3)' }}
+                            onClick={() => navigate(service.category === 'rental' ? '/rental' : `/booking${'id' in service && service.id ? `?service=${service.id}` : ''}`)}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.backgroundColor = '#A68F59';
+                              e.currentTarget.style.color = '#121212';
+                              e.currentTarget.style.borderColor = '#A68F59';
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.backgroundColor = 'rgba(166,143,89,0.12)';
+                              e.currentTarget.style.color = '#A68F59';
+                              e.currentTarget.style.borderColor = 'rgba(166,143,89,0.3)';
+                            }}
+                          >
+                            Start a Project
+                          </Button>
+                          <button
+                            type="button"
+                            aria-label={`See packages for ${service.title}`}
+                            className="text-sm px-6 py-4 rounded-xl tracking-wide transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#A68F59]"
+                            style={{ color: 'rgba(245,241,235,0.4)', border: '1px solid rgba(245,241,235,0.1)' }}
+                            onClick={() => navigate('/pricing')}
+                            onMouseEnter={(e) => {
+                              (e.currentTarget as HTMLElement).style.color = '#F5F1EB';
+                              (e.currentTarget as HTMLElement).style.borderColor = 'rgba(245,241,235,0.25)';
+                            }}
+                            onMouseLeave={(e) => {
+                              (e.currentTarget as HTMLElement).style.color = 'rgba(245,241,235,0.4)';
+                              (e.currentTarget as HTMLElement).style.borderColor = 'rgba(245,241,235,0.1)';
+                            }}
+                          >
+                            See Packages →
+                          </button>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
             ))}
           </div>
         </div>
