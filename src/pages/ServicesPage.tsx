@@ -9,6 +9,19 @@ import { RevealOnScroll } from '../components/RevealOnScroll';
 
 type ServiceCategory = 'photography' | 'video' | 'brand' | 'social' | 'events' | 'rental' | 'all';
 
+interface ServicePackage {
+  name: string;
+  tagline: string;
+  features: string[];
+}
+interface RentalPackage {
+  name: string;
+  capacity: string;
+  deposit: string;
+  features: string[];
+}
+type AnyPackage = ServicePackage | RentalPackage;
+
 export function ServicesPage() {
   const [activeTab, setActiveTab] = useState<ServiceCategory>('all');
   const navigate = useNavigate();
@@ -350,7 +363,7 @@ export function ServicesPage() {
             {filteredServices.map((service, index) => (
               <motion.div
                 key={index}
-                id={(service as any).id}
+                id={'id' in service ? service.id : undefined}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -402,7 +415,9 @@ export function ServicesPage() {
 
                         <div className="p-6 flex flex-col flex-1">
                           <p className="text-xs tracking-[0.3em] uppercase mb-2" style={{ color: '#A68F59' }}>{pkg.name}</p>
-                          <p className="text-sm italic mb-1" style={{ color: '#7A6F66' }}>{(pkg as any).tagline || (pkg as any).capacity}</p>
+                          <p className="text-sm italic mb-1" style={{ color: '#7A6F66' }}>
+                            {'deposit' in pkg ? (pkg as RentalPackage).capacity : (pkg as ServicePackage).tagline}
+                          </p>
 
                           {/* Deposit for rentals */}
                           {('deposit' in pkg) && (
@@ -410,7 +425,7 @@ export function ServicesPage() {
                                  style={{ backgroundColor: 'rgba(177,100,59,0.08)', border: '1px solid rgba(177,100,59,0.2)' }}>
                               <AlertCircle className="w-3.5 h-3.5 flex-shrink-0" style={{ color: '#B1643B' }} />
                               <span className="text-xs" style={{ color: '#B1643B' }}>
-                                Deposit: {(pkg as any).deposit}
+                                Deposit: {(pkg as RentalPackage).deposit}
                               </span>
                             </div>
                           )}
@@ -427,11 +442,11 @@ export function ServicesPage() {
                             ))}
                           </ul>
 
-                          <div className="flex flex-col gap-2 mt-auto">
+                          <div className="flex flex-col gap-3 mt-auto">
                             <Button
                               className="w-full text-sm py-5 rounded-lg transition-all duration-300"
                               style={{ backgroundColor: '#121212', color: '#F5F1EB' }}
-                              onClick={() => navigate(service.category === 'rental' ? '/rental' : `/booking${(service as any).id ? `?service=${(service as any).id}` : ''}`)}
+                              onClick={() => navigate(service.category === 'rental' ? '/rental' : `/booking${'id' in service && service.id ? `?service=${service.id}` : ''}`)}
                               onMouseEnter={(e) => {
                                 e.currentTarget.style.backgroundColor = '#A68F59';
                                 e.currentTarget.style.color = '#121212';
@@ -445,7 +460,9 @@ export function ServicesPage() {
                             </Button>
                             {service.category !== 'rental' && (
                               <button
-                                className="w-full text-xs py-2 tracking-wide transition-opacity duration-200 hover:opacity-100 opacity-60"
+                                type="button"
+                                aria-label={`View pricing for ${pkg.name}`}
+                                className="w-full text-xs py-2 tracking-wide transition-opacity duration-200 hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#A68F59] opacity-60 rounded"
                                 style={{ color: '#A68F59' }}
                                 onClick={() => navigate('/pricing')}
                               >
