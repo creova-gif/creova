@@ -1,0 +1,1 @@
+- [Asset performance](asset-performance.md) — hero video lag was from clip length not bitrate; trim+downscale, don't just lower CRF.

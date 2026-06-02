@@ -53,6 +53,7 @@ export function VideoHero({
           muted
           loop
           playsInline
+          preload="metadata"
           poster={posterSrc || fallbackSrc}
           initial={{ opacity: 0 }}
           animate={{ opacity: videoReady ? 0.45 : 0 }}
@@ -60,7 +61,6 @@ export function VideoHero({
           aria-hidden="true"
         >
           <source src={videoSrc} type="video/mp4" />
-          <source src={videoSrc.replace('.mp4', '.webm')} type="video/webm" />
         </motion.video>
       )}
 
