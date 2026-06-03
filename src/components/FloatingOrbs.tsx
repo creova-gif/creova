@@ -1,4 +1,5 @@
 import { motion, useReducedMotion } from 'motion/react';
+import { useEffect, useState } from 'react';
 
 interface OrbConfig {
   size: number;
@@ -51,6 +52,20 @@ const orbs: OrbConfig[] = [
 
 export function FloatingOrbs() {
   const prefersReduced = useReducedMotion();
+  const [enabled, setEnabled] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 1024px)');
+    setEnabled(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setEnabled(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
+
+  // Ambient orbs are purely decorative. Skip them on tablets/phones and for
+  // users who prefer reduced motion — large blurred, animating layers are the
+  // most GPU-expensive element on the page and barely visible on small screens.
+  if (!enabled || prefersReduced) return null;
 
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
@@ -66,15 +81,15 @@ export function FloatingOrbs() {
             translateX: '-50%',
             translateY: '-50%',
             background: `radial-gradient(circle, ${orb.color} 0%, transparent 68%)`,
-            filter: 'blur(48px)',
+            filter: 'blur(32px)',
             willChange: 'transform',
           }}
-          animate={prefersReduced ? {} : {
+          animate={{
             x: orb.path.x,
             y: orb.path.y,
             scale: [1, 1.06, 0.96, 1.03, 1],
           }}
-          transition={prefersReduced ? {} : {
+          transition={{
             duration: orb.duration,
             delay: orb.delay,
             repeat: Infinity,

@@ -24,3 +24,19 @@ and/or downscale instead of fighting CRF. Keep `preload="metadata"` on backgroun
 video so it doesn't block first paint. Images: `loading="lazy"` + `decoding="async"`
 live in `src/components/figma/ImageWithFallback.tsx`; bulk-compress JPGs with
 `magick ... -resize "1600x1600>" -strip -quality 82`.
+
+## Runtime jank (separate from load size)
+After load size was fixed, perceived "lag" was runtime jank, not download. Two causes:
+1. `FloatingOrbs` rendered on multiple sections = many large (up to 520px) blurred,
+   infinitely-animating layers. Blurred + animating layers are the most GPU-expensive
+   thing on a page. Now gated to `min-width:1024px` + not `prefers-reduced-motion`.
+2. `hover:backdrop-blur-md` + `transition-all` animated backdrop blur every frame.
+   Replaced with `transition-colors`/`transition-transform` so blur stays static.
+
+**Why:** these dominate frame time on mobile/low-end devices even though they are
+purely decorative.
+
+## Dev preview vs production
+The in-editor / canvas preview runs the Vite **dev** server (unminified, React dev
+build, HMR). It is always far choppier than the published site. Judge performance on
+the deployed domain (creova.one), not the workspace preview.

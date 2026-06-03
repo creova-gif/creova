@@ -257,7 +257,7 @@ export function HomePage() {
                 </Magnetic>
                 <Magnetic strength={0.22}>
                   <Button size="lg" variant="outline"
-                    className="px-6 py-4 sm:px-8 sm:py-6 rounded-xl text-base sm:text-lg border-2 backdrop-blur-sm hover:backdrop-blur-md transition-all duration-500"
+                    className="px-6 py-4 sm:px-8 sm:py-6 rounded-xl text-base sm:text-lg border-2 backdrop-blur-sm transition-colors duration-500"
                     style={{ borderColor: '#A68F59', color: '#A68F59', backgroundColor: 'rgba(166, 143, 89, 0.05)' }} asChild>
                     <Link to="/services">{t('home.cta.our.services')}</Link>
                   </Button>
@@ -900,7 +900,7 @@ export function HomePage() {
                 </Link>
               </Button>
               <Button size="lg" variant="outline"
-                className="w-full sm:w-auto px-8 py-5 sm:px-10 sm:py-7 rounded-xl text-base sm:text-xl border-2 backdrop-blur-sm hover:backdrop-blur-md hover:scale-105 transition-all duration-500"
+                className="w-full sm:w-auto px-8 py-5 sm:px-10 sm:py-7 rounded-xl text-base sm:text-xl border-2 backdrop-blur-sm hover:scale-105 transition-transform duration-500"
                 style={{ borderColor: '#A68F59', color: '#A68F59', backgroundColor: 'rgba(166, 143, 89, 0.1)' }} asChild>
                 <Link to="/pricing">{t('home.cta.pricing')}</Link>
               </Button>
