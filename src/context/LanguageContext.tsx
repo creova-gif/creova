@@ -26,7 +26,7 @@ const translations = {
     'home.marquee.7': 'BIPOC Creative',
     'home.marquee.8': 'Ontario',
     'home.marquee.9': 'SEEN Platform',
-    'home.marquee.10': 'Drone Aerial',
+    'home.marquee.10': 'Events',
     'home.marquee.11': 'Content Creation',
     'home.marquee.12': 'Cultural Storytelling',
 
@@ -743,7 +743,7 @@ const translations = {
     'home.marquee.7': 'Créatif PABCN',
     'home.marquee.8': 'Ontario',
     'home.marquee.9': 'Plateforme SEEN',
-    'home.marquee.10': 'Drone Aérien',
+    'home.marquee.10': 'Événements',
     'home.marquee.11': 'Création de Contenu',
     'home.marquee.12': 'Narration Culturelle',
 
