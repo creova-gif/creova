@@ -722,22 +722,22 @@ export function ServicesPage() {
             >
               <div className="flex items-center gap-4 mb-6">
                 <div className="w-12 h-px" style={{ backgroundColor: '#A68F59' }} />
-                <span className="text-xs tracking-[0.4em] uppercase" style={{ color: '#A68F59' }}>Aerial & Video</span>
+                <span className="text-xs tracking-[0.4em] uppercase" style={{ color: '#A68F59' }}>Events & Video</span>
               </div>
               <h2 className="text-4xl md:text-5xl tracking-tight font-light" style={{ color: '#F5F1EB' }}>
                 See the Work in Motion
               </h2>
               <p className="text-base mt-4 max-w-xl leading-relaxed" style={{ color: '#7A6F66' }}>
-                Cinematic drone aerials and brand reels — place your <code style={{ color: '#A68F59' }}>drone-reel.mp4</code> and <code style={{ color: '#A68F59' }}>brand-reel.mp4</code> in the <code style={{ color: '#A68F59' }}>public/</code> folder to activate these previews.
+                Cinematic event coverage and brand reels — place your <code style={{ color: '#A68F59' }}>event-reel.mp4</code> and <code style={{ color: '#A68F59' }}>brand-reel.mp4</code> in the <code style={{ color: '#A68F59' }}>public/</code> folder to activate these previews.
               </p>
             </motion.div>
 
             <div className="grid md:grid-cols-2 gap-6">
               {[
                 {
-                  label: 'Aerial Vision',
-                  sub: 'Drone & Aerial Photography',
-                  src: '/drone-reel.mp4',
+                  label: 'Event Coverage',
+                  sub: 'Events & Conference Coverage',
+                  src: '/event-reel.mp4',
                   poster: '/card-blackprint.jpg',
                   accent: '#A68F59',
                 },
