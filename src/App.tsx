@@ -220,7 +220,7 @@ function AppContent() {
         })
       }} />
       
-      <LenisProvider />
+      {/* <LenisProvider /> disabled: smooth-scroll library made scrolling feel laggy; using native scroll */}
       <ScrollToTopOnMount />
       
       {isChanging && (
@@ -256,7 +256,7 @@ function AppContent() {
         <Sankofa />
         <AnalyticsTracker />
         <ExitIntentModal />
-        <CustomCursor />
+        {/* <CustomCursor /> disabled: trailing custom cursor made the site feel laggy; using native cursor */}
         <ScrollProgressBar />
         <GrainOverlay />
       </div>

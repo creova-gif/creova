@@ -40,3 +40,15 @@ purely decorative.
 The in-editor / canvas preview runs the Vite **dev** server (unminified, React dev
 build, HMR). It is always far choppier than the published site. Judge performance on
 the deployed domain (creova.one), not the workspace preview.
+
+## "Feels laggy" flourishes — smooth scroll + custom cursor
+Two premium-feel effects were the dominant cause of perceived lag (separate from
+framerate): (1) Lenis smooth-scroll (`LenisProvider` in App.tsx) re-animated every
+scroll via rAF — makes scrolling feel heavy/janky, worse with scroll-linked parallax;
+(2) `CustomCursor` hid the native cursor (`cursor: none !important`) and replaced it
+with spring-driven dot+ring that visibly trail the pointer. Both disabled (commented
+out at their mount points, not deleted) to restore native scroll + cursor.
+
+**Why:** trailing cursor and interpolated scroll feel laggy even at 60fps; they are
+the first things to disable when a user reports general "lag" but the console/profiler
+is clean. Easily reversible by un-commenting.
