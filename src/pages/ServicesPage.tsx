@@ -245,7 +245,7 @@ export function ServicesPage() {
               >
                 <div style={{ width: '32px', height: '1px', backgroundColor: '#A68F59' }} />
                 <span className="text-[10px] tracking-[0.5em] uppercase" style={{ color: '#A68F59' }}>
-                  Creative Solutions
+                  Creative Stories
                 </span>
               </motion.div>
 
