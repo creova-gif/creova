@@ -728,7 +728,7 @@ export function ServicesPage() {
                 See the Work in Motion
               </h2>
               <p className="text-base mt-4 max-w-xl leading-relaxed" style={{ color: '#7A6F66' }}>
-                Cinematic event coverage and brand reels — place your <code style={{ color: '#A68F59' }}>event-reel.mp4</code> and <code style={{ color: '#A68F59' }}>brand-reel.mp4</code> in the <code style={{ color: '#A68F59' }}>public/</code> folder to activate these previews.
+                Cinematic event coverage and brand storytelling — a glimpse of how we capture moments and bring brands to life on screen. Hover to preview.
               </p>
             </motion.div>
 
@@ -737,14 +737,14 @@ export function ServicesPage() {
                 {
                   label: 'Event Coverage',
                   sub: 'Events & Conference Coverage',
-                  src: '/event-reel.mp4',
+                  src: '/hero-reel.mp4',
                   poster: '/card-blackprint.jpg',
                   accent: '#A68F59',
                 },
                 {
                   label: 'Brand Reel',
                   sub: 'Videography & Content Creation',
-                  src: '/brand-reel.mp4',
+                  src: '/hero-reel.mp4',
                   poster: '/card-blackprint-session.jpg',
                   accent: '#B1643B',
                 },
