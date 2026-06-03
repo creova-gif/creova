@@ -2,14 +2,11 @@ import { useLanguage } from '../context/LanguageContext';
 import { Button } from '../components/ui/button';
 import { PageSEO } from '../components/PageSEO';
 import { useCart } from '../context/CartContext';
-import { toast } from 'sonner';
-import { Download, Heart, ChevronDown, Gift, Star, FileText, Camera, Palette, Package, Sliders, Wrench, ArrowRight } from 'lucide-react';
+import { toast } from 'sonner@2.0.3';
+import { Download, Heart, ChevronDown, Gift, Star, FileText, Camera, Palette, Package, Sliders, Wrench } from 'lucide-react';
 import { motion } from 'motion/react';
 import { LeadMagnetModal } from '../components/LeadMagnetModal';
 import { useState } from 'react';
-import { SplitText } from '../components/SplitText';
-import { Magnetic } from '../components/Magnetic';
-import { Link } from 'react-router';
 
 const warmGradient = 'linear-gradient(135deg, #A68F59 0%, #B1643B 100%)';
 
@@ -74,7 +71,7 @@ export function DigitalProductsPage() {
   };
 
   return (
-    <div style={{ backgroundColor: '#0A0A0A' }}>
+    <div style={{ backgroundColor: '#F5F1EB' }}>
       <PageSEO
         title="Digital Products"
         description="Premium templates, presets, and tools for creatives — brand kits, social media templates, Lightroom presets, content calendars, and more. Launching July 2026."
@@ -82,17 +79,16 @@ export function DigitalProductsPage() {
 
       {/* Hero — editorial asymmetric split */}
       <section className="relative overflow-hidden" style={{ backgroundColor: '#0A0A0A', minHeight: '480px' }}>
-        {/* Blueprint crosshair + ambient guides */}
-        <div className="crosshair-guides" />
+        {/* Subtle ambient glows */}
         <div className="absolute inset-0 pointer-events-none" style={{
           background: `radial-gradient(ellipse 50% 80% at 0% 50%, rgba(166,143,89,0.07) 0%, transparent 60%),
                        radial-gradient(ellipse 40% 60% at 100% 20%, rgba(177,100,59,0.05) 0%, transparent 60%)`
         }} />
-        <div className="absolute top-0 left-0 right-0" style={{ height: '1px', backgroundColor: 'rgba(166,143,89,0.2)' }} />
+        <div className="absolute top-0 left-0 right-0" style={{ height: '3px', background: warmGradient }} />
         <div className="absolute bottom-0 left-0 right-0" style={{ height: '1px', backgroundColor: 'rgba(166,143,89,0.2)' }} />
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-[1fr_auto] gap-0 items-center py-20 sm:py-28">
+          <div className="grid md:grid-cols-[1fr_auto] gap-0 items-center py-16 sm:py-24">
 
             {/* LEFT — typographic headline */}
             <div className="relative">
@@ -104,20 +100,20 @@ export function DigitalProductsPage() {
                 className="flex items-center gap-3 mb-6"
               >
                 <div style={{ height: '1px', width: '32px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
-                <span className="mono-label">CREOVA Digital Studio</span>
+                <span className="text-[10px] tracking-[0.5em] uppercase" style={{ color: '#A68F59' }}>CREOVA Digital Studio</span>
                 <span className="text-[9px] tracking-[0.3em] uppercase px-2 py-0.5 rounded-sm ml-2" style={{ backgroundColor: 'rgba(166,143,89,0.12)', border: '1px solid rgba(166,143,89,0.25)', color: '#A68F59' }}>July 2026</span>
               </motion.div>
 
               {/* MASSIVE "Digital." */}
-              <SplitText
-                text="Digital."
-                tag="h1"
-                className="display-hero"
-                style={{ color: '#F5F1EB' }}
-                delay={0.1}
-                stagger={0.05}
-                mode="chars"
-              />
+              <motion.h1
+                initial={{ opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.1 }}
+                className="font-light leading-none tracking-tighter"
+                style={{ fontSize: 'clamp(72px, 13vw, 180px)', color: '#F5F1EB' }}
+              >
+                Digital.
+              </motion.h1>
 
               {/* Small italic "/ Resources." */}
               <motion.h1
@@ -126,8 +122,7 @@ export function DigitalProductsPage() {
                 transition={{ duration: 0.7, delay: 0.22 }}
                 className="italic leading-none tracking-tight mb-8"
                 style={{
-                  fontFamily: 'var(--font-brand)',
-                  fontSize: 'clamp(28px, 4vw, 54px)',
+                  fontSize: 'clamp(22px, 3.5vw, 46px)',
                   backgroundImage: warmGradient,
                   WebkitBackgroundClip: 'text',
                   backgroundClip: 'text',
@@ -141,8 +136,8 @@ export function DigitalProductsPage() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.4 }}
-                className="text-base font-light max-w-sm mb-8"
-                style={{ color: '#C8C0B8' }}
+                className="text-sm font-light max-w-sm mb-8"
+                style={{ color: 'rgba(245,241,235,0.4)' }}
               >
                 Templates · Presets · Tools built for creative entrepreneurs.
               </motion.p>
@@ -152,7 +147,7 @@ export function DigitalProductsPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
                 className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-xs tracking-widest uppercase"
-                style={{ backgroundColor: 'rgba(166,143,89,0.1)', color: '#A68F59', border: '1px solid rgba(166,143,89,0.3)' }}
+                style={{ background: warmGradient, color: '#FFFFFF' }}
               >
                 <Download className="w-3.5 h-3.5" />
                 Coming July 2026 — Join waitlist
@@ -164,7 +159,7 @@ export function DigitalProductsPage() {
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.7, delay: 0.3 }}
-              className="hidden md:flex flex-col gap-3 w-64 ml-16 relative z-10"
+              className="hidden md:flex flex-col gap-3 w-64 ml-16"
             >
               {[
                 { icon: Package, label: 'Templates', count: '12+', desc: 'Canva · Notion · InDesign', color: '#A68F59' },
@@ -178,8 +173,8 @@ export function DigitalProductsPage() {
                   transition={{ delay: 0.4 + i * 0.1 }}
                   className="flex items-center gap-4 px-5 py-4 rounded-xl"
                   style={{
-                    backgroundColor: '#121212',
-                    border: '1px solid rgba(166,143,89,0.18)',
+                    backgroundColor: 'rgba(245,241,235,0.04)',
+                    border: '1px solid rgba(166,143,89,0.12)',
                   }}
                 >
                   <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
@@ -191,13 +186,13 @@ export function DigitalProductsPage() {
                       <span className="text-sm font-medium" style={{ color: '#F5F1EB' }}>{cat.label}</span>
                       <span className="text-xs font-semibold" style={{ color: cat.color }}>{cat.count}</span>
                     </div>
-                    <p className="text-[11px] mt-0.5" style={{ color: '#9A9088' }}>{cat.desc}</p>
+                    <p className="text-[11px] mt-0.5" style={{ color: 'rgba(245,241,235,0.3)' }}>{cat.desc}</p>
                   </div>
                 </motion.div>
               ))}
               <div className="mt-1 flex items-center gap-2 px-1">
                 <span className="w-1.5 h-1.5 rounded-full animate-pulse flex-shrink-0" style={{ backgroundColor: '#A68F59' }} />
-                <span className="text-[10px] tracking-wide uppercase" style={{ color: '#7A6F66' }}>Launching July 2026</span>
+                <span className="text-[10px] tracking-wide" style={{ color: 'rgba(245,241,235,0.25)' }}>Launching July 2026</span>
               </div>
             </motion.div>
           </div>
@@ -205,7 +200,7 @@ export function DigitalProductsPage() {
       </section>
 
       {/* Dark filter bar */}
-      <section className="sticky z-40" style={{ top: '64px', backgroundColor: '#0E0E0E', borderBottom: '1px solid rgba(166,143,89,0.2)' }}>
+      <section className="sticky z-40" style={{ top: '64px', backgroundColor: '#0E0E0E', borderBottom: '1px solid rgba(166,143,89,0.15)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             <div className="flex overflow-x-auto scrollbar-hide" style={{ WebkitOverflowScrolling: 'touch' }}>
@@ -214,7 +209,7 @@ export function DigitalProductsPage() {
                   key={item.value}
                   onClick={() => setFilter(item.value)}
                   className="px-4 sm:px-5 py-4 text-xs tracking-[0.3em] whitespace-nowrap transition-all duration-200 relative flex-shrink-0"
-                  style={{ color: filter === item.value ? '#F5F1EB' : '#7A6F66' }}
+                  style={{ color: filter === item.value ? '#F5F1EB' : '#4A3E36' }}
                 >
                   {item.label}
                   {filter === item.value && (
@@ -223,7 +218,7 @@ export function DigitalProductsPage() {
                 </button>
               ))}
             </div>
-            <button className="hidden md:flex items-center gap-1 text-xs tracking-[0.2em] pr-2 flex-shrink-0 uppercase" style={{ color: '#7A6F66' }}>
+            <button className="hidden md:flex items-center gap-1 text-xs tracking-widest pr-2 flex-shrink-0" style={{ color: '#4A3E36' }}>
               SORT <ChevronDown className="w-3 h-3" />
             </button>
           </div>
@@ -231,100 +226,90 @@ export function DigitalProductsPage() {
       </section>
 
       {/* Products Grid */}
-      <section className="py-16 relative" style={{ backgroundColor: '#0A0A0A' }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <section className="py-10" style={{ backgroundColor: '#FFFFFF' }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {filteredProducts.length === 0 && (
             <div className="py-20 text-center">
-              <p className="text-lg mb-2" style={{ color: '#F5F1EB' }}>No products in this category yet</p>
-              <p className="text-sm" style={{ color: '#9A9088' }}>New digital products dropping July 2026.</p>
+              <p className="text-lg mb-2" style={{ color: '#121212' }}>No products in this category yet</p>
+              <p className="text-sm" style={{ color: '#7A6F66' }}>New digital products dropping July 2026.</p>
             </div>
           )}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-10">
             {filteredProducts.map((product, index) => (
               <motion.div
                 key={product.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.05 }}
-                className="group cursor-pointer rounded-2xl overflow-hidden"
-                style={{ backgroundColor: '#121212', border: '1px solid rgba(166,143,89,0.15)' }}
+                className="group cursor-pointer"
                 onMouseEnter={() => setHoveredProduct(product.id)}
                 onMouseLeave={() => setHoveredProduct(null)}
               >
                 {/* Image area */}
-                <div className="relative aspect-[4/3] overflow-hidden" style={{ backgroundColor: '#0E0E0E' }}>
+                <div className="relative aspect-[4/3] mb-3 overflow-hidden" style={{ backgroundColor: '#F5F1EB' }}>
                   <img
                     src={product.image}
                     alt={product.name}
                     loading="lazy"
-                    className="absolute inset-0 w-full h-full object-cover transition-all duration-700"
+                    className="absolute inset-0 w-full h-full object-cover transition-all duration-500"
                     style={{
-                      opacity: hoveredProduct === product.id ? 0.75 : 1,
-                      transform: hoveredProduct === product.id ? 'scale(1.05)' : 'scale(1)'
+                      opacity: hoveredProduct === product.id ? 0.85 : 1,
+                      transform: hoveredProduct === product.id ? 'scale(1.04)' : 'scale(1)'
                     }}
                   />
-                  <div className="absolute inset-0" style={{
-                    background: 'linear-gradient(to top, rgba(18,18,18,0.9) 0%, transparent 60%)',
-                  }} />
 
                   {/* Badge */}
                   {product.badge && (
-                    <div className="absolute top-4 left-4 px-2.5 py-1 text-[9px] tracking-widest z-10 rounded-sm"
+                    <div className="absolute top-2 left-2 px-2 py-0.5 text-[8px] tracking-widest z-10"
                       style={{ background: warmGradient, color: '#FFFFFF' }}>
                       {product.badge}
                     </div>
                   )}
 
                   {/* Type badge */}
-                  <div className="absolute top-4 right-4 px-2.5 py-1 text-[9px] tracking-widest z-10 rounded-sm"
+                  <div className="absolute top-2 right-2 px-2 py-0.5 text-[8px] tracking-widest z-10"
                     style={{ backgroundColor: typeColor[product.type] || 'rgba(18,18,18,0.85)', color: '#FFFFFF' }}>
                     {product.type.toUpperCase()}
                   </div>
 
                   {/* Hover actions */}
                   <div
-                    className="absolute inset-0 p-4 flex flex-col justify-end gap-2 transition-all duration-300"
+                    className="absolute bottom-0 left-0 right-0 p-3 flex gap-2 transition-all duration-300"
                     style={{
                       opacity: hoveredProduct === product.id ? 1 : 0,
                       transform: hoveredProduct === product.id ? 'translateY(0)' : 'translateY(12px)',
+                      background: 'linear-gradient(to top, rgba(10,10,10,0.85) 0%, transparent 100%)'
                     }}
                   >
-                    <div className="flex gap-2">
-                      <button
-                        className="flex-1 flex items-center justify-center gap-2 py-3 text-[10px] tracking-widest uppercase transition-all rounded-sm hover:opacity-90"
-                        style={{ backgroundColor: '#F5F1EB', color: '#0A0A0A' }}
-                        onClick={() => handlePurchase(product)}
-                      >
-                        <Download className="w-3.5 h-3.5" />
-                        PRE-ORDER
-                      </button>
-                      <button
-                        className="w-10 flex items-center justify-center transition-colors rounded-sm"
-                        style={{ backgroundColor: 'rgba(245,241,235,0.1)', color: '#F5F1EB', border: '1px solid rgba(245,241,235,0.2)' }}
-                      >
-                        <Heart className="w-4 h-4" />
-                      </button>
-                    </div>
+                    <button
+                      className="flex-1 flex items-center justify-center gap-1.5 py-2 text-[10px] tracking-widest transition-all"
+                      style={{ background: warmGradient, color: '#FFFFFF' }}
+                      onClick={() => handlePurchase(product)}
+                    >
+                      <Download className="w-3 h-3" />
+                      PRE-ORDER
+                    </button>
+                    <button
+                      className="w-9 flex items-center justify-center transition-colors"
+                      style={{ backgroundColor: 'rgba(255,255,255,0.15)', color: '#F5F1EB' }}
+                    >
+                      <Heart className="w-3.5 h-3.5" />
+                    </button>
                   </div>
                 </div>
 
                 {/* Product info */}
-                <div className="p-5 space-y-2 relative">
-                  <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#A68F59] to-[#B1643B] opacity-50" />
-                  <div className="flex justify-between items-start">
-                    <h3 className="text-sm tracking-wider leading-snug font-medium uppercase" style={{ color: '#F5F1EB' }}>{product.name}</h3>
-                    <p className="text-sm font-medium" style={{ color: '#A68F59' }}>${product.price}</p>
-                  </div>
-                  <p className="text-[11px] tracking-wide leading-relaxed" style={{ color: '#C8C0B8' }}>{product.includes}</p>
+                <div className="space-y-1">
+                  <h3 className="text-[10px] tracking-wider leading-snug" style={{ color: '#121212' }}>{product.name}</h3>
+                  <p className="text-[9px] tracking-wide leading-relaxed" style={{ color: '#7A6F66' }}>{product.includes}</p>
+                  <p className="text-sm font-light" style={{ color: '#121212' }}>${product.price} CAD</p>
 
                   {/* Description on hover */}
-                  <motion.div 
-                    initial={{ height: 0, opacity: 0 }} 
-                    animate={{ height: hoveredProduct === product.id ? 'auto' : 0, opacity: hoveredProduct === product.id ? 1 : 0 }} 
-                    className="overflow-hidden"
-                  >
-                    <p className="text-xs leading-relaxed pt-2 mt-2 border-t" style={{ color: '#9A9088', borderColor: 'rgba(166,143,89,0.15)' }}>{product.description}</p>
-                  </motion.div>
+                  {hoveredProduct === product.id && (
+                    <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="pt-1">
+                      <p className="text-[10px] leading-relaxed" style={{ color: '#4A3E36' }}>{product.description}</p>
+                    </motion.div>
+                  )}
                 </div>
               </motion.div>
             ))}
@@ -333,7 +318,7 @@ export function DigitalProductsPage() {
       </section>
 
       {/* Info bar — dark editorial */}
-      <section className="py-16 relative overflow-hidden" style={{ backgroundColor: '#0E0E0E' }}>
+      <section className="py-16 relative overflow-hidden" style={{ backgroundColor: '#0A0A0A' }}>
         <div className="absolute top-0 left-0 right-0" style={{ height: '1px', backgroundColor: 'rgba(166,143,89,0.25)' }} />
         <div className="absolute bottom-0 left-0 right-0" style={{ height: '1px', backgroundColor: 'rgba(166,143,89,0.25)' }} />
         <div className="absolute inset-0 pointer-events-none" style={{
@@ -346,109 +331,94 @@ export function DigitalProductsPage() {
               { title: 'COMMERCIAL LICENSE', desc: 'Use freely for client work and business projects', icon: FileText },
               { title: 'LIFETIME UPDATES', desc: 'Free updates and new version drops included', icon: Star }
             ].map((item, i) => (
-              <div key={i} className="flex flex-col items-center">
-                <div className="w-10 h-10 mb-4 flex items-center justify-center rounded-full" style={{ border: '1px solid rgba(166,143,89,0.3)', backgroundColor: 'rgba(166,143,89,0.1)' }}>
-                  <item.icon className="w-4 h-4 text-[#A68F59]" />
+              <div key={i}>
+                <div className="w-10 h-10 mx-auto mb-4 flex items-center justify-center rounded-sm" style={{ background: warmGradient }}>
+                  <item.icon className="w-4 h-4 text-white" />
                 </div>
-                <h3 className="mono-label mb-2">{item.title}</h3>
-                <p className="text-xs" style={{ color: '#9A9088' }}>{item.desc}</p>
+                <h3 className="text-[10px] tracking-[0.4em] mb-2 uppercase" style={{ color: '#F5F1EB' }}>{item.title}</h3>
+                <p className="text-xs" style={{ color: '#7A6F66' }}>{item.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA — dark editorial custom work */}
-      <section className="py-24 relative overflow-hidden" style={{ backgroundColor: '#121212' }}>
-        <div className="crosshair-guides" />
+      {/* CTA — warm gradient section */}
+      <section className="py-20 relative overflow-hidden" style={{ background: warmGradient }}>
         <div className="absolute inset-0 pointer-events-none" style={{
-          background: 'radial-gradient(circle at 50% 50%, rgba(166,143,89,0.08) 0%, transparent 50%)'
+          backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px)',
+          backgroundSize: '24px 24px'
         }} />
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-            <div className="flex items-center justify-center gap-4 mb-6">
-              <div style={{ height: '1px', width: '40px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
-              <p className="mono-label" style={{ color: '#A68F59' }}>Custom Work</p>
-              <div style={{ height: '1px', width: '40px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
-            </div>
-            <h2 className="display-grotesk text-3xl sm:text-5xl mb-6" style={{ color: '#F5F1EB' }}>
-              NEED CUSTOM <span className="text-gold-gradient">TEMPLATES?</span>
+            <p className="text-xs tracking-[0.5em] mb-4 uppercase" style={{ color: 'rgba(255,255,255,0.65)' }}>Custom Work</p>
+            <h2 className="text-2xl sm:text-3xl tracking-tight mb-4 font-light" style={{ color: '#FFFFFF' }}>
+              NEED CUSTOM TEMPLATES?
             </h2>
-            <p className="text-base mb-10 max-w-lg mx-auto" style={{ color: '#C8C0B8' }}>
-              We create bespoke digital products, brand kits, and strategy documents tailored to your unique business needs.
+            <p className="text-sm tracking-wide mb-8 max-w-md mx-auto" style={{ color: 'rgba(255,255,255,0.75)' }}>
+              We create custom digital products tailored to your brand and business needs
             </p>
-            <Magnetic strength={0.2}>
-              <Button asChild size="lg" className="group px-8 py-6 rounded-full text-sm font-semibold uppercase tracking-widest hover:-translate-y-1 transition-all" style={{ backgroundColor: '#F5F1EB', color: '#0A0A0A' }}>
-                <Link to="/contact" className="flex items-center gap-2">
-                  REQUEST CUSTOM WORK
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </Link>
-              </Button>
-            </Magnetic>
+            <a
+              href="/contact"
+              className="inline-block px-8 py-3 text-xs tracking-[0.35em] uppercase transition-all hover:opacity-90"
+              style={{ backgroundColor: '#0A0A0A', color: '#F5F1EB' }}
+            >
+              REQUEST CUSTOM WORK
+            </a>
           </motion.div>
         </div>
       </section>
 
-      {/* Free Lead Magnets — dark editorial */}
-      <section className="py-24 relative overflow-hidden" style={{ backgroundColor: '#0A0A0A', borderTop: '1px solid rgba(166,143,89,0.15)' }}>
-        <div className="absolute inset-0 pointer-events-none" style={{
-          backgroundImage: 'radial-gradient(circle, rgba(166,143,89,0.1) 1px, transparent 1px)',
-          backgroundSize: '32px 32px',
-          opacity: 0.3
-        }} />
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      {/* Free Lead Magnets — editorial cream */}
+      <section className="py-20" style={{ backgroundColor: '#F5F1EB' }}>
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-            <div className="text-center mb-16">
-              <div className="flex items-center justify-center gap-4 mb-6">
+            <div className="text-center mb-12">
+              <div className="flex items-center justify-center gap-5 mb-5">
                 <div style={{ height: '1px', width: '40px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
-                <p className="mono-label">Free Resources</p>
+                <p className="text-xs tracking-[0.5em] uppercase" style={{ color: '#A68F59' }}>Free Resources</p>
                 <div style={{ height: '1px', width: '40px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
               </div>
-              <h2 className="display-grotesk text-3xl sm:text-5xl mb-4" style={{ color: '#F5F1EB' }}>
-                LEAD MAGNETS
+              <h2 className="text-2xl sm:text-3xl tracking-tight mb-3 font-light" style={{ color: '#121212' }}>
+                FREE LEAD MAGNETS
               </h2>
-              <p className="text-base" style={{ color: '#C8C0B8' }}>Exclusive resources to enhance your brand and content strategy.</p>
+              <p className="text-sm" style={{ color: '#7A6F66' }}>Exclusive resources to enhance your brand and content strategy</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {leadMagnets.map((magnet, index) => (
-                <motion.div
+              {leadMagnets.map((magnet) => (
+                <div
                   key={magnet.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                  className="overflow-hidden rounded-2xl group"
-                  style={{ border: '1px solid rgba(166,143,89,0.18)', backgroundColor: '#121212' }}
+                  className="overflow-hidden"
+                  style={{ border: '1px solid rgba(18,18,18,0.08)', backgroundColor: '#FFFFFF' }}
                 >
                   {/* Dark header band */}
-                  <div className="px-6 py-4 flex items-center justify-between border-b" style={{ backgroundColor: '#0E0E0E', borderColor: 'rgba(166,143,89,0.12)' }}>
-                    <div className="flex items-center gap-3">
+                  <div className="px-5 py-3 flex items-center justify-between" style={{ backgroundColor: '#121212' }}>
+                    <div className="flex items-center gap-2">
                       <magnet.icon className="w-4 h-4" style={{ color: '#A68F59' }} />
-                      <span className="text-[10px] tracking-widest uppercase" style={{ color: '#A68F59' }}>{magnet.fileType}</span>
+                      <span className="text-[9px] tracking-widest uppercase" style={{ color: '#A68F59' }}>{magnet.fileType}</span>
                     </div>
-                    <span className="text-xs font-semibold tracking-wider" style={{ color: '#F5F1EB' }}>{magnet.value} value</span>
+                    <span className="text-xs" style={{ color: '#F5F1EB' }}>{magnet.value} value</span>
                   </div>
 
                   {/* Content body */}
-                  <div className="p-6 relative">
-                    <div className="absolute top-0 left-0 w-1 h-full" style={{ backgroundColor: '#A68F59', opacity: 0.5 }} />
-                    <h3 className="text-base tracking-wide mb-3 leading-snug uppercase font-medium" style={{ color: '#F5F1EB' }}>
+                  <div className="p-5">
+                    <h3 className="text-xs tracking-wide mb-2 leading-snug" style={{ color: '#121212' }}>
                       {magnet.title}
                     </h3>
-                    <p className="text-sm leading-relaxed mb-6" style={{ color: '#9A9088' }}>
+                    <p className="text-xs leading-relaxed mb-4" style={{ color: '#7A6F66' }}>
                       {magnet.description}
                     </p>
                     <button
-                      className="flex items-center gap-2 px-5 py-2.5 text-[10px] font-semibold tracking-widest uppercase transition-all rounded-sm"
-                      style={{ backgroundColor: 'transparent', color: '#7A6F66', cursor: 'not-allowed', border: '1px solid rgba(166,143,89,0.3)' }}
+                      className="flex items-center gap-2 px-4 py-2 text-[9px] tracking-widest uppercase transition-all"
+                      style={{ backgroundColor: 'rgba(166,143,89,0.12)', color: '#7A6F66', cursor: 'not-allowed', border: '1px solid rgba(166,143,89,0.2)' }}
                       disabled
                     >
-                      <Gift className="w-3.5 h-3.5" />
+                      <Gift className="w-3 h-3" />
                       Coming July 2026
                     </button>
                   </div>
-                </motion.div>
+                </div>
               ))}
             </div>
           </motion.div>

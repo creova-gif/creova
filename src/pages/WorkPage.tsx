@@ -5,10 +5,6 @@ import { ExternalLink, ArrowRight, ArrowDown } from 'lucide-react';
 import { Link } from 'react-router';
 import { RevealOnScroll } from '../components/RevealOnScroll';
 import { Button } from '../components/ui/button';
-import { SplitText } from '../components/SplitText';
-import { InfiniteMarquee } from '../components/InfiniteMarquee';
-import { Magnetic } from '../components/Magnetic';
-import { TiltCard } from '../components/TiltCard';
 
 type Category = 'all' | 'events' | 'sports' | 'brand' | 'conference';
 
@@ -171,7 +167,7 @@ function ProjectCard({
         target="_blank"
         rel="noopener noreferrer"
         className="group relative block overflow-hidden rounded-2xl cursor-pointer"
-        style={{ aspectRatio: large ? '16/9' : '4/3', backgroundColor: '#121212', border: '1px solid rgba(166,143,89,0.18)' }}
+        style={{ aspectRatio: large ? '16/9' : '4/3', backgroundColor: '#111' }}
         whileHover={{ scale: 1.015 }}
         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
       >
@@ -184,19 +180,19 @@ function ProjectCard({
         />
 
         {/* Base gradient */}
-        <div className="absolute inset-0 pointer-events-none" style={{
-          background: 'linear-gradient(to top, rgba(10,10,10,0.95) 0%, rgba(10,10,10,0.45) 45%, rgba(10,10,10,0.05) 100%)'
+        <div className="absolute inset-0" style={{
+          background: 'linear-gradient(to top, rgba(8,8,8,0.95) 0%, rgba(8,8,8,0.45) 45%, rgba(8,8,8,0.05) 100%)'
         }} />
 
         {/* Hover color wash */}
-        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" style={{
-          background: `linear-gradient(135deg, ${project.accent}1A 0%, rgba(10,10,10,0.2) 100%)`
+        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{
+          background: `linear-gradient(135deg, ${project.accent}1A 0%, rgba(8,8,8,0.2) 100%)`
         }} />
 
         {/* Category — top left */}
         <div className="absolute top-4 left-4">
           <span
-            className="mono-label px-3 py-1.5 rounded-full backdrop-blur-sm"
+            className="text-[9px] tracking-[0.35em] uppercase px-3 py-1.5 rounded-full backdrop-blur-sm"
             style={{
               backgroundColor: `${project.accent}18`,
               color: project.accent,
@@ -209,7 +205,7 @@ function ProjectCard({
 
         {/* Year — top right */}
         <div className="absolute top-4 right-4">
-          <span className="mono-label" style={{ color: 'rgba(245,241,235,0.4)' }}>{project.year}</span>
+          <span className="text-[9px] tracking-[0.3em]" style={{ color: 'rgba(245,241,235,0.4)' }}>{project.year}</span>
         </div>
 
         {/* Bottom content */}
@@ -218,16 +214,16 @@ function ProjectCard({
             className="mb-3 transition-all duration-500 group-hover:w-10"
             style={{ width: '24px', height: '1px', backgroundColor: project.accent }}
           />
-          <p className="mono-label mb-1" style={{ color: project.accent }}>
+          <p className="text-[10px] tracking-[0.3em] uppercase mb-1" style={{ color: project.accent }}>
             {project.org}
           </p>
-          <h3 className={`display-grotesk mb-1 ${large ? 'text-3xl' : 'text-xl'}`} style={{ color: '#F5F1EB' }}>
+          <h3 className={`tracking-tight leading-tight mb-0.5 ${large ? 'text-2xl' : 'text-lg'}`} style={{ color: '#F5F1EB', fontWeight: 300 }}>
             {project.title}
           </h3>
-          <p className="text-sm mb-4 font-light" style={{ color: '#C8C0B8' }}>{project.subtitle}</p>
+          <p className="text-sm mb-4" style={{ color: 'rgba(245,241,235,0.5)' }}>{project.subtitle}</p>
 
           <div className="flex items-center gap-2 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-400">
-            <span className="mono-label" style={{ color: project.accent }}>View Gallery</span>
+            <span className="text-[10px] tracking-[0.25em] uppercase" style={{ color: project.accent }}>View Gallery</span>
             <ExternalLink className="w-3 h-3" style={{ color: project.accent }} />
           </div>
         </div>
@@ -250,7 +246,7 @@ function ScrollIndicator() {
       transition={{ duration: 0.3 }}
       className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none"
     >
-      <span className="mono-label" style={{ color: 'rgba(245,241,235,0.35)' }}>Scroll</span>
+      <span className="text-[9px] tracking-[0.5em] uppercase" style={{ color: 'rgba(245,241,235,0.35)' }}>Scroll</span>
       <motion.div
         animate={{ y: [0, 6, 0] }}
         transition={{ repeat: Infinity, duration: 1.5, ease: 'easeInOut' }}
@@ -263,6 +259,7 @@ function ScrollIndicator() {
 
 export function WorkPage() {
   const [activeTab, setActiveTab] = useState<Category>('all');
+  const marqueeRef = useRef<HTMLDivElement>(null);
 
   const filtered = activeTab === 'all'
     ? [...PROJECTS]
@@ -276,31 +273,31 @@ export function WorkPage() {
       />
 
       {/* ── CINEMATIC HERO ── */}
-      <section className="relative overflow-hidden" style={{ height: '100svh', minHeight: '580px', backgroundColor: '#0A0A0A' }}>
-        
-        {/* Architectural elements */}
-        <div className="crosshair-guides" />
-        <div className="guide-ring hidden md:block" style={{ width: '48vw', height: '48vw', top: '50%', left: '50%', transform: 'translate(-50%,-50%)' }} />
-
-        {/* Full-bleed background image with heavy fading */}
+      <section className="relative overflow-hidden" style={{ height: '100svh', minHeight: '580px' }}>
+        {/* Full-bleed background image */}
         <img
           src={PROJECTS[0].image}
           alt=""
           aria-hidden="true"
-          className="absolute inset-0 w-full h-full object-cover opacity-60"
+          className="absolute inset-0 w-full h-full object-cover"
           style={{ objectPosition: PROJECTS[0].objectPosition }}
         />
 
         {/* Layered gradient overlay */}
-        <div className="absolute inset-0 pointer-events-none" style={{
-          background: 'linear-gradient(to top, #0A0A0A 0%, rgba(10,10,10,0.85) 45%, rgba(10,10,10,0.45) 100%)'
+        <div className="absolute inset-0" style={{
+          background: 'linear-gradient(to top, #0A0A0A 0%, rgba(10,10,10,0.78) 45%, rgba(10,10,10,0.25) 100%)'
         }} />
-        <div className="absolute inset-0 pointer-events-none" style={{
-          background: 'radial-gradient(ellipse 80% 60% at 0% 100%, rgba(166,143,89,0.12) 0%, transparent 60%)'
+        <div className="absolute inset-0" style={{
+          background: 'radial-gradient(ellipse 80% 60% at 0% 100%, rgba(177,100,59,0.18) 0%, transparent 60%)'
+        }} />
+
+        {/* Subtle film-grain noise overlay */}
+        <div className="absolute inset-0 opacity-[0.04] pointer-events-none" style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E")`,
         }} />
 
         {/* Top bar */}
-        <div className="absolute top-8 left-6 lg:left-12 right-6 lg:right-12 flex items-center justify-between z-10">
+        <div className="absolute top-8 left-6 lg:left-12 right-6 lg:right-12 flex items-center justify-between">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -308,7 +305,7 @@ export function WorkPage() {
             className="flex items-center gap-3"
           >
             <div style={{ height: '1px', width: '32px', backgroundColor: '#A68F59' }} />
-            <span className="mono-label">Selected Work</span>
+            <span className="text-[10px] tracking-[0.55em] uppercase" style={{ color: '#A68F59' }}>Selected Work</span>
           </motion.div>
 
           <motion.div
@@ -317,18 +314,34 @@ export function WorkPage() {
             transition={{ duration: 0.7, delay: 0.2 }}
             className="hidden sm:flex items-center gap-2"
           >
-            <span className="mono-label" style={{ color: 'rgba(245,241,235,0.4)' }}>
+            <span className="text-[10px] tracking-[0.4em] uppercase" style={{ color: 'rgba(245,241,235,0.3)' }}>
               {PROJECTS.length} Projects · 2024
             </span>
           </motion.div>
         </div>
 
+        {/* Giant ghost number */}
+        <div
+          className="absolute right-0 bottom-0 select-none pointer-events-none hidden lg:block"
+          style={{
+            fontSize: 'clamp(200px, 28vw, 380px)',
+            fontWeight: 700,
+            color: 'rgba(245,241,235,0.03)',
+            lineHeight: 1,
+            letterSpacing: '-0.05em',
+            transform: 'translateX(8%)',
+          }}
+          aria-hidden="true"
+        >
+          10
+        </div>
+
         {/* Vertical side text — editorial */}
-        <div className="absolute right-8 top-1/2 -translate-y-1/2 hidden xl:flex flex-col items-center gap-2 pointer-events-none z-10" aria-hidden="true">
+        <div className="absolute right-8 top-1/2 -translate-y-1/2 hidden xl:flex flex-col items-center gap-2 pointer-events-none" aria-hidden="true">
           <div style={{ height: '40px', width: '1px', backgroundColor: 'rgba(166,143,89,0.3)' }} />
           <span
-            className="mono-label"
-            style={{ color: 'rgba(245,241,235,0.3)', writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}
+            className="text-[9px] tracking-[0.6em] uppercase select-none"
+            style={{ color: 'rgba(245,241,235,0.2)', writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}
           >
             Niagara · Ontario · Canada
           </span>
@@ -336,43 +349,44 @@ export function WorkPage() {
         </div>
 
         {/* Bottom content */}
-        <div className="absolute bottom-0 left-0 right-0 px-6 lg:px-12 pb-16 z-10">
+        <div className="absolute bottom-0 left-0 right-0 px-6 lg:px-12 pb-16">
           <div className="max-w-7xl mx-auto">
             <div className="flex flex-col gap-0">
-              
-              {/* Title block */}
+
+              {/* Title block — bbbblanc-style scale contrast */}
               <div>
                 <motion.div
                   initial={{ opacity: 0, y: 40 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.9, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
                 >
-                  <SplitText
-                    text="CREATIVE"
-                    tag="h1"
-                    className="display-hero"
-                    style={{ color: '#F5F1EB' }}
-                    delay={0.3}
-                    stagger={0.05}
-                    mode="chars"
-                  />
-                  
-                  <div className="flex items-end justify-between mt-2">
+                  {/* MASSIVE "Creative" — takes up the width */}
+                  <h1 className="font-light leading-none tracking-tighter" style={{ fontSize: 'clamp(72px, 15vw, 200px)', color: '#F5F1EB' }}>
+                    Creative
+                  </h1>
+                  {/* Small italic "/ Portfolio." — scale contrast is the technique */}
+                  <div className="flex items-end justify-between mt-1">
                     <motion.h1
                       initial={{ opacity: 0, x: -10 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ duration: 0.7, delay: 0.5 }}
-                      className="display-grotesk text-gold-gradient"
-                      style={{ fontSize: 'clamp(28px, 4.5vw, 64px)' }}
+                      className="italic leading-none tracking-tight"
+                      style={{
+                        fontSize: 'clamp(22px, 3.5vw, 44px)',
+                        backgroundImage: 'linear-gradient(95deg, #A68F59 0%, #E3DCD3 60%)',
+                        WebkitBackgroundClip: 'text',
+                        backgroundClip: 'text',
+                        color: 'transparent',
+                      }}
                     >
-                      / PORTFOLIO.
+                      / Portfolio.
                     </motion.h1>
                     <motion.span
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ delay: 0.7 }}
-                      className="mono-label hidden sm:block"
-                      style={{ color: 'rgba(245,241,235,0.4)' }}
+                      className="text-[9px] tracking-[0.5em] uppercase hidden sm:block"
+                      style={{ color: 'rgba(245,241,235,0.2)' }}
                     >
                       {PROJECTS.length} projects · 2024
                     </motion.span>
@@ -383,8 +397,8 @@ export function WorkPage() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.7, delay: 0.55 }}
-                  className="mt-6 text-base sm:text-lg leading-relaxed max-w-md"
-                  style={{ color: '#C8C0B8' }}
+                  className="mt-5 text-base leading-relaxed max-w-md"
+                  style={{ color: 'rgba(245,241,235,0.5)' }}
                 >
                   Photography and brand content for BIPOC-led organizations, cultural events, and community institutions across Niagara and Ontario.
                 </motion.p>
@@ -395,7 +409,7 @@ export function WorkPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.65 }}
-                className="flex gap-10 lg:gap-12 flex-shrink-0 mt-8"
+                className="flex gap-10 lg:gap-12 flex-shrink-0"
               >
                 {[
                   { n: '10', l: 'Galleries' },
@@ -403,8 +417,8 @@ export function WorkPage() {
                   { n: '2024', l: 'Since' },
                 ].map((s) => (
                   <div key={s.l}>
-                    <div className="display-grotesk text-4xl" style={{ color: '#A68F59' }}>{s.n}</div>
-                    <div className="mono-label mt-2" style={{ color: 'rgba(245,241,235,0.4)' }}>{s.l}</div>
+                    <div className="text-3xl font-light tracking-tight" style={{ color: '#A68F59' }}>{s.n}</div>
+                    <div className="text-[9px] tracking-[0.45em] uppercase mt-1.5" style={{ color: 'rgba(245,241,235,0.28)' }}>{s.l}</div>
                   </div>
                 ))}
               </motion.div>
@@ -416,8 +430,23 @@ export function WorkPage() {
       </section>
 
       {/* ── MARQUEE STRIP ── */}
-      <div className="py-5 overflow-hidden border-y" style={{ backgroundColor: '#0A0A0A', borderColor: 'rgba(166,143,89,0.2)' }}>
-        <InfiniteMarquee items={MARQUEE_ITEMS} speed={45} direction="left" />
+      <div
+        className="overflow-hidden py-3 border-y"
+        style={{ backgroundColor: '#080808', borderColor: 'rgba(166,143,89,0.12)' }}
+        aria-hidden="true"
+      >
+        <div ref={marqueeRef} className="flex whitespace-nowrap">
+          {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map((item, i) => (
+            <span
+              key={i}
+              className="inline-flex items-center gap-4 text-[9px] tracking-[0.5em] uppercase flex-shrink-0"
+              style={{ color: 'rgba(166,143,89,0.35)' }}
+            >
+              {item}
+              <span style={{ width: '3px', height: '3px', borderRadius: '50%', backgroundColor: 'rgba(166,143,89,0.25)', display: 'inline-block' }} />
+            </span>
+          ))}
+        </div>
       </div>
 
       {/* ── FILTER TABS ── */}
@@ -425,30 +454,29 @@ export function WorkPage() {
         className="sticky z-40"
         style={{
           top: '64px',
-          backgroundColor: 'rgba(14, 14, 14, 0.85)',
-          backdropFilter: 'blur(12px)',
-          borderBottom: '1px solid rgba(166,143,89,0.18)',
+          backgroundColor: '#0E0E0E',
+          borderBottom: '1px solid rgba(166,143,89,0.12)',
         }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex overflow-x-auto gap-2 py-4 scrollbar-hide">
+          <div className="flex overflow-x-auto gap-1 py-3 scrollbar-hide">
             {TABS.map(tab => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className="flex items-center gap-2 px-5 py-2.5 rounded-full whitespace-nowrap transition-all duration-300 flex-shrink-0"
+                className="flex items-center gap-2 px-4 py-2 rounded-full whitespace-nowrap transition-all duration-300 flex-shrink-0 text-xs tracking-wide"
                 style={{
-                  backgroundColor: activeTab === tab.id ? 'rgba(166,143,89,0.12)' : 'transparent',
-                  color: activeTab === tab.id ? '#A68F59' : '#9A9088',
-                  border: activeTab === tab.id ? '1px solid rgba(166,143,89,0.4)' : '1px solid transparent',
+                  backgroundColor: activeTab === tab.id ? 'rgba(166,143,89,0.18)' : 'transparent',
+                  color: activeTab === tab.id ? '#A68F59' : 'rgba(245,241,235,0.3)',
+                  border: activeTab === tab.id ? '1px solid rgba(166,143,89,0.45)' : '1px solid transparent',
                 }}
               >
-                <span className="mono-label" style={{ color: 'inherit' }}>{tab.label}</span>
+                {tab.label}
                 <span
-                  className="mono-label w-5 h-5 rounded-full flex items-center justify-center"
+                  className="text-[9px] w-4 h-4 rounded-full flex items-center justify-center"
                   style={{
-                    backgroundColor: activeTab === tab.id ? 'rgba(166,143,89,0.25)' : 'rgba(245,241,235,0.08)',
-                    color: activeTab === tab.id ? '#F5F1EB' : 'inherit',
+                    backgroundColor: activeTab === tab.id ? 'rgba(166,143,89,0.35)' : 'rgba(245,241,235,0.06)',
+                    color: activeTab === tab.id ? '#A68F59' : 'rgba(245,241,235,0.25)',
                   }}
                 >
                   {tab.count}
@@ -460,11 +488,8 @@ export function WorkPage() {
       </div>
 
       {/* ── GRID ── */}
-      <section className="py-16 relative" style={{ backgroundColor: '#0E0E0E' }}>
-        <div className="absolute inset-0 pointer-events-none" style={{
-          background: 'radial-gradient(ellipse 50% 60% at 50% 0%, rgba(166,143,89,0.05) 0%, transparent 60%)'
-        }} />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <section className="py-14">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <AnimatePresence mode="wait">
             <motion.div
               key={activeTab}
@@ -472,14 +497,15 @@ export function WorkPage() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.4 }}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
             >
               {filtered.map((project, index) => {
+                // First featured project in "all" view → spans 2 columns
                 const isHero = activeTab === 'all' && index === 0;
                 return (
                   <div
                     key={project.id}
-                    className={isHero ? 'md:col-span-2 lg:col-span-2' : ''}
+                    className={isHero ? 'sm:col-span-2' : ''}
                   >
                     <ProjectCard project={project} index={index} large={isHero} />
                   </div>
@@ -492,53 +518,50 @@ export function WorkPage() {
 
       {/* ── CTA ── */}
       <section
-        className="py-28 relative overflow-hidden"
-        style={{ backgroundColor: '#0A0A0A', borderTop: '1px solid rgba(166,143,89,0.18)' }}
+        className="py-24 relative overflow-hidden"
+        style={{ borderTop: '1px solid rgba(166,143,89,0.12)' }}
       >
-        <div className="crosshair-guides" />
         <div className="absolute inset-0 pointer-events-none" style={{
-          background: 'radial-gradient(ellipse 50% 70% at 50% 50%, rgba(166,143,89,0.08) 0%, transparent 70%)'
+          background: 'radial-gradient(ellipse 50% 70% at 50% 50%, rgba(166,143,89,0.05) 0%, transparent 70%)'
         }} />
-        <div className="relative max-w-3xl mx-auto px-4 text-center z-10">
+        <div className="relative max-w-3xl mx-auto px-4 text-center">
           <RevealOnScroll mode="3d">
             <div>
               <div className="flex items-center justify-center gap-4 mb-6">
-                <div style={{ height: '1px', width: '40px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
-                <span className="mono-label" style={{ color: '#A68F59' }}>Full Portfolio</span>
-                <div style={{ height: '1px', width: '40px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
+                <div style={{ height: '1px', width: '32px', backgroundColor: 'rgba(166,143,89,0.4)' }} />
+                <span className="text-[9px] tracking-[0.55em] uppercase" style={{ color: '#A68F59' }}>Full Portfolio</span>
+                <div style={{ height: '1px', width: '32px', backgroundColor: 'rgba(166,143,89,0.4)' }} />
               </div>
-              <h2 className="display-grotesk text-4xl md:text-6xl mb-6" style={{ color: '#F5F1EB' }}>
-                EVERY PHOTO, FULL RESOLUTION
+              <h2 className="text-3xl md:text-4xl font-light tracking-tight mb-4" style={{ color: '#F5F1EB' }}>
+                Every photo, full resolution
               </h2>
-              <p className="text-lg mb-10 leading-relaxed" style={{ color: '#C8C0B8' }}>
+              <p className="text-base mb-10 leading-relaxed" style={{ color: 'rgba(245,241,235,0.4)' }}>
                 All galleries live on Pixieset with full-resolution downloads available.
               </p>
-              <div className="flex flex-wrap gap-5 justify-center">
-                <Magnetic strength={0.22}>
-                  <a
-                    href="https://creova.pixieset.com/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group inline-flex items-center gap-2.5 px-8 py-4 rounded-full text-sm font-semibold tracking-wide transition-all duration-400 hover:shadow-2xl hover:-translate-y-0.5"
-                    style={{ backgroundColor: '#F5F1EB', color: '#0A0A0A' }}
-                  >
-                    View Full Portfolio
-                    <ExternalLink className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-300" />
-                  </a>
-                </Magnetic>
-                <Magnetic strength={0.22}>
-                  <Button
-                    asChild
-                    variant="outline"
-                    className="group px-8 py-4 rounded-full text-sm font-semibold tracking-wide border transition-all duration-400 hover:-translate-y-0.5"
-                    style={{ backgroundColor: 'transparent', borderColor: 'rgba(166,143,89,0.5)', color: '#A68F59' }}
-                  >
-                    <Link to="/booking">
-                      Book a Shoot
-                      <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-0.5 transition-transform duration-300" />
-                    </Link>
-                  </Button>
-                </Magnetic>
+              <div className="flex flex-wrap gap-4 justify-center">
+                <a
+                  href="https://creova.pixieset.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-8 py-4 rounded-xl text-sm tracking-wide transition-all duration-300"
+                  style={{ backgroundColor: '#A68F59', color: '#121212' }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.backgroundColor = '#F5F1EB'; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.backgroundColor = '#A68F59'; }}
+                >
+                  View Full Portfolio
+                  <ExternalLink className="w-4 h-4" />
+                </a>
+                <Button
+                  asChild
+                  variant="outline"
+                  className="px-8 py-4 rounded-xl text-sm tracking-wide border transition-all duration-300"
+                  style={{ backgroundColor: 'transparent', borderColor: 'rgba(166,143,89,0.35)', color: '#A68F59' }}
+                >
+                  <Link to="/booking">
+                    Book a Shoot
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </Link>
+                </Button>
               </div>
             </div>
           </RevealOnScroll>

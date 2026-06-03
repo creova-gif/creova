@@ -3,7 +3,7 @@ import { Button } from '../components/ui/button';
 import { useCart } from '../context/CartContext';
 import { PageSEO } from '../components/PageSEO';
 import { useLanguage } from '../context/LanguageContext';
-import { toast } from 'sonner';
+import { toast } from 'sonner@2.0.3';
 import { Heart, Eye, Calendar, Package, Shirt, Tag, Sparkles } from 'lucide-react';
 import { motion } from 'motion/react';
 import { ProductQuickView } from '../components/ProductQuickView';
@@ -72,7 +72,7 @@ export function ShopPage() {
     { id: 'laptop-sleeve-13', name: 'LAPTOP SLEEVE 13"', price: 65, image: 'https://images.unsplash.com/photo-1611461527944-1a718332613b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxsYXB0b3AlMjBzbGVldmUlMjBjYXNlJTIwbWluaW1hbHxlbnwxfHx8fDE3NjMyNDk4MjR8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral', hoverImage: 'https://images.unsplash.com/photo-1611461527944-1a718332613b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxsYXB0b3AlMjBzbGVldmUlMjBjYXNlJTIwbWluaW1hbHxlbnwxfHx8fDE3NjMyNDk4MjR8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral', sizes: ['One Size'], colors: ['Jet Black', 'Charcoal Gray', 'Sahara Beige', 'Mocha Brown', 'Olive Green'], category: 'accessories', badge: 'PREMIUM', description: 'Padded laptop sleeve for 13" devices' },
     { id: 'laptop-sleeve-15', name: 'LAPTOP SLEEVE 15"', price: 72, image: 'https://images.unsplash.com/photo-1611461527944-1a718332613b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxsYXB0b3AlMjBzbGVldmUlMjBjYXNlJTIwbWluaW1hbHxlbnwxfHx8fDE3NjMyNDk4MjR8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral', hoverImage: 'https://images.unsplash.com/photo-1611461527944-1a718332613b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxsYXB0b3AlMjBzbGVldmUlMjBjYXNlJTIwbWluaW1hbHxlbnwxfHx8fDE3NjMyNDk4MjR8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral', sizes: ['One Size'], colors: ['Jet Black', 'Charcoal Gray', 'Sahara Beige', 'Mocha Brown', 'Olive Green'], category: 'accessories', badge: 'PREMIUM', description: 'Padded laptop sleeve for 15" devices' },
     { id: 'keychain-metal', name: 'ARCHIVE KEYCHAIN', price: 22, image: 'https://images.unsplash.com/photo-1633176640669-44bd6adaa662?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxrZXljaGFpbiUyMGVuYW1lbCUyMHBpbiUyMHByb2R1Y3R8ZW58MXx8fHwxNzYzMjQ5ODI0fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral', hoverImage: 'https://images.unsplash.com/photo-1633176640669-44bd6adaa662?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxrZXljaGFpbiUyMGVuYW1lbCUyMHBpbiUyMHByb2R1Y3R8ZW58MXx8fHwxNzYzMjQ5ODI0fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral', sizes: ['One Size'], colors: ['Jet Black', 'Olive Gold', 'Earth Clay'], category: 'accessories', badge: 'LIMITED', description: 'Metal keychain with engraved CREOVA logo' },
-    { id: 'keychain-leather', name: 'LEATHER KEY HOLDER', price: 28, image: 'https://images.unsplash.com/photo-1633176640669-44bd6adaa662?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxrZXljaGFpbiUyMGVuYW1lbCUyMHBpbiUyMHByb2R1Y3R8ZW58MXx8fHwxNzYzMjQ5ODI0fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral', hoverImage: 'https://images.unsplash.com/photo-1633176640669-44bd6adaa662?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxrZXljaGFpbiUyMGVuYW1lbCUyMHBpbiUyMHByb2R1Y3R8ZW58MXx8fHwxNzYzMjQ5ODI0fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral', sizes: ['One Size'], colors: ['Jet Black', 'Mocha Brown', 'Olive Green', 'Sahara Beige'], category: 'accessories', description: 'Premium leather key holder with brass hardware' }
+    { id: 'keychain-leather', name: 'LEATHER KEY HOLDER', price: 28, image: 'https://images.unsplash.com/photo-1633176640669-44bd6adaa662?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxrZXljaGFpbiUyMGVuYW1lbCUyMHBpbiUyMHByb2R1Y3R8ZW58MXx8fHwxNzYzMjQ5ODI0fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral', hoverImage: 'https://images.unsplash.com/photo-1633176640669-44bd6adaa662?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxrZXljaGFpbiUyMGVuYW1lbCUyMHBpbiUyMHByb2R1Y3R8ZW58MXx8fHwxNzYzMjQ5ODI0fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral', sizes: ['One Size'], colors: ['Jet Black', 'Mocha Brown', 'Earth Clay', 'Sahara Beige'], category: 'accessories', description: 'Premium leather key holder with snap closure' }
   ];
 
   const filteredProducts = filter === 'all' ? products : products.filter(p => p.category === filter);
@@ -101,18 +101,18 @@ export function ShopPage() {
   ];
 
   return (
-    <div style={{ backgroundColor: '#0A0A0A' }}>
+    <div style={{ backgroundColor: '#F5F1EB' }}>
       <PageSEO
         title="Shop — SEEN Fall/Winter Capsule"
         description="SEEN by CREOVA — Vol. 01 Fall/Winter 2026 capsule collection. 14 styles of culturally rich streetwear, footwear and accessories. Pre-order now, ships Fall 2026."
       />
 
-      {/* Announcement banner — dark background */}
+      {/* Announcement banner — warm gradient */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="py-3 text-center text-[10px] tracking-[0.4em] uppercase border-b"
-        style={{ backgroundColor: '#0A0A0A', borderColor: 'rgba(166,143,89,0.3)', color: '#A68F59' }}
+        className="py-3 text-center text-xs tracking-[0.4em] uppercase"
+        style={{ background: warmGradient, color: '#FFFFFF' }}
       >
         <span className="flex items-center justify-center gap-3">
           <Package className="w-3.5 h-3.5" />
@@ -123,16 +123,16 @@ export function ShopPage() {
 
       {/* Hero — editorial asymmetric split */}
       <section className="relative overflow-hidden" style={{ backgroundColor: '#0A0A0A', minHeight: '440px' }}>
-        <div className="crosshair-guides" />
         {/* Subtle ambient glow */}
         <div className="absolute inset-0 pointer-events-none" style={{
           background: `radial-gradient(ellipse 50% 80% at 0% 50%, rgba(166,143,89,0.07) 0%, transparent 60%),
                        radial-gradient(ellipse 35% 55% at 100% 30%, rgba(177,100,59,0.05) 0%, transparent 60%)`
         }} />
-        <div className="absolute bottom-0 left-0 right-0" style={{ height: '1px', backgroundColor: 'rgba(166,143,89,0.3)' }} />
-        <div className="guide-ring hidden md:block" style={{ width: '40vw', height: '40vw', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', borderColor: 'rgba(166,143,89,0.1)' }} />
+        {/* Left accent stripe */}
+        <div className="absolute left-0 top-0 bottom-0 w-1" style={{ background: warmGradient }} />
+        <div className="absolute bottom-0 left-0 right-0" style={{ height: '1px', backgroundColor: 'rgba(166,143,89,0.2)' }} />
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-[1fr_auto] gap-0 items-center py-16 sm:py-24">
 
             {/* LEFT — typographic headline */}
@@ -144,7 +144,7 @@ export function ShopPage() {
                 className="flex items-center gap-3 mb-6"
               >
                 <div style={{ height: '1px', width: '32px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
-                <span className="mono-label">SEEN by CREOVA</span>
+                <span className="text-[10px] tracking-[0.5em] uppercase" style={{ color: '#A68F59' }}>SEEN by CREOVA</span>
               </motion.div>
 
               {/* MASSIVE "SEEN." */}
@@ -152,8 +152,8 @@ export function ShopPage() {
                 initial={{ opacity: 0, y: 24 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.1 }}
-                className="display-hero"
-                style={{ color: '#F5F1EB' }}
+                className="font-light leading-none tracking-tighter"
+                style={{ fontSize: 'clamp(80px, 16vw, 200px)', color: '#F5F1EB', letterSpacing: '-0.04em' }}
               >
                 SEEN.
               </motion.h1>
@@ -166,7 +166,10 @@ export function ShopPage() {
                 className="italic leading-none tracking-wide mb-8"
                 style={{
                   fontSize: 'clamp(16px, 2.8vw, 36px)',
-                  color: '#A68F59'
+                  backgroundImage: warmGradient,
+                  WebkitBackgroundClip: 'text',
+                  backgroundClip: 'text',
+                  color: 'transparent',
                 }}
               >
                 A Season of Soft Power.
@@ -176,10 +179,10 @@ export function ShopPage() {
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-[10px] tracking-widest uppercase"
-                style={{ backgroundColor: 'rgba(166,143,89,0.06)', border: '1px solid rgba(166,143,89,0.3)', color: '#F5F1EB' }}
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-xs tracking-widest"
+                style={{ backgroundColor: 'rgba(166,143,89,0.1)', border: '1px solid rgba(166,143,89,0.3)', color: '#A68F59' }}
               >
-                <Calendar className="w-3.5 h-3.5" style={{ color: '#A68F59' }} />
+                <Calendar className="w-3.5 h-3.5" />
                 Pre-Order · FW Capsule · Ships Fall 2026
               </motion.div>
             </div>
@@ -203,8 +206,8 @@ export function ShopPage() {
                   transition={{ delay: 0.4 + i * 0.1 }}
                   className="flex items-center gap-4 px-5 py-4 rounded-xl"
                   style={{
-                    backgroundColor: '#121212',
-                    border: '1px solid rgba(166,143,89,0.18)',
+                    backgroundColor: 'rgba(245,241,235,0.04)',
+                    border: '1px solid rgba(166,143,89,0.12)',
                   }}
                 >
                   <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
@@ -213,16 +216,16 @@ export function ShopPage() {
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between gap-2">
-                      <span className="text-[11px] uppercase tracking-wider font-medium" style={{ color: '#F5F1EB' }}>{cat.label}</span>
-                      <span className="text-[10px] font-semibold" style={{ color: cat.color }}>{cat.count}</span>
+                      <span className="text-sm font-medium" style={{ color: '#F5F1EB' }}>{cat.label}</span>
+                      <span className="text-xs font-semibold" style={{ color: cat.color }}>{cat.count}</span>
                     </div>
-                    <p className="text-[10px] mt-0.5 tracking-wide" style={{ color: '#9A9088' }}>{cat.desc}</p>
+                    <p className="text-[11px] mt-0.5" style={{ color: 'rgba(245,241,235,0.3)' }}>{cat.desc}</p>
                   </div>
                 </motion.div>
               ))}
               <div className="mt-1 flex items-center gap-2 px-1">
                 <span className="w-1.5 h-1.5 rounded-full animate-pulse flex-shrink-0" style={{ backgroundColor: '#A68F59' }} />
-                <span className="text-[9px] tracking-widest uppercase" style={{ color: '#C8C0B8' }}>FW Capsule · Vol. 01 · Fall 2026</span>
+                <span className="text-[10px] tracking-wide" style={{ color: 'rgba(245,241,235,0.25)' }}>FW Capsule · Vol. 01 · Fall 2026</span>
               </div>
             </motion.div>
           </div>
@@ -232,7 +235,7 @@ export function ShopPage() {
       <FallDropTeaser />
 
       {/* Dark filter bar */}
-      <section className="sticky z-40 py-0" style={{ top: '64px', backgroundColor: '#0A0A0A', borderBottom: '1px solid rgba(166,143,89,0.3)' }}>
+      <section className="sticky z-40 py-0" style={{ top: '64px', backgroundColor: '#0E0E0E', borderBottom: '1px solid rgba(166,143,89,0.15)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             <div className="flex overflow-x-auto scrollbar-hide">
@@ -240,12 +243,12 @@ export function ShopPage() {
                 <button
                   key={item.value}
                   onClick={() => setFilter(item.value)}
-                  className="px-5 py-4 text-[10px] tracking-[0.35em] whitespace-nowrap transition-all duration-200 relative uppercase"
-                  style={{ color: filter === item.value ? '#A68F59' : '#9A9088' }}
+                  className="px-5 py-4 text-xs tracking-[0.35em] whitespace-nowrap transition-all duration-200 relative"
+                  style={{ color: filter === item.value ? '#F5F1EB' : '#4A3E36' }}
                 >
                   {item.label}
                   {filter === item.value && (
-                    <div className="absolute bottom-0 left-5 right-5" style={{ height: '1px', backgroundColor: '#A68F59' }} />
+                    <div className="absolute bottom-0 left-5 right-5" style={{ height: '2px', background: warmGradient }} />
                   )}
                 </button>
               ))}
@@ -255,28 +258,27 @@ export function ShopPage() {
       </section>
 
       {/* Products Grid */}
-      <section className="py-16" style={{ backgroundColor: '#0E0E0E' }}>
+      <section className="py-10" style={{ backgroundColor: '#FFFFFF' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {filteredProducts.length === 0 && (
             <div className="py-20 text-center">
-              <p className="text-lg mb-2" style={{ color: '#F5F1EB' }}>No items in this category yet</p>
-              <p className="text-sm" style={{ color: '#C8C0B8' }}>Check back soon — new drops coming.</p>
+              <p className="text-lg mb-2" style={{ color: '#121212' }}>No items in this category yet</p>
+              <p className="text-sm" style={{ color: '#7A6F66' }}>Check back soon — new drops coming.</p>
             </div>
           )}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-12">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-10">
             {filteredProducts.map((product, index) => (
               <motion.div
                 key={product.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.04 }}
-                className="group cursor-pointer rounded-lg overflow-hidden"
-                style={{ backgroundColor: '#121212', border: '1px solid rgba(166,143,89,0.18)' }}
+                className="group cursor-pointer"
                 onMouseEnter={() => setHoveredProduct(product.id)}
                 onMouseLeave={() => setHoveredProduct(null)}
               >
                 {/* Image area */}
-                <div className="relative aspect-[3/4] overflow-hidden" style={{ backgroundColor: '#0A0A0A' }}>
+                <div className="relative aspect-[3/4] mb-3 overflow-hidden" style={{ backgroundColor: '#F5F1EB' }}>
                   <img
                     src={product.image}
                     alt={product.name}
@@ -293,20 +295,19 @@ export function ShopPage() {
                   />
 
                   {/* Coming Soon overlay */}
-                  <div className="absolute inset-0 flex flex-col items-center justify-center" style={{ backgroundColor: 'rgba(10,10,10,0.85)' }}>
-                    <div className="px-5 py-2 text-[9px] tracking-[0.4em] text-center mb-2 uppercase" style={{ backgroundColor: 'rgba(166,143,89,0.15)', border: '1px solid rgba(166,143,89,0.3)', color: '#A68F59' }}>
+                  <div className="absolute inset-0 flex flex-col items-center justify-center" style={{ backgroundColor: 'rgba(10,10,10,0.78)' }}>
+                    <div className="px-5 py-2 text-[9px] tracking-[0.4em] text-center mb-2" style={{ background: warmGradient, color: '#FFFFFF' }}>
                       COMING SUMMER 2026
                     </div>
-                    <p className="text-[9px] tracking-wider uppercase" style={{ color: '#C8C0B8' }}>Pre-Order Available Soon</p>
+                    <p className="text-[9px] tracking-wider" style={{ color: 'rgba(245,241,235,0.55)' }}>Pre-Order Available Soon</p>
                   </div>
 
                   {/* Badge */}
                   {product.badge && (
-                    <div className="absolute top-2 left-2 px-2 py-0.5 text-[8px] tracking-widest z-10 uppercase"
+                    <div className="absolute top-2 left-2 px-2 py-0.5 text-[8px] tracking-widest z-10"
                       style={{
-                        backgroundColor: product.badge === 'PREMIUM' ? '#A68F59' : product.badge === 'LIMITED' ? '#B1643B' : '#0A0A0A',
-                        color: product.badge === 'PREMIUM' || product.badge === 'LIMITED' ? '#0A0A0A' : '#F5F1EB',
-                        border: product.badge === 'PREMIUM' || product.badge === 'LIMITED' ? 'none' : '1px solid rgba(166,143,89,0.3)'
+                        backgroundColor: product.badge === 'PREMIUM' ? 'rgba(166,143,89,0.9)' : product.badge === 'LIMITED' ? 'rgba(177,100,59,0.9)' : 'rgba(18,18,18,0.85)',
+                        color: '#FFFFFF'
                       }}>
                       {product.badge}
                     </div>
@@ -314,23 +315,22 @@ export function ShopPage() {
                 </div>
 
                 {/* Product info */}
-                <div className="p-4 space-y-1 relative">
-                  <div className="absolute top-0 left-0 right-0" style={{ height: '2px', backgroundColor: 'rgba(166,143,89,0.3)' }} />
-                  <h3 className="text-[10px] tracking-widest leading-snug uppercase pt-1" style={{ color: '#F5F1EB' }}>{product.name}</h3>
-                  <p className="text-xs" style={{ color: '#A68F59' }}>${product.price} CAD</p>
+                <div className="space-y-1">
+                  <h3 className="text-[10px] tracking-wider leading-snug" style={{ color: '#121212' }}>{product.name}</h3>
+                  <p className="text-sm" style={{ color: '#121212' }}>${product.price} CAD</p>
 
                   {/* Size hover */}
                   {hoveredProduct === product.id && product.sizes.length > 1 && (
-                    <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="pt-2">
-                      <p className="text-[8px] tracking-[0.2em] mb-1.5 uppercase" style={{ color: '#9A9088' }}>SELECT SIZE</p>
-                      <div className="flex gap-1.5 flex-wrap">
+                    <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="pt-1.5">
+                      <p className="text-[9px] tracking-widest mb-1" style={{ color: '#7A6F66' }}>SELECT SIZE</p>
+                      <div className="flex gap-1 flex-wrap">
                         {product.sizes.map(size => (
                           <button key={size} onClick={() => setSelectedSizes(prev => ({ ...prev, [product.id]: size }))}
-                            className="px-2 py-1 text-[9px] tracking-wide transition-colors uppercase"
+                            className="px-1.5 py-0.5 text-[9px] tracking-wide border transition-colors"
                             style={{
-                              border: `1px solid ${selectedSizes[product.id] === size ? '#A68F59' : 'rgba(166,143,89,0.3)'}`,
-                              backgroundColor: selectedSizes[product.id] === size ? '#A68F59' : 'transparent',
-                              color: selectedSizes[product.id] === size ? '#0A0A0A' : '#C8C0B8'
+                              borderColor: selectedSizes[product.id] === size ? '#121212' : '#E3DCD3',
+                              backgroundColor: selectedSizes[product.id] === size ? '#121212' : '#FFFFFF',
+                              color: selectedSizes[product.id] === size ? '#FFFFFF' : '#121212'
                             }}>
                             {size}
                           </button>
@@ -341,16 +341,16 @@ export function ShopPage() {
 
                   {/* Color hover */}
                   {hoveredProduct === product.id && product.colors.length > 1 && (
-                    <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="pt-2">
-                      <p className="text-[8px] tracking-[0.2em] mb-1.5 uppercase" style={{ color: '#9A9088' }}>COLORS</p>
-                      <div className="flex gap-1.5 flex-wrap">
+                    <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="pt-1.5">
+                      <p className="text-[9px] tracking-widest mb-1" style={{ color: '#7A6F66' }}>COLORS</p>
+                      <div className="flex gap-1 flex-wrap">
                         {product.colors.map(color => (
                           <button key={color}
                             onClick={() => setSelectedColors(prev => ({ ...prev, [product.id]: { name: color, hex: colorPalette[color as keyof typeof colorPalette] } }))}
                             className="w-4 h-4 rounded-full border-2 transition-all"
                             style={{
                               backgroundColor: colorPalette[color as keyof typeof colorPalette],
-                              borderColor: selectedColors[product.id]?.name === color ? '#A68F59' : 'rgba(255,255,255,0.1)',
+                              borderColor: selectedColors[product.id]?.name === color ? '#121212' : '#E3DCD3',
                               transform: selectedColors[product.id]?.name === color ? 'scale(1.15)' : 'scale(1)'
                             }}
                             title={color}
@@ -367,33 +367,32 @@ export function ShopPage() {
       </section>
 
       {/* Brand Statement — dark editorial */}
-      <section className="py-24 relative overflow-hidden" style={{ backgroundColor: '#0A0A0A' }}>
-        <div className="crosshair-guides" />
+      <section className="py-20 relative overflow-hidden" style={{ backgroundColor: '#0A0A0A' }}>
         <div className="absolute top-0 left-0 right-0" style={{ height: '1px', backgroundColor: 'rgba(166,143,89,0.3)' }} />
         <div className="absolute bottom-0 left-0 right-0" style={{ height: '1px', backgroundColor: 'rgba(166,143,89,0.3)' }} />
         <div className="absolute inset-0 pointer-events-none" style={{
           background: 'radial-gradient(ellipse 50% 70% at 50% 50%, rgba(166,143,89,0.05) 0%, transparent 65%)'
         }} />
-        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10">
+        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
             <div className="flex items-center justify-center gap-5 mb-8">
               <div style={{ height: '1px', width: '50px', backgroundColor: 'rgba(166,143,89,0.4)' }} />
-              <p className="mono-label">The SEEN Manifesto</p>
+              <p className="text-xs tracking-[0.5em] uppercase" style={{ color: '#A68F59' }}>The SEEN Manifesto</p>
               <div style={{ height: '1px', width: '50px', backgroundColor: 'rgba(166,143,89,0.4)' }} />
             </div>
-            <p className="text-xl md:text-3xl font-light leading-relaxed mb-8 italic" style={{ color: '#F5F1EB' }}>
+            <p className="text-lg md:text-2xl font-light leading-relaxed mb-6 italic" style={{ color: '#E3DCD3' }}>
               "We design for visibility, softness, and resistance.<br />
               This is not just fashion — it's archive."
             </p>
-            <p className="text-[10px] tracking-[0.5em] uppercase" style={{ color: '#A68F59' }}>
+            <p className="text-xs tracking-[0.45em] uppercase" style={{ color: '#4A3E36' }}>
               CREOVA / NIAGARA, CANADA
             </p>
           </motion.div>
         </div>
       </section>
 
-      {/* Info bar — dark editorial */}
-      <section className="py-16" style={{ backgroundColor: '#121212', borderTop: '1px solid rgba(166,143,89,0.1)' }}>
+      {/* Info bar — cream editorial */}
+      <section className="py-16" style={{ backgroundColor: '#F5F1EB', borderTop: '1px solid rgba(18,18,18,0.08)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-3 gap-10 text-center mb-10">
             {[
@@ -402,18 +401,18 @@ export function ShopPage() {
               { title: 'BIPOC-LED', desc: 'Black-led studio serving global community' }
             ].map((item, i) => (
               <div key={i}>
-                <div style={{ height: '1px', width: '32px', backgroundColor: '#A68F59', margin: '0 auto 16px' }} />
-                <h3 className="text-[11px] tracking-[0.4em] mb-2 uppercase font-medium" style={{ color: '#F5F1EB' }}>{item.title}</h3>
-                <p className="text-xs" style={{ color: '#C8C0B8' }}>{item.desc}</p>
+                <div style={{ height: '2px', width: '24px', background: warmGradient, margin: '0 auto 12px' }} />
+                <h3 className="text-[10px] tracking-[0.4em] mb-2 uppercase" style={{ color: '#121212' }}>{item.title}</h3>
+                <p className="text-xs" style={{ color: '#7A6F66' }}>{item.desc}</p>
               </div>
             ))}
           </div>
 
-          <div className="text-center pt-6" style={{ borderTop: '1px solid rgba(166,143,89,0.1)' }}>
-            <p className="text-xs tracking-wide mb-2" style={{ color: '#C8C0B8' }}>
+          <div className="text-center pt-4" style={{ borderTop: '1px solid rgba(18,18,18,0.08)' }}>
+            <p className="text-xs tracking-wide mb-1" style={{ color: '#4A3E36' }}>
               All pieces available in multiple colorways from our signature age-inclusive palette (5–90 years)
             </p>
-            <p className="text-[10px] tracking-[0.4em] uppercase" style={{ color: '#A68F59' }}>
+            <p className="text-[9px] tracking-[0.4em] uppercase" style={{ color: '#7A6F66' }}>
               Timeless · Unisex · Versatile — Designed to work across all skin tones
             </p>
           </div>

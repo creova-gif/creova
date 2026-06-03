@@ -197,14 +197,10 @@ export function Footer() {
 
             {/* Giant headline with inline portrait pill */}
             <h2
-              className="mb-2 overflow-visible"
+              className="leading-[0.9] tracking-tight mb-2 overflow-visible"
               style={{
-                fontFamily: 'var(--font-grotesk)',
-                fontWeight: 800,
-                textTransform: 'uppercase',
-                letterSpacing: '-0.03em',
-                lineHeight: 0.86,
-                fontSize: 'clamp(3.2rem, 8.5vw, 9.5rem)',
+                fontFamily: 'var(--font-display)',
+                fontSize: 'clamp(3.2rem, 8vw, 9rem)',
                 color: '#F5F1EB',
               }}
             >
