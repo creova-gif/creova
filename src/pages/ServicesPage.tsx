@@ -207,7 +207,7 @@ export function ServicesPage() {
     : services.filter(s => s.category === activeTab);
 
   return (
-    <div style={{ backgroundColor: '#F5F1EB' }}>
+    <div style={{ backgroundColor: '#0A0A0A' }}>
       <PageSEO
         title="Creative Services"
         description="Professional photography, videography, brand design, social media management, and event coverage for BIPOC entrepreneurs and brands across Ontario."
@@ -218,11 +218,9 @@ export function ServicesPage() {
         className="relative overflow-hidden"
         style={{ backgroundColor: '#0A0A0A', minHeight: '480px' }}
       >
-        {/* Warm left accent stripe */}
-        <div
-          className="absolute left-0 top-0 bottom-0 w-1"
-          style={{ background: 'linear-gradient(to bottom, #A68F59, #B1643B)' }}
-        />
+        <div className="crosshair-guides" />
+        <div className="guide-ring hidden md:block" style={{ width: '48vw', height: '48vw', top: '50%', left: '50%', transform: 'translate(-50%,-50%)' }} />
+
         {/* Subtle diagonal rule */}
         <div
           className="absolute inset-0 pointer-events-none hidden lg:block"
@@ -238,13 +236,11 @@ export function ServicesPage() {
             {/* Left: title block */}
             <div className="flex-1">
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
+                initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.8 }}
                 className="flex items-center gap-3 mb-8"
               >
                 <div style={{ width: '32px', height: '1px', backgroundColor: '#A68F59' }} />
-                <span className="text-[10px] tracking-[0.5em] uppercase" style={{ color: '#A68F59' }}>
+                <span className="mono-label">
                   Creative Solutions
                 </span>
               </motion.div>
@@ -253,18 +249,12 @@ export function ServicesPage() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-                className="font-light leading-none tracking-tighter"
+                className="display-hero"
                 style={{ fontSize: 'clamp(48px, 9vw, 116px)' }}
               >
                 <span className="block" style={{ color: '#F5F1EB' }}>What</span>
                 <span
-                  className="block"
-                  style={{
-                    backgroundImage: 'linear-gradient(95deg, #A68F59 0%, #E3DCD3 65%)',
-                    WebkitBackgroundClip: 'text',
-                    backgroundClip: 'text',
-                    color: 'transparent',
-                  }}
+                  className="block text-gold-gradient"
                 >
                   We Build.
                 </span>
@@ -275,7 +265,7 @@ export function ServicesPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.35 }}
                 className="mt-6 text-base leading-relaxed max-w-sm"
-                style={{ color: 'rgba(245,241,235,0.45)' }}
+                style={{ color: '#C8C0B8' }}
               >
                 Photography, video, brand design, social media, and events — for BIPOC brands across Ontario.
               </motion.p>
@@ -529,10 +519,10 @@ export function ServicesPage() {
                   className="w-16 h-16 rounded-full mx-auto mb-6 flex items-center justify-center relative z-10"
                   style={{ backgroundColor: '#0A0A0A', border: '1px solid rgba(166,143,89,0.35)' }}
                 >
-                  <span className="text-xs tracking-[0.25em]" style={{ color: '#A68F59' }}>{item.step}</span>
+                  <span className="mono-label">{item.step}</span>
                 </div>
-                <h3 className="text-xl tracking-tight mb-3" style={{ color: '#F5F1EB' }}>{item.title}</h3>
-                <p className="text-sm leading-relaxed" style={{ color: '#7A6F66' }}>{item.desc}</p>
+                <h3 className="display-grotesk text-2xl mb-3" style={{ color: '#F5F1EB' }}>{item.title}</h3>
+                <p className="text-sm leading-relaxed" style={{ color: '#C8C0B8' }}>{item.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -546,17 +536,9 @@ export function ServicesPage() {
           >
             <Button
               size="lg"
-              className="px-10 py-6 rounded-xl text-sm tracking-wide transition-all duration-300"
-              style={{ backgroundColor: '#A68F59', color: '#121212' }}
+              className="px-10 py-6 rounded-full text-sm font-semibold tracking-wide transition-all duration-300"
+              style={{ backgroundColor: '#F5F1EB', color: '#0A0A0A' }}
               onClick={() => navigate('/contact')}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = '#F5F1EB';
-                e.currentTarget.style.transform = 'translateY(-2px)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = '#A68F59';
-                e.currentTarget.style.transform = 'translateY(0)';
-              }}
             >
               Book a Free Discovery Call
             </Button>
@@ -577,7 +559,7 @@ export function ServicesPage() {
               <div key={rep} className="flex gap-10 items-center">
                 {['Brand Photography', 'Event Coverage', 'Aerial Vision', 'Social Media', 'Brand Identity', 'Product Photography', 'Videography', 'Creative Direction', 'Graphic Design', 'Equipment Rental'].map((item) => (
                   <span key={item} className="flex items-center gap-10">
-                    <span className="text-sm tracking-[0.3em] uppercase" style={{ color: 'rgba(245,241,235,0.35)' }}>{item}</span>
+                    <span className="mono-label" style={{ color: 'rgba(245,241,235,0.35)' }}>{item}</span>
                     <span className="w-1 h-1 rounded-full flex-shrink-0" style={{ backgroundColor: '#A68F59' }} />
                   </span>
                 ))}
@@ -597,7 +579,7 @@ export function ServicesPage() {
               <div key={rep} className="flex gap-10 items-center">
                 {['Ontario & Beyond', 'BIPOC Brands', 'Cultural Storytelling', 'Licensed & Insured', 'Commercial Rights Included', 'Strategy-Led', 'On-Location', 'Studio & Lifestyle', 'Pro Equipment', 'Editorial Quality'].map((item) => (
                   <span key={item} className="flex items-center gap-10">
-                    <span className="text-sm tracking-[0.3em] uppercase italic" style={{ color: 'rgba(166,143,89,0.4)' }}>{item}</span>
+                    <span className="mono-label italic" style={{ color: 'rgba(166,143,89,0.4)' }}>{item}</span>
                     <span className="w-1 h-1 rounded-full flex-shrink-0" style={{ backgroundColor: 'rgba(166,143,89,0.3)' }} />
                   </span>
                 ))}
@@ -608,9 +590,9 @@ export function ServicesPage() {
       </section>
 
       {/* Stats bar */}
-      <section className="py-16" style={{ backgroundColor: '#F5F1EB', borderBottom: '1px solid rgba(18,18,18,0.08)' }}>
+      <section className="py-16" style={{ backgroundColor: '#0E0E0E', borderBottom: '1px solid rgba(166,143,89,0.15)' }}>
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-0 md:divide-x" style={{ '--tw-divide-opacity': 1 } as React.CSSProperties}>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-0 md:divide-x" style={{ '--tw-divide-opacity': 1, borderColor: 'rgba(166,143,89,0.2)' } as React.CSSProperties}>
             {[
               { n: '10+', label: 'Services offered' },
               { n: '3', label: 'Package tiers' },
@@ -624,9 +606,10 @@ export function ServicesPage() {
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.08, duration: 0.5 }}
                 className="text-center md:px-8"
+                style={{ borderColor: 'rgba(166,143,89,0.2)' }}
               >
-                <p className="text-4xl font-light tracking-tight mb-2" style={{ color: '#121212' }}>{stat.n}</p>
-                <p className="text-xs tracking-[0.3em] uppercase" style={{ color: 'rgba(18,18,18,0.4)' }}>{stat.label}</p>
+                <p className="display-grotesk text-4xl mb-2" style={{ color: '#F5F1EB' }}>{stat.n}</p>
+                <p className="mono-label" style={{ color: 'rgba(245,241,235,0.4)' }}>{stat.label}</p>
               </motion.div>
             ))}
           </div>
@@ -648,10 +631,10 @@ export function ServicesPage() {
           >
             <div className="flex items-center justify-center gap-4 mb-4">
               <div className="w-10 h-px" style={{ backgroundColor: 'rgba(166,143,89,0.5)' }} />
-              <span className="text-[10px] tracking-[0.5em] uppercase" style={{ color: '#A68F59' }}>Client Stories</span>
+              <span className="mono-label">Client Stories</span>
               <div className="w-10 h-px" style={{ backgroundColor: 'rgba(166,143,89,0.5)' }} />
             </div>
-            <h2 className="text-4xl font-light tracking-tight" style={{ color: '#F5F1EB' }}>
+            <h2 className="display-grotesk text-4xl sm:text-5xl" style={{ color: '#F5F1EB' }}>
               The results speak.
             </h2>
           </motion.div>
@@ -700,7 +683,7 @@ export function ServicesPage() {
                 </p>
                 <div>
                   <p className="text-sm font-medium" style={{ color: '#F5F1EB' }}>{item.author}</p>
-                  <p className="text-xs mt-0.5" style={{ color: '#7A6F66' }}>{item.role}</p>
+                  <p className="text-xs mt-0.5" style={{ color: '#9A9088' }}>{item.role}</p>
                 </div>
               </motion.div>
             ))}
@@ -722,12 +705,12 @@ export function ServicesPage() {
             >
               <div className="flex items-center gap-4 mb-6">
                 <div className="w-12 h-px" style={{ backgroundColor: '#A68F59' }} />
-                <span className="text-xs tracking-[0.4em] uppercase" style={{ color: '#A68F59' }}>Aerial & Video</span>
+                <span className="mono-label">Aerial & Video</span>
               </div>
-              <h2 className="text-4xl md:text-5xl tracking-tight font-light" style={{ color: '#F5F1EB' }}>
+              <h2 className="display-grotesk text-4xl md:text-5xl" style={{ color: '#F5F1EB' }}>
                 See the Work in Motion
               </h2>
-              <p className="text-base mt-4 max-w-xl leading-relaxed" style={{ color: '#7A6F66' }}>
+              <p className="text-base mt-4 max-w-xl leading-relaxed" style={{ color: '#C8C0B8' }}>
                 Cinematic drone aerials and brand reels — place your <code style={{ color: '#A68F59' }}>drone-reel.mp4</code> and <code style={{ color: '#A68F59' }}>brand-reel.mp4</code> in the <code style={{ color: '#A68F59' }}>public/</code> folder to activate these previews.
               </p>
             </motion.div>
@@ -756,7 +739,7 @@ export function ServicesPage() {
                   transition={{ duration: 0.7, delay: i * 0.15 }}
                   viewport={{ once: true }}
                   className="group relative overflow-hidden rounded-3xl"
-                  style={{ aspectRatio: '16/9', backgroundColor: '#111' }}
+                  style={{ aspectRatio: '16/9', backgroundColor: '#111', border: `1px solid rgba(166,143,89,0.18)` }}
                 >
                   <video
                     className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-70 transition-opacity duration-700"
@@ -779,8 +762,8 @@ export function ServicesPage() {
                   }} />
                   <div className="absolute bottom-0 left-0 right-0 p-8">
                     <div className="w-8 h-0.5 mb-3 rounded-full" style={{ backgroundColor: vid.accent }} />
-                    <p className="text-xs tracking-[0.35em] uppercase mb-1" style={{ color: vid.accent }}>{vid.sub}</p>
-                    <h3 className="text-2xl tracking-tight" style={{ color: '#F5F1EB' }}>{vid.label}</h3>
+                    <p className="mono-label mb-1" style={{ color: vid.accent }}>{vid.sub}</p>
+                    <h3 className="display-grotesk text-2xl" style={{ color: '#F5F1EB' }}>{vid.label}</h3>
                     <div className="mt-4 flex items-center gap-2 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-500"
                       style={{ color: vid.accent }}>
                       <div className="w-8 h-8 rounded-full border flex items-center justify-center"
@@ -814,10 +797,10 @@ export function ServicesPage() {
           >
             <div className="flex items-center gap-5 mb-3">
               <div style={{ height: '1px', width: '40px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
-              <p className="text-xs tracking-[0.5em] uppercase" style={{ color: '#A68F59' }}>Enhancements</p>
+              <p className="mono-label">Enhancements</p>
             </div>
-            <h2 className="text-4xl font-light tracking-tight" style={{ color: '#F5F1EB' }}>Add-Ons & Extras</h2>
-            <p className="text-base mt-2" style={{ color: '#4A3E36' }}>Enhance any service package</p>
+            <h2 className="display-grotesk text-4xl" style={{ color: '#F5F1EB' }}>Add-Ons & Extras</h2>
+            <p className="text-base mt-2" style={{ color: '#C8C0B8' }}>Enhance any service package</p>
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -848,7 +831,7 @@ export function ServicesPage() {
                 }}
               >
                 <span className="text-sm" style={{ color: '#E3DCD3' }}>{addon.name}</span>
-                <span className="text-sm font-light" style={{ color: '#A68F59' }}>{addon.price}</span>
+                <span className="text-sm font-semibold" style={{ color: '#A68F59' }}>{addon.price}</span>
               </motion.div>
             ))}
           </div>
@@ -857,24 +840,24 @@ export function ServicesPage() {
 
       {/* Equipment Rental Terms */}
       {(activeTab === 'rental' || activeTab === 'all') && (
-        <section className="py-16" style={{ backgroundColor: '#F5F1EB' }}>
+        <section className="py-16" style={{ backgroundColor: '#121212' }}>
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               className="rounded-2xl overflow-hidden"
-              style={{ border: '1px solid rgba(18,18,18,0.12)' }}
+              style={{ border: '1px solid rgba(166,143,89,0.18)' }}
             >
-              <div className="px-8 py-5 flex items-center gap-4" style={{ backgroundColor: '#121212' }}>
+              <div className="px-8 py-5 flex items-center gap-4" style={{ backgroundColor: '#0E0E0E' }}>
                 <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
                      style={{ border: '1px solid rgba(177,100,59,0.4)', backgroundColor: 'rgba(177,100,59,0.1)' }}>
                   <AlertCircle className="w-5 h-5" style={{ color: '#B1643B' }} />
                 </div>
-                <h3 className="text-xl tracking-tight" style={{ color: '#F5F1EB' }}>Equipment Rental Terms</h3>
+                <h3 className="display-grotesk text-xl" style={{ color: '#F5F1EB' }}>Equipment Rental Terms</h3>
               </div>
 
-              <div className="p-8 space-y-5" style={{ backgroundColor: '#FFFFFF' }}>
+              <div className="p-8 space-y-5" style={{ backgroundColor: '#121212' }}>
                 {[
                   { label: 'Deposit Required', text: 'Refundable security deposit due upon pickup. Returned within 5 business days after equipment is returned in good condition.' },
                   { label: 'Rental Period', text: '24-hour day (e.g., pickup 9am Monday, return by 9am Tuesday). Multi-day discounts available.' },
@@ -882,10 +865,10 @@ export function ServicesPage() {
                   { label: 'Damage Policy', text: 'Renter is responsible for equipment damage or loss. Insurance options available.' },
                   { label: 'Reservation', text: 'Book at least 48 hours in advance. Valid ID and signed rental agreement required.' }
                 ].map((item, i) => (
-                  <div key={i} className="flex items-start gap-4 pb-5" style={{ borderBottom: i < 4 ? '1px solid rgba(18,18,18,0.06)' : 'none' }}>
+                  <div key={i} className="flex items-start gap-4 pb-5" style={{ borderBottom: i < 4 ? '1px solid rgba(166,143,89,0.1)' : 'none' }}>
                     <span className="mt-0.5 flex-shrink-0 w-1.5 h-1.5 rounded-full" style={{ backgroundColor: '#A68F59', marginTop: '8px' }} />
-                    <p className="text-sm leading-relaxed" style={{ color: '#4A3E36' }}>
-                      <strong style={{ color: '#121212' }}>{item.label}:</strong> {item.text}
+                    <p className="text-sm leading-relaxed" style={{ color: '#C8C0B8' }}>
+                      <strong style={{ color: '#F5F1EB' }}>{item.label}:</strong> {item.text}
                     </p>
                   </div>
                 ))}
@@ -911,9 +894,9 @@ export function ServicesPage() {
           >
             <div className="flex items-center gap-5 mb-3">
               <div style={{ height: '1px', width: '40px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
-              <p className="text-xs tracking-[0.5em] uppercase" style={{ color: '#A68F59' }}>For Our Community</p>
+              <p className="mono-label">For Our Community</p>
             </div>
-            <h2 className="text-4xl font-light tracking-tight" style={{ color: '#F5F1EB' }}>Community & Loyalty Discounts</h2>
+            <h2 className="display-grotesk text-4xl" style={{ color: '#F5F1EB' }}>Community & Loyalty Discounts</h2>
           </motion.div>
 
           <div className="grid md:grid-cols-3 gap-5 mb-12">
@@ -939,7 +922,7 @@ export function ServicesPage() {
                   (e.currentTarget as HTMLElement).style.backgroundColor = 'rgba(166,143,89,0.05)';
                 }}
               >
-                <div className="text-4xl font-light tracking-tight mb-4" style={{ color: '#A68F59' }}>
+                <div className="display-grotesk text-4xl mb-4" style={{ color: '#A68F59' }}>
                   {item.discount}
                 </div>
                 <div style={{ height: '1px', width: '32px', backgroundColor: 'rgba(166,143,89,0.4)', margin: '0 auto 16px' }} />
@@ -952,24 +935,16 @@ export function ServicesPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
               size="lg"
-              className="px-10 py-6 rounded-xl text-sm tracking-wide transition-all duration-300"
-              style={{ backgroundColor: '#A68F59', color: '#121212' }}
+              className="px-10 py-6 rounded-full text-sm font-semibold tracking-wide transition-all duration-300"
+              style={{ backgroundColor: '#F5F1EB', color: '#0A0A0A' }}
               onClick={() => navigate('/booking')}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = '#F5F1EB';
-                e.currentTarget.style.transform = 'translateY(-2px)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = '#A68F59';
-                e.currentTarget.style.transform = 'translateY(0)';
-              }}
             >
               Start a Project
             </Button>
             <Button
               size="lg"
               variant="outline"
-              className="px-10 py-6 rounded-xl text-sm tracking-wide transition-all duration-300 border"
+              className="px-10 py-6 rounded-full text-sm tracking-wide transition-all duration-300 border"
               style={{ backgroundColor: 'transparent', borderColor: 'rgba(166,143,89,0.4)', color: '#A68F59' }}
               onClick={() => navigate('/pricing')}
               onMouseEnter={(e) => {
@@ -987,6 +962,34 @@ export function ServicesPage() {
         </div>
       </section>
 
+      {/* CTA Bottom */}
+      <section className="py-24 relative overflow-hidden" style={{ backgroundColor: '#0A0A0A' }}>
+        <div className="absolute inset-0 pointer-events-none" style={{
+          background: 'radial-gradient(ellipse 60% 60% at 50% 50%, rgba(166,143,89,0.08) 0%, transparent 60%)'
+        }} />
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="display-grotesk mb-6" style={{ fontSize: 'clamp(2.5rem, 6vw, 5rem)', color: '#F5F1EB' }}>
+              Ready to <span className="text-gold-gradient">Collaborate?</span>
+            </h2>
+            <p className="text-lg mb-10" style={{ color: '#C8C0B8' }}>
+              Let's craft your story, capture your audience, and build your brand legacy.
+            </p>
+            <Button
+              size="lg"
+              className="px-10 py-6 rounded-full text-sm font-semibold tracking-wide transition-all duration-300"
+              style={{ backgroundColor: '#F5F1EB', color: '#0A0A0A' }}
+              onClick={() => navigate('/contact')}
+            >
+              Start Your Project Now
+            </Button>
+          </motion.div>
+        </div>
+      </section>
     </div>
   );
 }

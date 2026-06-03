@@ -15,6 +15,10 @@ import { Captcha } from '../components/Captcha';
 import { ImageWithFallback } from '../components/figma/ImageWithFallback';
 import { projectId, publicAnonKey } from '../utils/supabase/info';
 import { logger } from '../utils/logger';
+
+import { SplitText } from '../components/SplitText';
+import { Magnetic } from '../components/Magnetic';
+
 const bsscImage = '/card-bssc.jpg';
 const blsaImage = '/card-blsa.jpg';
 const busuClubsImage = '/card-busu.jpg';
@@ -340,46 +344,49 @@ export function EventsCollaboratePage() {
   };
 
   return (
-    <div style={{ backgroundColor: '#F5F1EB' }}>
+    <div style={{ backgroundColor: '#0A0A0A' }}>
       <PageSEO
         title="Experience & Events"
         description="Attend CREOVA's events, workshops, and creative experiences across Ontario. Collaborate with BIPOC creatives and cultural storytellers."
       />
 
       {/* Hero — Asymmetric scale-contrast editorial */}
-      <section className="relative overflow-hidden" style={{ backgroundColor: '#0A0A0A' }}>
-        <div className="absolute left-0 top-0 bottom-0 w-1" style={{ background: warmGradient }} />
-        <div className="absolute bottom-0 left-0 right-0 h-px" style={{ backgroundColor: 'rgba(166,143,89,0.25)' }} />
+      <section className="relative min-h-[90vh] flex flex-col justify-center overflow-hidden" style={{ backgroundColor: '#0A0A0A' }}>
+        <div className="crosshair-guides" />
+        <div className="absolute inset-0 pointer-events-none" style={{
+          background: 'radial-gradient(ellipse 60% 50% at 50% 38%, rgba(166,143,89,0.12) 0%, transparent 70%)',
+        }} />
+        <div className="guide-ring hidden md:block" style={{ width: '48vw', height: '48vw', top: '50%', left: '50%', transform: 'translate(-50%,-50%)' }} />
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-[1.4fr_1fr] gap-0 items-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 pt-20">
+          <div className="grid lg:grid-cols-[1.4fr_1fr] gap-12 items-center">
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-              className="py-24 pr-0 lg:pr-16"
-              style={{ borderRight: '1px solid rgba(166,143,89,0.1)' }}
+              className="py-12 lg:pr-16"
             >
               <div className="flex items-center gap-4 mb-8">
                 <div className="w-10 h-px" style={{ backgroundColor: '#A68F59' }} />
-                <span className="text-xs tracking-[0.45em] uppercase" style={{ color: '#A68F59' }}>Experience</span>
+                <span className="mono-label" style={{ color: '#A68F59' }}>Experience</span>
               </div>
-              {/* Scale contrast: MASSIVE first line, small italic second */}
-              <h1 className="font-light leading-none tracking-tighter mb-1" style={{ fontSize: 'clamp(64px, 12vw, 160px)', color: '#F5F1EB' }}>
-                Events &
-              </h1>
+              <SplitText
+                text="EVENTS &"
+                tag="h1"
+                className="display-hero mb-2 text-left"
+                style={{ color: '#F5F1EB' }}
+                delay={0.1}
+                stagger={0.05}
+                mode="chars"
+              />
               <div className="flex items-end gap-4 mb-8">
-                <h1 className="italic leading-none tracking-tight" style={{
-                  fontSize: 'clamp(22px, 3.5vw, 42px)',
-                  backgroundImage: warmGradient,
-                  WebkitBackgroundClip: 'text',
-                  backgroundClip: 'text',
-                  color: 'transparent',
+                <h2 className="display-grotesk" style={{
+                  fontSize: 'clamp(2rem, 5vw, 4.5rem)',
                 }}>
-                  / Collaborations.
-                </h1>
+                  <span className="text-gold-gradient">/ COLLABORATIONS.</span>
+                </h2>
               </div>
-              <p className="text-base leading-relaxed max-w-md" style={{ color: '#7A6F66' }}>
+              <p className="text-base leading-relaxed max-w-md" style={{ color: '#C8C0B8' }}>
                 Join CREOVA's creative community through professional workshops, networking events, and meaningful partnerships across Ontario.
               </p>
             </motion.div>
@@ -389,7 +396,7 @@ export function EventsCollaboratePage() {
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 1, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-              className="py-16 pl-0 lg:pl-12 grid grid-cols-2 gap-3"
+              className="grid grid-cols-2 gap-4 pb-12"
             >
               {[
                 { icon: Calendar, label: 'Cultural Events', count: '10+' },
@@ -402,13 +409,13 @@ export function EventsCollaboratePage() {
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.28 + i * 0.07 }}
-                  className="p-5 rounded-2xl flex flex-col gap-3"
+                  className="p-6 rounded-2xl flex flex-col gap-4"
                   style={{ backgroundColor: 'rgba(245,241,235,0.03)', border: '1px solid rgba(166,143,89,0.1)' }}
                 >
                   <item.icon className="w-5 h-5" style={{ color: '#A68F59' }} />
                   <div>
                     <div className="text-xl font-light" style={{ color: '#F5F1EB' }}>{item.count}</div>
-                    <div className="text-xs tracking-wide uppercase mt-0.5" style={{ color: 'rgba(245,241,235,0.35)' }}>{item.label}</div>
+                    <div className="text-xs tracking-wide uppercase mt-1" style={{ color: '#9A9088' }}>{item.label}</div>
                   </div>
                 </motion.div>
               ))}
@@ -418,10 +425,11 @@ export function EventsCollaboratePage() {
       </section>
 
       {/* Navigation Cards — bold 2×2 dark grid */}
-      <section className="py-16" style={{ backgroundColor: '#0E0E0E' }}>
-        <div className="absolute left-0 right-0" style={{ height: '1px', backgroundColor: 'rgba(166,143,89,0.2)' }} />
+      <section className="py-16 relative" style={{ backgroundColor: '#0E0E0E' }}>
+        <div className="absolute left-0 right-0 top-0" style={{ height: '1px', backgroundColor: 'rgba(166,143,89,0.2)' }} />
+        <div className="absolute left-0 right-0 bottom-0" style={{ height: '1px', backgroundColor: 'rgba(166,143,89,0.2)' }} />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-3">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
 
             {/* Workshops */}
             <motion.button
@@ -430,15 +438,15 @@ export function EventsCollaboratePage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1, duration: 0.5 }}
               className="group relative rounded-2xl p-7 overflow-hidden text-left transition-all duration-400"
-              style={{ border: '1px solid rgba(166,143,89,0.2)', backgroundColor: 'rgba(166,143,89,0.05)' }}
+              style={{ border: '1px solid rgba(166,143,89,0.18)', backgroundColor: '#121212' }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.borderColor = 'rgba(166,143,89,0.5)';
-                e.currentTarget.style.backgroundColor = 'rgba(166,143,89,0.1)';
+                e.currentTarget.style.backgroundColor = 'rgba(166,143,89,0.08)';
                 e.currentTarget.style.transform = 'translateY(-3px)';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(166,143,89,0.2)';
-                e.currentTarget.style.backgroundColor = 'rgba(166,143,89,0.05)';
+                e.currentTarget.style.borderColor = 'rgba(166,143,89,0.18)';
+                e.currentTarget.style.backgroundColor = '#121212';
                 e.currentTarget.style.transform = 'translateY(0)';
               }}
             >
@@ -447,7 +455,7 @@ export function EventsCollaboratePage() {
                 <Calendar className="w-4 h-4" style={{ color: '#A68F59' }} />
               </div>
               <h3 className="text-lg tracking-tight mb-2" style={{ color: '#F5F1EB' }}>Upcoming Workshops</h3>
-              <p className="text-xs leading-relaxed mb-5" style={{ color: '#4A3E36' }}>Photography & content creation workshops across Ontario</p>
+              <p className="text-xs leading-relaxed mb-5" style={{ color: '#9A9088' }}>Photography & content creation workshops across Ontario</p>
               <div className="flex items-center gap-2 text-xs group-hover:translate-x-1.5 transition-transform duration-300" style={{ color: '#A68F59' }}>
                 <span>Explore Events</span>
                 <ArrowRight className="w-3 h-3" />
@@ -461,15 +469,15 @@ export function EventsCollaboratePage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.5 }}
               className="group relative rounded-2xl p-7 overflow-hidden text-left transition-all duration-400"
-              style={{ border: '1px solid rgba(177,100,59,0.2)', backgroundColor: 'rgba(177,100,59,0.05)' }}
+              style={{ border: '1px solid rgba(177,100,59,0.18)', backgroundColor: '#121212' }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.borderColor = 'rgba(177,100,59,0.5)';
-                e.currentTarget.style.backgroundColor = 'rgba(177,100,59,0.1)';
+                e.currentTarget.style.backgroundColor = 'rgba(177,100,59,0.08)';
                 e.currentTarget.style.transform = 'translateY(-3px)';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(177,100,59,0.2)';
-                e.currentTarget.style.backgroundColor = 'rgba(177,100,59,0.05)';
+                e.currentTarget.style.borderColor = 'rgba(177,100,59,0.18)';
+                e.currentTarget.style.backgroundColor = '#121212';
                 e.currentTarget.style.transform = 'translateY(0)';
               }}
             >
@@ -478,7 +486,7 @@ export function EventsCollaboratePage() {
                 <Handshake className="w-4 h-4" style={{ color: '#B1643B' }} />
               </div>
               <h3 className="text-lg tracking-tight mb-2" style={{ color: '#F5F1EB' }}>Partnership Opportunities</h3>
-              <p className="text-xs leading-relaxed mb-5" style={{ color: '#4A3E36' }}>Co-branded campaigns, creative projects & community initiatives</p>
+              <p className="text-xs leading-relaxed mb-5" style={{ color: '#9A9088' }}>Co-branded campaigns, creative projects & community initiatives</p>
               <div className="flex items-center gap-2 text-xs group-hover:translate-x-1.5 transition-transform duration-300" style={{ color: '#B1643B' }}>
                 <span>View Opportunities</span>
                 <ArrowRight className="w-3 h-3" />
@@ -492,15 +500,15 @@ export function EventsCollaboratePage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.5 }}
               className="group relative rounded-2xl p-7 overflow-hidden text-left transition-all duration-400"
-              style={{ border: '1px solid rgba(166,143,89,0.2)', backgroundColor: 'rgba(166,143,89,0.05)' }}
+              style={{ border: '1px solid rgba(166,143,89,0.18)', backgroundColor: '#121212' }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.borderColor = 'rgba(166,143,89,0.5)';
-                e.currentTarget.style.backgroundColor = 'rgba(166,143,89,0.1)';
+                e.currentTarget.style.backgroundColor = 'rgba(166,143,89,0.08)';
                 e.currentTarget.style.transform = 'translateY(-3px)';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(166,143,89,0.2)';
-                e.currentTarget.style.backgroundColor = 'rgba(166,143,89,0.05)';
+                e.currentTarget.style.borderColor = 'rgba(166,143,89,0.18)';
+                e.currentTarget.style.backgroundColor = '#121212';
                 e.currentTarget.style.transform = 'translateY(0)';
               }}
             >
@@ -509,14 +517,14 @@ export function EventsCollaboratePage() {
                 <Award className="w-4 h-4" style={{ color: '#A68F59' }} />
               </div>
               <h3 className="text-lg tracking-tight mb-2" style={{ color: '#F5F1EB' }}>Past Collaborations</h3>
-              <p className="text-xs leading-relaxed mb-5" style={{ color: '#4A3E36' }}>Partner orgs, universities and community organizations</p>
+              <p className="text-xs leading-relaxed mb-5" style={{ color: '#9A9088' }}>Partner orgs, universities and community organizations</p>
               <div className="flex items-center gap-2 text-xs group-hover:translate-x-1.5 transition-transform duration-300" style={{ color: '#A68F59' }}>
                 <span>See Our Work</span>
                 <ArrowRight className="w-3 h-3" />
               </div>
             </motion.button>
 
-            {/* Submit Proposal — warm gradient card */}
+            {/* Submit Proposal */}
             <motion.button
               onClick={() => scrollToSection('#contact-form')}
               initial={{ opacity: 0, y: 20 }}
@@ -550,7 +558,7 @@ export function EventsCollaboratePage() {
       </section>
 
       {/* Upcoming Workshops — editorial magazine rows */}
-      <section id="workshops" className="py-24" style={{ backgroundColor: '#F5F1EB' }}>
+      <section id="workshops" className="py-32" style={{ backgroundColor: '#0A0A0A' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -558,19 +566,19 @@ export function EventsCollaboratePage() {
             viewport={{ once: true }}
             className="mb-16"
           >
-            <div className="flex items-center gap-5 mb-3">
-              <div style={{ height: '1px', width: '40px', backgroundColor: 'rgba(18,18,18,0.2)' }} />
-              <p className="text-xs tracking-[0.5em] uppercase" style={{ color: '#A68F59' }}>Fall / Winter 2026</p>
+            <div className="flex items-center gap-4 mb-6">
+              <div style={{ height: '1px', width: '40px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
+              <p className="mono-label">Fall / Winter 2026</p>
+              <div style={{ height: '1px', width: '40px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
             </div>
-            <h2 className="text-4xl md:text-5xl font-light tracking-tight" style={{ color: '#121212' }}>
-              Upcoming Workshops & Events
-            </h2>
-            <p className="text-base mt-3 max-w-2xl" style={{ color: '#7A6F66' }}>
-              Professional photography workshops, content creation masterclasses, and networking events for BIPOC creatives in Toronto, Hamilton, Niagara Falls, and St. Catharines
+            <SplitText text="UPCOMING" tag="h2" className="display-grotesk text-4xl md:text-6xl mb-2" style={{ color: '#F5F1EB' }} />
+            <SplitText text="EVENTS & WORKSHOPS" tag="h2" className="display-grotesk text-4xl md:text-6xl mb-6" style={{ color: '#A68F59' }} />
+            <p className="text-base sm:text-xl max-w-2xl leading-relaxed" style={{ color: '#C8C0B8' }}>
+              Professional photography workshops, content creation masterclasses, and networking events for BIPOC creatives in Toronto, Hamilton, Niagara Falls, and St. Catharines.
             </p>
           </motion.div>
 
-          <div className="space-y-5">
+          <div className="space-y-6">
             {upcomingEvents.map((event, index) => (
               <motion.article
                 key={event.id}
@@ -579,18 +587,18 @@ export function EventsCollaboratePage() {
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.05, duration: 0.5 }}
                 className="group overflow-hidden rounded-2xl"
-                style={{ border: '1px solid rgba(18,18,18,0.1)' }}
+                style={{ border: '1px solid rgba(166,143,89,0.18)', backgroundColor: '#121212' }}
               >
                 <div className="flex flex-col md:flex-row">
                   {/* Left: image */}
-                  <div className="md:w-72 lg:w-80 relative overflow-hidden flex-shrink-0" style={{ backgroundColor: '#121212', minHeight: '200px' }}>
+                  <div className="md:w-72 lg:w-80 relative overflow-hidden flex-shrink-0" style={{ backgroundColor: '#0E0E0E', minHeight: '240px' }}>
                     <ImageWithFallback
                       src={event.image}
                       alt={`${event.name} - CREOVA Workshop in Ontario`}
                       className="w-full h-full object-cover aspect-[4/3] md:aspect-auto group-hover:scale-105 transition-transform duration-700"
                     />
                     <div className="absolute inset-0" style={{
-                      background: 'linear-gradient(to right, rgba(18,18,18,0.5) 0%, transparent 60%)'
+                      background: 'linear-gradient(to right, rgba(10,10,10,0.6) 0%, transparent 60%)'
                     }} />
                     {/* Price badge over image */}
                     <div className="absolute bottom-4 left-4">
@@ -598,92 +606,94 @@ export function EventsCollaboratePage() {
                         className="text-3xl font-light tracking-tight"
                         style={{
                           color: '#FFFFFF',
-                          textShadow: '0 1px 8px rgba(0,0,0,0.6)'
+                          textShadow: '0 1px 8px rgba(0,0,0,0.8)'
                         }}
                       >
                         ${event.price}
                       </div>
-                      <div className="text-xs" style={{ color: 'rgba(255,255,255,0.65)' }}>
+                      <div className="text-xs font-medium" style={{ color: '#A68F59', textShadow: '0 1px 4px rgba(0,0,0,0.8)' }}>
                         {event.price === 0 ? 'FREE' : 'CAD + HST'}
                       </div>
                     </div>
                   </div>
 
                   {/* Right: content */}
-                  <div className="flex-1 p-7" style={{ backgroundColor: '#FFFFFF' }}>
+                  <div className="flex-1 p-7 md:p-8" style={{ backgroundColor: '#121212' }}>
                     {/* Tags */}
-                    <div className="flex flex-wrap gap-2 mb-4">
+                    <div className="flex flex-wrap gap-3 mb-4">
                       <span
                         className="text-xs px-3 py-1 rounded-full tracking-wide"
                         style={{
                           background: event.location.includes('Virtual')
                             ? 'rgba(166,143,89,0.1)'
-                            : 'rgba(18,18,18,0.07)',
-                          color: event.location.includes('Virtual') ? '#A68F59' : '#121212',
-                          border: `1px solid ${event.location.includes('Virtual') ? 'rgba(166,143,89,0.3)' : 'rgba(18,18,18,0.15)'}`
+                            : 'rgba(177,100,59,0.1)',
+                          color: event.location.includes('Virtual') ? '#A68F59' : '#B1643B',
+                          border: `1px solid ${event.location.includes('Virtual') ? 'rgba(166,143,89,0.3)' : 'rgba(177,100,59,0.3)'}`
                         }}
                       >
                         {event.location.includes('Virtual') ? 'Virtual' : 'In-Person'}
                       </span>
                       <span className="text-xs px-3 py-1 rounded-full tracking-wide"
-                            style={{ backgroundColor: 'rgba(18,18,18,0.04)', color: '#7A6F66', border: '1px solid rgba(18,18,18,0.1)' }}>
+                            style={{ backgroundColor: 'rgba(245,241,235,0.05)', color: '#C8C0B8', border: '1px solid rgba(245,241,235,0.1)' }}>
                         {event.capacity}
                       </span>
                     </div>
 
-                    <h3 className="text-xl md:text-2xl tracking-tight mb-3" style={{ color: '#121212' }}>
+                    <h3 className="text-xl md:text-2xl tracking-tight mb-3 font-medium" style={{ color: '#F5F1EB' }}>
                       {event.name}
                     </h3>
-                    <p className="text-sm mb-5 leading-relaxed" style={{ color: '#7A6F66' }}>
+                    <p className="text-sm mb-5 leading-relaxed" style={{ color: '#C8C0B8' }}>
                       {event.description}
                     </p>
 
                     {/* Meta row */}
-                    <div className="flex flex-wrap gap-x-6 gap-y-2 mb-5">
+                    <div className="flex flex-wrap gap-x-6 gap-y-3 mb-6">
                       {[
                         { icon: Calendar, label: event.date },
                         { icon: Clock, label: event.time },
                         { icon: MapPin, label: event.location }
                       ].map((meta, i) => (
                         <div key={i} className="flex items-center gap-2">
-                          <meta.icon className="w-3.5 h-3.5 flex-shrink-0" style={{ color: '#A68F59' }} />
-                          <span className="text-xs" style={{ color: '#4A3E36' }}>{meta.label}</span>
+                          <meta.icon className="w-4 h-4 flex-shrink-0" style={{ color: '#A68F59' }} />
+                          <span className="text-sm" style={{ color: '#9A9088' }}>{meta.label}</span>
                         </div>
                       ))}
                     </div>
 
                     {/* Includes */}
-                    <div className="flex flex-wrap gap-x-4 gap-y-1.5 mb-6">
+                    <div className="flex flex-wrap gap-x-5 gap-y-2 mb-8">
                       {event.includes.map((item, idx) => (
-                        <div key={idx} className="flex items-center gap-1.5">
-                          <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: warmGradient }} />
-                          <span className="text-xs" style={{ color: '#7A6F66' }}>{item}</span>
+                        <div key={idx} className="flex items-center gap-2">
+                          <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: '#A68F59' }} />
+                          <span className="text-sm" style={{ color: '#C8C0B8' }}>{item}</span>
                         </div>
                       ))}
                     </div>
 
                     {/* CTA */}
-                    <Button
-                      size="sm"
-                      onClick={() => handleBuyTicket(event)}
-                      className="px-6 py-4 rounded-lg text-sm transition-all duration-300"
-                      style={{ background: warmGradient, color: '#FFFFFF', border: 'none' }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.opacity = '0.9';
-                        e.currentTarget.style.transform = 'translateY(-1px)';
-                        e.currentTarget.style.boxShadow = '0 6px 20px rgba(177,100,59,0.3)';
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.opacity = '1';
-                        e.currentTarget.style.transform = 'translateY(0)';
-                        e.currentTarget.style.boxShadow = 'none';
-                      }}
-                    >
-                      <span className="flex items-center gap-2">
-                        Register Now
-                        <ArrowRight className="w-3.5 h-3.5" />
-                      </span>
-                    </Button>
+                    <Magnetic strength={0.2}>
+                      <Button
+                        size="lg"
+                        onClick={() => handleBuyTicket(event)}
+                        className="px-8 py-5 rounded-full text-sm font-semibold transition-all duration-300"
+                        style={{ backgroundColor: '#F5F1EB', color: '#0A0A0A', border: 'none' }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.opacity = '0.9';
+                          e.currentTarget.style.transform = 'translateY(-1px)';
+                          e.currentTarget.style.boxShadow = '0 6px 20px rgba(245,241,235,0.2)';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.opacity = '1';
+                          e.currentTarget.style.transform = 'translateY(0)';
+                          e.currentTarget.style.boxShadow = 'none';
+                        }}
+                      >
+                        <span className="flex items-center gap-2">
+                          Register Now
+                          <ArrowRight className="w-4 h-4" />
+                        </span>
+                      </Button>
+                    </Magnetic>
                   </div>
                 </div>
               </motion.article>
@@ -693,7 +703,7 @@ export function EventsCollaboratePage() {
       </section>
 
       {/* Why Join — dark editorial */}
-      <section className="py-20 relative overflow-hidden" style={{ backgroundColor: '#121212' }}>
+      <section className="py-24 relative overflow-hidden" style={{ backgroundColor: '#0E0E0E' }}>
         <div className="absolute top-0 left-0 right-0" style={{ height: '1px', backgroundColor: 'rgba(166,143,89,0.3)' }} />
         <div className="absolute bottom-0 left-0 right-0" style={{ height: '1px', backgroundColor: 'rgba(166,143,89,0.3)' }} />
         <div className="absolute inset-0 pointer-events-none" style={{
@@ -707,16 +717,16 @@ export function EventsCollaboratePage() {
             viewport={{ once: true }}
             className="mb-14"
           >
-            <div className="flex items-center gap-5 mb-3">
+            <div className="flex items-center gap-5 mb-4">
               <div style={{ height: '1px', width: '40px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
-              <p className="text-xs tracking-[0.5em] uppercase" style={{ color: '#A68F59' }}>Community</p>
+              <p className="mono-label">Community</p>
             </div>
-            <h2 className="text-4xl font-light tracking-tight" style={{ color: '#F5F1EB' }}>
-              Why Join CREOVA's Creative Community?
+            <h2 className="display-grotesk text-3xl md:text-5xl" style={{ color: '#F5F1EB' }}>
+              Why Join CREOVA's Community?
             </h2>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-4">
+          <div className="grid md:grid-cols-3 gap-6">
             {[
               {
                 icon: Users,
@@ -740,26 +750,17 @@ export function EventsCollaboratePage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1, duration: 0.5 }}
-                className="p-7 rounded-xl transition-all duration-300"
-                style={{ border: '1px solid rgba(166,143,89,0.18)', backgroundColor: 'rgba(166,143,89,0.04)' }}
-                onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLElement).style.borderColor = 'rgba(166,143,89,0.4)';
-                  (e.currentTarget as HTMLElement).style.backgroundColor = 'rgba(166,143,89,0.08)';
-                }}
-                onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLElement).style.borderColor = 'rgba(166,143,89,0.18)';
-                  (e.currentTarget as HTMLElement).style.backgroundColor = 'rgba(166,143,89,0.04)';
-                }}
+                className="p-8 rounded-2xl transition-all duration-300"
+                style={{ border: '1px solid rgba(166,143,89,0.18)', backgroundColor: '#121212' }}
               >
                 <div
-                  className="w-11 h-11 rounded-lg flex items-center justify-center mb-5"
-                  style={{ background: warmGradient }}
+                  className="w-12 h-12 rounded-xl flex items-center justify-center mb-6"
+                  style={{ backgroundColor: 'rgba(166,143,89,0.1)', border: '1px solid rgba(166,143,89,0.3)' }}
                 >
-                  <item.icon className="w-5 h-5" style={{ color: '#FFFFFF' }} />
+                  <item.icon className="w-6 h-6" style={{ color: '#A68F59' }} />
                 </div>
-                <div style={{ height: '1px', width: '24px', backgroundColor: 'rgba(166,143,89,0.4)', marginBottom: '14px' }} />
-                <h3 className="text-lg mb-2 tracking-tight" style={{ color: '#F5F1EB' }}>{item.title}</h3>
-                <p className="text-sm leading-relaxed" style={{ color: '#7A6F66' }}>{item.description}</p>
+                <h3 className="text-xl font-medium mb-3 tracking-tight" style={{ color: '#F5F1EB' }}>{item.title}</h3>
+                <p className="text-sm leading-relaxed" style={{ color: '#C8C0B8' }}>{item.description}</p>
               </motion.div>
             ))}
           </div>
@@ -767,25 +768,25 @@ export function EventsCollaboratePage() {
       </section>
 
       {/* Collaboration Opportunities */}
-      <section id="collaboration" className="py-24" style={{ backgroundColor: '#F9F6F1' }}>
+      <section id="collaboration" className="py-32" style={{ backgroundColor: '#0A0A0A' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="mb-14"
+            className="mb-16"
           >
-            <div className="flex items-center gap-5 mb-3">
+            <div className="flex items-center gap-5 mb-4">
               <div style={{ height: '1px', width: '40px', backgroundColor: 'rgba(177,100,59,0.4)' }} />
-              <p className="text-xs tracking-[0.5em] uppercase" style={{ color: '#B1643B' }}>Partner With Us</p>
+              <p className="mono-label" style={{ color: '#B1643B' }}>Partner With Us</p>
             </div>
-            <h2 className="text-4xl md:text-5xl font-light tracking-tight" style={{ color: '#121212' }}>Partner with CREOVA</h2>
-            <p className="text-base mt-3 max-w-2xl" style={{ color: '#7A6F66' }}>
-              From brand partnerships to community initiatives, we collaborate with organizations, businesses, and creatives who share our commitment to amplifying BIPOC voices
+            <SplitText text="COLLABORATE" tag="h2" className="display-grotesk text-4xl md:text-6xl mb-6" style={{ color: '#F5F1EB' }} />
+            <p className="text-base sm:text-xl mt-3 max-w-2xl leading-relaxed" style={{ color: '#C8C0B8' }}>
+              From brand partnerships to community initiatives, we collaborate with organizations, businesses, and creatives who share our commitment to amplifying BIPOC voices.
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 gap-5">
+          <div className="grid md:grid-cols-2 gap-6">
             {collaborationTypes.map((type, index) => (
               <motion.article
                 key={index}
@@ -794,28 +795,28 @@ export function EventsCollaboratePage() {
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1, duration: 0.5 }}
                 className="overflow-hidden rounded-2xl"
-                style={{ border: '1px solid rgba(18,18,18,0.1)' }}
+                style={{ border: '1px solid rgba(166,143,89,0.18)', backgroundColor: '#121212' }}
               >
                 {/* Card header */}
-                <div className="px-7 py-6 flex items-center gap-4" style={{ backgroundColor: '#121212' }}>
+                <div className="px-8 py-6 flex items-center gap-5 border-b" style={{ borderColor: 'rgba(166,143,89,0.1)' }}>
                   <div
-                    className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
-                    style={{ border: '1px solid rgba(177,100,59,0.4)', backgroundColor: 'rgba(177,100,59,0.12)' }}
+                    className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
+                    style={{ border: '1px solid rgba(177,100,59,0.3)', backgroundColor: 'rgba(177,100,59,0.1)' }}
                   >
-                    <type.icon className="w-4 h-4" style={{ color: '#B1643B' }} />
+                    <type.icon className="w-5 h-5" style={{ color: '#B1643B' }} />
                   </div>
-                  <h3 className="text-lg tracking-tight" style={{ color: '#F5F1EB' }}>{type.title}</h3>
+                  <h3 className="text-xl font-medium tracking-tight" style={{ color: '#F5F1EB' }}>{type.title}</h3>
                 </div>
 
                 {/* Card body */}
-                <div className="p-7" style={{ backgroundColor: '#FFFFFF' }}>
-                  <p className="text-sm mb-5 leading-relaxed" style={{ color: '#7A6F66' }}>{type.description}</p>
-                  <p className="text-xs tracking-[0.35em] uppercase mb-3" style={{ color: '#A68F59' }}>Examples</p>
-                  <div className="grid grid-cols-2 gap-x-4 gap-y-2">
+                <div className="p-8">
+                  <p className="text-sm mb-6 leading-relaxed" style={{ color: '#C8C0B8' }}>{type.description}</p>
+                  <p className="mono-label mb-4">Examples</p>
+                  <div className="grid grid-cols-2 gap-x-4 gap-y-3">
                     {type.examples.map((example, idx) => (
-                      <div key={idx} className="flex items-start gap-2">
-                        <span className="mt-1.5 flex-shrink-0 w-1.5 h-1.5 rounded-full" style={{ background: warmGradient }} />
-                        <span className="text-xs leading-relaxed" style={{ color: '#4A3E36' }}>{example}</span>
+                      <div key={idx} className="flex items-start gap-3">
+                        <span className="mt-1.5 flex-shrink-0 w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: '#A68F59' }} />
+                        <span className="text-sm leading-relaxed" style={{ color: '#9A9088' }}>{example}</span>
                       </div>
                     ))}
                   </div>
@@ -827,7 +828,7 @@ export function EventsCollaboratePage() {
       </section>
 
       {/* CREOVA in the Spotlight */}
-      <section className="py-24 relative overflow-hidden" style={{ backgroundColor: '#0A0A0A' }}>
+      <section className="py-24 relative overflow-hidden" style={{ backgroundColor: '#0E0E0E' }}>
         <div className="absolute top-0 left-0 right-0" style={{ height: '1px', backgroundColor: 'rgba(166,143,89,0.3)' }} />
         <div className="absolute inset-0 pointer-events-none" style={{
           backgroundImage: 'radial-gradient(circle, rgba(166,143,89,0.04) 1px, transparent 1px)',
@@ -841,19 +842,19 @@ export function EventsCollaboratePage() {
             viewport={{ once: true }}
             className="mb-14"
           >
-            <div className="flex items-center gap-5 mb-3">
+            <div className="flex items-center gap-5 mb-4">
               <div style={{ height: '1px', width: '40px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
-              <p className="text-xs tracking-[0.5em] uppercase" style={{ color: '#A68F59' }}>Featured Moments</p>
+              <p className="mono-label">Featured Moments</p>
             </div>
-            <h2 className="text-4xl md:text-5xl font-light tracking-tight" style={{ color: '#F5F1EB' }}>
-              CREOVA in the Spotlight
+            <h2 className="display-grotesk text-3xl md:text-5xl" style={{ color: '#F5F1EB' }}>
+              CREOVA IN THE SPOTLIGHT
             </h2>
-            <p className="text-base mt-3" style={{ color: '#4A3E36' }}>
+            <p className="text-base sm:text-lg mt-4" style={{ color: '#C8C0B8' }}>
               Moments where our community showed up, spoke up, and made an impact
             </p>
           </motion.div>
 
-          <div className="grid lg:grid-cols-2 gap-5">
+          <div className="grid lg:grid-cols-2 gap-6">
             {/* Innovation Showcase */}
             <motion.a
               href="https://www.linkedin.com/posts/brock-linc_innovationshowcase2027-activity-7435428477895569408-uYf7"
@@ -864,7 +865,7 @@ export function EventsCollaboratePage() {
               viewport={{ once: true }}
               whileHover={{ y: -5 }}
               className="group overflow-hidden rounded-2xl block"
-              style={{ border: '1px solid rgba(166,143,89,0.2)' }}
+              style={{ border: '1px solid rgba(166,143,89,0.18)' }}
             >
               <div className="relative overflow-hidden aspect-video">
                 <img
@@ -876,25 +877,25 @@ export function EventsCollaboratePage() {
                 <div className="absolute inset-0" style={{
                   background: 'linear-gradient(to top, rgba(10,10,10,0.94) 0%, rgba(10,10,10,0.3) 55%, transparent 100%)'
                 }} />
-                <div className="absolute top-4 right-4 flex items-center gap-2 px-3 py-1.5 rounded-full text-xs"
-                  style={{ backgroundColor: 'rgba(166,143,89,0.9)', color: '#121212' }}>
+                <div className="absolute top-4 right-4 flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium tracking-wide"
+                  style={{ backgroundColor: '#F5F1EB', color: '#0A0A0A' }}>
                   <ExternalLink className="w-3 h-3" />
                   View Recap on LinkedIn
                 </div>
               </div>
-              <div className="p-7" style={{ backgroundColor: '#111111' }}>
-                <div className="flex items-center gap-3 mb-4">
-                  <span className="text-xs tracking-widest uppercase px-3 py-1 rounded-full"
-                    style={{ backgroundColor: 'rgba(166,143,89,0.12)', color: '#A68F59', border: '1px solid rgba(166,143,89,0.25)' }}>
+              <div className="p-8" style={{ backgroundColor: '#121212' }}>
+                <div className="flex items-center gap-4 mb-5">
+                  <span className="mono-label px-3 py-1 rounded-full"
+                    style={{ backgroundColor: 'rgba(166,143,89,0.1)', border: '1px solid rgba(166,143,89,0.3)' }}>
                     Past Event · Recap
                   </span>
-                  <span className="text-xs" style={{ color: '#4A3E36' }}>Brock University LINC</span>
+                  <span className="text-sm font-medium" style={{ color: '#9A9088' }}>Brock University LINC</span>
                 </div>
-                <h3 className="text-2xl tracking-tight mb-3" style={{ color: '#F5F1EB' }}>Innovation Showcase</h3>
-                <p className="text-sm leading-relaxed mb-5" style={{ color: '#7A6F66' }}>
+                <h3 className="text-2xl font-medium tracking-tight mb-3" style={{ color: '#F5F1EB' }}>Innovation Showcase</h3>
+                <p className="text-sm leading-relaxed mb-6" style={{ color: '#C8C0B8' }}>
                   CREOVA was selected to present at Brock University's prestigious Innovation Showcase — a celebration of entrepreneurship and creative impact in the Niagara region.
                 </p>
-                <div className="flex items-center gap-2 text-sm group-hover:translate-x-2 transition-transform duration-300" style={{ color: '#A68F59' }}>
+                <div className="flex items-center gap-2 text-sm font-medium group-hover:translate-x-2 transition-transform duration-300" style={{ color: '#A68F59' }}>
                   <span>See the full recap</span>
                   <ArrowRight className="w-4 h-4" />
                 </div>
@@ -912,7 +913,7 @@ export function EventsCollaboratePage() {
               transition={{ delay: 0.15 }}
               whileHover={{ y: -5 }}
               className="group overflow-hidden rounded-2xl block"
-              style={{ border: '1px solid rgba(177,100,59,0.2)' }}
+              style={{ border: '1px solid rgba(177,100,59,0.18)' }}
             >
               <div className="relative overflow-hidden aspect-video">
                 <img
@@ -924,25 +925,25 @@ export function EventsCollaboratePage() {
                 <div className="absolute inset-0" style={{
                   background: 'linear-gradient(to top, rgba(10,10,10,0.94) 0%, rgba(10,10,10,0.3) 55%, transparent 100%)'
                 }} />
-                <div className="absolute top-4 right-4 flex items-center gap-2 px-3 py-1.5 rounded-full text-xs"
-                  style={{ backgroundColor: 'rgba(177,100,59,0.9)', color: '#F5F1EB' }}>
+                <div className="absolute top-4 right-4 flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium tracking-wide"
+                  style={{ backgroundColor: '#F5F1EB', color: '#0A0A0A' }}>
                   <ExternalLink className="w-3 h-3" />
                   View on Instagram
                 </div>
               </div>
-              <div className="p-7" style={{ backgroundColor: '#111111' }}>
-                <div className="flex items-center gap-3 mb-4">
-                  <span className="text-xs tracking-widest uppercase px-3 py-1 rounded-full"
-                    style={{ backgroundColor: 'rgba(177,100,59,0.12)', color: '#B1643B', border: '1px solid rgba(177,100,59,0.25)' }}>
+              <div className="p-8" style={{ backgroundColor: '#121212' }}>
+                <div className="flex items-center gap-4 mb-5">
+                  <span className="mono-label px-3 py-1 rounded-full"
+                    style={{ backgroundColor: 'rgba(177,100,59,0.1)', color: '#B1643B', border: '1px solid rgba(177,100,59,0.3)' }}>
                     Community Event
                   </span>
-                  <span className="text-xs" style={{ color: '#4A3E36' }}>Black Student Success Centre</span>
+                  <span className="text-sm font-medium" style={{ color: '#9A9088' }}>Black Student Success Centre</span>
                 </div>
-                <h3 className="text-2xl tracking-tight mb-3" style={{ color: '#F5F1EB' }}>The Black Print — Closing Session</h3>
-                <p className="text-sm leading-relaxed mb-5" style={{ color: '#7A6F66' }}>
+                <h3 className="text-2xl font-medium tracking-tight mb-3" style={{ color: '#F5F1EB' }}>The Black Print — Closing Session</h3>
+                <p className="text-sm leading-relaxed mb-6" style={{ color: '#C8C0B8' }}>
                   Wednesday's closing session of The Black Print, in partnership with the Black Student Success Centre — a conversation filled with joy, good vibes, and powerful moments of connection.
                 </p>
-                <div className="flex items-center gap-2 text-sm group-hover:translate-x-2 transition-transform duration-300" style={{ color: '#B1643B' }}>
+                <div className="flex items-center gap-2 text-sm font-medium group-hover:translate-x-2 transition-transform duration-300" style={{ color: '#B1643B' }}>
                   <span>Read the post</span>
                   <ArrowRight className="w-4 h-4" />
                 </div>
@@ -953,7 +954,7 @@ export function EventsCollaboratePage() {
       </section>
 
       {/* Previous Collaborations */}
-      <section id="past-work" className="py-24" style={{ backgroundColor: '#F5F1EB' }}>
+      <section id="past-work" className="py-24" style={{ backgroundColor: '#0A0A0A' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -961,19 +962,19 @@ export function EventsCollaboratePage() {
             viewport={{ once: true }}
             className="mb-14"
           >
-            <div className="flex items-center gap-5 mb-3">
-              <div style={{ height: '1px', width: '40px', backgroundColor: 'rgba(18,18,18,0.2)' }} />
-              <p className="text-xs tracking-[0.5em] uppercase" style={{ color: '#A68F59' }}>Our Partners</p>
+            <div className="flex items-center gap-5 mb-4">
+              <div style={{ height: '1px', width: '40px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
+              <p className="mono-label">Our Partners</p>
             </div>
-            <h2 className="text-4xl font-light tracking-tight" style={{ color: '#121212' }}>
-              Trusted by Community and Organizations
+            <h2 className="display-grotesk text-3xl md:text-5xl" style={{ color: '#F5F1EB' }}>
+              TRUSTED BY ORGANIZATIONS
             </h2>
-            <p className="text-base mt-3" style={{ color: '#7A6F66' }}>
+            <p className="text-base mt-4" style={{ color: '#C8C0B8' }}>
               CREOVA has partnered with universities, NGOs, and community organizations across Ontario
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {previousCollaborations.map((collab, index) => (
               <motion.article
                 key={index}
@@ -982,30 +983,22 @@ export function EventsCollaboratePage() {
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1, duration: 0.5 }}
                 className="group overflow-hidden rounded-2xl"
-                style={{ border: '1px solid rgba(18,18,18,0.1)', backgroundColor: '#FFFFFF' }}
-                onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLElement).style.borderColor = 'rgba(166,143,89,0.4)';
-                  (e.currentTarget as HTMLElement).style.boxShadow = '0 8px 32px rgba(166,143,89,0.1)';
-                }}
-                onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLElement).style.borderColor = 'rgba(18,18,18,0.1)';
-                  (e.currentTarget as HTMLElement).style.boxShadow = 'none';
-                }}
+                style={{ border: '1px solid rgba(166,143,89,0.18)', backgroundColor: '#121212' }}
               >
-                <div className="relative overflow-hidden" style={{ aspectRatio: '4/3', backgroundColor: '#121212' }}>
+                <div className="relative overflow-hidden" style={{ aspectRatio: '4/3', backgroundColor: '#0E0E0E' }}>
                   <img
                     src={collab.image}
                     alt={collab.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-80"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 </div>
-                <div className="p-5">
-                  <time className="text-xs mb-2 block tracking-wide" style={{ color: '#A68F59' }}>{collab.date}</time>
-                  <div style={{ height: '1px', width: '20px', backgroundImage: warmGradient, marginBottom: '10px' }} />
-                  <h3 className="text-base tracking-tight mb-1" style={{ color: '#121212' }}>{collab.title}</h3>
-                  <p className="text-xs mb-2 font-medium" style={{ color: '#B1643B' }}>{collab.partner}</p>
-                  <p className="text-xs leading-relaxed" style={{ color: '#7A6F66' }}>{collab.description}</p>
+                <div className="p-6">
+                  <time className="text-xs mb-3 block tracking-wider uppercase font-medium" style={{ color: '#A68F59' }}>{collab.date}</time>
+                  <div style={{ height: '1px', width: '24px', backgroundColor: '#A68F59', marginBottom: '12px' }} />
+                  <h3 className="text-lg font-medium tracking-tight mb-2" style={{ color: '#F5F1EB' }}>{collab.title}</h3>
+                  <p className="text-sm font-medium mb-3" style={{ color: '#B1643B' }}>{collab.partner}</p>
+                  <p className="text-sm leading-relaxed" style={{ color: '#9A9088' }}>{collab.description}</p>
                 </div>
               </motion.article>
             ))}
@@ -1014,7 +1007,7 @@ export function EventsCollaboratePage() {
       </section>
 
       {/* Collaboration Process — warm-dot vertical timeline */}
-      <section className="py-24 relative overflow-hidden" style={{ backgroundColor: '#121212' }}>
+      <section className="py-24 relative overflow-hidden" style={{ backgroundColor: '#0E0E0E' }}>
         <div className="absolute top-0 left-0 right-0" style={{ height: '1px', backgroundColor: 'rgba(166,143,89,0.3)' }} />
         <div className="absolute bottom-0 left-0 right-0" style={{ height: '1px', backgroundColor: 'rgba(166,143,89,0.3)' }} />
 
@@ -1023,21 +1016,21 @@ export function EventsCollaboratePage() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="mb-14"
+            className="mb-16"
           >
-            <div className="flex items-center gap-5 mb-3">
+            <div className="flex items-center gap-5 mb-4">
               <div style={{ height: '1px', width: '40px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
-              <p className="text-xs tracking-[0.5em] uppercase" style={{ color: '#A68F59' }}>How We Work</p>
+              <p className="mono-label">How We Work</p>
             </div>
-            <h2 className="text-4xl font-light tracking-tight" style={{ color: '#F5F1EB' }}>Our Collaboration Process</h2>
-            <p className="text-base mt-3" style={{ color: '#4A3E36' }}>A simple, transparent approach to working together</p>
+            <h2 className="display-grotesk text-3xl md:text-5xl" style={{ color: '#F5F1EB' }}>OUR COLLABORATION PROCESS</h2>
+            <p className="text-base mt-4" style={{ color: '#C8C0B8' }}>A simple, transparent approach to working together</p>
           </motion.div>
 
           <div className="relative">
             {/* Vertical line */}
             <div className="absolute left-6 top-4 bottom-4 w-px" style={{ background: 'linear-gradient(to bottom, rgba(166,143,89,0.6), rgba(177,100,59,0.6))' }} />
 
-            <div className="space-y-6">
+            <div className="space-y-8">
               {[
                 { step: '01', title: 'Initial Review & Assessment', description: 'We review your proposal within 2-3 business days and assess alignment with our values, mission, and current capacity' },
                 { step: '02', title: 'Discovery Call', description: 'If it\'s a strong fit, we\'ll schedule a video call to discuss your vision, goals, timeline, and budget in detail' },
@@ -1055,8 +1048,8 @@ export function EventsCollaboratePage() {
                   {/* Step dot */}
                   <div className="flex-shrink-0 relative z-10">
                     <div
-                      className="w-12 h-12 rounded-full flex items-center justify-center text-xs font-light tracking-wider"
-                      style={{ background: warmGradient, color: '#FFFFFF' }}
+                      className="w-12 h-12 rounded-full flex items-center justify-center text-sm font-medium tracking-wider"
+                      style={{ backgroundColor: '#121212', border: '1px solid rgba(166,143,89,0.5)', color: '#A68F59' }}
                     >
                       {item.step}
                     </div>
@@ -1064,8 +1057,8 @@ export function EventsCollaboratePage() {
 
                   {/* Content */}
                   <div className="flex-1 pb-6">
-                    <h3 className="text-lg tracking-tight mb-2" style={{ color: '#F5F1EB' }}>{item.title}</h3>
-                    <p className="text-sm leading-relaxed" style={{ color: '#7A6F66' }}>{item.description}</p>
+                    <h3 className="text-xl font-medium tracking-tight mb-2" style={{ color: '#F5F1EB' }}>{item.title}</h3>
+                    <p className="text-sm leading-relaxed" style={{ color: '#C8C0B8' }}>{item.description}</p>
                   </div>
                 </motion.div>
               ))}
@@ -1075,22 +1068,22 @@ export function EventsCollaboratePage() {
       </section>
 
       {/* Collaboration Form */}
-      <section id="contact-form" className="py-24" style={{ backgroundColor: '#F5F1EB' }}>
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section id="contact-form" className="py-24" style={{ backgroundColor: '#0A0A0A' }}>
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="mb-12"
+            className="mb-14"
           >
-            <div className="flex items-center gap-5 mb-3">
-              <div style={{ height: '1px', width: '40px', backgroundColor: 'rgba(18,18,18,0.2)' }} />
-              <p className="text-xs tracking-[0.5em] uppercase" style={{ color: '#A68F59' }}>Submit a Proposal</p>
+            <div className="flex items-center gap-5 mb-4">
+              <div style={{ height: '1px', width: '40px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
+              <p className="mono-label">Submit a Proposal</p>
             </div>
-            <h2 className="text-4xl font-light tracking-tight" style={{ color: '#121212' }}>
-              Submit a Collaboration Proposal
+            <h2 className="display-grotesk text-3xl md:text-5xl" style={{ color: '#F5F1EB' }}>
+              INITIATE A PARTNERSHIP
             </h2>
-            <p className="text-base mt-3" style={{ color: '#7A6F66' }}>
+            <p className="text-base mt-4" style={{ color: '#C8C0B8' }}>
               Tell us about your project, partnership idea, or event concept and let's explore how we can work together
             </p>
           </motion.div>
@@ -1102,47 +1095,46 @@ export function EventsCollaboratePage() {
             transition={{ delay: 0.2 }}
             onSubmit={handleSubmit}
             className="overflow-hidden rounded-2xl"
-            style={{ border: '1px solid rgba(18,18,18,0.1)' }}
+            style={{ border: '1px solid rgba(166,143,89,0.18)' }}
           >
             {/* Form header */}
-            <div className="px-8 py-5" style={{ backgroundColor: '#121212', borderBottom: '1px solid rgba(166,143,89,0.2)' }}>
-              <p className="text-sm" style={{ color: '#7A6F66' }}>We review all proposals within 2-3 business days and respond to all inquiries</p>
+            <div className="px-8 py-6" style={{ backgroundColor: '#0E0E0E', borderBottom: '1px solid rgba(166,143,89,0.18)' }}>
+              <p className="text-sm" style={{ color: '#9A9088' }}>We review all proposals within 2-3 business days and respond to all inquiries</p>
             </div>
 
-            <div className="p-8 md:p-10 space-y-6" style={{ backgroundColor: '#FFFFFF' }}>
-              <div className="grid md:grid-cols-2 gap-6">
+            <div className="p-8 md:p-10 space-y-8" style={{ backgroundColor: '#121212' }}>
+              <div className="grid md:grid-cols-2 gap-8">
                 <div>
-                  <Label htmlFor="name" className="text-xs tracking-widest uppercase mb-2 block" style={{ color: '#7A6F66' }}>Full Name *</Label>
+                  <Label htmlFor="name" className="text-xs font-medium tracking-wider uppercase mb-3 block" style={{ color: '#C8C0B8' }}>Full Name *</Label>
                   <Input id="name" autoComplete="name" required value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    placeholder="Your full name" className="rounded-xl border-2 focus:border-[#A68F59] transition-colors" />
+                    placeholder="Your full name" className="rounded-xl border border-[rgba(166,143,89,0.3)] bg-[#0A0A0A] text-[#F5F1EB] focus:border-[#A68F59] transition-colors py-6 px-4" />
                 </div>
                 <div>
-                  <Label htmlFor="email" className="text-xs tracking-widest uppercase mb-2 block" style={{ color: '#7A6F66' }}>Email Address *</Label>
+                  <Label htmlFor="email" className="text-xs font-medium tracking-wider uppercase mb-3 block" style={{ color: '#C8C0B8' }}>Email Address *</Label>
                   <Input id="email" type="email" autoComplete="email" required value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    placeholder="your@email.com" className="rounded-xl border-2 focus:border-[#A68F59] transition-colors" />
+                    placeholder="your@email.com" className="rounded-xl border border-[rgba(166,143,89,0.3)] bg-[#0A0A0A] text-[#F5F1EB] focus:border-[#A68F59] transition-colors py-6 px-4" />
                 </div>
               </div>
 
               <div>
-                <Label htmlFor="organization" className="text-xs tracking-widest uppercase mb-2 block" style={{ color: '#7A6F66' }}>Organization / Brand Name</Label>
+                <Label htmlFor="organization" className="text-xs font-medium tracking-wider uppercase mb-3 block" style={{ color: '#C8C0B8' }}>Organization / Brand Name</Label>
                 <Input id="organization" value={formData.organization}
                   onChange={(e) => setFormData({ ...formData, organization: e.target.value })}
                   placeholder="Your organization, company, or personal brand"
-                  className="rounded-xl border-2 focus:border-[#A68F59] transition-colors" />
+                  className="rounded-xl border border-[rgba(166,143,89,0.3)] bg-[#0A0A0A] text-[#F5F1EB] focus:border-[#A68F59] transition-colors py-6 px-4" />
               </div>
 
               <div>
-                <Label htmlFor="collaborationType" className="text-xs tracking-widest uppercase mb-2 block" style={{ color: '#7A6F66' }}>Type of Collaboration *</Label>
+                <Label htmlFor="collaborationType" className="text-xs font-medium tracking-wider uppercase mb-3 block" style={{ color: '#C8C0B8' }}>Type of Collaboration *</Label>
                 <select
                   id="collaborationType" required
                   value={formData.collaborationType}
                   onChange={(e) => setFormData({ ...formData, collaborationType: e.target.value })}
-                  className="w-full border-2 rounded-xl px-4 py-3 focus:border-[#A68F59] focus:outline-none transition-colors"
-                  style={{ color: '#121212' }}
+                  className="w-full rounded-xl px-4 py-4 border border-[rgba(166,143,89,0.3)] bg-[#0A0A0A] text-[#F5F1EB] focus:border-[#A68F59] focus:outline-none transition-colors appearance-none"
                 >
-                  <option value="">Select collaboration type</option>
+                  <option value="" disabled hidden>Select collaboration type</option>
                   <option value="brand-partnership">Brand Partnership</option>
                   <option value="creative-project">Creative Project</option>
                   <option value="community-initiative">Community Initiative</option>
@@ -1152,75 +1144,72 @@ export function EventsCollaboratePage() {
               </div>
 
               <div>
-                <Label htmlFor="projectDescription" className="text-xs tracking-widest uppercase mb-2 block" style={{ color: '#7A6F66' }}>Project Description *</Label>
+                <Label htmlFor="projectDescription" className="text-xs font-medium tracking-wider uppercase mb-3 block" style={{ color: '#C8C0B8' }}>Project Description *</Label>
                 <Textarea id="projectDescription" required value={formData.projectDescription}
                   onChange={(e) => setFormData({ ...formData, projectDescription: e.target.value })}
                   placeholder="Describe your collaboration idea, goals, what you envision, and how CREOVA can contribute..."
-                  rows={6} className="rounded-xl border-2 focus:border-[#A68F59] transition-colors" />
+                  rows={6} className="rounded-xl border border-[rgba(166,143,89,0.3)] bg-[#0A0A0A] text-[#F5F1EB] focus:border-[#A68F59] transition-colors p-4 resize-none" />
               </div>
 
-              <div className="grid md:grid-cols-2 gap-6">
+              <div className="grid md:grid-cols-2 gap-8">
                 <div>
-                  <Label htmlFor="timeline" className="text-xs tracking-widest uppercase mb-2 block" style={{ color: '#7A6F66' }}>Preferred Timeline</Label>
+                  <Label htmlFor="timeline" className="text-xs font-medium tracking-wider uppercase mb-3 block" style={{ color: '#C8C0B8' }}>Preferred Timeline</Label>
                   <Input id="timeline" value={formData.timeline}
                     onChange={(e) => setFormData({ ...formData, timeline: e.target.value })}
                     placeholder="e.g., Q1 2026, 3 months, ASAP"
-                    className="rounded-xl border-2 focus:border-[#A68F59] transition-colors" />
+                    className="rounded-xl border border-[rgba(166,143,89,0.3)] bg-[#0A0A0A] text-[#F5F1EB] focus:border-[#A68F59] transition-colors py-6 px-4" />
                 </div>
                 <div>
-                  <Label htmlFor="budget" className="text-xs tracking-widest uppercase mb-2 block" style={{ color: '#7A6F66' }}>Budget Range (CAD)</Label>
+                  <Label htmlFor="budget" className="text-xs font-medium tracking-wider uppercase mb-3 block" style={{ color: '#C8C0B8' }}>Budget Range (CAD)</Label>
                   <Input id="budget" value={formData.budget}
                     onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
                     placeholder="e.g., $2,000-$5,000"
-                    className="rounded-xl border-2 focus:border-[#A68F59] transition-colors" />
+                    className="rounded-xl border border-[rgba(166,143,89,0.3)] bg-[#0A0A0A] text-[#F5F1EB] focus:border-[#A68F59] transition-colors py-6 px-4" />
                 </div>
               </div>
 
-              <div className="border-t pt-8" style={{ borderColor: '#E3DCD3' }}>
-                <p className="text-xs tracking-widest uppercase mb-4" style={{ color: '#7A6F66' }}>Security Verification</p>
+              <div className="border-t pt-8" style={{ borderColor: 'rgba(166,143,89,0.2)' }}>
+                <p className="text-xs font-medium tracking-wider uppercase mb-4" style={{ color: '#A68F59' }}>Security Verification</p>
                 <Captcha onVerify={handleCaptchaVerify} onExpire={handleCaptchaExpire} onError={handleCaptchaError} />
               </div>
 
-              <Button
-                type="submit"
-                size="lg"
-                className="w-full py-6 rounded-xl text-sm tracking-wide transition-all duration-300"
-                style={{ background: warmGradient, color: '#FFFFFF', border: 'none' }}
-                disabled={isSubmitting}
-                onMouseEnter={(e) => {
-                  if (!isSubmitting) {
-                    e.currentTarget.style.opacity = '0.9';
-                    e.currentTarget.style.transform = 'translateY(-1px)';
-                    e.currentTarget.style.boxShadow = '0 8px 28px rgba(177,100,59,0.3)';
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.opacity = '1';
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = 'none';
-                }}
-              >
-                <span className="flex items-center justify-center gap-2">
-                  {isSubmitting ? 'Submitting...' : 'Submit Collaboration Proposal'}
-                  {!isSubmitting && <ArrowRight className="w-5 h-5" />}
-                </span>
-              </Button>
+              <Magnetic strength={0.1}>
+                <Button
+                  type="submit"
+                  size="lg"
+                  className="w-full py-7 rounded-full text-sm font-semibold tracking-wide transition-all duration-300 mt-4"
+                  style={{ backgroundColor: '#F5F1EB', color: '#0A0A0A', border: 'none' }}
+                  disabled={isSubmitting}
+                  onMouseEnter={(e) => {
+                    if (!isSubmitting) {
+                      e.currentTarget.style.opacity = '0.9';
+                      e.currentTarget.style.transform = 'translateY(-1px)';
+                      e.currentTarget.style.boxShadow = '0 8px 28px rgba(245,241,235,0.2)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.opacity = '1';
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = 'none';
+                  }}
+                >
+                  <span className="flex items-center justify-center gap-2">
+                    {isSubmitting ? 'Submitting...' : 'Submit Collaboration Proposal'}
+                    {!isSubmitting && <ArrowRight className="w-5 h-5" />}
+                  </span>
+                </Button>
+              </Magnetic>
             </div>
           </motion.form>
         </div>
       </section>
 
-      {/* Final CTA — warm gradient hero (the signature moment) */}
-      <section className="py-28 relative overflow-hidden" style={{ background: warmGradient }}>
-        {/* Fine dot texture over gradient */}
+      {/* Final CTA — dark gradient hero */}
+      <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#0E0E0E' }}>
         <div className="absolute inset-0 pointer-events-none" style={{
-          backgroundImage: 'radial-gradient(circle, rgba(0,0,0,0.08) 1px, transparent 1px)',
-          backgroundSize: '24px 24px'
+          background: 'radial-gradient(ellipse 60% 80% at 50% 50%, rgba(166,143,89,0.1) 0%, transparent 60%)'
         }} />
-        {/* Ambient dark shadows at edges */}
-        <div className="absolute inset-0 pointer-events-none" style={{
-          background: 'radial-gradient(ellipse 80% 80% at 50% 50%, transparent 40%, rgba(0,0,0,0.2) 100%)'
-        }} />
+        <div className="absolute left-0 right-0 top-0" style={{ height: '1px', backgroundColor: 'rgba(166,143,89,0.2)' }} />
 
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
@@ -1229,59 +1218,60 @@ export function EventsCollaboratePage() {
             viewport={{ once: true }}
           >
             <div className="flex items-center justify-center gap-5 mb-10">
-              <div style={{ height: '1px', width: '50px', backgroundColor: 'rgba(255,255,255,0.4)' }} />
-              <p className="text-xs tracking-[0.55em] uppercase" style={{ color: 'rgba(255,255,255,0.7)' }}>Let's Connect</p>
-              <div style={{ height: '1px', width: '50px', backgroundColor: 'rgba(255,255,255,0.4)' }} />
+              <div style={{ height: '1px', width: '50px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
+              <p className="mono-label">Let's Connect</p>
+              <div style={{ height: '1px', width: '50px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
             </div>
 
-            <h2
-              className="font-light tracking-tight mb-6"
-              style={{ fontSize: 'clamp(32px, 5vw, 68px)', color: '#FFFFFF', lineHeight: 1.1 }}
-            >
-              Ready to Create Something Meaningful?
-            </h2>
-            <p className="text-lg mb-12 leading-relaxed" style={{ color: 'rgba(255,255,255,0.75)', maxWidth: '520px', margin: '0 auto 48px' }}>
-              Whether you're booking a workshop ticket or exploring a partnership opportunity, we're here to collaborate
+            <SplitText text="READY TO CREATE" tag="h2" className="display-hero mb-2" style={{ color: '#F5F1EB' }} />
+            <SplitText text="SOMETHING MEANINGFUL?" tag="h2" className="display-hero mb-8" style={{ color: '#A68F59' }} />
+
+            <p className="text-lg sm:text-xl mb-12 leading-relaxed max-w-2xl mx-auto" style={{ color: '#C8C0B8' }}>
+              Whether you're booking a workshop ticket or exploring a partnership opportunity, we're here to collaborate.
             </p>
 
-            <div className="flex flex-wrap gap-4 justify-center">
-              <Button
-                size="lg"
-                onClick={() => scrollToSection('#workshops')}
-                className="px-10 py-6 rounded-xl text-sm tracking-wide transition-all duration-300"
-                style={{ backgroundColor: '#FFFFFF', color: '#B1643B' }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = '#121212';
-                  e.currentTarget.style.color = '#F5F1EB';
-                  e.currentTarget.style.transform = 'translateY(-2px)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = '#FFFFFF';
-                  e.currentTarget.style.color = '#B1643B';
-                  e.currentTarget.style.transform = 'translateY(0)';
-                }}
-              >
-                View Workshops
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                onClick={() => scrollToSection('#contact-form')}
-                className="px-10 py-6 rounded-xl text-sm tracking-wide border-2 transition-all duration-300"
-                style={{ backgroundColor: 'transparent', borderColor: 'rgba(255,255,255,0.6)', color: '#FFFFFF' }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.15)';
-                  e.currentTarget.style.borderColor = '#FFFFFF';
-                  e.currentTarget.style.transform = 'translateY(-2px)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = 'transparent';
-                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.6)';
-                  e.currentTarget.style.transform = 'translateY(0)';
-                }}
-              >
-                Submit Proposal
-              </Button>
+            <div className="flex flex-wrap gap-5 justify-center">
+              <Magnetic strength={0.2}>
+                <Button
+                  size="lg"
+                  onClick={() => scrollToSection('#workshops')}
+                  className="px-10 py-6 rounded-full text-sm font-semibold tracking-wide transition-all duration-300"
+                  style={{ backgroundColor: '#F5F1EB', color: '#0A0A0A' }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.opacity = '0.9';
+                    e.currentTarget.style.transform = 'translateY(-2px)';
+                    e.currentTarget.style.boxShadow = '0 8px 32px rgba(245,241,235,0.2)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.opacity = '1';
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.boxShadow = 'none';
+                  }}
+                >
+                  View Workshops
+                </Button>
+              </Magnetic>
+              <Magnetic strength={0.2}>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  onClick={() => scrollToSection('#contact-form')}
+                  className="px-10 py-6 rounded-full text-sm font-semibold tracking-wide border transition-all duration-300"
+                  style={{ backgroundColor: 'transparent', borderColor: 'rgba(166,143,89,0.5)', color: '#A68F59' }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = 'rgba(166,143,89,0.1)';
+                    e.currentTarget.style.borderColor = '#A68F59';
+                    e.currentTarget.style.transform = 'translateY(-2px)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = 'transparent';
+                    e.currentTarget.style.borderColor = 'rgba(166,143,89,0.5)';
+                    e.currentTarget.style.transform = 'translateY(0)';
+                  }}
+                >
+                  Submit Proposal
+                </Button>
+              </Magnetic>
             </div>
           </motion.div>
         </div>

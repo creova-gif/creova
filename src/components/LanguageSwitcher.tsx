@@ -73,8 +73,8 @@ export function LanguageSwitcher({ variant = 'desktop' }: LanguageSwitcherProps)
       <div
         className="relative flex items-center rounded-full overflow-hidden select-none"
         style={{
-          backgroundColor: 'rgba(18,18,18,0.05)',
-          border: '1px solid rgba(166,143,89,0.22)',
+          backgroundColor: 'rgba(245,241,235,0.06)',
+          border: '1px solid rgba(166,143,89,0.28)',
           padding: '3px',
           backdropFilter: 'blur(8px)',
         }}
@@ -83,9 +83,9 @@ export function LanguageSwitcher({ variant = 'desktop' }: LanguageSwitcherProps)
         <motion.div
           className="absolute top-[3px] bottom-[3px] rounded-full"
           style={{
-            backgroundColor: '#121212',
+            backgroundColor: '#A68F59',
             width: 'calc(50% - 3px)',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.18)',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.25)',
           }}
           animate={{ x: isFR ? 'calc(100% + 3px)' : 0 }}
           transition={{ type: 'spring', stiffness: 550, damping: 40, mass: 0.55 }}
@@ -98,7 +98,7 @@ export function LanguageSwitcher({ variant = 'desktop' }: LanguageSwitcherProps)
             aria-pressed={language === lang}
             aria-label={lang === 'en' ? 'Switch to English' : 'Passer en français'}
             className="relative z-10 overflow-hidden rounded-full flex items-center gap-1.5 px-3.5 py-1.5 text-[11px] font-bold tracking-[0.14em] transition-colors duration-200"
-            style={{ color: language === lang ? '#F5F1EB' : '#7A6F66', minWidth: '44px' }}
+            style={{ color: language === lang ? '#0A0A0A' : 'rgba(245,241,235,0.6)', minWidth: '44px' }}
           >
             {/* Flag */}
             <span

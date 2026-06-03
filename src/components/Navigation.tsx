@@ -47,7 +47,7 @@ export function Navigation() {
 
   return (
     <>
-      <nav className="border-b bg-[#F5F1EB]" style={{ borderColor: '#E3DCD3' }}>
+      <nav className="sticky top-0 z-[150] border-b backdrop-blur-md" style={{ backgroundColor: 'rgba(10,10,10,0.85)', borderColor: 'rgba(166,143,89,0.18)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
@@ -57,7 +57,8 @@ export function Navigation() {
                 alt="CREOVA - Creative Stories, Digital Impact" 
                 width={48}
                 height={48}
-                className="h-12 w-auto transition-all duration-300 group-hover:scale-105 aspect-square"
+                className="h-11 w-auto transition-all duration-300 group-hover:scale-105 aspect-square"
+                style={{ mixBlendMode: 'screen' }}
               />
             </Link>
 
@@ -67,21 +68,22 @@ export function Navigation() {
                 <NavLink
                   key={link.path}
                   to={link.path}
-                  className="px-3.5 py-1.5 rounded-lg transition-all duration-250 text-sm tracking-wide font-medium"
+                  className="px-3 py-1.5 rounded-md transition-all duration-250 uppercase"
                   style={({ isActive }) => ({
-                    color: isActive ? '#B1643B' : '#4A3E36',
-                    backgroundColor: isActive ? 'rgba(177,100,59,0.08)' : 'transparent',
+                    fontFamily: 'var(--font-grotesk)',
+                    fontSize: '0.72rem',
+                    fontWeight: 500,
+                    letterSpacing: '0.16em',
+                    color: isActive ? '#A68F59' : 'rgba(245,241,235,0.65)',
                   })}
                   onMouseEnter={(e) => {
                     if (!e.currentTarget.getAttribute('aria-current')) {
-                      e.currentTarget.style.color = '#B1643B';
-                      e.currentTarget.style.backgroundColor = 'rgba(177,100,59,0.05)';
+                      e.currentTarget.style.color = '#F5F1EB';
                     }
                   }}
                   onMouseLeave={(e) => {
                     if (!e.currentTarget.getAttribute('aria-current')) {
-                      e.currentTarget.style.color = '#4A3E36';
-                      e.currentTarget.style.backgroundColor = 'transparent';
+                      e.currentTarget.style.color = 'rgba(245,241,235,0.65)';
                     }
                   }}
                 >
@@ -111,8 +113,8 @@ export function Navigation() {
                 onMouseLeave={() => setPricingDesktopOpen(false)}
               >
                 <button
-                  className="px-4 py-2 transition-colors duration-300 text-sm tracking-wide font-medium flex items-center hover:bg-transparent"
-                  style={{ color: pricingDesktopOpen ? '#B1643B' : '#4A3E36' }}
+                  className="px-3 py-2 transition-colors duration-300 uppercase flex items-center hover:bg-transparent"
+                  style={{ fontFamily: 'var(--font-grotesk)', fontSize: '0.72rem', fontWeight: 500, letterSpacing: '0.16em', color: pricingDesktopOpen ? '#A68F59' : 'rgba(245,241,235,0.65)' }}
                   aria-haspopup="true"
                   aria-expanded={pricingDesktopOpen}
                   onKeyDown={(e) => {
@@ -129,27 +131,27 @@ export function Navigation() {
 
                 {pricingDesktopOpen && (
                   <div 
-                    className="absolute left-0 mt-0 w-80 rounded-lg shadow-2xl overflow-hidden z-50"
-                    style={{ backgroundColor: '#FFFFFF', border: '1px solid #E3DCD3' }}
+                    className="absolute left-0 mt-0 w-80 rounded-xl shadow-2xl overflow-hidden z-50"
+                    style={{ backgroundColor: '#0E0E0E', border: '1px solid rgba(166,143,89,0.2)' }}
                   >
                     {pricingCategories.map((category, index) => (
                       <Link
                         key={category.path}
                         to={category.path}
                         onClick={() => setPricingDesktopOpen(false)}
-                        className={`block px-5 py-3 transition-all duration-200 ${index === 0 ? 'border-b-2' : ''}`}
+                        className={`block px-5 py-3 transition-all duration-200 ${index === 0 ? 'border-b' : ''}`}
                         style={{ 
-                          borderColor: index === 0 ? '#A68F59' : 'transparent',
-                          backgroundColor: '#FFFFFF'
+                          borderColor: index === 0 ? 'rgba(166,143,89,0.25)' : 'transparent',
+                          backgroundColor: 'transparent'
                         }}
                         onMouseEnter={(e) => {
-                          e.currentTarget.style.backgroundColor = '#F5F1EB';
+                          e.currentTarget.style.backgroundColor = 'rgba(166,143,89,0.08)';
                         }}
                         onMouseLeave={(e) => {
-                          e.currentTarget.style.backgroundColor = '#FFFFFF';
+                          e.currentTarget.style.backgroundColor = 'transparent';
                         }}
                       >
-                        <div className="text-sm font-medium" style={{ color: '#121212' }}>
+                        <div className="text-sm font-medium" style={{ color: '#F5F1EB' }}>
                           {category.name}
                         </div>
                         <div className="text-xs mt-0.5" style={{ color: '#7A6F66' }}>
@@ -173,11 +175,11 @@ export function Navigation() {
               <Magnetic strength={0.2} className="hidden lg:inline-flex">
                 <Link
                   to="/contact"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold tracking-wide transition-all duration-300 hover:opacity-90 hover:shadow-lg hover:-translate-y-px"
-                  style={{ backgroundColor: '#121212', color: '#F5F1EB', border: '1px solid rgba(166,143,89,0.25)' }}
+                  className="group inline-flex items-center gap-2 pl-5 pr-4 py-2.5 rounded-full uppercase transition-all duration-300 hover:opacity-90 hover:-translate-y-px"
+                  style={{ backgroundColor: '#F5F1EB', color: '#0A0A0A', fontFamily: 'var(--font-grotesk)', fontSize: '0.72rem', fontWeight: 600, letterSpacing: '0.14em' }}
                 >
-                  <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: '#A68F59' }} />
                   {t('nav.book.call')}
+                  <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </Link>
               </Magnetic>
 
@@ -186,7 +188,7 @@ export function Navigation() {
                 size="sm"
                 onClick={() => setCartOpen(true)}
                 className="relative hover:bg-transparent"
-                style={{ color: '#121212' }}
+                style={{ color: '#F5F1EB' }}
                 aria-label={t('nav.cart.aria', { count: totalItems })}
               >
                 <ShoppingCart className="w-5 h-5" />
@@ -203,7 +205,7 @@ export function Navigation() {
               <button
                 onClick={() => setIsOpen(!isOpen)}
                 className="lg:hidden transition-colors"
-                style={{ color: '#121212' }}
+                style={{ color: '#F5F1EB' }}
                 aria-label={isOpen ? 'Close navigation menu' : 'Open navigation menu'}
                 aria-expanded={isOpen}
               >

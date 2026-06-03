@@ -1,1 +1,2 @@
-- [Asset performance](asset-performance.md) — hero video lag was from clip length not bitrate; trim+downscale, don't just lower CRF.
+- [Build quirk](build-quirk.md) — `vite build` here is esbuild-only (no tsc); unused imports/vars and TS type errors do NOT fail the build, so lint manually.
+- [Design system](design-system.md) — site-wide dark editorial blend (Rovano × X-Axis) with CREOVA branding; utilities live in globals.css.

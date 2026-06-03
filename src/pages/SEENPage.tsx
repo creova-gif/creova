@@ -2,10 +2,16 @@ import { useState, useRef, useCallback } from 'react';
 import { Link } from 'react-router';
 import { motion, useMotionValue, useSpring, useTransform, useReducedMotion } from 'motion/react';
 import { ArrowRight, Play, Globe, Shield, Mic, BookOpen, Heart, Star, ChevronDown, Lock, Layers, Award } from 'lucide-react';
+
 import seenForyou from '../assets/seen-foryou.jpg';
 import seenOnboard from '../assets/seen-onboard.jpg';
 import seenRoles from '../assets/seen-roles.jpg';
 import seenSplash from '../assets/seen-splash.jpg';
+
+import { SplitText } from '../components/SplitText';
+import { Magnetic } from '../components/Magnetic';
+import { TiltCard } from '../components/TiltCard';
+import { PageSEO } from '../components/PageSEO';
 
 const storyWorlds = [
   {
@@ -68,11 +74,9 @@ function AppPreview3D() {
   const springX = useSpring(rawX, { stiffness: 60, damping: 20 });
   const springY = useSpring(rawY, { stiffness: 60, damping: 20 });
 
-  // MacBook: tilted left, mouse adds dynamic pitch/yaw
   const mbRotateY = useTransform(springX, [-1, 1], prefersReduced ? [-26, -26] : [-38, -14]);
   const mbRotateX = useTransform(springY, [-1, 1], prefersReduced ? [8, 8] : [14, 2]);
 
-  // iPhone: opposite tilt, pops toward viewer
   const ipRotateY = useTransform(springX, [-1, 1], prefersReduced ? [19, 19] : [10, 28]);
   const ipRotateX = useTransform(springY, [-1, 1], prefersReduced ? [-4, -4] : [-10, 2]);
 
@@ -85,7 +89,7 @@ function AppPreview3D() {
     const ny = ((e.clientY - top) / height) * 2 - 1;
     rawX.set(nx);
     rawY.set(ny);
-  }, [rawX, rawY]);
+  }, [rawX, rawY, prefersReduced]);
 
   const handleMouseLeave = useCallback(() => {
     rawX.set(0);
@@ -105,12 +109,11 @@ function AppPreview3D() {
   return (
     <section
       ref={stageRef}
-      className="relative overflow-hidden select-none"
-      style={{ backgroundColor: '#080808', paddingTop: '6rem', paddingBottom: '6rem' }}
+      className="relative overflow-hidden select-none border-y"
+      style={{ backgroundColor: '#0E0E0E', borderColor: 'rgba(166,143,89,0.15)', paddingTop: '6rem', paddingBottom: '6rem' }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
-      {/* Floating particles */}
       <div className="absolute inset-0 pointer-events-none">
         {particles.map(p => (
           <motion.div
@@ -130,7 +133,6 @@ function AppPreview3D() {
         ))}
       </div>
 
-      {/* Deep ambient glow */}
       <div className="absolute inset-0 pointer-events-none">
         <motion.div
           className="absolute rounded-full"
@@ -138,7 +140,7 @@ function AppPreview3D() {
             width: '900px', height: '900px',
             top: '50%', left: '50%',
             x: '-50%', y: '-50%',
-            background: 'radial-gradient(circle, rgba(166,143,89,0.12) 0%, transparent 65%)',
+            background: 'radial-gradient(circle, rgba(166,143,89,0.08) 0%, transparent 65%)',
           }}
           animate={{ scale: [1, 1.08, 1] }}
           transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
@@ -146,18 +148,16 @@ function AppPreview3D() {
         <div className="absolute rounded-full" style={{
           width: '500px', height: '500px',
           top: '30%', left: '15%',
-          background: 'radial-gradient(circle, rgba(177,100,59,0.07) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(177,100,59,0.05) 0%, transparent 70%)',
         }} />
       </div>
 
-      {/* Perspective grid floor */}
       <div className="absolute bottom-0 left-0 right-0 h-40 pointer-events-none" style={{
         background: 'linear-gradient(to top, rgba(166,143,89,0.04) 0%, transparent 100%)',
         maskImage: 'linear-gradient(to top, black 0%, transparent 100%)',
         WebkitMaskImage: 'linear-gradient(to top, black 0%, transparent 100%)',
       }} />
 
-      {/* Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-4">
 
         <motion.div
@@ -167,17 +167,25 @@ function AppPreview3D() {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <p className="text-xs tracking-[0.5em] uppercase mb-4" style={{ color: '#A68F59' }}>App Preview</p>
-          <h2 className="text-3xl md:text-5xl mb-4" style={{ color: '#F5F1EB' }}>Experience SEEN</h2>
-          <p className="text-base max-w-xl mx-auto" style={{ color: '#7A6F66' }}>
+          <div className="flex items-center justify-center gap-4 mb-6">
+            <span style={{ width: '40px', height: '1px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
+            <span className="mono-label" style={{ color: 'rgba(245,241,235,0.7)' }}>App Preview</span>
+            <span style={{ width: '40px', height: '1px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
+          </div>
+          <SplitText
+            text="EXPERIENCE SEEN"
+            tag="h2"
+            className="display-grotesk text-center mb-4"
+            style={{ fontSize: 'clamp(2.5rem, 6vw, 4.5rem)' }}
+            mode="words"
+          />
+          <p className="text-base max-w-xl mx-auto" style={{ color: '#9A9088' }}>
             A cultural operating system — available on every screen. Move your cursor to explore.
           </p>
         </motion.div>
 
-        {/* 3D Stage */}
         <div className="relative flex flex-col lg:flex-row items-center justify-center" style={{ minHeight: '520px', perspective: '1400px' }}>
 
-          {/* ── MacBook 3D ── */}
           <motion.div
             initial={{ opacity: 0, y: 60 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -199,14 +207,13 @@ function AppPreview3D() {
               filter: 'drop-shadow(0 60px 100px rgba(0,0,0,0.9)) drop-shadow(0 0 40px rgba(166,143,89,0.15))',
               transformStyle: 'preserve-3d',
             }}>
-              {/* Lid */}
               <div className="rounded-t-2xl overflow-hidden relative" style={{
-                backgroundColor: '#1c1c1e',
+                backgroundColor: '#121212',
                 padding: '16px 16px 0',
-                boxShadow: 'inset 0 0 0 1px rgba(255,255,255,0.1), 0 -4px 20px rgba(166,143,89,0.08)',
+                boxShadow: 'inset 0 0 0 1px rgba(166,143,89,0.15), 0 -4px 20px rgba(166,143,89,0.08)',
                 transformStyle: 'preserve-3d',
               }}>
-                <div className="absolute top-5 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full" style={{ backgroundColor: '#3a3a3a' }} />
+                <div className="absolute top-5 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full" style={{ backgroundColor: '#2a2a2a' }} />
                 <div className="relative rounded-xl overflow-hidden" style={{ aspectRatio: '16/10', backgroundColor: '#000' }}>
                   <motion.img src={seenOnboard} alt="SEEN onboarding" className="w-full h-full object-cover absolute inset-0"
                     animate={{ opacity: [1, 1, 0, 0, 1] }}
@@ -217,53 +224,46 @@ function AppPreview3D() {
                     animate={{ opacity: [0, 0, 1, 1, 0] }}
                     transition={{ duration: 9, repeat: Infinity, ease: 'linear', times: [0, 0.38, 0.5, 0.88, 1] }}
                   />
-                  {/* Screen glow */}
                   <div className="absolute inset-0" style={{
-                    background: 'linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 55%)',
+                    background: 'linear-gradient(135deg, rgba(255,255,255,0.03) 0%, transparent 55%)',
                     pointerEvents: 'none',
                   }} />
-                  {/* Screen reflection at bottom */}
                   <div className="absolute bottom-0 left-0 right-0 h-8" style={{
                     background: 'linear-gradient(to top, rgba(166,143,89,0.08), transparent)',
                     pointerEvents: 'none',
                   }} />
                 </div>
               </div>
-              {/* Hinge */}
-              <div style={{ height: '4px', background: 'linear-gradient(to bottom, #0a0a0a, #1a1a1a)' }} />
-              {/* Base */}
+              <div style={{ height: '4px', background: 'linear-gradient(to bottom, #0a0a0a, #121212)' }} />
               <div className="rounded-b-xl flex flex-col items-center" style={{
-                backgroundColor: '#1c1c1e',
+                backgroundColor: '#121212',
                 padding: '12px 28px 16px',
-                boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.07)',
+                boxShadow: 'inset 0 1px 0 rgba(166,143,89,0.1)',
               }}>
                 {[0.88, 0.95, 0.90, 0.72].map((w, i) => (
                   <div key={i} className="rounded-sm mb-1 w-full" style={{
                     height: '5px',
                     width: `${w * 100}%`,
-                    backgroundColor: 'rgba(255,255,255,0.045)',
+                    backgroundColor: 'rgba(255,255,255,0.03)',
                   }} />
                 ))}
-                <div className="rounded-lg mt-2" style={{ width: '26%', height: '30px', backgroundColor: 'rgba(255,255,255,0.035)', border: '1px solid rgba(255,255,255,0.06)' }} />
+                <div className="rounded-lg mt-2" style={{ width: '26%', height: '30px', backgroundColor: 'rgba(166,143,89,0.05)', border: '1px solid rgba(166,143,89,0.1)' }} />
               </div>
-              {/* Ground shadow */}
               <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 rounded-full"
-                style={{ width: '75%', height: '16px', background: 'radial-gradient(ellipse, rgba(0,0,0,0.7) 0%, transparent 80%)', opacity: 0.6 }} />
+                style={{ width: '75%', height: '16px', background: 'radial-gradient(ellipse, rgba(0,0,0,0.8) 0%, transparent 80%)', opacity: 0.6 }} />
             </div>
 
-            {/* Web label */}
             <motion.div
               animate={{ y: [0, -8, 0] }}
               transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
-              className="absolute -top-10 left-4 px-3 py-1.5 rounded-full text-xs tracking-widest uppercase backdrop-blur-sm"
-              style={{ backgroundColor: 'rgba(166,143,89,0.15)', border: '1px solid rgba(166,143,89,0.35)', color: '#A68F59' }}
+              className="absolute -top-10 left-4 mono-label px-4 py-2 rounded-full backdrop-blur-md"
+              style={{ backgroundColor: 'rgba(166,143,89,0.1)', border: '1px solid rgba(166,143,89,0.3)', color: '#A68F59' }}
             >
               Web
             </motion.div>
           </motion.div>
           </motion.div>
 
-          {/* ── iPhone 3D ── */}
           <motion.div
             initial={{ opacity: 0, y: 80 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -283,22 +283,19 @@ function AppPreview3D() {
           >
             <div style={{
               width: 'min(196px, 50vw)',
-              filter: 'drop-shadow(0 60px 120px rgba(0,0,0,1)) drop-shadow(0 0 30px rgba(177,100,59,0.2))',
+              filter: 'drop-shadow(0 60px 120px rgba(0,0,0,1)) drop-shadow(0 0 30px rgba(177,100,59,0.15))',
               transformStyle: 'preserve-3d',
             }}>
               <div className="relative rounded-[2.8rem]" style={{
-                backgroundColor: '#181818',
+                backgroundColor: '#121212',
                 padding: '14px 7px 10px',
-                boxShadow: '0 0 0 1.5px rgba(255,255,255,0.12), inset 0 0 0 1px rgba(255,255,255,0.05)',
+                boxShadow: '0 0 0 1.5px rgba(166,143,89,0.15), inset 0 0 0 1px rgba(255,255,255,0.05)',
               }}>
-                {/* Dynamic Island */}
                 <div className="absolute top-5 left-1/2 -translate-x-1/2 z-10 rounded-full"
                   style={{ width: '68px', height: '20px', backgroundColor: '#000' }} />
-                {/* Buttons */}
                 <div className="absolute rounded-r-full" style={{ left: '-2px', top: '22%', width: '3px', height: '36px', backgroundColor: '#2a2a2a' }} />
                 <div className="absolute rounded-r-full" style={{ left: '-2px', top: '38%', width: '3px', height: '36px', backgroundColor: '#2a2a2a' }} />
                 <div className="absolute rounded-l-full" style={{ right: '-2px', top: '30%', width: '3px', height: '50px', backgroundColor: '#2a2a2a' }} />
-                {/* Screen */}
                 <div className="rounded-[2.3rem] overflow-hidden relative" style={{ aspectRatio: '9/19.5', backgroundColor: '#000' }}>
                   <motion.img src={seenSplash} alt="SEEN splash" className="w-full h-full object-cover absolute inset-0"
                     animate={{ opacity: [1, 1, 0, 0, 1] }}
@@ -310,24 +307,21 @@ function AppPreview3D() {
                     transition={{ duration: 11, repeat: Infinity, ease: 'linear', times: [0, 0.32, 0.44, 0.88, 1] }}
                   />
                   <div className="absolute inset-0 pointer-events-none" style={{
-                    background: 'linear-gradient(155deg, rgba(255,255,255,0.07) 0%, transparent 40%)',
+                    background: 'linear-gradient(155deg, rgba(255,255,255,0.05) 0%, transparent 40%)',
                   }} />
                 </div>
-                {/* Home bar */}
                 <div className="flex justify-center mt-2.5">
-                  <div className="rounded-full" style={{ width: '38px', height: '4px', backgroundColor: 'rgba(255,255,255,0.22)' }} />
+                  <div className="rounded-full" style={{ width: '38px', height: '4px', backgroundColor: 'rgba(255,255,255,0.15)' }} />
                 </div>
-                {/* Ground shadow */}
                 <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 rounded-full"
-                  style={{ width: '65%', height: '14px', background: 'radial-gradient(ellipse, rgba(0,0,0,0.8) 0%, transparent 80%)', opacity: 0.7 }} />
+                  style={{ width: '65%', height: '14px', background: 'radial-gradient(ellipse, rgba(0,0,0,0.9) 0%, transparent 80%)', opacity: 0.8 }} />
               </div>
 
-              {/* iOS label */}
               <motion.div
                 animate={{ y: [0, -8, 0] }}
                 transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 1.2 }}
-                className="absolute -top-10 right-0 px-3 py-1.5 rounded-full text-xs tracking-widest uppercase backdrop-blur-sm"
-                style={{ backgroundColor: 'rgba(177,100,59,0.15)', border: '1px solid rgba(177,100,59,0.35)', color: '#B1643B' }}
+                className="absolute -top-10 right-0 mono-label px-4 py-2 rounded-full backdrop-blur-md"
+                style={{ backgroundColor: 'rgba(177,100,59,0.1)', border: '1px solid rgba(177,100,59,0.3)', color: '#B1643B' }}
               >
                 iOS · Android
               </motion.div>
@@ -336,7 +330,6 @@ function AppPreview3D() {
           </motion.div>
         </div>
 
-        {/* Feature pills */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -345,10 +338,10 @@ function AppPreview3D() {
           className="flex flex-wrap justify-center gap-3 mt-20"
         >
           {['For You Feed', 'Stories in Motion', 'CREOVA Music', 'Films & Collections', 'Creator · Viewer · Moderator', 'Cultural Moderation'].map(label => (
-            <span key={label} className="px-4 py-2 rounded-full text-xs tracking-wide" style={{
-              backgroundColor: 'rgba(245,241,235,0.05)',
-              border: '1px solid rgba(245,241,235,0.09)',
-              color: '#7A6F66',
+            <span key={label} className="px-5 py-2.5 rounded-full text-xs tracking-widest uppercase font-medium" style={{
+              backgroundColor: 'rgba(166,143,89,0.05)',
+              border: '1px solid rgba(166,143,89,0.2)',
+              color: '#C8C0B8',
             }}>
               {label}
             </span>
@@ -396,19 +389,17 @@ export function SEENPage() {
   ];
 
   return (
-    <div className="overflow-hidden" style={{ backgroundColor: '#1A1A2E' }}>
+    <div className="overflow-hidden bg-[#0A0A0A]">
+      <PageSEO
+        title="SEEN Platform | CREOVA Original"
+        description="SEEN is a cultural storytelling platform by CREOVA, amplifying Black Canadian, Indigenous, and immigrant voices through immersive audio-first experiences."
+      />
 
       {/* Hero — Motion Graphics */}
       <style>{`
         @keyframes seenShimmer {
           0%   { background-position: -400% center; }
           100% { background-position: 400% center; }
-        }
-        @keyframes scanBeam {
-          0%   { transform: translateX(-120%); opacity: 0; }
-          10%  { opacity: 1; }
-          90%  { opacity: 1; }
-          100% { transform: translateX(120%); opacity: 0; }
         }
         @keyframes sonarPulse {
           0%   { transform: scale(0.4); opacity: 0.6; }
@@ -435,32 +426,28 @@ export function SEENPage() {
         }
       `}</style>
 
-      <section className="relative min-h-screen flex flex-col items-center justify-center text-center overflow-hidden px-4">
+      <section className="relative min-h-screen flex flex-col items-center justify-center text-center overflow-hidden px-4" style={{ backgroundColor: '#0A0A0A' }}>
+        <div className="crosshair-guides" />
+        <div className="guide-ring hidden md:block" style={{ width: '50vw', height: '50vw', top: '50%', left: '50%', transform: 'translate(-50%,-50%)' }} />
 
-        {/* Aurora glow — SEEN teal palette */}
+        {/* Aurora glow — Gold & Terracotta palette */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div style={{
             position: 'absolute',
             top: '50%', left: '50%',
             width: '140%', height: '140%',
-            background: 'radial-gradient(ellipse 60% 50% at 35% 45%, rgba(20,143,119,0.28) 0%, transparent 65%), radial-gradient(ellipse 50% 55% at 68% 60%, rgba(13,107,85,0.18) 0%, transparent 60%)',
+            background: 'radial-gradient(ellipse 60% 50% at 35% 45%, rgba(166,143,89,0.12) 0%, transparent 65%), radial-gradient(ellipse 50% 55% at 68% 60%, rgba(177,100,59,0.08) 0%, transparent 60%)',
             animation: 'auroraShift 12s ease-in-out infinite',
           }} />
         </div>
 
-        {/* Perspective grid — CREOVA gold */}
-        <div className="absolute inset-0 opacity-[0.07]" style={{
-          backgroundImage: `repeating-linear-gradient(90deg, #A68F59 0px, transparent 1px, transparent 80px),
-                            repeating-linear-gradient(0deg, #A68F59 0px, transparent 1px, transparent 80px)`
-        }} />
-
-        {/* Sonar rings — SEEN teal */}
+        {/* Sonar rings — Gold */}
         {[0, 1, 2, 3].map(i => (
           <div key={i} className="absolute rounded-full pointer-events-none" style={{
             width: '320px', height: '320px',
             top: '50%', left: '50%',
             marginTop: '-160px', marginLeft: '-160px',
-            border: '1px solid rgba(20,143,119,0.55)',
+            border: '1px solid rgba(166,143,89,0.25)',
             animation: `sonarPulse 4s ease-out infinite`,
             animationDelay: `${i * 1}s`,
           }} />
@@ -472,8 +459,8 @@ export function SEENPage() {
             position: 'absolute',
             width: '8px', height: '8px',
             borderRadius: '50%',
-            backgroundColor: '#148F77',
-            boxShadow: '0 0 14px 5px rgba(20,143,119,0.7)',
+            backgroundColor: '#A68F59',
+            boxShadow: '0 0 14px 5px rgba(166,143,89,0.5)',
             animation: 'orbitCW 8s linear infinite',
             marginTop: '-4px', marginLeft: '-4px',
           }} />
@@ -481,8 +468,8 @@ export function SEENPage() {
             position: 'absolute',
             width: '5px', height: '5px',
             borderRadius: '50%',
-            backgroundColor: '#D4A843',
-            boxShadow: '0 0 10px 3px rgba(212,168,67,0.6)',
+            backgroundColor: '#B1643B',
+            boxShadow: '0 0 10px 3px rgba(177,100,59,0.4)',
             animation: 'orbitCCW 13s linear infinite',
             marginTop: '-2.5px', marginLeft: '-2.5px',
           }} />
@@ -510,7 +497,7 @@ export function SEENPage() {
         ].map(({ word, x, delay, dur }) => (
           <div key={word} className="absolute bottom-24 text-xs tracking-[0.35em] uppercase pointer-events-none select-none" style={{
             left: x,
-            color: '#148F77',
+            color: 'rgba(166,143,89,0.6)',
             animation: `driftUp ${dur} ease-in-out infinite`,
             animationDelay: delay,
           }}>
@@ -518,43 +505,26 @@ export function SEENPage() {
           </div>
         ))}
 
-        <div className="relative z-10 max-w-5xl mx-auto flex flex-col items-center">
+        <div className="relative z-10 max-w-5xl mx-auto flex flex-col items-center mt-24">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="flex items-center gap-3 mb-6 whitespace-nowrap"
+            className="flex items-center gap-3 mb-8 whitespace-nowrap"
           >
-            <motion.div
-              animate={{ scaleX: [1, 1.4, 1] }}
-              transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-              className="h-px w-8 flex-shrink-0" style={{ backgroundColor: '#148F77' }}
-            />
-            <span className="text-xs tracking-[0.4em] uppercase" style={{ color: '#148F77', fontFamily: 'var(--font-brand)' }}>
+            <span style={{ width: '40px', height: '1px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
+            <span className="mono-label">
               A CREOVA ORIGINAL PLATFORM
             </span>
-            <motion.div
-              animate={{ scaleX: [1, 1.4, 1] }}
-              transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut', delay: 1.5 }}
-              className="h-px w-8 flex-shrink-0" style={{ backgroundColor: '#148F77' }}
-            />
+            <span style={{ width: '40px', height: '1px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
           </motion.div>
 
-          {/* SEEN wordmark — deep 3D motion */}
           <div className="relative mb-6" style={{ perspective: '800px' }}>
-
             <motion.h1
-              className="font-bold tracking-tight leading-none select-none relative"
+              className="display-hero text-gold-gradient tracking-tight leading-none select-none relative"
               style={{
-                fontSize: 'clamp(6rem, 22vw, 18rem)',
-                backgroundImage: 'linear-gradient(135deg, #0A4A3A 0%, #148F77 28%, #CCFFEE 50%, #148F77 72%, #0D6B55 100%)',
                 backgroundSize: '300% auto',
-                WebkitBackgroundClip: 'text',
-                backgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                color: 'transparent',
                 animation: 'seenShimmer 10s linear infinite',
-                fontFamily: 'var(--font-display)',
                 textShadow: 'none',
                 transformStyle: 'preserve-3d',
               }}
@@ -575,12 +545,11 @@ export function SEENPage() {
               SEEN
             </motion.h1>
 
-            {/* Glow halo behind text */}
             <motion.div
-              className="absolute inset-0 -z-10 blur-3xl"
+              className="absolute inset-0 -z-10 blur-3xl pointer-events-none"
               animate={{ opacity: [0.15, 0.35, 0.15], scale: [0.9, 1.05, 0.9] }}
               transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
-              style={{ background: 'radial-gradient(ellipse, rgba(20,143,119,0.55) 0%, transparent 70%)' }}
+              style={{ background: 'radial-gradient(ellipse, rgba(166,143,89,0.3) 0%, transparent 70%)' }}
             />
           </div>
 
@@ -588,8 +557,8 @@ export function SEENPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.4 }}
-            className="text-xl md:text-2xl mb-4 tracking-wide italic"
-            style={{ color: '#CCFFEE', fontFamily: 'var(--font-display)' }}
+            className="text-xl md:text-3xl mb-6 tracking-wide"
+            style={{ color: '#F5F1EB', fontFamily: 'var(--font-brand)' }}
           >
             Canada's Cultural Storytelling Platform
           </motion.p>
@@ -597,8 +566,8 @@ export function SEENPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.55 }}
-            className="text-sm md:text-base max-w-2xl mx-auto mb-12 leading-relaxed"
-            style={{ color: 'rgba(204,255,238,0.6)', fontFamily: 'var(--font-body)' }}
+            className="text-base md:text-lg max-w-2xl mx-auto mb-12 leading-relaxed"
+            style={{ color: '#C8C0B8' }}
           >
             Where Indigenous, Black Canadian, francophone, and immigrant voices own their stories — and audiences find the authentic Canada that mainstream platforms miss.
           </motion.p>
@@ -607,16 +576,16 @@ export function SEENPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.7, duration: 0.8 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12"
+            className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-14"
           >
             <span
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs tracking-widest uppercase"
-              style={{ backgroundColor: 'rgba(20,143,119,0.12)', border: '1px solid rgba(20,143,119,0.4)', color: '#148F77' }}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs tracking-[0.2em] uppercase font-medium"
+              style={{ backgroundColor: 'rgba(166,143,89,0.1)', border: '1px solid rgba(166,143,89,0.3)', color: '#A68F59' }}
             >
-              <span className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: '#148F77' }} />
+              <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: '#A68F59' }} />
               In Development
             </span>
-            <span className="text-xs" style={{ color: 'rgba(204,255,238,0.45)' }}>
+            <span className="text-xs tracking-wide" style={{ color: '#9A9088' }}>
               Beta launching end of 2026 · Canada-wide launch to follow
             </span>
           </motion.div>
@@ -625,43 +594,46 @@ export function SEENPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.9, duration: 0.8 }}
-            className="max-w-md mx-auto"
+            className="max-w-md mx-auto w-full"
           >
             {submitted ? (
               <div
-                className="py-4 px-6 rounded-2xl text-center"
-                style={{ backgroundColor: 'rgba(20,143,119,0.12)', border: '1px solid rgba(20,143,119,0.35)' }}
+                className="py-5 px-6 rounded-2xl text-center"
+                style={{ backgroundColor: 'rgba(166,143,89,0.06)', border: '1px solid rgba(166,143,89,0.2)' }}
               >
-                <Star className="w-6 h-6 mx-auto mb-2" style={{ color: '#148F77' }} />
-                <p className="text-sm" style={{ color: '#CCFFEE' }}>You're on the list. We'll reach out first.</p>
+                <Star className="w-6 h-6 mx-auto mb-3" style={{ color: '#A68F59' }} />
+                <p className="text-sm font-medium" style={{ color: '#F5F1EB' }}>You're on the list. We'll reach out first.</p>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="flex gap-2">
+              <form onSubmit={handleSubmit} className="flex gap-2 w-full">
                 <input
                   type="email"
                   value={email}
                   onChange={e => setEmail(e.target.value)}
                   placeholder="your@email.com"
                   required
-                  className="flex-1 px-4 py-3 rounded-xl text-sm outline-none"
+                  className="flex-1 px-5 py-4 rounded-full text-sm outline-none transition-colors"
                   style={{
-                    backgroundColor: 'rgba(255,255,255,0.05)',
-                    border: '1px solid rgba(20,143,119,0.3)',
-                    color: '#CCFFEE',
-                    caretColor: '#148F77'
+                    backgroundColor: 'rgba(255,255,255,0.03)',
+                    border: '1px solid rgba(166,143,89,0.2)',
+                    color: '#F5F1EB',
                   }}
+                  onFocus={(e) => e.target.style.borderColor = 'rgba(166,143,89,0.6)'}
+                  onBlur={(e) => e.target.style.borderColor = 'rgba(166,143,89,0.2)'}
                 />
-                <button
-                  type="submit"
-                  className="px-5 py-3 rounded-xl text-sm font-medium tracking-wide transition-all duration-300 hover:opacity-90 flex items-center gap-2"
-                  style={{ backgroundColor: '#148F77', color: '#FFFFFF' }}
-                >
-                  Join Waitlist
-                  <ArrowRight className="w-4 h-4" />
-                </button>
+                <Magnetic strength={0.2}>
+                  <button
+                    type="submit"
+                    className="px-6 py-4 rounded-full text-sm font-semibold tracking-wide transition-all duration-300 hover:opacity-90 hover:scale-105 flex items-center gap-2 flex-shrink-0"
+                    style={{ backgroundColor: '#F5F1EB', color: '#0A0A0A' }}
+                  >
+                    Join Waitlist
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                </Magnetic>
               </form>
             )}
-            <p className="text-xs mt-3" style={{ color: 'rgba(204,255,238,0.4)' }}>
+            <p className="text-xs mt-4" style={{ color: '#7A6F66' }}>
               No spam. Early access for creators &amp; cultural communities.
             </p>
           </motion.div>
@@ -672,8 +644,8 @@ export function SEENPage() {
           animate={{ y: [0, 8, 0] }}
           transition={{ duration: 2, repeat: Infinity }}
         >
-          <div className="w-6 h-10 border-2 rounded-full flex items-start justify-center p-2" style={{ borderColor: '#148F77' }}>
-            <div className="w-1 h-2 rounded-full" style={{ backgroundColor: '#148F77' }} />
+          <div className="w-6 h-10 border rounded-full flex items-start justify-center p-2" style={{ borderColor: 'rgba(166,143,89,0.6)' }}>
+            <div className="w-1 h-2 rounded-full" style={{ backgroundColor: '#A68F59' }} />
           </div>
         </motion.div>
       </section>
@@ -682,25 +654,33 @@ export function SEENPage() {
       <AppPreview3D />
 
       {/* The Problem */}
-      <section className="py-28 px-4" style={{ backgroundColor: '#1a1a1a' }}>
-        <div className="max-w-4xl mx-auto text-center">
+      <section className="py-32 px-4 relative overflow-hidden" style={{ backgroundColor: '#0A0A0A' }}>
+        <div className="absolute inset-0 pointer-events-none" style={{
+          background: 'radial-gradient(ellipse 70% 60% at 50% 0%, rgba(166,143,89,0.05) 0%, transparent 60%)'
+        }} />
+        <div className="max-w-4xl mx-auto text-center relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 1 }}
             viewport={{ once: true }}
           >
-            <p className="text-xs tracking-[0.4em] uppercase mb-6" style={{ color: '#B1643B' }}>The Gap</p>
-            <h2 className="text-3xl md:text-5xl mb-8 leading-tight" style={{ color: '#F5F1EB' }}>
+            <div className="flex items-center justify-center gap-4 mb-8">
+              <span style={{ width: '40px', height: '1px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
+              <span className="mono-label" style={{ color: '#B1643B' }}>The Gap</span>
+              <span style={{ width: '40px', height: '1px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
+            </div>
+            
+            <h2 className="display-grotesk mb-10 text-4xl md:text-6xl" style={{ color: '#F5F1EB' }}>
               Canada is one of the world's most multicultural countries.{' '}
-              <span style={{ color: '#4A3E36' }}>
+              <span style={{ color: '#7A6F66' }}>
                 Yet its streaming platforms tell one story.
               </span>
             </h2>
-            <p className="text-base md:text-lg leading-relaxed mb-6" style={{ color: '#7A6F66' }}>
+            <p className="text-lg md:text-xl leading-relaxed mb-6" style={{ color: '#C8C0B8' }}>
               Indigenous, Black Canadian, francophone, immigrant, and other equity-deserving communities are chronically underrepresented in the stories Canadians can access. Cultural knowledge — oral histories, community narratives, multilingual stories — gets lost in algorithm-driven platforms optimized for mass engagement.
             </p>
-            <p className="text-base md:text-lg leading-relaxed" style={{ color: '#7A6F66' }}>
+            <p className="text-lg md:text-xl leading-relaxed" style={{ color: '#9A9088' }}>
               Canadian creators from these communities have no dedicated, safe space to publish and own their work. Many lose IP rights to larger platforms.
             </p>
           </motion.div>
@@ -708,19 +688,31 @@ export function SEENPage() {
       </section>
 
       {/* Story Worlds Preview */}
-      <section className="py-24 px-4" style={{ backgroundColor: '#121212' }}>
-        <div className="max-w-7xl mx-auto">
+      <section className="py-32 px-4 border-y relative" style={{ backgroundColor: '#121212', borderColor: 'rgba(166,143,89,0.1)' }}>
+        <div className="absolute inset-0 opacity-[0.03]" style={{
+          backgroundImage: `repeating-linear-gradient(90deg, #A68F59 0px, transparent 1px, transparent 80px),
+                            repeating-linear-gradient(0deg, #A68F59 0px, transparent 1px, transparent 80px)`
+        }} />
+        <div className="max-w-7xl mx-auto relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 1 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="text-center mb-20"
           >
-            <p className="text-xs tracking-[0.4em] uppercase mb-4" style={{ color: '#A68F59' }}>Story Worlds</p>
-            <h2 className="text-3xl md:text-5xl" style={{ color: '#F5F1EB' }}>
-              Enter the narrative.
-            </h2>
+            <div className="flex items-center justify-center gap-4 mb-6">
+              <span style={{ width: '40px', height: '1px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
+              <span className="mono-label">Story Worlds</span>
+              <span style={{ width: '40px', height: '1px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
+            </div>
+            <SplitText
+              text="ENTER THE NARRATIVE"
+              tag="h2"
+              className="display-grotesk text-4xl md:text-6xl lg:text-7xl"
+              style={{ color: '#F5F1EB' }}
+              mode="words"
+            />
           </motion.div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -731,48 +723,59 @@ export function SEENPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: i * 0.1 }}
                 viewport={{ once: true }}
-                whileHover={{ y: -6, scale: 1.02 }}
-                className="relative p-6 rounded-3xl overflow-hidden cursor-pointer"
-                style={{ backgroundColor: '#1a1a1a', border: '1px solid rgba(166, 143, 89, 0.15)' }}
+                className="group relative"
               >
-                <div
-                  className="absolute inset-0 opacity-10 rounded-3xl"
-                  style={{ background: `radial-gradient(circle at 70% 20%, #A68F59, transparent 60%)` }}
-                />
-                <div className="relative z-10">
-                  <div
-                    className="inline-flex items-center gap-1.5 px-2 py-1 rounded-full text-[10px] tracking-widest mb-4"
-                    style={{ backgroundColor: 'rgba(166, 143, 89, 0.1)', color: '#A68F59', border: '1px solid rgba(166, 143, 89, 0.25)' }}
-                  >
-                    <Play className="w-2.5 h-2.5" />
-                    {world.lang}
+                <TiltCard
+                  spotlight
+                  spotlightColor="rgba(166,143,89,0.15)"
+                  className="p-8 rounded-3xl h-full border transition-all duration-500 hover:shadow-2xl"
+                  style={{ backgroundColor: '#0E0E0E', borderColor: 'rgba(166,143,89,0.15)' }}
+                >
+                  <div className="absolute top-0 left-0 right-0 h-1" style={{ backgroundColor: i % 2 === 0 ? '#A68F59' : '#B1643B', opacity: 0.8 }} />
+                  
+                  <div className="relative z-10 mt-4">
+                    <div
+                      className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[10px] tracking-[0.2em] font-medium uppercase mb-6"
+                      style={{ backgroundColor: 'rgba(166,143,89,0.08)', color: '#A68F59', border: '1px solid rgba(166,143,89,0.2)' }}
+                    >
+                      <Play className="w-3 h-3" />
+                      {world.lang}
+                    </div>
+                    <h3 className="text-2xl mb-4 font-medium" style={{ color: '#F5F1EB', fontFamily: 'var(--font-brand)' }}>{world.title}</h3>
+                    <p className="text-sm leading-relaxed" style={{ color: '#9A9088' }}>{world.description}</p>
                   </div>
-                  <h3 className="text-lg font-medium mb-3" style={{ color: '#F5F1EB' }}>{world.title}</h3>
-                  <p className="text-sm leading-relaxed" style={{ color: '#7A6F66' }}>{world.description}</p>
-                </div>
+                </TiltCard>
               </motion.div>
             ))}
           </div>
-          <p className="text-center text-xs mt-8 tracking-wider" style={{ color: '#4A3E36' }}>
+          <p className="text-center text-xs mt-12 tracking-[0.3em] uppercase font-medium" style={{ color: '#7A6F66' }}>
             + MORE WORLDS IN DEVELOPMENT
           </p>
         </div>
       </section>
 
       {/* 6 Pillars */}
-      <section className="py-28 px-4" style={{ backgroundColor: '#1a1a1a' }}>
+      <section className="py-32 px-4 relative" style={{ backgroundColor: '#0A0A0A' }}>
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 1 }}
             viewport={{ once: true }}
-            className="text-center mb-20"
+            className="text-center mb-24"
           >
-            <p className="text-xs tracking-[0.4em] uppercase mb-4" style={{ color: '#B1643B' }}>What SEEN Provides</p>
-            <h2 className="text-3xl md:text-5xl" style={{ color: '#F5F1EB' }}>
-              Built different. By design.
-            </h2>
+            <div className="flex items-center justify-center gap-4 mb-6">
+              <span style={{ width: '40px', height: '1px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
+              <span className="mono-label" style={{ color: '#B1643B' }}>What SEEN Provides</span>
+              <span style={{ width: '40px', height: '1px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
+            </div>
+            <SplitText
+              text="BUILT DIFFERENT. BY DESIGN."
+              tag="h2"
+              className="display-grotesk text-4xl md:text-6xl"
+              style={{ color: '#F5F1EB' }}
+              mode="words"
+            />
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -783,17 +786,21 @@ export function SEENPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: i * 0.08 }}
                 viewport={{ once: true }}
-                className="p-8 rounded-3xl"
-                style={{ backgroundColor: '#121212', border: '1px solid rgba(166, 143, 89, 0.1)' }}
+                className="p-10 rounded-3xl relative overflow-hidden group"
+                style={{ backgroundColor: '#121212', border: '1px solid rgba(166,143,89,0.12)' }}
               >
-                <div
-                  className="w-12 h-12 rounded-2xl flex items-center justify-center mb-5"
-                  style={{ backgroundColor: 'rgba(166, 143, 89, 0.1)' }}
-                >
-                  <pillar.icon className="w-5 h-5" style={{ color: '#A68F59' }} />
+                <div className="absolute top-0 right-0 p-8 opacity-0 group-hover:opacity-10 transition-opacity duration-500">
+                  <pillar.icon className="w-32 h-32" style={{ color: '#A68F59' }} />
                 </div>
-                <h3 className="text-lg font-medium mb-3" style={{ color: '#F5F1EB' }}>{pillar.title}</h3>
-                <p className="text-sm leading-relaxed" style={{ color: '#7A6F66' }}>{pillar.description}</p>
+                
+                <div
+                  className="w-14 h-14 rounded-2xl flex items-center justify-center mb-6 relative z-10 transition-transform duration-500 group-hover:scale-110"
+                  style={{ backgroundColor: 'rgba(166,143,89,0.1)', border: '1px solid rgba(166,143,89,0.2)' }}
+                >
+                  <pillar.icon className="w-6 h-6" style={{ color: '#A68F59' }} />
+                </div>
+                <h3 className="text-xl mb-4 font-medium relative z-10" style={{ color: '#F5F1EB', fontFamily: 'var(--font-brand)' }}>{pillar.title}</h3>
+                <p className="text-sm leading-relaxed relative z-10" style={{ color: '#9A9088' }}>{pillar.description}</p>
               </motion.div>
             ))}
           </div>
@@ -801,9 +808,9 @@ export function SEENPage() {
       </section>
 
       {/* Credibility Bar */}
-      <section className="py-16 px-4" style={{ borderTop: '1px solid rgba(166, 143, 89, 0.15)', borderBottom: '1px solid rgba(166, 143, 89, 0.15)', backgroundColor: '#121212' }}>
-        <div className="max-w-5xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+      <section className="py-20 px-4" style={{ borderTop: '1px solid rgba(166,143,89,0.15)', borderBottom: '1px solid rgba(166,143,89,0.15)', backgroundColor: '#0E0E0E' }}>
+        <div className="max-w-6xl mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4 text-center">
             {[
               { stat: 'CA', label: 'Canadian-Built for Canadian Voices' },
               { stat: '3+', label: 'Languages at Launch' },
@@ -816,9 +823,11 @@ export function SEENPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: i * 0.1 }}
                 viewport={{ once: true }}
+                className="relative"
               >
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: '#A68F59' }}>{item.stat}</div>
-                <div className="text-xs tracking-wide" style={{ color: '#7A6F66' }}>{item.label}</div>
+                {i !== 0 && <div className="hidden md:block absolute left-0 top-1/2 -translate-y-1/2 w-px h-12" style={{ backgroundColor: 'rgba(166,143,89,0.2)' }} />}
+                <div className="display-grotesk text-5xl md:text-6xl mb-4" style={{ color: '#A68F59' }}>{item.stat}</div>
+                <div className="mono-label" style={{ color: '#7A6F66' }}>{item.label}</div>
               </motion.div>
             ))}
           </div>
@@ -826,20 +835,30 @@ export function SEENPage() {
       </section>
 
       {/* FAQ */}
-      <section className="py-28 px-4" style={{ backgroundColor: '#1a1a1a' }}>
+      <section className="py-32 px-4 relative" style={{ backgroundColor: '#0A0A0A' }}>
         <div className="max-w-3xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 1 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="text-center mb-20"
           >
-            <p className="text-xs tracking-[0.4em] uppercase mb-4" style={{ color: '#A68F59' }}>Questions</p>
-            <h2 className="text-3xl md:text-4xl" style={{ color: '#F5F1EB' }}>Common questions about SEEN</h2>
+            <div className="flex items-center justify-center gap-4 mb-6">
+              <span style={{ width: '40px', height: '1px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
+              <span className="mono-label">Questions</span>
+              <span style={{ width: '40px', height: '1px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
+            </div>
+            <SplitText
+              text="COMMON QUESTIONS"
+              tag="h2"
+              className="display-grotesk text-4xl md:text-6xl"
+              style={{ color: '#F5F1EB' }}
+              mode="words"
+            />
           </motion.div>
 
-          <div className="space-y-3">
+          <div className="space-y-4">
             {faqs.map((faq, i) => (
               <motion.div
                 key={i}
@@ -847,23 +866,28 @@ export function SEENPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: i * 0.07 }}
                 viewport={{ once: true }}
-                className="rounded-2xl overflow-hidden"
-                style={{ border: '1px solid rgba(166, 143, 89, 0.15)' }}
+                className="rounded-2xl overflow-hidden transition-colors duration-300"
+                style={{ 
+                  backgroundColor: openFaq === i ? 'rgba(166,143,89,0.04)' : '#121212',
+                  border: '1px solid',
+                  borderColor: openFaq === i ? 'rgba(166,143,89,0.3)' : 'rgba(166,143,89,0.1)' 
+                }}
               >
                 <button
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                  className="w-full flex items-center justify-between p-6 text-left transition-colors"
-                  style={{ backgroundColor: openFaq === i ? 'rgba(166, 143, 89, 0.06)' : '#121212' }}
+                  className="w-full flex items-center justify-between p-6 md:p-8 text-left outline-none"
                 >
-                  <span className="text-sm md:text-base font-medium pr-4" style={{ color: '#F5F1EB' }}>{faq.q}</span>
-                  <ChevronDown
-                    className="w-4 h-4 flex-shrink-0 transition-transform duration-300"
-                    style={{ color: '#A68F59', transform: openFaq === i ? 'rotate(180deg)' : 'rotate(0deg)' }}
-                  />
+                  <span className="text-base md:text-lg font-medium pr-4" style={{ color: '#F5F1EB' }}>{faq.q}</span>
+                  <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 transition-colors" style={{ backgroundColor: openFaq === i ? 'rgba(166,143,89,0.2)' : 'rgba(166,143,89,0.05)' }}>
+                    <ChevronDown
+                      className="w-4 h-4 transition-transform duration-300"
+                      style={{ color: '#A68F59', transform: openFaq === i ? 'rotate(180deg)' : 'rotate(0deg)' }}
+                    />
+                  </div>
                 </button>
                 {openFaq === i && (
-                  <div className="px-6 pb-6" style={{ backgroundColor: '#121212' }}>
-                    <p className="text-sm leading-relaxed" style={{ color: '#7A6F66' }}>{faq.a}</p>
+                  <div className="px-6 md:px-8 pb-8">
+                    <p className="text-base leading-relaxed" style={{ color: '#9A9088' }}>{faq.a}</p>
                   </div>
                 )}
               </motion.div>
@@ -873,12 +897,15 @@ export function SEENPage() {
       </section>
 
       {/* Final CTA */}
-      <section className="py-32 px-4 text-center relative overflow-hidden" style={{ backgroundColor: '#121212' }}>
-        <div className="absolute inset-0 opacity-15">
+      <section className="py-32 px-4 text-center relative overflow-hidden border-t" style={{ backgroundColor: '#121212', borderColor: 'rgba(166,143,89,0.15)' }}>
+        <div className="absolute inset-0 opacity-[0.08] pointer-events-none">
           <div className="absolute inset-0" style={{
             backgroundImage: `radial-gradient(circle at 50% 50%, #A68F59 0%, transparent 60%)`
           }} />
         </div>
+        
+        <div className="guide-ring hidden md:block" style={{ width: '40vw', height: '40vw', top: '50%', left: '50%', transform: 'translate(-50%,-50%)' }} />
+
         <div className="relative z-10 max-w-2xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -887,73 +914,83 @@ export function SEENPage() {
             viewport={{ once: true }}
           >
             <div
-              className="w-16 h-16 mx-auto mb-8 rounded-2xl flex items-center justify-center"
-              style={{ backgroundColor: 'rgba(166, 143, 89, 0.1)' }}
+              className="w-20 h-20 mx-auto mb-10 rounded-full flex items-center justify-center"
+              style={{ backgroundColor: 'rgba(166,143,89,0.08)', border: '1px solid rgba(166,143,89,0.2)' }}
             >
-              <Heart className="w-8 h-8" style={{ color: '#A68F59' }} />
+              <Heart className="w-8 h-8 animate-pulse" style={{ color: '#A68F59' }} />
             </div>
-            <h2 className="text-3xl md:text-5xl mb-6" style={{ color: '#F5F1EB' }}>
-              Your story deserves to be seen.
-            </h2>
-            <p className="text-base mb-10" style={{ color: '#7A6F66' }}>
+            
+            <SplitText
+              text="YOUR STORY DESERVES TO BE SEEN."
+              tag="h2"
+              className="display-grotesk text-4xl md:text-6xl mb-8"
+              style={{ color: '#F5F1EB' }}
+              mode="words"
+            />
+            
+            <p className="text-lg md:text-xl mb-12" style={{ color: '#C8C0B8' }}>
               Join thousands of Canadians waiting for a platform built for them.
             </p>
 
-            <div className="flex flex-wrap items-center justify-center gap-6 mb-12">
+            <div className="flex flex-wrap items-center justify-center gap-8 mb-14">
               {[
                 { icon: Award, text: 'Beta Late 2026' },
                 { icon: Globe, text: 'Canada-Wide 2026' },
                 { icon: Shield, text: 'BIPOC Led' }
               ].map((badge, i) => (
-                <div key={i} className="flex items-center gap-2">
-                  <badge.icon className="w-4 h-4" style={{ color: '#A68F59' }} />
-                  <span className="text-sm" style={{ color: '#E3DCD3' }}>{badge.text}</span>
+                <div key={i} className="flex items-center gap-3">
+                  <badge.icon className="w-5 h-5" style={{ color: '#A68F59' }} />
+                  <span className="mono-label" style={{ color: '#9A9088' }}>{badge.text}</span>
                 </div>
               ))}
             </div>
 
             {submitted ? (
               <div
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl"
-                style={{ backgroundColor: 'rgba(166, 143, 89, 0.1)', border: '1px solid rgba(166, 143, 89, 0.3)', color: '#A68F59' }}
+                className="inline-flex items-center justify-center gap-3 px-8 py-5 rounded-full"
+                style={{ backgroundColor: 'rgba(166,143,89,0.1)', border: '1px solid rgba(166,143,89,0.4)', color: '#A68F59' }}
               >
-                <Star className="w-4 h-4" />
-                You're on the list
+                <Star className="w-5 h-5" />
+                <span className="font-semibold tracking-wide">You're on the list</span>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-sm mx-auto">
+              <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto w-full">
                 <input
                   type="email"
                   value={email}
                   onChange={e => setEmail(e.target.value)}
                   placeholder="your@email.com"
                   required
-                  className="flex-1 px-4 py-3 rounded-xl text-sm outline-none"
+                  className="flex-1 px-6 py-4 rounded-full text-base outline-none transition-colors"
                   style={{
-                    backgroundColor: 'rgba(245, 241, 235, 0.07)',
-                    border: '1px solid rgba(227, 220, 211, 0.15)',
+                    backgroundColor: 'rgba(255,255,255,0.04)',
+                    border: '1px solid rgba(166,143,89,0.2)',
                     color: '#F5F1EB',
                   }}
+                  onFocus={(e) => e.target.style.borderColor = 'rgba(166,143,89,0.6)'}
+                  onBlur={(e) => e.target.style.borderColor = 'rgba(166,143,89,0.2)'}
                 />
-                <button
-                  type="submit"
-                  className="px-6 py-3 rounded-xl text-sm font-medium tracking-wide transition-all duration-300 hover:opacity-90"
-                  style={{ backgroundColor: '#F5F1EB', color: '#121212' }}
-                >
-                  Get Early Access
-                </button>
+                <Magnetic strength={0.2}>
+                  <button
+                    type="submit"
+                    className="px-8 py-4 rounded-full text-base font-semibold tracking-wide transition-all duration-300 hover:opacity-90 hover:scale-105 flex items-center justify-center gap-2 w-full sm:w-auto"
+                    style={{ backgroundColor: '#F5F1EB', color: '#0A0A0A' }}
+                  >
+                    Get Early Access
+                  </button>
+                </Magnetic>
               </form>
             )}
 
-            <div className="mt-12 pt-8" style={{ borderTop: '1px solid rgba(166, 143, 89, 0.15)' }}>
-              <p className="text-xs mb-3" style={{ color: '#4A3E36' }}>A platform by</p>
+            <div className="mt-16 pt-10" style={{ borderTop: '1px solid rgba(166,143,89,0.15)' }}>
+              <p className="mono-label mb-4" style={{ color: '#7A6F66' }}>A platform by</p>
               <Link
                 to="/"
-                className="inline-flex items-center gap-2 text-sm tracking-widest transition-opacity hover:opacity-70"
-                style={{ color: '#E3DCD3' }}
+                className="inline-flex items-center gap-2 tracking-[0.4em] uppercase text-lg transition-opacity hover:opacity-70 font-bold"
+                style={{ color: '#A68F59', fontFamily: 'var(--font-grotesk)' }}
               >
                 CREOVA
-                <ArrowRight className="w-3 h-3" />
+                <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
           </motion.div>

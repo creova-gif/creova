@@ -23,10 +23,12 @@ import {
   Calendar
 } from 'lucide-react';
 import { Button } from '../components/ui/button';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner';
 import { useState } from 'react';
 import { Input } from '../components/ui/input';
 import { projectId, publicAnonKey } from '../utils/supabase/info';
+import { SplitText } from '../components/SplitText';
+import { Magnetic } from '../components/Magnetic';
 
 export function CommunityPage() {
   const { language, t } = useLanguage();
@@ -82,8 +84,6 @@ export function CommunityPage() {
           item_id: tier
         })
       });
-
-      const data = await response.json();
 
       if (response.ok) {
         toast.success(
@@ -289,7 +289,7 @@ export function CommunityPage() {
       price: '$149/month',
       priceAnnual: language === 'fr' ? '1,490$/an (économisez 298$)' : '$1,490/year (save $298)',
       icon: Crown,
-      color: '#121212',
+      color: '#F5F1EB',
       available: false,
       launchDate: language === 'fr' ? 'Lancement: Été 2026' : 'Launch: Summer 2026',
       perks: language === 'fr' ? [
@@ -342,45 +342,44 @@ export function CommunityPage() {
   ];
 
   return (
-    <div style={{ backgroundColor: '#F5F1EB' }}>
+    <div className="overflow-x-hidden" style={{ backgroundColor: '#0A0A0A' }}>
       <PageSEO
-        title="Community"
+        title={t('community.title')}
         description="Join the CREOVA community — a home for BIPOC creatives, entrepreneurs, and cultural storytellers across Canada. Connect, collaborate, and grow."
       />
-      {/* Hero Section — Asymmetric Editorial */}
-      <section className="relative overflow-hidden" style={{ backgroundColor: '#0A0A0A' }}>
-        <div className="absolute left-0 top-0 bottom-0 w-1" style={{ background: 'linear-gradient(to bottom, transparent, #A68F59, transparent)' }} />
-        <div className="absolute bottom-0 left-0 right-0 h-px" style={{ backgroundColor: 'rgba(166,143,89,0.25)' }} />
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Hero Section — Asymmetric Editorial */}
+      <section className="relative overflow-hidden min-h-[90vh] flex flex-col justify-center pt-24" style={{ backgroundColor: '#0A0A0A' }}>
+        <div className="crosshair-guides" />
+        <div className="guide-ring hidden md:block" style={{ width: '40vw', height: '40vw', top: '40%', left: '50%', transform: 'translate(-50%,-50%)' }} />
+
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="grid lg:grid-cols-2 gap-0 items-center">
             {/* Left: headline + description */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-              className="py-24 pr-0 lg:pr-16"
-              style={{ borderRight: '1px solid rgba(166,143,89,0.1)' }}
+              className="py-12 pr-0 lg:pr-16"
             >
               <div className="flex items-center gap-4 mb-8">
                 <div className="w-10 h-px" style={{ backgroundColor: '#A68F59' }} />
-                <span className="text-xs tracking-[0.45em] uppercase" style={{ color: '#A68F59' }}>
+                <span className="mono-label">
                   {language === 'fr' ? 'Bienvenue' : 'Welcome'}
                 </span>
               </div>
-              <h1 className="font-light tracking-tight leading-none mb-2" style={{ fontSize: 'clamp(3rem, 7vw, 7rem)', color: '#F5F1EB' }}>
-                {language === 'fr' ? 'Notre' : 'Our'}
-              </h1>
-              <h1 className="italic tracking-tight leading-none mb-8" style={{
-                fontSize: 'clamp(3rem, 7vw, 7rem)',
-                backgroundImage: 'linear-gradient(95deg, #A68F59 0%, #E3DCD3 65%)',
-                WebkitBackgroundClip: 'text',
-                backgroundClip: 'text',
-                color: 'transparent',
-              }}>
-                {language === 'fr' ? 'Communauté.' : 'Community.'}
-              </h1>
-              <p className="text-base leading-relaxed max-w-lg" style={{ color: '#7A6F66' }}>
+              <SplitText 
+                text={language === 'fr' ? 'Notre' : 'Our'}
+                className="display-hero block mb-0"
+                style={{ color: '#F5F1EB' }}
+                delay={0.2}
+              />
+              <SplitText 
+                text={language === 'fr' ? 'Communauté.' : 'Community.'}
+                className="display-hero block mb-8 text-gold-gradient"
+                delay={0.4}
+              />
+              <p className="text-base sm:text-lg leading-relaxed max-w-lg mt-6" style={{ color: '#C8C0B8' }}>
                 {language === 'fr'
                   ? 'Une agence créative transformant des idées en expériences captivantes et une communauté culturelle célébrant l\'excellence créative BIPOC'
                   : 'A creative agency transforming ideas into engaging experiences and a cultural movement celebrating BIPOC creative excellence'}
@@ -392,7 +391,7 @@ export function CommunityPage() {
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 1, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-              className="py-16 pl-0 lg:pl-12 grid grid-cols-2 gap-3"
+              className="py-16 pl-0 lg:pl-12 grid grid-cols-2 gap-4"
             >
               {[
                 { value: '5+', label: language === 'fr' ? 'Communautés' : 'Communities', icon: Users },
@@ -405,14 +404,20 @@ export function CommunityPage() {
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.25 + i * 0.07 }}
-                  className="p-5 rounded-2xl flex flex-col gap-3"
-                  style={{ backgroundColor: 'rgba(245,241,235,0.03)', border: '1px solid rgba(166,143,89,0.1)' }}
+                  className="p-6 rounded-2xl flex flex-col gap-4 relative group overflow-hidden"
+                  style={{ backgroundColor: '#121212', border: '1px solid rgba(166,143,89,0.14)' }}
                 >
-                  <stat.icon className="w-5 h-5" style={{ color: '#A68F59' }} />
-                  <div>
-                    <div className="text-2xl font-semibold" style={{ color: '#F5F1EB' }}>{stat.value}</div>
-                    <div className="text-xs tracking-wide uppercase mt-0.5" style={{ color: 'rgba(245,241,235,0.35)' }}>{stat.label}</div>
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" style={{
+                    background: 'radial-gradient(ellipse 80% 80% at 50% 50%, rgba(166,143,89,0.08) 0%, transparent 70%)',
+                  }} />
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ backgroundColor: 'rgba(166,143,89,0.1)', border: '1px solid rgba(166,143,89,0.2)' }}>
+                    <stat.icon className="w-4 h-4" style={{ color: '#A68F59' }} />
                   </div>
+                  <div>
+                    <div className="display-grotesk text-3xl mb-1" style={{ color: '#F5F1EB', textTransform: 'none' }}>{stat.value}</div>
+                    <div className="mono-label" style={{ color: '#9A9088' }}>{stat.label}</div>
+                  </div>
+                  <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ backgroundColor: '#A68F59', opacity: 0.3 }} />
                 </motion.div>
               ))}
             </motion.div>
@@ -421,8 +426,11 @@ export function CommunityPage() {
       </section>
 
       {/* Mission Statement */}
-      <section className="py-20" style={{ backgroundColor: '#FFFFFF' }}>
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#0E0E0E' }}>
+        <div className="absolute inset-0 pointer-events-none" style={{
+          background: 'radial-gradient(ellipse 50% 80% at 50% 50%, rgba(166,143,89,0.05) 0%, transparent 70%)',
+        }} />
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -430,82 +438,82 @@ export function CommunityPage() {
             viewport={{ once: true }}
             className="text-center"
           >
-            <div className="flex items-center justify-center gap-5 mb-6">
-              <div style={{ height: '1px', width: '40px', backgroundColor: 'rgba(177,100,59,0.4)' }} />
-              <p className="text-xs tracking-[0.5em] uppercase" style={{ color: '#B1643B' }}>Mission</p>
-              <div style={{ height: '1px', width: '40px', backgroundColor: 'rgba(177,100,59,0.4)' }} />
+            <div className="flex items-center justify-center gap-5 mb-8">
+              <div style={{ height: '1px', width: '40px', backgroundColor: 'rgba(166,143,89,0.4)' }} />
+              <p className="mono-label">Mission</p>
+              <div style={{ height: '1px', width: '40px', backgroundColor: 'rgba(166,143,89,0.4)' }} />
             </div>
-            <h2 className="text-3xl md:text-4xl mb-8 tracking-tight font-light" style={{ color: '#121212' }}>
+            <h2 className="display-grotesk text-3xl md:text-5xl mb-10" style={{ color: '#F5F1EB' }}>
               {language === 'fr' ? 'Notre Mission' : 'Our Mission'}
             </h2>
-            <p className="text-lg leading-relaxed mb-6" style={{ color: '#4A3E36' }}>
-              {language === 'fr'
-                ? 'Chez CREOVA, nous sommes passionnés par donner vie à votre marque à travers une création de contenu exceptionnelle. Nous ne capturons pas seulement des moments; nous créons des expériences qui génèrent de l\'engagement et laissent une impression durable.'
-                : 'At CREOVA, we\'re passionate about bringing your brand to life through exceptional content creation. We don\'t just capture moments; we craft experiences that drive engagement and leave a lasting impression.'}
-            </p>
-            <p className="text-lg leading-relaxed" style={{ color: '#4A3E36' }}>
-              {language === 'fr'
-                ? 'Que ce soit de la photographie d\'événements, de la vidéographie, de la gestion de marque ou de la gestion des médias sociaux, notre équipe d\'experts est là pour vous aider à raconter votre histoire unique et à élever la présence en ligne de votre marque.'
-                : 'Whether it\'s event photography, videography, brand management, or social media management, our expert team is here to help you tell your unique story and elevate your brand\'s online presence.'}
-            </p>
+            <div className="space-y-8 text-lg sm:text-xl leading-relaxed" style={{ color: '#C8C0B8' }}>
+              <p>
+                {language === 'fr'
+                  ? 'Chez CREOVA, nous sommes passionnés par donner vie à votre marque à travers une création de contenu exceptionnelle. Nous ne capturons pas seulement des moments; nous créons des expériences qui génèrent de l\'engagement et laissent une impression durable.'
+                  : 'At CREOVA, we\'re passionate about bringing your brand to life through exceptional content creation. We don\'t just capture moments; we craft experiences that drive engagement and leave a lasting impression.'}
+              </p>
+              <p style={{ color: '#9A9088' }}>
+                {language === 'fr'
+                  ? 'Que ce soit de la photographie d\'événements, de la vidéographie, de la gestion de marque ou de la gestion des médias sociaux, notre équipe d\'experts est là pour vous aider à raconter votre histoire unique et à élever la présence en ligne de votre marque.'
+                  : 'Whether it\'s event photography, videography, brand management, or social media management, our expert team is here to help you tell your unique story and elevate your brand\'s online presence.'}
+              </p>
+            </div>
           </motion.div>
         </div>
       </section>
 
       {/* What We Do */}
-      <section className="py-20 relative overflow-hidden" style={{ backgroundColor: '#121212' }}>
-        <div className="absolute top-0 left-0 right-0" style={{ height: '1px', backgroundColor: 'rgba(166,143,89,0.3)' }} />
-        <div className="absolute bottom-0 left-0 right-0" style={{ height: '1px', backgroundColor: 'rgba(166,143,89,0.3)' }} />
+      <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#121212', borderTop: '1px solid rgba(166,143,89,0.1)', borderBottom: '1px solid rgba(166,143,89,0.1)' }}>
         <div className="absolute inset-0 pointer-events-none" style={{
           background: 'radial-gradient(ellipse 50% 60% at 50% 50%, rgba(166,143,89,0.06) 0%, transparent 65%)'
         }} />
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className="mb-14"
+            className="mb-16"
           >
-            <div className="flex items-center gap-5 mb-3">
+            <div className="flex items-center gap-5 mb-5">
               <div style={{ height: '1px', width: '40px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
-              <p className="text-xs tracking-[0.5em] uppercase" style={{ color: '#A68F59' }}>Services</p>
+              <p className="mono-label">Services</p>
             </div>
-            <h2 className="text-4xl font-light tracking-tight" style={{ color: '#F5F1EB' }}>
+            <h2 className="display-grotesk text-4xl sm:text-5xl" style={{ color: '#F5F1EB' }}>
               {language === 'fr' ? 'Ce Que Nous Faisons' : 'What We Do'}
             </h2>
-            <p className="text-base mt-2" style={{ color: '#4A3E36' }}>
+            <p className="text-base sm:text-lg mt-4 max-w-2xl" style={{ color: '#9A9088' }}>
               {language === 'fr'
                 ? 'Services créatifs complets qui donnent vie à votre vision'
                 : 'Comprehensive creative services that bring your vision to life'}
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {services.map((service, index) => (
               <RevealOnScroll key={index} mode='3d' delay={index * 0.1}>
                 <div
-                  className="p-7 rounded-xl transition-all duration-300"
-                  style={{ border: '1px solid rgba(166,143,89,0.18)', backgroundColor: 'rgba(166,143,89,0.04)' }}
+                  className="p-8 rounded-2xl transition-all duration-300 h-full flex flex-col group"
+                  style={{ border: '1px solid rgba(166,143,89,0.14)', backgroundColor: '#0A0A0A' }}
                   onMouseEnter={(e) => {
                     (e.currentTarget as HTMLElement).style.borderColor = 'rgba(166,143,89,0.4)';
-                    (e.currentTarget as HTMLElement).style.backgroundColor = 'rgba(166,143,89,0.08)';
+                    (e.currentTarget as HTMLElement).style.backgroundColor = 'rgba(166,143,89,0.04)';
                   }}
                   onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLElement).style.borderColor = 'rgba(166,143,89,0.18)';
-                    (e.currentTarget as HTMLElement).style.backgroundColor = 'rgba(166,143,89,0.04)';
+                    (e.currentTarget as HTMLElement).style.borderColor = 'rgba(166,143,89,0.14)';
+                    (e.currentTarget as HTMLElement).style.backgroundColor = '#0A0A0A';
                   }}
                 >
                   <div
-                    className="w-11 h-11 rounded-lg flex items-center justify-center mb-5"
-                    style={{ border: '1px solid rgba(177,100,59,0.35)', backgroundColor: 'rgba(177,100,59,0.1)' }}
+                    className="w-12 h-12 rounded-xl flex items-center justify-center mb-6 transition-transform duration-300 group-hover:scale-110"
+                    style={{ border: '1px solid rgba(166,143,89,0.3)', backgroundColor: 'rgba(166,143,89,0.1)' }}
                   >
-                    <service.icon className="w-5 h-5" style={{ color: '#B1643B' }} />
+                    <service.icon className="w-5 h-5" style={{ color: '#A68F59' }} />
                   </div>
-                  <div style={{ height: '1px', width: '24px', backgroundColor: 'rgba(166,143,89,0.4)', marginBottom: '14px' }} />
-                  <h3 className="text-lg mb-2 tracking-tight" style={{ color: '#F5F1EB' }}>{service.title}</h3>
-                  <p className="text-sm leading-relaxed" style={{ color: '#7A6F66' }}>{service.description}</p>
+                  <div style={{ height: '1px', width: '24px', backgroundColor: 'rgba(166,143,89,0.4)', marginBottom: '20px' }} />
+                  <h3 className="display-grotesk text-xl mb-3" style={{ color: '#F5F1EB', textTransform: 'none', letterSpacing: '0' }}>{service.title}</h3>
+                  <p className="text-sm leading-relaxed" style={{ color: '#C8C0B8' }}>{service.description}</p>
                 </div>
               </RevealOnScroll>
             ))}
@@ -514,7 +522,7 @@ export function CommunityPage() {
       </section>
 
       {/* The Vision */}
-      <section className="py-20" style={{ backgroundColor: '#FFFFFF' }}>
+      <section className="py-32" style={{ backgroundColor: '#0A0A0A' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <motion.div
@@ -524,76 +532,68 @@ export function CommunityPage() {
               viewport={{ once: true }}
             >
               <div className="flex items-center gap-4 mb-6">
-                <div style={{ height: '1px', width: '32px', backgroundColor: 'rgba(177,100,59,0.5)' }} />
-                <p className="text-xs tracking-[0.45em] uppercase" style={{ color: '#B1643B' }}>Vision</p>
+                <div style={{ height: '1px', width: '32px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
+                <p className="mono-label">Vision</p>
               </div>
-              <h2 className="text-3xl md:text-4xl mb-6 tracking-tight font-light" style={{ color: '#121212' }}>
-                {language === 'fr' ? 'Plus Qu\'une Agence' : 'Beyond an Agency'}
+              <h2 className="display-grotesk text-3xl sm:text-5xl mb-8 leading-tight" style={{ color: '#F5F1EB' }}>
+                {language === 'fr'
+                  ? 'Autonomiser les Voix. Amplifier l\'Impact.'
+                  : 'Empowering Voices. Amplifying Impact.'}
               </h2>
-              <div className="space-y-4" style={{ color: '#4A3E36' }}>
-                <p className="text-lg leading-relaxed">
+              <div className="space-y-6 text-base sm:text-lg leading-relaxed" style={{ color: '#C8C0B8' }}>
+                <p>
                   {language === 'fr'
-                    ? 'CREOVA est plus qu\'une simple agence créative—c\'est une vision de fusionner la création de contenu, la narration et la culture en quelque chose d\'impactant.'
-                    : 'CREOVA is more than just a creative agency—it\'s a vision to merge content creation, storytelling, and culture into something impactful.'}
+                    ? 'En combinant créativité, stratégie et impact, CREOVA n\'est pas juste un service—c\'est une plateforme qui permet aux marques et aux individus de transformer leur vision en réalité.'
+                    : 'By combining creativity, strategy, and impact, CREOVA is not just a service—it\'s a platform that empowers brands and individuals to turn their vision into reality.'}
                 </p>
-                <p className="text-lg leading-relaxed">
+                <p style={{ color: '#9A9088' }}>
                   {language === 'fr'
-                    ? 'Nous nous étendons dans une ligne de vêtements, créant des designs qui célèbrent la culture, la créativité et l\'identité. La mode est une autre façon puissante de raconter des histoires, et nous voulons que CREOVA soit une marque qui résonne mondialement.'
-                    : 'We\'re expanding into a clothing line, creating designs that celebrate culture, creativity, and identity. Fashion is another powerful way to tell stories, and we want CREOVA to be a brand that resonates globally.'}
-                </p>
-                <p className="text-lg leading-relaxed">
-                  {language === 'fr'
-                    ? 'Au-delà des affaires, notre objectif est de construire des partenariats diasporiques, créant des opportunités pour les créatifs BIPOC dans le monde entier et soutenant les industries créatives.'
-                    : 'Beyond business, our goal is to build diaspora partnerships, creating opportunities for BIPOC creatives globally and supporting creative industries.'}
+                    ? 'Notre vision est de créer un impact durable à travers les industries par l\'expression créative et la collaboration, tout en construisant des ponts entre les créatifs BIPOC mondialement à travers des partenariats de la diaspora et des échanges culturels.'
+                    : 'Our vision is to create lasting impact across industries through creative expression and collaboration, while building bridges between BIPOC creatives globally through diaspora partnerships and cultural exchange.'}
                 </p>
               </div>
+              
+              <Magnetic strength={0.2}>
+                <Button 
+                  className="mt-10 rounded-full px-8 py-6 group text-base"
+                  style={{ backgroundColor: '#F5F1EB', color: '#0A0A0A' }}
+                  asChild
+                >
+                  <Link to="/services" className="flex items-center gap-2">
+                    {language === 'fr' ? 'Explorer nos services' : 'Explore Services'}
+                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                </Button>
+              </Magnetic>
             </motion.div>
 
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
               viewport={{ once: true }}
-              className="rounded-2xl overflow-hidden border-2 hover:shadow-xl transition-all duration-300 group"
-              style={{ borderColor: '#A68F59', backgroundColor: '#FFFFFF' }}
+              className="relative"
             >
-              <div className="relative overflow-hidden" style={{ backgroundColor: '#121212', aspectRatio: '4/3' }}>
-                <img
-                  src="/photo-beyond-agency.jpg"
-                  alt="CREOVA — Beyond an Agency"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  style={{ objectPosition: 'center center' }}
+              <div className="aspect-[4/5] rounded-3xl overflow-hidden" style={{ border: '1px solid rgba(166,143,89,0.2)' }}>
+                <img 
+                  src="/photo-beyond-agency.jpg" 
+                  alt="CREOVA Vision" 
+                  className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 px-5 py-4">
-                  <div className="flex items-end justify-between">
-                    <div>
-                      <p className="text-[10px] tracking-[0.2em] font-semibold mb-1" style={{ color: '#A68F59', fontFamily: 'var(--font-brand)' }}>BROCK UNIVERSITY</p>
-                      <h4 className="text-lg italic leading-tight" style={{ color: '#FFFFFF', fontFamily: 'var(--font-display)' }}>BLACK STUDENT<br />ASSOCIATION</h4>
-                    </div>
-                    <div className="text-right space-y-1">
-                      <div className="flex flex-col items-end">
-                        <span className="text-[9px] tracking-widest uppercase" style={{ color: '#A68F59' }}>President</span>
-                        <span className="text-xs font-semibold" style={{ color: '#FFFFFF' }}>Ivie Omoregie</span>
-                      </div>
-                      <div className="flex flex-col items-end">
-                        <span className="text-[9px] tracking-widest uppercase" style={{ color: '#A68F59' }}>Vice President</span>
-                        <span className="text-xs font-semibold" style={{ color: '#FFFFFF' }}>Jason Asiruwa</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(10,10,10,0.8) 0%, transparent 50%)' }} />
               </div>
-              <div className="p-6">
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="text-[10px] tracking-[0.15em] uppercase font-semibold px-2 py-1 rounded" style={{ backgroundColor: '#121212', color: '#A68F59', fontFamily: 'var(--font-brand)' }}>BLSA</span>
-                  <span className="text-[10px] tracking-widest uppercase" style={{ color: '#7A6F66' }}>Student Leadership</span>
+              <div 
+                className="absolute -bottom-8 -left-8 p-8 rounded-2xl max-w-xs hidden sm:block"
+                style={{ backgroundColor: '#121212', border: '1px solid rgba(166,143,89,0.2)' }}
+              >
+                <div className="flex items-center gap-3 mb-3">
+                  <Star className="w-5 h-5" style={{ color: '#A68F59' }} />
+                  <span className="font-semibold text-sm uppercase tracking-wider" style={{ color: '#F5F1EB' }}>Excellence</span>
                 </div>
-                <h3 className="text-xl mb-3" style={{ color: '#121212' }}>Black Student Association (BLSA)</h3>
-                <p className="leading-relaxed mb-4" style={{ color: '#7A6F66' }}>
+                <p className="text-sm leading-relaxed" style={{ color: '#9A9088' }}>
                   {language === 'fr'
-                    ? 'L\'Association des étudiants noirs de l\'Université Brock unit, élève et célèbre les étudiants noirs à travers la culture, le leadership et la communauté.'
-                    : 'The Black Student Association at Brock University unites, elevates, and celebrates Black students through culture, leadership, and community.'}
+                    ? 'Engagés à livrer une qualité premium et une narration authentique pour chaque client.'
+                    : 'Committed to delivering premium quality and authentic storytelling for every client.'}
                 </p>
               </div>
             </motion.div>
@@ -601,403 +601,196 @@ export function CommunityPage() {
         </div>
       </section>
 
-      {/* Membership Tiers */}
-      <section className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl md:text-5xl mb-4" style={{ color: '#121212' }}>
-              {language === 'fr' ? 'Rejoignez Notre Famille' : 'Join Our Family'}
-            </h2>
-            <p className="text-xl max-w-2xl mx-auto" style={{ color: '#7A6F66' }}>
-              {language === 'fr'
-                ? 'Commencez gratuitement avec la Communauté - niveaux premium à venir!'
-                : 'Start free with Community - premium tiers coming soon!'}
-            </p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-3 gap-8 mb-12">
-            {tiers.map((tier, index) => {
-              const Icon = tier.icon;
-              const isAvailable = tier.available;
-              
-              return (
-                <RevealOnScroll key={tier.name} mode='3d' delay={index * 0.12}>
-                <div
-                  className={`relative rounded-3xl p-8 border-2 h-full flex flex-col ${
-                    isAvailable ? 'shadow-2xl' : 'shadow-lg'
-                  }`}
-                  style={{
-                    backgroundColor: '#FFFFFF',
-                    borderColor: isAvailable ? tier.color : '#E3DCD3'
-                  }}
-                >
-                  {isAvailable && (
-                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-sm"
-                         style={{ backgroundColor: tier.color, color: '#FFFFFF' }}>
-                      {language === 'fr' ? 'DISPONIBLE MAINTENANT' : 'AVAILABLE NOW'}
-                    </div>
-                  )}
-
-                  {!isAvailable && (
-                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-sm flex items-center gap-2 whitespace-nowrap"
-                         style={{ backgroundColor: '#E3DCD3', color: '#121212' }}>
-                      <Clock className="w-3 h-3" />
-                      {language === 'fr' ? 'BIENTÔT DISPONIBLE' : 'COMING SOON'}
-                    </div>
-                  )}
-
-                  <div className="text-center mb-6">
-                    <div className={`w-16 h-16 rounded-2xl mx-auto mt-2 mb-4 flex items-center justify-center ${!isAvailable && 'grayscale'}`}
-                         style={{ backgroundColor: `${tier.color}20` }}>
-                      <Icon className="w-8 h-8" style={{ color: tier.color }} />
-                    </div>
-                    <h3 className="text-3xl mb-2" style={{ color: '#121212' }}>{tier.name}</h3>
-                    <p className="text-sm mb-4" style={{ color: '#7A6F66' }}>{tier.subtitle}</p>
-                    
-                    <div className="h-8 mb-4 flex items-center justify-center">
-                      {tier.launchDate && (
-                        <p className="text-sm flex items-center gap-2" style={{ color: '#B1643B' }}>
-                          <Calendar className="w-4 h-4" />
-                          {tier.launchDate}
-                        </p>
-                      )}
-                    </div>
-                    
-                    <div className="mb-2">
-                      <span className="text-4xl" style={{ color: tier.color }}>
-                        {tier.price.includes('$') ? tier.price.split('/')[0] : tier.price}
-                      </span>
-                      {tier.price.includes('/') && (
-                        <span className="text-lg" style={{ color: '#7A6F66' }}>
-                          /{tier.price.split('/')[1]}
-                        </span>
-                      )}
-                    </div>
-                    <div className="h-6">
-                      {tier.priceAnnual && (
-                        <p className="text-sm" style={{ color: '#7A6F66' }}>{tier.priceAnnual}</p>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="space-y-3 mb-8 flex-grow">
-                    {tier.perks.slice(0, isAvailable ? tier.perks.length : 6).map((perk, idx) => (
-                      <div key={idx} className="flex items-start gap-2">
-                        <Check className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: tier.color }} />
-                        <span className="text-sm" style={{ color: '#121212' }}>{perk}</span>
-                      </div>
-                    ))}
-                    {!isAvailable && tier.perks.length > 6 && (
-                      <p className="text-sm text-center pt-2" style={{ color: '#7A6F66' }}>
-                        {language === 'fr' ? `+${tier.perks.length - 6} autres avantages` : `+${tier.perks.length - 6} more benefits`}
-                      </p>
-                    )}
-                  </div>
-
-                  {isAvailable ? (
-                    <div className="space-y-3">
-                      <Input
-                        type="email"
-                        placeholder={language === 'fr' ? 'Votre email' : 'Your email'}
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        className="rounded-xl"
-                        style={{ borderColor: tier.color }}
-                      />
-                      <Button 
-                        onClick={handleJoinCommunity}
-                        className="w-full rounded-xl py-6 text-lg group relative overflow-hidden"
-                        style={{ 
-                          backgroundColor: tier.color,
-                          color: '#FFFFFF'
-                        }}
-                      >
-                        <span className="relative z-10 flex items-center justify-center gap-2">
-                          {language === 'fr' ? 'Rejoindre Gratuitement' : 'Join Free'}
-                          <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                        </span>
-                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-                      </Button>
-                    </div>
-                  ) : (
-                    <div className="space-y-3">
-                      <Input
-                        type="email"
-                        placeholder={language === 'fr' ? 'Votre email' : 'Your email'}
-                        value={notifyEmails[tier.id]}
-                        onChange={(e) => setNotifyEmails(prev => ({ ...prev, [tier.id]: e.target.value }))}
-                        className="rounded-xl"
-                        style={{ borderColor: tier.color }}
-                      />
-                      <Button
-                        onClick={() => handleNotifyMeLaunch(tier.id)}
-                        className="w-full rounded-xl py-6 text-lg border-2"
-                        style={{ 
-                          backgroundColor: 'transparent',
-                          color: tier.color,
-                          borderColor: tier.color
-                        }}
-                      >
-                        <Mail className="w-5 h-5 mr-2" />
-                        {language === 'fr' ? 'Me Notifier au Lancement' : 'Notify Me at Launch'}
-                      </Button>
-                    </div>
-                  )}
-                </div>
-                </RevealOnScroll>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* Community Benefits */}
-      <section className="py-20" style={{ backgroundColor: '#FFFFFF' }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl md:text-5xl mb-4" style={{ color: '#121212' }}>
-              {language === 'fr' ? 'Plus Qu\'une Adhésion' : 'More Than Membership'}
-            </h2>
-            <p className="text-xl max-w-2xl mx-auto" style={{ color: '#7A6F66' }}>
-              {language === 'fr'
-                ? 'Une communauté qui élève, connecte et célèbre l\'excellence créative BIPOC'
-                : 'A community that elevates, connects, and celebrates BIPOC creative excellence'}
-            </p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {communityBenefits.map((benefit, index) => {
-              const Icon = benefit.icon;
-              return (
-                <RevealOnScroll key={index} mode='3d' delay={index * 0.08}>
-                  <div
-                    className="rounded-2xl p-6 border-2 hover:shadow-xl transition-all duration-300 group"
-                    style={{ backgroundColor: '#F5F1EB', borderColor: '#E3DCD3' }}
-                  >
-                    <div className="w-12 h-12 rounded-xl mb-4 flex items-center justify-center group-hover:scale-110 transition-transform"
-                         style={{ backgroundColor: 'rgba(166, 143, 89, 0.1)' }}>
-                      <Icon className="w-6 h-6" style={{ color: '#A68F59' }} />
-                    </div>
-                    <h3 className="text-xl mb-2" style={{ color: '#121212' }}>{benefit.title}</h3>
-                    <p className="leading-relaxed" style={{ color: '#7A6F66' }}>{benefit.description}</p>
-                  </div>
-                </RevealOnScroll>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
       {/* Community Partners */}
-      <section className="py-20" style={{ backgroundColor: '#F5F1EB' }}>
+      <section className="py-32 relative" style={{ backgroundColor: '#0E0E0E' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className="text-center mb-12"
+            className="text-center mb-20"
           >
-            <h2 className="text-4xl md:text-5xl mb-4" style={{ color: '#121212' }}>
+            <div className="flex items-center justify-center gap-4 mb-6">
+              <div style={{ height: '1px', width: '32px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
+              <p className="mono-label">Network</p>
+              <div style={{ height: '1px', width: '32px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
+            </div>
+            <h2 className="display-grotesk text-3xl sm:text-5xl mb-6" style={{ color: '#F5F1EB' }}>
               {language === 'fr' ? 'Nos Partenaires Communautaires' : 'Our Community Partners'}
             </h2>
-            <p className="text-xl max-w-3xl mx-auto" style={{ color: '#7A6F66' }}>
+            <p className="text-base sm:text-lg max-w-2xl mx-auto" style={{ color: '#9A9088' }}>
               {language === 'fr'
-                ? 'Fièrement soutenu par des organisations dédiées à l\'excellence et l\'autonomisation des communautés BIPOC'
-                : 'Proudly supported by organizations dedicated to BIPOC community excellence and empowerment'}
+                ? 'De fières collaborations avec des organisations qui partagent notre engagement envers l\'excellence, l\'équité et l\'avancement communautaire.'
+                : 'Proud collaborations with organizations that share our commitment to excellence, equity, and community advancement.'}
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid lg:grid-cols-3 gap-8">
             {communityPartners.map((partner, index) => (
-              <RevealOnScroll key={index} mode='3d' delay={index * 0.12}>
-              <div
-                className="rounded-2xl overflow-hidden border-2 hover:shadow-xl transition-all duration-300 group"
-                style={{ borderColor: '#E3DCD3', backgroundColor: '#FFFFFF' }}
-              >
-                <div className="relative overflow-hidden" style={{ backgroundColor: '#121212', aspectRatio: '4/3' }}>
-                  <img
-                    src={partner.image}
-                    alt={partner.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    style={{ objectPosition: partner.objectPosition }}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                  <div className="absolute bottom-0 left-0 right-0 px-5 py-4">
-                    <div className="flex items-end justify-between">
-                      <div>
-                        <p className="text-[10px] tracking-[0.2em] font-semibold mb-1" style={{ color: '#A68F59', fontFamily: 'var(--font-brand)' }}>{partner.captionLeft.line1}</p>
-                        <h4 className="text-lg italic leading-tight whitespace-pre-line" style={{ color: '#FFFFFF', fontFamily: 'var(--font-display)' }}>{partner.captionLeft.line2}</h4>
-                      </div>
+              <RevealOnScroll key={index} delay={index * 0.1}>
+                <div 
+                  className="flex flex-col h-full rounded-3xl overflow-hidden group"
+                  style={{ backgroundColor: '#121212', border: '1px solid rgba(166,143,89,0.15)' }}
+                >
+                  <div className="relative h-56 overflow-hidden">
+                    <img 
+                      src={partner.image} 
+                      alt={partner.name}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      style={{ objectPosition: partner.objectPosition }}
+                    />
+                    <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-500" />
+                    <div className="absolute top-4 left-4 flex flex-col gap-1">
+                      <span className="px-3 py-1 text-[10px] font-bold tracking-widest uppercase rounded-full backdrop-blur-md"
+                        style={{ backgroundColor: 'rgba(10,10,10,0.6)', color: '#F5F1EB', border: '1px solid rgba(166,143,89,0.3)' }}>
+                        {partner.badge}
+                      </span>
                     </div>
                   </div>
-                </div>
-                <div className="p-6">
-                  <div className="flex items-center gap-2 mb-3">
-                    <span className="text-[10px] tracking-[0.15em] uppercase font-semibold px-2 py-1 rounded" style={{ backgroundColor: '#121212', color: '#A68F59', fontFamily: 'var(--font-brand)' }}>{partner.badge}</span>
-                    <span className="text-[10px] tracking-widest uppercase" style={{ color: '#7A6F66' }}>{partner.badgeSub}</span>
+                  <div className="p-8 flex flex-col flex-1">
+                    <h3 className="display-grotesk text-2xl mb-4" style={{ color: '#F5F1EB', textTransform: 'none', letterSpacing: '0' }}>{partner.name}</h3>
+                    <p className="text-sm leading-relaxed mb-8 flex-1" style={{ color: '#C8C0B8' }}>{partner.description}</p>
+                    
+                    {partner.website && partner.website !== '#' && (
+                      <a 
+                        href={partner.website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 text-sm uppercase tracking-widest font-semibold transition-colors mt-auto"
+                        style={{ color: '#A68F59' }}
+                      >
+                        {language === 'fr' ? 'Visiter le site' : 'Visit Website'}
+                        <ExternalLink className="w-4 h-4" />
+                      </a>
+                    )}
                   </div>
-                  <h3 className="text-xl mb-3" style={{ color: '#121212' }}>{partner.name}</h3>
-                  <p className="leading-relaxed mb-4" style={{ color: '#7A6F66' }}>
-                    {partner.description}
-                  </p>
-                  {partner.website !== '#' ? (
-                    <a
-                      href={partner.website}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center group/link p-0 h-auto hover:underline"
-                      style={{ color: '#A68F59' }}
-                    >
-                      {language === 'fr' ? 'En savoir plus' : 'Learn more'}
-                      <ExternalLink className="w-4 h-4 ml-2 group-hover/link:translate-x-1 transition-transform" />
-                    </a>
-                  ) : (
-                    <Button
-                      variant="ghost"
-                      className="group/link p-0 h-auto"
-                      style={{ color: '#A68F59' }}
-                    >
-                      {language === 'fr' ? 'En savoir plus' : 'Learn more'}
-                      <ExternalLink className="w-4 h-4 ml-2 group-hover/link:translate-x-1 transition-transform" />
-                    </Button>
-                  )}
                 </div>
-              </div>
               </RevealOnScroll>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-28 relative overflow-hidden" style={{ backgroundColor: '#0E0E0E' }}>
-        {/* Ambient gold radial glow */}
-        <div className="absolute inset-0 pointer-events-none" style={{
-          background: 'radial-gradient(ellipse 70% 60% at 50% 100%, rgba(166,143,89,0.18) 0%, transparent 70%)',
-        }} />
-        {/* Subtle warm arc — top */}
-        <div className="absolute inset-0 pointer-events-none" style={{
-          background: 'radial-gradient(ellipse 80% 40% at 50% -10%, rgba(177,100,59,0.12) 0%, transparent 70%)',
-        }} />
-        {/* Fine grain dot texture */}
-        <div className="absolute inset-0 opacity-[0.04] pointer-events-none" style={{
-          backgroundImage: `radial-gradient(circle, #A68F59 1px, transparent 1px)`,
-          backgroundSize: '28px 28px',
-        }} />
-
-        {/* Horizontal gold rule */}
-        <div className="absolute top-0 left-0 right-0 h-px" style={{ background: 'linear-gradient(90deg, transparent, #A68F59, transparent)' }} />
-
-        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            {/* Eyebrow */}
-            <div className="flex items-center justify-center gap-3 mb-8">
-              <div className="h-px w-12" style={{ backgroundColor: '#A68F59' }} />
-              <span className="text-xs tracking-[0.3em] uppercase" style={{ color: '#A68F59', fontFamily: 'var(--font-brand)' }}>
-                {language === 'fr' ? 'Rejoignez le Mouvement' : 'Join the Movement'}
-              </span>
-              <div className="h-px w-12" style={{ backgroundColor: '#A68F59' }} />
-            </div>
-
-            <h2 className="text-4xl md:text-6xl mb-6 leading-tight" style={{ color: '#F5F1EB', fontFamily: 'var(--font-display)' }}>
-              {language === 'fr'
-                ? <>Prêt à Faire Partie de<br /><em style={{ color: '#A68F59' }}>Quelque Chose de Spécial?</em></>
-                : <>Ready to Be Part of<br /><em style={{ color: '#A68F59' }}>Something Special?</em></>}
-            </h2>
-
-            <p className="text-lg md:text-xl mb-10 max-w-2xl mx-auto leading-relaxed" style={{ color: 'rgba(245,241,235,0.65)', fontFamily: 'var(--font-body)' }}>
-              {language === 'fr'
-                ? 'Rejoignez CREOVA aujourd\'hui et déverrouillez un monde de créativité, communauté et culture.'
-                : 'Join CREOVA today and unlock a world of creativity, community, and culture.'}
-            </p>
-
-            <div className="flex flex-wrap gap-4 justify-center">
-              <Button
-                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                className="px-10 py-6 rounded-xl text-base font-semibold group"
-                style={{ backgroundColor: '#A68F59', color: '#121212' }}
-              >
-                {language === 'fr' ? 'Commencer Gratuitement' : 'Start Free'}
-                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-              </Button>
-              <Button
-                onClick={() => navigate('/shop')}
-                className="px-10 py-6 rounded-xl text-base font-semibold border"
-                style={{
-                  backgroundColor: 'transparent',
-                  color: '#F5F1EB',
-                  borderColor: 'rgba(245,241,235,0.25)',
-                }}
-              >
-                {language === 'fr' ? 'Magasiner SEEN' : 'Shop SEEN'}
-              </Button>
-            </div>
-
-            <p className="mt-8 text-xs tracking-widest uppercase" style={{ color: 'rgba(245,241,235,0.3)', fontFamily: 'var(--font-brand)' }}>
-              {language === 'fr'
-                ? 'Aucune carte de crédit requise pour l\'adhésion Communauté'
-                : 'No credit card required for Community membership'}
-            </p>
-          </motion.div>
-        </div>
-
-        {/* Bottom gold rule */}
-        <div className="absolute bottom-0 left-0 right-0 h-px" style={{ background: 'linear-gradient(90deg, transparent, #A68F59, transparent)' }} />
-      </section>
-
-      {/* Land Acknowledgment */}
-      <section className="py-16" style={{ backgroundColor: '#121212' }}>
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Tiers Section */}
+      <section className="py-32 relative" style={{ backgroundColor: '#0A0A0A', borderTop: '1px solid rgba(166,143,89,0.1)' }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className="text-center"
+            className="text-center mb-20"
           >
-            <h2 className="text-3xl md:text-4xl mb-6" style={{ color: '#A68F59' }}>
-              {language === 'fr' ? 'Reconnaissance du Territoire' : 'Land Acknowledgment'}
+            <div className="flex items-center justify-center gap-4 mb-6">
+              <div style={{ height: '1px', width: '32px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
+              <p className="mono-label">Memberships</p>
+              <div style={{ height: '1px', width: '32px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
+            </div>
+            <h2 className="display-grotesk text-3xl sm:text-5xl mb-6" style={{ color: '#F5F1EB' }}>
+              {language === 'fr' ? 'Rejoignez le Mouvement' : 'Join the Movement'}
             </h2>
-            <div className="w-16 h-1 mx-auto mb-8 rounded-full" style={{ backgroundColor: '#B1643B' }}></div>
-            <div className="leading-relaxed text-lg space-y-4" style={{ color: '#E3DCD3' }}>
-              <p>
-                {language === 'fr'
-                  ? 'Nous reconnaissons que le territoire sur lequel nous nous réunissons est le territoire traditionnel des peuples Haudenosaunee et Anishinaabe, dont beaucoup continuent de vivre et de travailler ici aujourd\'hui. Ce territoire est couvert par les traités du Haut-Canada et se trouve dans les terres protégées par l\'accord Wampum du Plat à Une Cuillère.'
-                  : 'We acknowledge that the land on which we gather is the traditional territory of the Haudenosaunee and Anishinaabe peoples, many of whom continue to live and work here today. This territory is covered by the Upper Canada Treaties and is within the land protected by the Dish With One Spoon Wampum agreement.'}
-              </p>
-              <p>
-                {language === 'fr'
-                  ? 'Aujourd\'hui, le foyer de nombreux peuples des Premières Nations, Métis et Inuits est également notre foyer. Nous reconnaissons les sacrifices faits, forcés et librement consentis, par les peuples autochtones du Canada dans la formation du pays que nous appelons notre foyer.'
-                  : 'Today, the home to many First Nations, Métis, and Inuit peoples is home to us too. We acknowledge the sacrifices made, forced and freely, by the Indigenous peoples of Canada in the formation of the country we call our home.'}
-              </p>
-              <p style={{ color: '#F5F1EB' }}>
-                {language === 'fr'
-                  ? 'Alors que nous reconnaissons leurs contributions continues et leur présence ainsi que la nôtre sur cette terre, nous nous engageons à répondre à la Commission de vérité et réconciliation et à notre relation avec les peuples autochtones.'
-                  : 'As we acknowledge their continued contributions and their presence and ours upon this land, we are committed to being responsive to the Truth and Reconciliation Commission and to our relationship with Indigenous peoples.'}
-              </p>
-            </div>
-            <div className="mt-8 pt-8 border-t" style={{ borderColor: 'rgba(166, 143, 89, 0.3)' }}>
-              <p className="text-sm" style={{ color: '#7A6F66' }}>
-                {language === 'fr'
-                  ? '🌿 Avec respect, gratitude et engagement envers la réconciliation'
-                  : '🌿 With respect, gratitude, and commitment to reconciliation'}
-              </p>
-            </div>
+            <p className="text-base sm:text-lg max-w-2xl mx-auto" style={{ color: '#9A9088' }}>
+              {language === 'fr'
+                ? 'Choisissez votre niveau d\'accès. Des ressources communautaires gratuites aux expériences créatives premium.'
+                : 'Choose your level of access. From free community resources to premium creative experiences.'}
+            </p>
           </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {tiers.map((tier, index) => (
+              <RevealOnScroll key={tier.id} delay={index * 0.1} mode="slide-up">
+                <div 
+                  className={`relative flex flex-col h-full rounded-3xl p-8 transition-all duration-500 hover:-translate-y-2 group`}
+                  style={{ 
+                    backgroundColor: tier.id === 'creator' ? 'rgba(177,100,59,0.05)' : '#121212',
+                    border: `1px solid ${tier.id === 'creator' ? 'rgba(177,100,59,0.3)' : 'rgba(166,143,89,0.15)'}`
+                  }}
+                >
+                  {tier.id === 'creator' && (
+                    <div className="absolute top-0 left-0 right-0 h-1 rounded-t-3xl" style={{ backgroundColor: '#B1643B' }} />
+                  )}
+                  
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ backgroundColor: 'rgba(245,241,235,0.05)', border: `1px solid ${tier.color}40` }}>
+                      <tier.icon className="w-6 h-6" style={{ color: tier.color }} />
+                    </div>
+                    <div>
+                      <h3 className="display-grotesk text-2xl" style={{ color: '#F5F1EB', textTransform: 'none', letterSpacing: '0' }}>{tier.name}</h3>
+                      <p className="text-sm uppercase tracking-widest font-semibold mt-1" style={{ color: tier.color }}>{tier.subtitle}</p>
+                    </div>
+                  </div>
+                  
+                  <div className="mb-8 pb-8 border-b" style={{ borderColor: 'rgba(166,143,89,0.1)' }}>
+                    <div className="flex items-end gap-2 mb-2">
+                      <span className="text-4xl font-light tracking-tight" style={{ color: '#F5F1EB' }}>{tier.price}</span>
+                    </div>
+                    {tier.priceAnnual && (
+                      <p className="text-sm" style={{ color: '#9A9088' }}>{tier.priceAnnual}</p>
+                    )}
+                  </div>
+
+                  <ul className="space-y-4 mb-10 flex-1">
+                    {tier.perks.map((perk, i) => (
+                      <li key={i} className="flex items-start gap-3">
+                        <Check className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: tier.color }} />
+                        <span className="text-sm leading-relaxed" style={{ color: '#C8C0B8' }}>{perk}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <div className="mt-auto">
+                    {tier.available ? (
+                      <div className="space-y-3">
+                        <Input 
+                          type="email" 
+                          placeholder={language === 'fr' ? 'Votre adresse email' : 'Your email address'}
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          className="rounded-xl"
+                          style={{ backgroundColor: 'rgba(245,241,235,0.05)', borderColor: 'rgba(166,143,89,0.2)', color: '#F5F1EB' }}
+                        />
+                        <Button 
+                          className="w-full rounded-xl py-6 text-sm font-semibold uppercase tracking-wider"
+                          style={{ backgroundColor: '#F5F1EB', color: '#0A0A0A' }}
+                          onClick={handleJoinCommunity}
+                        >
+                          {language === 'fr' ? 'Rejoindre Gratuitement' : 'Join for Free'}
+                        </Button>
+                      </div>
+                    ) : (
+                      <div className="space-y-3">
+                        <div className="flex items-center gap-2 mb-4 justify-center">
+                          <Clock className="w-4 h-4" style={{ color: '#9A9088' }} />
+                          <span className="text-sm font-medium uppercase tracking-wider" style={{ color: '#9A9088' }}>{tier.launchDate}</span>
+                        </div>
+                        <Input 
+                          type="email" 
+                          placeholder={language === 'fr' ? 'Soyez notifié du lancement' : 'Get notified on launch'}
+                          value={notifyEmails[tier.id]}
+                          onChange={(e) => setNotifyEmails(prev => ({ ...prev, [tier.id]: e.target.value }))}
+                          className="rounded-xl"
+                          style={{ backgroundColor: 'rgba(245,241,235,0.05)', borderColor: 'rgba(166,143,89,0.2)', color: '#F5F1EB' }}
+                        />
+                        <Button 
+                          className="w-full rounded-xl py-6 text-sm font-semibold uppercase tracking-wider transition-all duration-300"
+                          style={{ 
+                            backgroundColor: 'transparent', 
+                            color: tier.color, 
+                            border: `1px solid ${tier.color}`,
+                          }}
+                          onClick={() => handleNotifyMeLaunch(tier.id)}
+                          disabled={isSubmitting}
+                        >
+                          {isSubmitting ? '...' : (language === 'fr' ? 'M\'avertir' : 'Notify Me')}
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </RevealOnScroll>
+            ))}
+          </div>
         </div>
       </section>
     </div>
