@@ -87,3 +87,9 @@ Proprietary — All Rights Reserved. See `LICENSE`.
 ## Credits
 
 CREOVA — Ontario's BIPOC creative agency. Founder: Justin Mafie.
+
+---
+
+## Ecosystem note
+
+Three CREOVA repos — `Gopay`, `Sauti-Os`, and `Kultr-Hub` — form a connected East Africa fintech and creator-economy thesis (payment rails, artist royalty tooling, and consumer distribution, respectively) that wasn't documented as a unified strategy until now. See [`EAST-AFRICA-FINTECH-THESIS.md`](./EAST-AFRICA-FINTECH-THESIS.md) for the full picture — including what's actually connected today versus what's still conceptual.
