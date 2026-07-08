@@ -5,54 +5,57 @@ import { Lock, Eye, EyeOff, Shield } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { toast } from 'sonner@2.0.3';
+import { adminLogin, clearAdminToken, getAdminToken } from '../utils/supabase/adminSession';
 
-const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || 'CREOVA2025!';
+// The password itself is never shipped to the client and never compared
+// here — it's checked once, server-side, in /admin-login. This component
+// only tracks whether a valid session token exists; the server verifies
+// that token on every admin request, which is the actual security boundary.
+const AUTH_TIME_KEY = 'creova_admin_auth_time';
+const SESSION_TTL_MS = 4 * 60 * 60 * 1000; // 4 hours, matches the server-issued token's expiry
 
 export function AdminAuth({ children }: { children: React.ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Check if already authenticated
-    const authToken = sessionStorage.getItem('creova_admin_auth');
-    const authTime = sessionStorage.getItem('creova_admin_auth_time');
-    
-    if (authToken === 'authenticated' && authTime) {
-      const timeElapsed = Date.now() - parseInt(authTime);
-      const fourHours = 4 * 60 * 60 * 1000;
-      
-      if (timeElapsed < fourHours) {
-        setIsAuthenticated(true);
-      } else {
-        // Session expired
-        sessionStorage.removeItem('creova_admin_auth');
-        sessionStorage.removeItem('creova_admin_auth_time');
-      }
+    const token = getAdminToken();
+    const authTime = sessionStorage.getItem(AUTH_TIME_KEY);
+
+    if (token && authTime && Date.now() - parseInt(authTime, 10) < SESSION_TTL_MS) {
+      setIsAuthenticated(true);
+    } else {
+      clearAdminToken();
+      sessionStorage.removeItem(AUTH_TIME_KEY);
     }
-    
+
     setLoading(false);
   }, []);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (password === ADMIN_PASSWORD) {
-      sessionStorage.setItem('creova_admin_auth', 'authenticated');
-      sessionStorage.setItem('creova_admin_auth_time', Date.now().toString());
+    setSubmitting(true);
+
+    const result = await adminLogin(password);
+
+    if (result.ok) {
+      sessionStorage.setItem(AUTH_TIME_KEY, Date.now().toString());
       setIsAuthenticated(true);
       toast.success('Welcome back! Admin access granted.');
     } else {
-      toast.error('Incorrect password. Access denied.');
+      toast.error(result.error || 'Incorrect password. Access denied.');
       setPassword('');
     }
+    setSubmitting(false);
   };
 
   const handleLogout = () => {
-    sessionStorage.removeItem('creova_admin_auth');
-    sessionStorage.removeItem('creova_admin_auth_time');
+    clearAdminToken();
+    sessionStorage.removeItem(AUTH_TIME_KEY);
     setIsAuthenticated(false);
     setPassword('');
     navigate('/');
@@ -131,11 +134,12 @@ export function AdminAuth({ children }: { children: React.ReactNode }) {
 
               <Button
                 type="submit"
-                className="w-full py-6 rounded-xl text-base"
+                disabled={submitting}
+                className="w-full py-6 rounded-xl text-base disabled:opacity-60"
                 style={{ backgroundColor: '#B1643B', color: '#F5F1EB' }}
               >
                 <Lock className="w-5 h-5 mr-2" />
-                Login to Admin Dashboard
+                {submitting ? 'Verifying...' : 'Login to Admin Dashboard'}
               </Button>
             </form>
 

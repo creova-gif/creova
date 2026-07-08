@@ -3,7 +3,7 @@ import { motion } from 'motion/react';
 import { Mail, Phone, Calendar, DollarSign, Briefcase, FileText, RefreshCw, Check, Clock, X } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { toast } from 'sonner@2.0.3';
-import { projectId, publicAnonKey } from '../utils/supabase/info';
+import { adminFetch } from '../utils/supabase/adminSession';
 
 interface Submission {
   key: string;
@@ -32,14 +32,7 @@ export function AdminSubmissionsPage() {
   const fetchSubmissions = async () => {
     setLoading(true);
     try {
-      const response = await fetch(
-        `https://${projectId}.supabase.co/functions/v1/make-server-feacf0d8/submissions`,
-        {
-          headers: {
-            'Authorization': `Bearer ${publicAnonKey}`
-          }
-        }
-      );
+      const response = await adminFetch('/submissions');
 
       const data = await response.json();
 
@@ -57,20 +50,14 @@ export function AdminSubmissionsPage() {
 
   const updateStatus = async (submissionId: string, newStatus: string) => {
     try {
-      const response = await fetch(
-        `https://${projectId}.supabase.co/functions/v1/make-server-feacf0d8/update-submission-status`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${publicAnonKey}`
-          },
-          body: JSON.stringify({
-            submissionId,
-            status: newStatus
-          })
-        }
-      );
+      const response = await adminFetch('/update-submission-status', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          submissionId,
+          status: newStatus
+        })
+      });
 
       const data = await response.json();
 

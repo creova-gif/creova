@@ -7,7 +7,7 @@ import {
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { toast } from 'sonner@2.0.3';
-import { projectId, publicAnonKey } from '../utils/supabase/info';
+import { adminFetch } from '../utils/supabase/adminSession';
 import {
   Dialog,
   DialogContent,
@@ -62,14 +62,8 @@ export function RefundManagementPage() {
     setLoading(true);
     try {
       const [paymentsRes, refundsRes] = await Promise.all([
-        fetch(
-          `https://${projectId}.supabase.co/functions/v1/make-server-feacf0d8/payments`,
-          { headers: { 'Authorization': `Bearer ${publicAnonKey}` } }
-        ),
-        fetch(
-          `https://${projectId}.supabase.co/functions/v1/make-server-feacf0d8/refunds`,
-          { headers: { 'Authorization': `Bearer ${publicAnonKey}` } }
-        )
+        adminFetch('/payments'),
+        adminFetch('/refunds')
       ]);
 
       const paymentsData = await paymentsRes.json();
@@ -98,21 +92,15 @@ export function RefundManagementPage() {
 
     setIsRefunding(true);
     try {
-      const response = await fetch(
-        `https://${projectId}.supabase.co/functions/v1/make-server-feacf0d8/create-refund`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${publicAnonKey}`
-          },
-          body: JSON.stringify({
-            paymentIntentId: selectedPayment.stripe_payment_intent_id,
-            amount: refundAmount ? parseFloat(refundAmount) : undefined,
-            reason: refundReason
-          })
-        }
-      );
+      const response = await adminFetch('/create-refund', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          paymentIntentId: selectedPayment.stripe_payment_intent_id,
+          amount: refundAmount ? parseFloat(refundAmount) : undefined,
+          reason: refundReason
+        })
+      });
 
       const data = await response.json();
 

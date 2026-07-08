@@ -38,6 +38,277 @@ const rateLimit = (maxRequests: number, windowMs: number) => {
   };
 };
 
+// ---------------------------------------------------------------------------
+// Security: Admin session tokens
+//
+// AdminAuth.tsx used to compare the password client-side against a value
+// baked into the public JS bundle — anyone could read it out of the bundle,
+// or just skip it entirely by writing the "authenticated" flag straight into
+// sessionStorage from devtools. None of that touched the server, so every
+// route below was reachable by anyone regardless of the password.
+//
+// Real fix: the password is checked once, server-side, in /admin-login. On
+// success we issue a short-lived HMAC-signed token. Every admin-only route
+// verifies that token itself before doing anything — the client's "logged
+// in" state is UX only, not a security boundary.
+// ---------------------------------------------------------------------------
+
+function timingSafeEqual(a: string, b: string): boolean {
+  if (a.length !== b.length) return false;
+  let diff = 0;
+  for (let i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  return diff === 0;
+}
+
+function toBase64Url(bytes: Uint8Array): string {
+  let binary = "";
+  for (const b of bytes) binary += String.fromCharCode(b);
+  return btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+}
+
+function fromBase64Url(value: string): string {
+  const padded = value.replace(/-/g, "+").replace(/_/g, "/");
+  const pad = padded.length % 4 === 0 ? "" : "=".repeat(4 - (padded.length % 4));
+  return atob(padded + pad);
+}
+
+async function hmacSha256Hex(data: string, secret: string): Promise<string> {
+  const key = await crypto.subtle.importKey(
+    "raw",
+    new TextEncoder().encode(secret),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"]
+  );
+  const sig = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(data));
+  return Array.from(new Uint8Array(sig)).map((b) => b.toString(16).padStart(2, "0")).join("");
+}
+
+async function hmacSha256B64Url(data: string, secret: string): Promise<string> {
+  const key = await crypto.subtle.importKey(
+    "raw",
+    new TextEncoder().encode(secret),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"]
+  );
+  const sig = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(data));
+  return toBase64Url(new Uint8Array(sig));
+}
+
+const ADMIN_SESSION_TTL_MS = 4 * 60 * 60 * 1000; // 4 hours, matches the old client-side expiry
+
+async function issueAdminToken(): Promise<string> {
+  const secret = Deno.env.get("ADMIN_SESSION_SECRET");
+  if (!secret) throw new Error("ADMIN_SESSION_SECRET not configured");
+  const payloadB64 = toBase64Url(
+    new TextEncoder().encode(JSON.stringify({ role: "admin", iat: Date.now(), exp: Date.now() + ADMIN_SESSION_TTL_MS }))
+  );
+  const sig = await hmacSha256B64Url(payloadB64, secret);
+  return `${payloadB64}.${sig}`;
+}
+
+async function verifyAdminToken(token: string | undefined | null): Promise<boolean> {
+  if (!token) return false;
+  const secret = Deno.env.get("ADMIN_SESSION_SECRET");
+  if (!secret) return false;
+  const parts = token.split(".");
+  if (parts.length !== 2) return false;
+  const [payloadB64, sig] = parts;
+  const expectedSig = await hmacSha256B64Url(payloadB64, secret);
+  if (!timingSafeEqual(sig, expectedSig)) return false;
+  try {
+    const payload = JSON.parse(fromBase64Url(payloadB64));
+    return payload.role === "admin" && typeof payload.exp === "number" && Date.now() < payload.exp;
+  } catch {
+    return false;
+  }
+}
+
+// Middleware: apply to every route that reads or mutates customer/financial data.
+const requireAdmin = async (c: any, next: any) => {
+  const token = c.req.header("x-admin-session");
+  if (!(await verifyAdminToken(token))) {
+    return c.json({ error: "Unauthorized" }, 401);
+  }
+  await next();
+};
+
+// ---------------------------------------------------------------------------
+// Security: Stripe webhook signature verification
+//
+// The handler used to JSON.parse the request body directly with a comment
+// admitting the signature was never checked. That meant anyone who knew (or
+// guessed) a real payment_intent_id — trivially obtainable by calling
+// create-payment-intent themselves — could POST a forged
+// "payment_intent.succeeded" event and flip any order to completed with no
+// money ever moving. This implements Stripe's documented signature scheme
+// (https://stripe.com/docs/webhooks#verify-manually) by hand, using Web
+// Crypto, so it works in Deno without pulling in the full Stripe SDK.
+// ---------------------------------------------------------------------------
+async function verifyStripeWebhookSignature(
+  rawBody: string,
+  signatureHeader: string | undefined | null,
+  secret: string,
+  toleranceSeconds = 300
+): Promise<boolean> {
+  if (!signatureHeader) return false;
+  const parts = signatureHeader.split(",").reduce((acc: Record<string, string>, part) => {
+    const [k, v] = part.split("=");
+    if (k && v) acc[k] = v;
+    return acc;
+  }, {});
+  const timestamp = parts["t"];
+  const expectedSigHex = parts["v1"];
+  if (!timestamp || !expectedSigHex) return false;
+
+  const ageSeconds = Math.abs(Date.now() / 1000 - Number(timestamp));
+  if (!Number.isFinite(ageSeconds) || ageSeconds > toleranceSeconds) return false;
+
+  const actualSigHex = await hmacSha256Hex(`${timestamp}.${rawBody}`, secret);
+  return timingSafeEqual(actualSigHex, expectedSigHex);
+}
+
+// ---------------------------------------------------------------------------
+// Security: server-side payment confirmation
+//
+// purchase-digital-product, create-membership, and purchase-event-ticket used
+// to take a client-asserted payment_intent_id and unconditionally issue a
+// real download token / member number / ticket code — no check that any
+// money had actually moved. This confirms the Payment Intent actually
+// succeeded (and, where a trusted price is known, that the right amount was
+// charged) before any of those routes grant anything.
+// ---------------------------------------------------------------------------
+async function verifyStripePaymentSucceeded(
+  paymentIntentId: unknown,
+  expectedAmountCents?: number
+): Promise<{ ok: true } | { ok: false; error: string }> {
+  if (!paymentIntentId || typeof paymentIntentId !== "string") {
+    return { ok: false, error: "Missing payment_intent_id" };
+  }
+  const stripeSecretKey = Deno.env.get("STRIPE_SECRET_KEY");
+  if (!stripeSecretKey) {
+    console.error("STRIPE_SECRET_KEY not configured");
+    return { ok: false, error: "Payment configuration error" };
+  }
+  const resp = await fetch(
+    `https://api.stripe.com/v1/payment_intents/${encodeURIComponent(paymentIntentId)}`,
+    { headers: { Authorization: `Bearer ${stripeSecretKey}` } }
+  );
+  if (!resp.ok) {
+    return { ok: false, error: "Unable to verify payment with Stripe" };
+  }
+  const intent = await resp.json();
+  if (intent.status !== "succeeded") {
+    return { ok: false, error: `Payment has not succeeded (status: ${intent.status})` };
+  }
+  if (typeof expectedAmountCents === "number" && intent.amount !== expectedAmountCents) {
+    return { ok: false, error: "Payment amount does not match the expected price" };
+  }
+  return { ok: true };
+}
+
+// Single source of truth for membership pricing — both create-membership and
+// create-subscription-checkout key off this instead of each hardcoding their
+// own copy (they used to disagree in structure, which is exactly how price
+// drift between two "sources of truth" happens).
+const MEMBERSHIP_PRICING: Record<string, { price: number; name: string }> = {
+  creator: { price: 19900, name: "CREOVA Creator Membership" }, // $199 CAD in cents
+  legacy: { price: 49900, name: "CREOVA Legacy Membership" }, // $499 CAD in cents
+};
+
+// ---------------------------------------------------------------------------
+// Security: server-side cart pricing catalog
+//
+// create-payment-intent used to forward whatever "amount" the client sent
+// straight to Stripe — anyone could edit the request and pay any price they
+// wanted. This mirrors the real per-item prices from src/pages/ShopPage.tsx
+// and src/pages/DigitalProductsPage.tsx so cart totals can be recomputed and
+// verified server-side instead of trusted blindly.
+//
+// Known limitation: this covers Shop + Digital Product SKUs only. Service
+// bookings and rentals still don't have a server-side price catalog (their
+// prices live only as page copy, not structured data) — create-payment-intent
+// falls back to a sanity-bound check for those, not an exact-match one. That
+// gap is tracked as a follow-up, not silently ignored.
+// ---------------------------------------------------------------------------
+const PRODUCT_CATALOG: Record<string, number> = {
+  // Shop — src/pages/ShopPage.tsx
+  "graphic-tee-soft-power": 55,
+  "graphic-tee-visibility": 55,
+  "graphic-tee-resistance": 55,
+  "graphic-tee-diaspora": 55,
+  "graphic-tee-archive": 58,
+  "graphic-tee-community": 55,
+  "longsleeve-archive": 60,
+  "longsleeve-heritage": 60,
+  "oversized-hoodie-earth": 85,
+  "crewneck-visibility": 78,
+  "hoodie-soft-power": 85,
+  "crewneck-archive": 78,
+  "varsity-jacket-premium": 175,
+  "windbreaker-light": 120,
+  "bomber-jacket": 165,
+  "cargo-pants-utility": 95,
+  "jogger-pants-comfort": 85,
+  "tracksuit-set-archive": 135,
+  "tracksuit-set-heritage": 145,
+  "bucket-hat-seen": 38,
+  "dad-hat-logo": 32,
+  "beanie-winter": 28,
+  "canvas-tote-archive": 45,
+  "fanny-pack-utility": 48,
+  "crew-socks-archive": 18,
+  "ankle-socks-essential": 15,
+  "phone-case-leather": 35,
+  "ipad-case-sleeve": 52,
+  "laptop-sleeve-13": 65,
+  "laptop-sleeve-15": 72,
+  "keychain-metal": 22,
+  "keychain-leather": 28,
+  // Digital products — src/pages/DigitalProductsPage.tsx
+  "brand-kit-template": 69,
+  "social-media-templates": 42,
+  "content-calendar": 28,
+  "pricing-guide-template": 55,
+  "lightroom-presets": 48,
+  "video-intro-templates": 65,
+  "client-onboarding-kit": 82,
+  "brand-strategy-workbook": 35,
+  "email-marketing-templates": 52,
+};
+
+const HST_RATE = 0.13; // Ontario
+const FREE_SHIPPING_THRESHOLD = 100;
+const FLAT_SHIPPING = 15;
+
+/**
+ * Recomputes a cart total from the trusted catalog above. Returns
+ * allRecognized: false if any item isn't in the catalog (e.g. a service
+ * booking) — callers should treat that as "can't verify," not "verified,"
+ * and fall back to a sanity-bound check instead of blocking the purchase.
+ */
+function computeTrustedCartTotalCents(items: unknown): { totalCents: number; allRecognized: boolean } {
+  if (!Array.isArray(items) || items.length === 0) {
+    return { totalCents: 0, allRecognized: false };
+  }
+  let subtotal = 0;
+  let allRecognized = true;
+  for (const item of items as any[]) {
+    const price = PRODUCT_CATALOG[item?.id];
+    const qty = Number(item?.quantity) > 0 ? Number(item.quantity) : 1;
+    if (typeof price !== "number") {
+      allRecognized = false;
+      continue;
+    }
+    subtotal += price * qty;
+  }
+  if (!allRecognized) return { totalCents: 0, allRecognized: false };
+  const hst = subtotal * HST_RATE;
+  const shipping = subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : FLAT_SHIPPING;
+  return { totalCents: Math.round((subtotal + hst + shipping) * 100), allRecognized: true };
+}
+
 // Security: Add security headers middleware
 app.use('*', async (c, next) => {
   await next();
@@ -87,8 +358,29 @@ app.get("/make-server-feacf0d8/health", (c) => {
   return c.json({ status: "ok" });
 });
 
+// Admin login - the ONLY place the admin password is ever checked, and it
+// only ever happens server-side. Rate-limited to slow down brute force.
+app.post("/make-server-feacf0d8/admin-login", rateLimit(5, 60000), async (c) => {
+  try {
+    const adminPassword = Deno.env.get("ADMIN_PASSWORD");
+    if (!adminPassword) {
+      console.error("ADMIN_PASSWORD not configured");
+      return c.json({ error: "Admin login is not configured" }, 500);
+    }
+    const { password } = await c.req.json();
+    if (typeof password !== "string" || !timingSafeEqual(password, adminPassword)) {
+      return c.json({ error: "Incorrect password" }, 401);
+    }
+    const token = await issueAdminToken();
+    return c.json({ status: "success", token, expiresIn: ADMIN_SESSION_TTL_MS });
+  } catch (error) {
+    console.error("Admin login error:", error);
+    return c.json({ error: "Login failed" }, 500);
+  }
+});
+
 // Audit log endpoint - Store security audit logs
-app.post("/make-server-feacf0d8/audit-log", async (c) => {
+app.post("/make-server-feacf0d8/audit-log", requireAdmin, async (c) => {
   try {
     const body = await c.req.json();
     const { timestamp, eventType, userId, email, ip, userAgent, details, severity, endpoint, statusCode } = body;
@@ -128,7 +420,7 @@ app.post("/make-server-feacf0d8/audit-log", async (c) => {
 });
 
 // Security alert endpoint - Handle critical security events
-app.post("/make-server-feacf0d8/security-alert", async (c) => {
+app.post("/make-server-feacf0d8/security-alert", requireAdmin, async (c) => {
   try {
     const body = await c.req.json();
     const { alert, log } = body;
@@ -163,7 +455,7 @@ app.post("/make-server-feacf0d8/security-alert", async (c) => {
 });
 
 // Export audit logs endpoint (admin only - add auth in production)
-app.get("/make-server-feacf0d8/audit-logs/export", async (c) => {
+app.get("/make-server-feacf0d8/audit-logs/export", requireAdmin, async (c) => {
   try {
     const startDate = c.req.query('startDate');
     const endDate = c.req.query('endDate');
@@ -293,9 +585,26 @@ app.post("/make-server-feacf0d8/create-payment-intent", rateLimit(10, 60000), as
     const body = await c.req.json();
     const { amount, currency, customer_info, items } = body;
 
+    // Never trust a non-positive or absurd amount, regardless of whether the
+    // cart contents are recognizable below.
+    if (typeof amount !== "number" || !Number.isFinite(amount) || amount <= 0 || amount > 10_000_000) {
+      return c.json({ error: "Invalid amount" }, 400);
+    }
+
+    // Where every cart item is a known Shop/Digital Product SKU, recompute
+    // the total from the trusted catalog and reject a mismatch outright —
+    // this is the real fix for "the customer sets their own price." Carts
+    // containing a service/booking item (no catalog entry) fall back to the
+    // sanity bound above only; see the PRODUCT_CATALOG comment for why.
+    const { totalCents: trustedCents, allRecognized } = computeTrustedCartTotalCents(items);
+    if (allRecognized && Math.abs(trustedCents - Math.round(amount)) > 1) {
+      console.warn(`Rejected payment intent: client sent ${amount}, trusted total is ${trustedCents}`);
+      return c.json({ error: "Order total does not match the current prices" }, 400);
+    }
+
     // Get Stripe secret key from environment
     const stripeSecretKey = Deno.env.get("STRIPE_SECRET_KEY");
-    
+
     if (!stripeSecretKey) {
       console.error("STRIPE_SECRET_KEY not found in environment variables");
       return c.json({ error: "Payment configuration error" }, 500);
@@ -362,9 +671,12 @@ app.post("/make-server-feacf0d8/stripe-webhook", async (c) => {
       return c.json({ error: "Webhook not configured" }, 500);
     }
 
-    // Verify webhook signature
-    // Note: In production, you should verify the signature using Stripe's library
-    // For now, we'll just parse the event
+    // Verify webhook signature — reject anything that isn't genuinely from Stripe.
+    const signatureValid = await verifyStripeWebhookSignature(body, signature, webhookSecret);
+    if (!signatureValid) {
+      console.error("Rejected webhook: invalid or missing Stripe signature");
+      return c.json({ error: "Invalid signature" }, 400);
+    }
     const event = JSON.parse(body);
 
     console.log("Received Stripe webhook:", event.type);
@@ -473,15 +785,25 @@ app.post("/make-server-feacf0d8/purchase-digital-product", async (c) => {
     const body = await c.req.json();
     const { product_id, customer_info, amount, payment_intent_id } = body;
 
+    // Confirm real money actually moved before handing out a download token.
+    // No trusted catalog exists for digital-product pricing yet, so we can
+    // only verify the payment succeeded, not that the amount was correct —
+    // see create-payment-intent for the same limitation.
+    const paymentCheck = await verifyStripePaymentSucceeded(payment_intent_id);
+    if (!paymentCheck.ok) {
+      return c.json({ error: paymentCheck.error }, 402);
+    }
+
     const purchaseId = `digital_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+    const downloadToken = `token_${Math.random().toString(36).substr(2, 16)}`;
+
     await kv.set(purchaseId, {
       product_id,
       customer_info,
       amount,
       payment_intent_id,
       status: 'completed',
-      download_token: `token_${Math.random().toString(36).substr(2, 16)}`,
+      download_token: downloadToken,
       created_at: new Date().toISOString()
     });
 
@@ -489,7 +811,7 @@ app.post("/make-server-feacf0d8/purchase-digital-product", async (c) => {
 
     return c.json({
       purchaseId,
-      download_token: `token_${Math.random().toString(36).substr(2, 16)}`,
+      download_token: downloadToken,
       status: 'success',
       message: 'Digital product purchased successfully'
     });
@@ -548,8 +870,17 @@ app.post("/make-server-feacf0d8/purchase-event-ticket", async (c) => {
     const body = await c.req.json();
     const { event_id, customer_info, quantity, total_amount, payment_intent_id } = body;
 
+    // No trusted per-event price catalog exists yet, so — same as digital
+    // products — we can confirm the payment succeeded but not that the
+    // amount was correct for this event/quantity.
+    const paymentCheck = await verifyStripePaymentSucceeded(payment_intent_id);
+    if (!paymentCheck.ok) {
+      return c.json({ error: paymentCheck.error }, 402);
+    }
+
     const ticketId = `ticket_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+    const ticketCode = `CREOVA-${Math.random().toString(36).substr(2, 8).toUpperCase()}`;
+
     await kv.set(ticketId, {
       event_id,
       customer_info,
@@ -557,7 +888,7 @@ app.post("/make-server-feacf0d8/purchase-event-ticket", async (c) => {
       total_amount,
       payment_intent_id,
       status: 'confirmed',
-      ticket_code: `CREOVA-${Math.random().toString(36).substr(2, 8).toUpperCase()}`,
+      ticket_code: ticketCode,
       created_at: new Date().toISOString()
     });
 
@@ -565,7 +896,7 @@ app.post("/make-server-feacf0d8/purchase-event-ticket", async (c) => {
 
     return c.json({
       ticketId,
-      ticket_code: `CREOVA-${Math.random().toString(36).substr(2, 8).toUpperCase()}`,
+      ticket_code: ticketCode,
       status: 'success',
       message: 'Event ticket purchased successfully'
     });
@@ -581,14 +912,28 @@ app.post("/make-server-feacf0d8/create-membership", async (c) => {
     const body = await c.req.json();
     const { membership_type, customer_info, payment_intent_id } = body; // 'creator' or 'legacy'
 
+    const tier = MEMBERSHIP_PRICING[membership_type];
+    if (!tier) {
+      return c.json({ error: "Invalid membership type" }, 400);
+    }
+
+    // Confirm the payment actually succeeded AND paid the real price for
+    // this tier — unlike digital products/tickets, membership pricing is
+    // a known, trusted catalog, so we can check the amount too.
+    const paymentCheck = await verifyStripePaymentSucceeded(payment_intent_id, tier.price);
+    if (!paymentCheck.ok) {
+      return c.json({ error: paymentCheck.error }, 402);
+    }
+
     const membershipId = `membership_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+    const memberNumber = `CM-${Math.random().toString(36).substr(2, 6).toUpperCase()}`;
+
     await kv.set(membershipId, {
       membership_type,
       customer_info,
       payment_intent_id,
       status: 'active',
-      member_number: `CM-${Math.random().toString(36).substr(2, 6).toUpperCase()}`,
+      member_number: memberNumber,
       created_at: new Date().toISOString(),
       expires_at: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString() // 1 year
     });
@@ -597,7 +942,7 @@ app.post("/make-server-feacf0d8/create-membership", async (c) => {
 
     return c.json({
       membershipId,
-      member_number: `CM-${Math.random().toString(36).substr(2, 6).toUpperCase()}`,
+      member_number: memberNumber,
       status: 'success',
       message: 'Membership created successfully'
     });
@@ -620,20 +965,8 @@ app.post("/make-server-feacf0d8/create-subscription-checkout", rateLimit(5, 6000
       return c.json({ error: "Payment configuration error" }, 500);
     }
 
-    // Define pricing for each membership tier
-    const membershipPricing = {
-      creator: {
-        price: 19900, // $199 CAD in cents
-        name: "CREOVA Creator Membership"
-      },
-      legacy: {
-        price: 49900, // $499 CAD in cents
-        name: "CREOVA Legacy Membership"
-      }
-    };
+    const membership = MEMBERSHIP_PRICING[membership_type];
 
-    const membership = membershipPricing[membership_type];
-    
     if (!membership) {
       return c.json({ error: "Invalid membership type" }, 400);
     }
@@ -1026,7 +1359,7 @@ app.post("/make-server-feacf0d8/submit-rental", async (c) => {
 });
 
 // Get all contact and collaboration submissions (admin endpoint)
-app.get("/make-server-feacf0d8/submissions", async (c) => {
+app.get("/make-server-feacf0d8/submissions", requireAdmin, async (c) => {
   try {
     const contacts = await kv.getByPrefix("contact_");
     const collaborations = await kv.getByPrefix("collaboration_");
@@ -1050,7 +1383,7 @@ app.get("/make-server-feacf0d8/submissions", async (c) => {
 });
 
 // Update submission status (admin endpoint)
-app.post("/make-server-feacf0d8/update-submission-status", async (c) => {
+app.post("/make-server-feacf0d8/update-submission-status", requireAdmin, async (c) => {
   try {
     const body = await c.req.json();
     const { submissionId, status } = body;
@@ -1200,7 +1533,7 @@ app.post("/make-server-feacf0d8/track-event", async (c) => {
 });
 
 // Get analytics data (admin endpoint)
-app.get("/make-server-feacf0d8/analytics", async (c) => {
+app.get("/make-server-feacf0d8/analytics", requireAdmin, async (c) => {
   try {
     const { searchParams } = new URL(c.req.url);
     const days = parseInt(searchParams.get('days') || '30');
@@ -1342,7 +1675,7 @@ app.get("/make-server-feacf0d8/analytics", async (c) => {
 });
 
 // Get all payments for refund management
-app.get("/make-server-feacf0d8/payments", async (c) => {
+app.get("/make-server-feacf0d8/payments", requireAdmin, async (c) => {
   try {
     const payments = await kv.getByPrefix("payment_");
     
@@ -1364,7 +1697,7 @@ app.get("/make-server-feacf0d8/payments", async (c) => {
 });
 
 // Create refund
-app.post("/make-server-feacf0d8/create-refund", async (c) => {
+app.post("/make-server-feacf0d8/create-refund", requireAdmin, async (c) => {
   try {
     const body = await c.req.json();
     const { paymentIntentId, amount, reason } = body;
@@ -1456,7 +1789,7 @@ app.post("/make-server-feacf0d8/create-refund", async (c) => {
 });
 
 // Get refund history
-app.get("/make-server-feacf0d8/refunds", async (c) => {
+app.get("/make-server-feacf0d8/refunds", requireAdmin, async (c) => {
   try {
     const refunds = await kv.getByPrefix("refund_");
     
