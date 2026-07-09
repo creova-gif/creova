@@ -7,6 +7,7 @@ import { RevealOnScroll } from '../components/RevealOnScroll';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { useGalleries, type Gallery } from '../hooks/useGalleries';
+import { galleryListSchema } from '../utils/structuredData';
 
 const MONTHS_SHORT = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -208,12 +209,25 @@ export function WorkPage() {
     );
   }
 
+  const structuredData = useMemo(
+    () => galleryListSchema(sorted.map(g => ({
+      title: g.title,
+      subtitle: g.subtitle,
+      url: g.url,
+      image: g.image,
+      date: g.date,
+      itemCount: g.itemCount,
+    }))),
+    [sorted]
+  );
+
   return (
     <div style={{ backgroundColor: '#0A0A0A' }}>
       <PageSEO
         title="Our Work"
-        description="Explore CREOVA's portfolio of photography, videography, brand design, and creative campaigns for BIPOC entrepreneurs and cultural brands across Canada."
-      path="/work"
+        description={`Explore CREOVA's ${sorted.length}-gallery portfolio of photography, videography, brand design, and creative campaigns for BIPOC entrepreneurs and cultural brands across Canada.`}
+        path="/work"
+        jsonLd={structuredData}
       />
 
       {/* ── CINEMATIC HERO ── */}

@@ -89,6 +89,46 @@ export function breadcrumbSchema(items: Array<{ name: string; path: string }>) {
   };
 }
 
+export function gallerySchema(gallery: {
+  title: string;
+  subtitle?: string;
+  url: string;
+  image: string;
+  date?: string;
+  itemCount?: number;
+}) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ImageGallery',
+    name: gallery.subtitle ? `${gallery.title} — ${gallery.subtitle}` : gallery.title,
+    url: gallery.url,
+    image: gallery.image.startsWith('http') ? gallery.image : `${SITE_URL}${gallery.image}`,
+    ...(gallery.date ? { datePublished: gallery.date } : {}),
+    ...(typeof gallery.itemCount === 'number' && gallery.itemCount > 0
+      ? { numberOfItems: gallery.itemCount }
+      : {}),
+    author: {
+      '@type': 'Organization',
+      name: 'CREOVA',
+    },
+  };
+}
+
+export function galleryListSchema(
+  galleries: Array<{ title: string; subtitle?: string; url: string; image: string; date?: string; itemCount?: number }>
+) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'CREOVA Photography Portfolio',
+    itemListElement: galleries.map((g, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      item: gallerySchema(g),
+    })),
+  };
+}
+
 export function faqSchema(items: Array<{ question: string; answer: string }>) {
   return {
     '@context': 'https://schema.org',
