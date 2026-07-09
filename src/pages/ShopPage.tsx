@@ -5,6 +5,7 @@ import { Calendar, Package, Shirt, Tag, Sparkles } from 'lucide-react';
 import { motion } from 'motion/react';
 import { SizeGuide } from '../components/SizeGuide';
 import { FallDropTeaser } from '../components/FallDropTeaser';
+import { productListSchema } from '../utils/structuredData';
 
 const warmGradient = 'linear-gradient(135deg, #A68F59 0%, #B1643B 100%)';
 
@@ -83,6 +84,8 @@ export function ShopPage() {
       <PageSEO
         title="Shop — SEEN Fall/Winter Capsule"
         description="SEEN by CREOVA — Vol. 01 Fall/Winter 2026 capsule collection. 14 styles of culturally rich streetwear, footwear and accessories. Pre-order now, ships Fall 2026."
+        path="/shop"
+        jsonLd={productListSchema(products)}
       />
 
       {/* Announcement banner — warm gradient */}

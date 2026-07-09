@@ -39,6 +39,7 @@ export function PricingPage() {
       <PageSEO
         title="Pricing"
         description="Transparent pricing for photography, videography, brand design, social media, and event coverage. Packages starting from $450 across Ontario."
+      path="/pricing"
       />
       {/* Availability Banner */}
       <div className="relative z-40 py-3 px-4 text-center" style={{ backgroundColor: '#121212', borderBottom: '1px solid rgba(166,143,89,0.25)' }}>
@@ -74,17 +75,18 @@ export function PricingPage() {
                 <div className="w-10 h-px" style={{ backgroundColor: '#A68F59' }} />
                 <span className="text-xs tracking-[0.45em] uppercase" style={{ color: '#A68F59' }}>Transparent Pricing</span>
               </div>
-              <h1 className="font-light tracking-tight leading-none mb-3" style={{ fontSize: 'clamp(3.2rem, 7vw, 7rem)', color: '#F5F1EB' }}>
-                Real Value.
-              </h1>
-              <h1 className="italic tracking-tight leading-none mb-8" style={{
-                fontSize: 'clamp(3.2rem, 7vw, 7rem)',
-                backgroundImage: 'linear-gradient(95deg, #A68F59 0%, #E3DCD3 65%)',
-                WebkitBackgroundClip: 'text',
-                backgroundClip: 'text',
-                color: 'transparent',
-              }}>
-                Real Results.
+              <h1 className="tracking-tight leading-none mb-8" style={{ fontSize: 'clamp(3.2rem, 7vw, 7rem)' }}>
+                <span className="block font-light mb-3" style={{ color: '#F5F1EB' }}>
+                  Real Value.
+                </span>
+                <span className="block italic" style={{
+                  backgroundImage: 'linear-gradient(95deg, #A68F59 0%, #E3DCD3 65%)',
+                  WebkitBackgroundClip: 'text',
+                  backgroundClip: 'text',
+                  color: 'transparent',
+                }}>
+                  Real Results.
+                </span>
               </h1>
               <p className="text-base leading-relaxed max-w-lg" style={{ color: '#7A6F66' }}>
                 Dedicated creative time, strategic thinking, and long-term brand value — transparent pricing for every Canadian business.

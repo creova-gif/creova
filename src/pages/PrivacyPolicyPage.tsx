@@ -2,12 +2,18 @@ import { useNavigate } from 'react-router';
 import { Button } from '../components/ui/button';
 import { motion } from 'motion/react';
 import { ArrowLeft, Shield, CheckCircle2 } from 'lucide-react';
+import { PageSEO } from '../components/PageSEO';
 
 export function PrivacyPolicyPage() {
   const navigate = useNavigate();
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#F5F1EB' }}>
+      <PageSEO
+        title="Privacy Policy"
+        description="CREOVA's privacy policy — how we collect, use, and protect your personal information across our website and services."
+        path="/privacy-policy"
+      />
       {/* Hero */}
       <section className="relative py-16 overflow-hidden" style={{ backgroundColor: '#121212' }}>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">

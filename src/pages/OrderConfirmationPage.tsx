@@ -4,6 +4,7 @@ import { motion } from 'motion/react';
 import { CheckCircle2, Package, Mail, ArrowRight, Download } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Link } from 'react-router';
+import { PageSEO } from '../components/PageSEO';
 
 export function OrderConfirmationPage() {
   const navigate = useNavigate();
@@ -31,6 +32,12 @@ export function OrderConfirmationPage() {
 
   return (
     <div style={{ backgroundColor: '#F5F1EB', minHeight: '100vh' }}>
+      <PageSEO
+        title="Order Confirmation"
+        description="Your CREOVA order confirmation."
+        path="/order-confirmation"
+        noIndex
+      />
       <section className="py-20">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div

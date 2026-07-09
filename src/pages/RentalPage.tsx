@@ -14,6 +14,7 @@ import { toast } from 'sonner';
 import { projectId, publicAnonKey } from '../utils/supabase/info';
 import { format, differenceInDays } from 'date-fns';
 import { logger } from '../utils/logger';
+import { PageSEO } from '../components/PageSEO';
 
 export function RentalPage() {
   const navigate = useNavigate();
@@ -270,6 +271,11 @@ export function RentalPage() {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#F5F1EB' }}>
+      <PageSEO
+        title="Equipment Rental"
+        description="Rent professional photography and videography equipment from CREOVA — cameras, lenses, lighting, and audio gear for creators across Ontario."
+        path="/rental"
+      />
       {/* Hero — editorial asymmetric split */}
       <section className="relative overflow-hidden" style={{ backgroundColor: '#0A0A0A', minHeight: '420px' }}>
         <div className="absolute inset-0 pointer-events-none" style={{

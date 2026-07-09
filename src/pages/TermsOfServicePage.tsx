@@ -2,12 +2,18 @@ import { useNavigate } from 'react-router';
 import { Button } from '../components/ui/button';
 import { motion } from 'motion/react';
 import { ArrowLeft, FileText, CheckCircle2 } from 'lucide-react';
+import { PageSEO } from '../components/PageSEO';
 
 export function TermsOfServicePage() {
   const navigate = useNavigate();
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#F5F1EB' }}>
+      <PageSEO
+        title="Terms of Service"
+        description="Terms of service for CREOVA's creative agency services, including photography, videography, brand design, and digital products."
+        path="/terms-of-service"
+      />
       {/* Hero */}
       <section className="relative py-16 overflow-hidden" style={{ backgroundColor: '#121212' }}>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router';
 import { supabase } from '../utils/supabase/client';
 import { Loader2, CheckCircle2, XCircle } from 'lucide-react';
 import { motion } from 'motion/react';
+import { PageSEO } from '../components/PageSEO';
 
 export function AuthCallbackPage() {
   const navigate = useNavigate();
@@ -57,6 +58,12 @@ export function AuthCallbackPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#F5F1EB' }}>
+      <PageSEO
+        title="Signing In"
+        description="Completing authentication."
+        path="/auth/callback"
+        noIndex
+      />
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -66,21 +73,21 @@ export function AuthCallbackPage() {
         {status === 'loading' && (
           <>
             <Loader2 className="w-16 h-16 mx-auto mb-4 animate-spin" style={{ color: '#A68F59' }} />
-            <h2 className="text-2xl mb-2" style={{ color: '#121212' }}>{message}</h2>
+            <h1 className="text-2xl mb-2" style={{ color: '#121212' }}>{message}</h1>
           </>
         )}
         
         {status === 'success' && (
           <>
             <CheckCircle2 className="w-16 h-16 mx-auto mb-4" style={{ color: '#A68F59' }} />
-            <h2 className="text-2xl mb-2" style={{ color: '#121212' }}>{message}</h2>
+            <h1 className="text-2xl mb-2" style={{ color: '#121212' }}>{message}</h1>
           </>
         )}
         
         {status === 'error' && (
           <>
             <XCircle className="w-16 h-16 mx-auto mb-4" style={{ color: '#DC2626' }} />
-            <h2 className="text-2xl mb-2" style={{ color: '#121212' }}>{message}</h2>
+            <h1 className="text-2xl mb-2" style={{ color: '#121212' }}>{message}</h1>
           </>
         )}
       </motion.div>

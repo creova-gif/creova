@@ -11,6 +11,7 @@ import { toast } from 'sonner';
 import { motion } from 'motion/react';
 import { Eye, EyeOff, Mail, Lock, User, ArrowLeft, Sparkles, Users, Smartphone, Palette, Tag } from 'lucide-react';
 import { logger } from '../utils/logger';
+import { PageSEO } from '../components/PageSEO';
 
 type AuthMode = 'login' | 'signup' | 'forgot';
 
@@ -232,6 +233,12 @@ export function AuthPage() {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#F5F1EB' }}>
+      <PageSEO
+        title="Sign In"
+        description="Sign in to your CREOVA account."
+        path="/auth"
+        noIndex
+      />
       {/* Hero */}
       <section className="relative py-16 overflow-hidden" style={{ backgroundColor: '#121212' }}>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">

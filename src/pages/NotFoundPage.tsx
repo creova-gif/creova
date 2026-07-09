@@ -1,12 +1,19 @@
 import { Link } from 'react-router';
 import { motion } from 'motion/react';
 import { Home, Mail, ArrowRight } from 'lucide-react';
+import { PageSEO } from '../components/PageSEO';
 
 const warmGradient = 'linear-gradient(135deg, #A68F59 0%, #B1643B 100%)';
 
 export function NotFoundPage() {
   return (
     <div className="min-h-screen flex items-center justify-center px-6 py-24 overflow-hidden" style={{ backgroundColor: '#0A0A0A' }}>
+      <PageSEO
+        title="Page Not Found"
+        description="The page you're looking for doesn't exist or has moved."
+        path="/404"
+        noIndex
+      />
       {/* Ambient glow */}
       <div className="absolute inset-0 pointer-events-none" style={{
         background: `radial-gradient(ellipse 60% 60% at 50% 50%, rgba(166,143,89,0.06) 0%, transparent 70%)`

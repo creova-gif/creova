@@ -6,6 +6,7 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { toast } from 'sonner';
 import { adminLogin, clearAdminToken, getAdminToken } from '../utils/supabase/adminSession';
+import { PageSEO } from './PageSEO';
 
 // The password itself is never shipped to the client and never compared
 // here — it's checked once, server-side, in /admin-login. This component
@@ -65,6 +66,7 @@ export function AdminAuth({ children }: { children: React.ReactNode }) {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#F5F1EB' }}>
+        <PageSEO title="Admin" description="CREOVA staff admin dashboard." path={window.location.pathname} noIndex />
         <div className="animate-pulse text-center">
           <Shield className="w-12 h-12 mx-auto mb-4" style={{ color: '#B1643B' }} />
           <p style={{ color: '#121212' }}>Verifying access...</p>
@@ -76,6 +78,7 @@ export function AdminAuth({ children }: { children: React.ReactNode }) {
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen flex items-center justify-center px-4" style={{ backgroundColor: '#F5F1EB' }}>
+        <PageSEO title="Admin Access" description="CREOVA staff admin dashboard." path={window.location.pathname} noIndex />
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

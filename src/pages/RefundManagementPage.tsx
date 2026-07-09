@@ -17,6 +17,7 @@ import {
   DialogTrigger,
 } from '../components/ui/dialog';
 import { Label } from '../components/ui/label';
+import { PageSEO } from '../components/PageSEO';
 
 interface Payment {
   paymentId: string;
@@ -151,6 +152,12 @@ export function RefundManagementPage() {
 
   return (
     <div style={{ backgroundColor: '#F5F1EB', minHeight: '100vh' }}>
+      <PageSEO
+        title="Refund Management"
+        description="CREOVA staff admin dashboard."
+        path="/admin/refunds"
+        noIndex
+      />
       {/* Header */}
       <section className="py-16" style={{ backgroundColor: '#121212' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

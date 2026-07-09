@@ -277,6 +277,7 @@ export default function MembershipsPage() {
       <PageSEO
         title="Memberships"
         description="Join the CREOVA creative family. Free community membership, or upgrade to Creator ($199/yr) or Legacy ($499/yr) for exclusive discounts, mentorship, and benefits."
+      path="/memberships"
       />
       {/* Hero Section — Editorial */}
       <section className="relative overflow-hidden" style={{ backgroundColor: '#0A0A0A' }}>
@@ -303,17 +304,18 @@ export default function MembershipsPage() {
                 <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: '#B1643B' }} />
                 <span className="text-xs tracking-[0.3em] uppercase font-medium" style={{ color: '#B1643B' }}>{t.availableBadge}</span>
               </motion.div>
-              <h1 className="font-light tracking-tight leading-none mb-2" style={{ fontSize: 'clamp(3rem, 7vw, 7rem)', color: '#F5F1EB' }}>
-                {language === 'fr' ? 'Rejoignez' : 'Join the'}
-              </h1>
-              <h1 className="italic tracking-tight leading-none mb-8" style={{
-                fontSize: 'clamp(3rem, 7vw, 7rem)',
-                backgroundImage: 'linear-gradient(95deg, #A68F59 0%, #E3DCD3 65%)',
-                WebkitBackgroundClip: 'text',
-                backgroundClip: 'text',
-                color: 'transparent',
-              }}>
-                {language === 'fr' ? 'Famille.' : 'Family.'}
+              <h1 className="tracking-tight leading-none mb-8" style={{ fontSize: 'clamp(3rem, 7vw, 7rem)' }}>
+                <span className="block font-light mb-2" style={{ color: '#F5F1EB' }}>
+                  {language === 'fr' ? 'Rejoignez' : 'Join the'}
+                </span>
+                <span className="block italic" style={{
+                  backgroundImage: 'linear-gradient(95deg, #A68F59 0%, #E3DCD3 65%)',
+                  WebkitBackgroundClip: 'text',
+                  backgroundClip: 'text',
+                  color: 'transparent',
+                }}>
+                  {language === 'fr' ? 'Famille.' : 'Family.'}
+                </span>
               </h1>
               <p className="text-base leading-relaxed max-w-lg" style={{ color: '#7A6F66' }}>
                 {t.subtitle}

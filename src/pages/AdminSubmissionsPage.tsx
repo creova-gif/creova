@@ -4,6 +4,7 @@ import { Mail, Phone, Calendar, DollarSign, Briefcase, FileText, RefreshCw, Chec
 import { Button } from '../components/ui/button';
 import { toast } from 'sonner';
 import { adminFetch } from '../utils/supabase/adminSession';
+import { PageSEO } from '../components/PageSEO';
 
 interface Submission {
   key: string;
@@ -102,6 +103,12 @@ export function AdminSubmissionsPage() {
 
   return (
     <div style={{ backgroundColor: '#F5F1EB', minHeight: '100vh' }}>
+      <PageSEO
+        title="Admin Submissions"
+        description="CREOVA staff admin dashboard."
+        path="/admin/submissions"
+        noIndex
+      />
       {/* Header */}
       <section className="py-16" style={{ backgroundColor: '#121212' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

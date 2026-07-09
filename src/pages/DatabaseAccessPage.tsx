@@ -4,6 +4,7 @@ import { Button } from '../components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { toast } from 'sonner';
 import { AdminAuth } from '../components/AdminAuth';
+import { PageSEO } from '../components/PageSEO';
 
 export function DatabaseAccessPage() {
   const copyToClipboard = (text: string, label: string) => {
@@ -134,6 +135,12 @@ WHERE value::text LIKE '%customer@email.com%';
 
   return (
     <AdminAuth>
+      <PageSEO
+        title="Database Access"
+        description="CREOVA staff admin dashboard."
+        path="/admin/database"
+        noIndex
+      />
       <div className="min-h-screen" style={{ backgroundColor: '#F5F1EB' }}>
         {/* Header */}
         <div className="border-b" style={{ backgroundColor: '#FFFFFF', borderColor: '#E3DCD3' }}>

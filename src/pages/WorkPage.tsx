@@ -270,6 +270,7 @@ export function WorkPage() {
       <PageSEO
         title="Our Work"
         description="Explore CREOVA's portfolio of photography, videography, brand design, and creative campaigns for BIPOC entrepreneurs and cultural brands across Canada."
+      path="/work"
       />
 
       {/* ── CINEMATIC HERO ── */}
@@ -361,36 +362,38 @@ export function WorkPage() {
                   transition={{ duration: 0.9, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
                 >
                   {/* MASSIVE "Creative" — takes up the width */}
-                  <h1 className="font-light leading-none tracking-tighter" style={{ fontSize: 'clamp(72px, 15vw, 200px)', color: '#F5F1EB' }}>
-                    Creative
+                  <h1 className="leading-none">
+                    <span className="block font-light tracking-tighter" style={{ fontSize: 'clamp(72px, 15vw, 200px)', color: '#F5F1EB' }}>
+                      Creative
+                    </span>
+                    {/* Small italic "/ Portfolio." — scale contrast is the technique */}
+                    <span className="flex items-end justify-between mt-1">
+                      <motion.span
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.7, delay: 0.5 }}
+                        className="italic tracking-tight"
+                        style={{
+                          fontSize: 'clamp(22px, 3.5vw, 44px)',
+                          backgroundImage: 'linear-gradient(95deg, #A68F59 0%, #E3DCD3 60%)',
+                          WebkitBackgroundClip: 'text',
+                          backgroundClip: 'text',
+                          color: 'transparent',
+                        }}
+                      >
+                        / Portfolio.
+                      </motion.span>
+                      <motion.span
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.7 }}
+                        className="text-[9px] tracking-[0.5em] uppercase hidden sm:block"
+                        style={{ color: 'rgba(245,241,235,0.2)' }}
+                      >
+                        {PROJECTS.length} projects · 2024
+                      </motion.span>
+                    </span>
                   </h1>
-                  {/* Small italic "/ Portfolio." — scale contrast is the technique */}
-                  <div className="flex items-end justify-between mt-1">
-                    <motion.h1
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.7, delay: 0.5 }}
-                      className="italic leading-none tracking-tight"
-                      style={{
-                        fontSize: 'clamp(22px, 3.5vw, 44px)',
-                        backgroundImage: 'linear-gradient(95deg, #A68F59 0%, #E3DCD3 60%)',
-                        WebkitBackgroundClip: 'text',
-                        backgroundClip: 'text',
-                        color: 'transparent',
-                      }}
-                    >
-                      / Portfolio.
-                    </motion.h1>
-                    <motion.span
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 0.7 }}
-                      className="text-[9px] tracking-[0.5em] uppercase hidden sm:block"
-                      style={{ color: 'rgba(245,241,235,0.2)' }}
-                    >
-                      {PROJECTS.length} projects · 2024
-                    </motion.span>
-                  </div>
                 </motion.div>
 
                 <motion.p

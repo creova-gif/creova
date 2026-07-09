@@ -4,6 +4,7 @@ import {
   Mail, ArrowRight, Lock, Activity, Database
 } from 'lucide-react';
 import { useNavigate } from 'react-router';
+import { PageSEO } from '../components/PageSEO';
 
 export function AdminHubPage() {
   const navigate = useNavigate();
@@ -45,6 +46,12 @@ export function AdminHubPage() {
 
   return (
     <div style={{ backgroundColor: '#F5F1EB', minHeight: '100vh' }}>
+      <PageSEO
+        title="Admin Hub"
+        description="CREOVA staff admin dashboard."
+        path="/admin/hub"
+        noIndex
+      />
       {/* Header */}
       <section className="py-16" style={{ backgroundColor: '#121212' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

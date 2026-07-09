@@ -340,6 +340,7 @@ export function EventsCollaboratePage() {
       <PageSEO
         title="Experience & Events"
         description="Attend CREOVA's events, workshops, and creative experiences across Ontario. Collaborate with BIPOC creatives and cultural storytellers."
+      path="/experience"
       />
 
       {/* Hero — Asymmetric scale-contrast editorial */}
@@ -361,20 +362,22 @@ export function EventsCollaboratePage() {
                 <span className="text-xs tracking-[0.45em] uppercase" style={{ color: '#A68F59' }}>Experience</span>
               </div>
               {/* Scale contrast: MASSIVE first line, small italic second */}
-              <h1 className="font-light leading-none tracking-tighter mb-1" style={{ fontSize: 'clamp(64px, 12vw, 160px)', color: '#F5F1EB' }}>
-                Events &
+              <h1 className="leading-none">
+                <span className="block font-light tracking-tighter mb-1" style={{ fontSize: 'clamp(64px, 12vw, 160px)', color: '#F5F1EB' }}>
+                  Events &
+                </span>
+                <span className="flex items-end gap-4 mb-8">
+                  <span className="italic tracking-tight" style={{
+                    fontSize: 'clamp(22px, 3.5vw, 42px)',
+                    backgroundImage: warmGradient,
+                    WebkitBackgroundClip: 'text',
+                    backgroundClip: 'text',
+                    color: 'transparent',
+                  }}>
+                    / Collaborations.
+                  </span>
+                </span>
               </h1>
-              <div className="flex items-end gap-4 mb-8">
-                <h1 className="italic leading-none tracking-tight" style={{
-                  fontSize: 'clamp(22px, 3.5vw, 42px)',
-                  backgroundImage: warmGradient,
-                  WebkitBackgroundClip: 'text',
-                  backgroundClip: 'text',
-                  color: 'transparent',
-                }}>
-                  / Collaborations.
-                </h1>
-              </div>
               <p className="text-base leading-relaxed max-w-md" style={{ color: '#7A6F66' }}>
                 Join CREOVA's creative community through professional workshops, networking events, and meaningful partnerships across Ontario.
               </p>

@@ -1,4 +1,10 @@
 User-agent: *
 Allow: /
+Disallow: /admin/
+Disallow: /analytics/
+Disallow: /auth
+Disallow: /checkout
+Disallow: /order-confirmation
+Disallow: /payment-success
 
 Sitemap: https://creova.ca/sitemap.xml

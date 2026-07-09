@@ -15,6 +15,7 @@ import { motion } from 'motion/react';
 import { CreditCard, Lock, CheckCircle2, ArrowLeft, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { projectId, publicAnonKey } from '../utils/supabase/info';
+import { PageSEO } from '../components/PageSEO';
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY ?? '');
 
@@ -232,6 +233,7 @@ export function CheckoutPage() {
   if (items.length === 0) {
     return (
       <div style={{ backgroundColor: '#0A0A0A', minHeight: '100vh' }}>
+        <PageSEO title="Checkout" description="Complete your CREOVA purchase." path="/checkout" noIndex />
         {/* Warm gradient top stripe */}
         <div style={{ height: '2px', background: 'linear-gradient(135deg, #A68F59 0%, #B1643B 100%)' }} />
         <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 text-center">
@@ -273,6 +275,12 @@ export function CheckoutPage() {
 
   return (
     <div style={{ backgroundColor: '#F5F1EB', minHeight: '100vh' }}>
+      <PageSEO
+        title="Checkout"
+        description="Complete your CREOVA purchase."
+        path="/checkout"
+        noIndex
+      />
       {/* Header */}
       <section className="py-12 bg-white border-b" style={{ borderColor: '#E3DCD3' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

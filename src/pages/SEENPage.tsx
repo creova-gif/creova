@@ -6,6 +6,7 @@ import seenForyou from '../assets/seen-foryou.jpg';
 import seenOnboard from '../assets/seen-onboard.jpg';
 import seenRoles from '../assets/seen-roles.jpg';
 import seenSplash from '../assets/seen-splash.jpg';
+import { PageSEO } from '../components/PageSEO';
 
 const storyWorlds = [
   {
@@ -110,6 +111,11 @@ function AppPreview3D() {
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
+      <PageSEO
+        title="SEEN — Multilingual Storytelling Platform"
+        description="SEEN is CREOVA's upcoming multilingual audio storytelling platform celebrating BIPOC voices and cultural narratives across Canada."
+        path="/seen"
+      />
       {/* Floating particles */}
       <div className="absolute inset-0 pointer-events-none">
         {particles.map(p => (

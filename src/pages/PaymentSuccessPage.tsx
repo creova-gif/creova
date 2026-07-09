@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router';
 import { CheckCircle2, ArrowRight, Crown, Star } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { motion } from 'motion/react';
+import { PageSEO } from '../components/PageSEO';
 
 export function PaymentSuccessPage() {
   const navigate = useNavigate();
@@ -24,6 +25,12 @@ export function PaymentSuccessPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#F5F1EB' }}>
+      <PageSEO
+        title="Payment Successful"
+        description="Your CREOVA payment was successful."
+        path="/payment-success"
+        noIndex
+      />
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
         <motion.div
           initial={{ scale: 0 }}

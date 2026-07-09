@@ -33,6 +33,7 @@ import { FloatingOrbs } from '../components/FloatingOrbs';
 import { Magnetic } from '../components/Magnetic';
 import { TiltCard } from '../components/TiltCard';
 import { FallDropTeaser } from '../components/FallDropTeaser';
+import { organizationSchema } from '../utils/structuredData';
 
 function AnimatedStat({ number, label, icon: Icon, delay }: {
   number: string;
@@ -150,6 +151,8 @@ export function HomePage() {
       <PageSEO
         title="BIPOC-Led Creative Agency in Ontario"
         description="CREOVA is a BIPOC-led creative agency offering photography, videography, brand design, and social media services across Ontario and Canada."
+        path="/"
+        jsonLd={organizationSchema}
       />
 
       {/* Hero */}

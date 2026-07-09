@@ -262,6 +262,7 @@ export function BookingPage() {
       <PageSEO
         title="Book a Session"
         description="Book your photography, videography, brand design, or social media session with CREOVA. Professional creative services across Ontario starting from $450."
+      path="/booking"
       />
       {/* Hero — Editorial asymmetric */}
       <section className="relative overflow-hidden" style={{ backgroundColor: '#0A0A0A', minHeight: '400px' }}>

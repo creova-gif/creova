@@ -346,6 +346,7 @@ export function CommunityPage() {
       <PageSEO
         title="Community"
         description="Join the CREOVA community — a home for BIPOC creatives, entrepreneurs, and cultural storytellers across Canada. Connect, collaborate, and grow."
+      path="/community"
       />
       {/* Hero Section — Asymmetric Editorial */}
       <section className="relative overflow-hidden" style={{ backgroundColor: '#0A0A0A' }}>
@@ -368,17 +369,18 @@ export function CommunityPage() {
                   {language === 'fr' ? 'Bienvenue' : 'Welcome'}
                 </span>
               </div>
-              <h1 className="font-light tracking-tight leading-none mb-2" style={{ fontSize: 'clamp(3rem, 7vw, 7rem)', color: '#F5F1EB' }}>
-                {language === 'fr' ? 'Notre' : 'Our'}
-              </h1>
-              <h1 className="italic tracking-tight leading-none mb-8" style={{
-                fontSize: 'clamp(3rem, 7vw, 7rem)',
-                backgroundImage: 'linear-gradient(95deg, #A68F59 0%, #E3DCD3 65%)',
-                WebkitBackgroundClip: 'text',
-                backgroundClip: 'text',
-                color: 'transparent',
-              }}>
-                {language === 'fr' ? 'Communauté.' : 'Community.'}
+              <h1 className="tracking-tight leading-none mb-8" style={{ fontSize: 'clamp(3rem, 7vw, 7rem)' }}>
+                <span className="block font-light mb-2" style={{ color: '#F5F1EB' }}>
+                  {language === 'fr' ? 'Notre' : 'Our'}
+                </span>
+                <span className="block italic" style={{
+                  backgroundImage: 'linear-gradient(95deg, #A68F59 0%, #E3DCD3 65%)',
+                  WebkitBackgroundClip: 'text',
+                  backgroundClip: 'text',
+                  color: 'transparent',
+                }}>
+                  {language === 'fr' ? 'Communauté.' : 'Community.'}
+                </span>
               </h1>
               <p className="text-base leading-relaxed max-w-lg" style={{ color: '#7A6F66' }}>
                 {language === 'fr'

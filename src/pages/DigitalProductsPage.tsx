@@ -5,6 +5,7 @@ import { toast } from 'sonner';
 import { Download, Heart, ChevronDown, Gift, Star, FileText, Camera, Palette, Package, Sliders, Wrench } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useState } from 'react';
+import { productListSchema } from '../utils/structuredData';
 
 const warmGradient = 'linear-gradient(135deg, #A68F59 0%, #B1643B 100%)';
 
@@ -63,6 +64,8 @@ export function DigitalProductsPage() {
       <PageSEO
         title="Digital Products"
         description="Premium templates, presets, and tools for creatives — brand kits, social media templates, Lightroom presets, content calendars, and more. Launching July 2026."
+        path="/digital-products"
+        jsonLd={productListSchema(digitalProducts)}
       />
 
       {/* Hero — editorial asymmetric split */}
@@ -92,33 +95,35 @@ export function DigitalProductsPage() {
                 <span className="text-[9px] tracking-[0.3em] uppercase px-2 py-0.5 rounded-sm ml-2" style={{ backgroundColor: 'rgba(166,143,89,0.12)', border: '1px solid rgba(166,143,89,0.25)', color: '#A68F59' }}>July 2026</span>
               </motion.div>
 
-              {/* MASSIVE "Digital." */}
-              <motion.h1
-                initial={{ opacity: 0, y: 24 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.1 }}
-                className="font-light leading-none tracking-tighter"
-                style={{ fontSize: 'clamp(72px, 13vw, 180px)', color: '#F5F1EB' }}
-              >
-                Digital.
-              </motion.h1>
+              <h1 className="leading-none">
+                {/* MASSIVE "Digital." */}
+                <motion.span
+                  initial={{ opacity: 0, y: 24 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.7, delay: 0.1 }}
+                  className="block font-light tracking-tighter"
+                  style={{ fontSize: 'clamp(72px, 13vw, 180px)', color: '#F5F1EB' }}
+                >
+                  Digital.
+                </motion.span>
 
-              {/* Small italic "/ Resources." */}
-              <motion.h1
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.22 }}
-                className="italic leading-none tracking-tight mb-8"
-                style={{
-                  fontSize: 'clamp(22px, 3.5vw, 46px)',
-                  backgroundImage: warmGradient,
-                  WebkitBackgroundClip: 'text',
-                  backgroundClip: 'text',
-                  color: 'transparent',
-                }}
-              >
-                / Resources.
-              </motion.h1>
+                {/* Small italic "/ Resources." */}
+                <motion.span
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.7, delay: 0.22 }}
+                  className="block italic tracking-tight mb-8"
+                  style={{
+                    fontSize: 'clamp(22px, 3.5vw, 46px)',
+                    backgroundImage: warmGradient,
+                    WebkitBackgroundClip: 'text',
+                    backgroundClip: 'text',
+                    color: 'transparent',
+                  }}
+                >
+                  / Resources.
+                </motion.span>
+              </h1>
 
               <motion.p
                 initial={{ opacity: 0 }}

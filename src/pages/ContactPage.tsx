@@ -121,6 +121,7 @@ export function ContactPage() {
       <PageSEO
         title="Contact Us"
         description="Get in touch with CREOVA. Book a consultation, ask about our creative services, or start your photography, videography, or brand design project today."
+      path="/contact"
       />
       {/* Hero — full-width dark with large email CTA treatment */}
       <section
@@ -151,9 +152,10 @@ export function ContactPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
               >
+                <h1 className="leading-none">
                 {/* Massive "Let's" */}
                 <motion.span
-                  className="block font-light leading-none tracking-tighter cursor-default select-none"
+                  className="block font-light tracking-tighter cursor-default select-none"
                   style={{ fontSize: 'clamp(72px, 14vw, 190px)', color: '#F5F1EB' }}
                   whileHover={{ x: 6, color: 'rgba(245,241,235,0.7)' }}
                   transition={{ type: 'spring', stiffness: 300, damping: 30 }}
@@ -161,7 +163,7 @@ export function ContactPage() {
                   Let's
                 </motion.span>
                 {/* Small italic "Connect." — the scale contrast */}
-                <div className="flex items-end justify-between gap-4">
+                <span className="flex items-end justify-between gap-4">
                   <motion.span
                     className="block italic leading-none tracking-tight cursor-default select-none"
                     style={{
@@ -188,7 +190,8 @@ export function ContactPage() {
                       Replies within 24 hrs
                     </span>
                   </motion.div>
-                </div>
+                </span>
+                </h1>
               </motion.div>
 
               <motion.p

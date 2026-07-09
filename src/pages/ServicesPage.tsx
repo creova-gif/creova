@@ -196,6 +196,7 @@ export function ServicesPage() {
       <PageSEO
         title="Creative Services"
         description="Professional photography, videography, brand design, social media management, and event coverage for BIPOC entrepreneurs and brands across Ontario."
+      path="/services"
       />
 
       {/* Hero — Asymmetric editorial split */}
