@@ -4,6 +4,7 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { X, Send, HelpCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { useLanguage } from '../context/LanguageContext';
 const sankofaLogo = '/sankofa-profile.jpg';
 
@@ -22,6 +23,8 @@ export function Sankofa() {
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const chatWindowRef = useRef<HTMLDivElement>(null);
+  const toggleButtonRef = useRef<HTMLButtonElement>(null);
   const { language } = useLanguage();
   const { pathname } = useLocation();
 
@@ -38,6 +41,20 @@ export function Sankofa() {
     window.addEventListener('sankofa:open', handleOpen);
     return () => window.removeEventListener('sankofa:open', handleOpen);
   }, []);
+
+  // Move focus into the panel on open, close on Escape, restore focus to the toggle on close
+  useEffect(() => {
+    if (!isOpen) return;
+    chatWindowRef.current?.querySelector<HTMLInputElement>('input')?.focus();
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsOpen(false);
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      toggleButtonRef.current?.focus();
+    };
+  }, [isOpen]);
 
   useEffect(() => {
     if (isOpen && messages.length === 0) {
@@ -182,7 +199,10 @@ export function Sankofa() {
             className="fixed bottom-6 right-6 z-50"
           >
             <Button
+              ref={toggleButtonRef}
               onClick={() => setIsOpen(true)}
+              aria-label={language === 'fr' ? 'Ouvrir le chat Sankofa' : 'Open Sankofa chat'}
+              aria-expanded={isOpen}
               className="w-16 h-16 rounded-full shadow-2xl relative overflow-hidden group p-0"
               style={{ backgroundColor: '#B1643B' }}
             >
@@ -210,6 +230,12 @@ export function Sankofa() {
             transition={{ duration: 0.3 }}
             className="fixed bottom-6 right-6 w-[90vw] sm:w-96 h-[600px] max-h-[80vh] z-50 flex flex-col rounded-2xl shadow-2xl overflow-hidden"
             style={{ backgroundColor: '#FFFFFF' }}
+          >
+          <div
+            ref={chatWindowRef}
+            role="dialog"
+            aria-label={language === 'fr' ? 'Assistant de chat Sankofa' : 'Sankofa chat assistant'}
+            className="contents"
           >
             {/* Header */}
             <div className="relative p-4 border-b" style={{ backgroundColor: '#121212', borderColor: '#2C2C2C' }}>
@@ -245,6 +271,7 @@ export function Sankofa() {
                     variant="ghost"
                     size="sm"
                     onClick={() => setIsOpen(false)}
+                    aria-label={language === 'fr' ? 'Fermer le chat' : 'Close chat'}
                     className="rounded-full hover:bg-white/10"
                   >
                     <X className="w-5 h-5" style={{ color: '#F5F1EB' }} />
@@ -346,60 +373,68 @@ export function Sankofa() {
                 </Button>
               </div>
             </div>
+          </div>
           </motion.div>
         )}
       </AnimatePresence>
 
       {/* Info Modal */}
-      <AnimatePresence>
-        {showInfo && (
-          <>
+      <DialogPrimitive.Root open={showInfo} onOpenChange={(open) => { if (!open) setShowInfo(false); }}>
+        <AnimatePresence>
+          {showInfo && (
+            <DialogPrimitive.Portal forceMount>
             {/* Backdrop */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setShowInfo(false)}
-              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60]"
-            />
-            
+            <DialogPrimitive.Overlay asChild forceMount>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60]"
+              />
+            </DialogPrimitive.Overlay>
+
             {/* Modal */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              transition={{ duration: 0.3 }}
-              className="fixed inset-4 md:inset-auto md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-[600px] md:max-h-[80vh] z-[70] rounded-2xl shadow-2xl overflow-hidden"
-              style={{ backgroundColor: '#FFFFFF' }}
-            >
+            <DialogPrimitive.Content asChild forceMount aria-describedby={undefined}>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                transition={{ duration: 0.3 }}
+                className="fixed inset-4 md:inset-auto md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-[600px] md:max-h-[80vh] z-[70] rounded-2xl shadow-2xl overflow-hidden outline-none"
+                style={{ backgroundColor: '#FFFFFF' }}
+              >
               {/* Header */}
               <div className="relative p-6 border-b" style={{ backgroundColor: '#121212', borderColor: '#2C2C2C' }}>
                 <div className="absolute inset-0 bg-gradient-to-br from-[#A68F59]/20 to-[#B1643B]/20" />
                 <div className="relative flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <img 
-                      src={sankofaLogo} 
-                      alt="Sankofa" 
+                    <img
+                      src={sankofaLogo}
+                      alt="Sankofa"
                       className="w-12 h-12 rounded-full"
                       style={{ filter: 'sepia(1) saturate(2) hue-rotate(-10deg) brightness(0.6)' }}
                     />
                     <div>
-                      <h2 className="text-xl" style={{ color: '#F5F1EB' }}>
-                        {language === 'fr' ? 'À propos de Sankofa' : 'About Sankofa'}
-                      </h2>
+                      <DialogPrimitive.Title asChild>
+                        <h2 className="text-xl" style={{ color: '#F5F1EB' }}>
+                          {language === 'fr' ? 'À propos de Sankofa' : 'About Sankofa'}
+                        </h2>
+                      </DialogPrimitive.Title>
                       <p className="text-sm" style={{ color: '#E3DCD3' }}>
                         {language === 'fr' ? 'Symbole Adinkra de sagesse et d\'apprentissage' : 'Adinkra Symbol of Wisdom and Learning'}
                       </p>
                     </div>
                   </div>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setShowInfo(false)}
-                    className="rounded-full hover:bg-white/10"
-                  >
-                    <X className="w-5 h-5" style={{ color: '#F5F1EB' }} />
-                  </Button>
+                  <DialogPrimitive.Close asChild>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="rounded-full hover:bg-white/10"
+                      aria-label={language === 'fr' ? 'Fermer' : 'Close'}
+                    >
+                      <X className="w-5 h-5" style={{ color: '#F5F1EB' }} />
+                    </Button>
+                  </DialogPrimitive.Close>
                 </div>
               </div>
 
@@ -496,10 +531,12 @@ export function Sankofa() {
                   </div>
                 </div>
               </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
+              </motion.div>
+            </DialogPrimitive.Content>
+            </DialogPrimitive.Portal>
+          )}
+        </AnimatePresence>
+      </DialogPrimitive.Root>
     </>
   );
 }

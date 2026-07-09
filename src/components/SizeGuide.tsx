@@ -1,5 +1,6 @@
 import { X } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { useLanguage } from '../context/LanguageContext';
 
 interface SizeGuideProps {
@@ -21,46 +22,51 @@ export function SizeGuide({ isOpen, onClose }: SizeGuideProps) {
   ];
 
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <>
-          {/* Backdrop */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={onClose}
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50"
-          />
+    <DialogPrimitive.Root open={isOpen} onOpenChange={(open) => { if (!open) onClose(); }}>
+      <AnimatePresence>
+        {isOpen && (
+          <DialogPrimitive.Portal forceMount>
+            {/* Backdrop */}
+            <DialogPrimitive.Overlay asChild forceMount>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50"
+              />
+            </DialogPrimitive.Overlay>
 
-          {/* Modal */}
-          <div className="fixed inset-0 flex items-center justify-center z-50 p-4">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              transition={{ duration: 0.2 }}
-              className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-lg shadow-2xl p-8"
-              style={{ backgroundColor: '#F5F1EB' }}
-              onClick={(e) => e.stopPropagation()}
-            >
-              {/* Close Button */}
-              <button
-                onClick={onClose}
-                className="absolute top-4 right-4 p-2 rounded-full transition-colors"
-                style={{ backgroundColor: '#FFFFFF', color: '#121212' }}
-                aria-label={t('a11y.close')}
-              >
-                <X className="w-5 h-5" />
-              </button>
+            {/* Modal */}
+            <div className="fixed inset-0 flex items-center justify-center z-50 p-4 pointer-events-none">
+              <DialogPrimitive.Content asChild forceMount aria-describedby={undefined}>
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                  transition={{ duration: 0.2 }}
+                  className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-lg shadow-2xl p-8 pointer-events-auto outline-none"
+                  style={{ backgroundColor: '#F5F1EB' }}
+                >
+                  {/* Close Button */}
+                  <DialogPrimitive.Close asChild>
+                    <button
+                      className="absolute top-4 right-4 p-2 rounded-full transition-colors"
+                      style={{ backgroundColor: '#FFFFFF', color: '#121212' }}
+                      aria-label={t('a11y.close')}
+                    >
+                      <X className="w-5 h-5" />
+                    </button>
+                  </DialogPrimitive.Close>
 
-              <h2 className="text-2xl mb-6 tracking-tight" style={{ color: '#121212' }}>
-                {t('size.guide.title')}
-              </h2>
+                  <DialogPrimitive.Title asChild>
+                    <h2 className="text-2xl mb-6 tracking-tight" style={{ color: '#121212' }}>
+                      {t('size.guide.title')}
+                    </h2>
+                  </DialogPrimitive.Title>
 
-              <p className="text-sm mb-6" style={{ color: '#4A3E36' }}>
-                {t('size.measurements')}
-              </p>
+                  <p className="text-sm mb-6" style={{ color: '#4A3E36' }}>
+                    {t('size.measurements')}
+                  </p>
 
               {/* Size Table */}
               <div className="overflow-x-auto">
@@ -103,10 +109,12 @@ export function SizeGuide({ isOpen, onClose }: SizeGuideProps) {
                   <li><strong>Hips:</strong> Measure around the fullest part of your hips</li>
                 </ul>
               </div>
-            </motion.div>
-          </div>
-        </>
-      )}
-    </AnimatePresence>
+                </motion.div>
+              </DialogPrimitive.Content>
+            </div>
+          </DialogPrimitive.Portal>
+        )}
+      </AnimatePresence>
+    </DialogPrimitive.Root>
   );
 }

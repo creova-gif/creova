@@ -278,7 +278,7 @@ export function ShopPage() {
                   {/* Coming Soon overlay */}
                   <div className="absolute inset-0 flex flex-col items-center justify-center" style={{ backgroundColor: 'rgba(10,10,10,0.78)' }}>
                     <div className="px-5 py-2 text-[9px] tracking-[0.4em] text-center mb-2" style={{ background: warmGradient, color: '#FFFFFF' }}>
-                      COMING SUMMER 2026
+                      COMING NOVEMBER 2026
                     </div>
                     <p className="text-[9px] tracking-wider" style={{ color: 'rgba(245,241,235,0.55)' }}>Pre-Order Available Soon</p>
                   </div>

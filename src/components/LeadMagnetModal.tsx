@@ -4,6 +4,7 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { motion, AnimatePresence } from 'motion/react';
+import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { useLanguage } from '../context/LanguageContext';
 import { toast } from 'sonner';
 import { projectId, publicAnonKey } from '../utils/supabase/info';
@@ -97,36 +98,40 @@ export function LeadMagnetModal({ isOpen, onClose, leadMagnet }: LeadMagnetModal
   };
 
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <DialogPrimitive.Root open={isOpen} onOpenChange={(open) => { if (!open) onClose(); }}>
+      <AnimatePresence>
+        {isOpen && (
+          <DialogPrimitive.Portal forceMount>
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           {/* Backdrop */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={onClose}
-            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
-          />
+          <DialogPrimitive.Overlay asChild forceMount>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            />
+          </DialogPrimitive.Overlay>
 
           {/* Modal */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            transition={{ duration: 0.2 }}
-            className="relative w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Close button */}
-            <button
-              onClick={onClose}
-              className="absolute top-4 right-4 z-10 p-2 rounded-full transition-colors"
-              style={{ backgroundColor: 'rgba(0,0,0,0.05)' }}
-              aria-label="Close"
+          <DialogPrimitive.Content asChild forceMount aria-describedby={undefined}>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              transition={{ duration: 0.2 }}
+              className="relative w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden outline-none"
             >
-              <X className="w-5 h-5" style={{ color: '#121212' }} />
-            </button>
+            {/* Close button */}
+            <DialogPrimitive.Close asChild>
+              <button
+                className="absolute top-4 right-4 z-10 p-2 rounded-full transition-colors"
+                style={{ backgroundColor: 'rgba(0,0,0,0.05)' }}
+                aria-label="Close"
+              >
+                <X className="w-5 h-5" style={{ color: '#121212' }} />
+              </button>
+            </DialogPrimitive.Close>
 
             {/* Success State */}
             {isSuccess ? (
@@ -141,9 +146,11 @@ export function LeadMagnetModal({ isOpen, onClose, leadMagnet }: LeadMagnetModal
                   <CheckCircle2 className="w-10 h-10" style={{ color: '#A68F59' }} />
                 </motion.div>
 
-                <h3 className="text-2xl mb-3" style={{ color: '#121212' }}>
-                  {t('leadmagnet.success.heading')}
-                </h3>
+                <DialogPrimitive.Title asChild>
+                  <h3 className="text-2xl mb-3" style={{ color: '#121212' }}>
+                    {t('leadmagnet.success.heading')}
+                  </h3>
+                </DialogPrimitive.Title>
                 <p style={{ color: '#7A6F66' }}>
                   {t('leadmagnet.success.text1')}<strong>{email}</strong>
                 </p>
@@ -155,10 +162,12 @@ export function LeadMagnetModal({ isOpen, onClose, leadMagnet }: LeadMagnetModal
                   <div className="inline-flex items-center justify-center w-16 h-16 rounded-full mb-4" style={{ backgroundColor: 'rgba(166, 143, 89, 0.2)' }}>
                     <Gift className="w-8 h-8" style={{ color: '#A68F59' }} />
                   </div>
-                  
-                  <h2 className="text-2xl mb-2" style={{ color: '#121212' }}>
-                    {t('leadmagnet.get.free')}{leadMagnet.fileType}
-                  </h2>
+
+                  <DialogPrimitive.Title asChild>
+                    <h2 className="text-2xl mb-2" style={{ color: '#121212' }}>
+                      {t('leadmagnet.get.free')}{leadMagnet.fileType}
+                    </h2>
+                  </DialogPrimitive.Title>
                   <p className="text-lg mb-3" style={{ color: '#121212' }}>
                     {leadMagnet.title}
                   </p>
@@ -233,9 +242,12 @@ export function LeadMagnetModal({ isOpen, onClose, leadMagnet }: LeadMagnetModal
                 </form>
               </>
             )}
-          </motion.div>
-        </div>
-      )}
-    </AnimatePresence>
+            </motion.div>
+          </DialogPrimitive.Content>
+            </div>
+          </DialogPrimitive.Portal>
+        )}
+      </AnimatePresence>
+    </DialogPrimitive.Root>
   );
 }

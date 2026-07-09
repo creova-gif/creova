@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, NavLink } from 'react-router';
 import { Menu, X, ShoppingCart, ChevronDown, ArrowUpRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
@@ -8,6 +8,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { CartDrawer } from './CartDrawer';
 import { LanguageSwitcher } from './LanguageSwitcher';
 import { Magnetic } from './Magnetic';
+import { useFocusTrap } from '../hooks/useFocusTrap';
 import creovaLogo from '../assets/creova-logo.png';
 
 export function Navigation() {
@@ -17,12 +18,15 @@ export function Navigation() {
   const [pricingMobileOpen, setPricingMobileOpen] = useState(false);
   const { totalItems } = useCart();
   const { t } = useLanguage();
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
 
   // Lock body scroll while drawer open
   useEffect(() => {
     document.body.style.overflow = isOpen ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
   }, [isOpen]);
+
+  useFocusTrap(mobileMenuRef, isOpen, () => setIsOpen(false));
 
   const navLinks = [
     { name: 'Work', path: '/work' },
@@ -226,6 +230,13 @@ export function Navigation() {
             className="fixed inset-0 z-[200] lg:hidden flex flex-col overflow-y-auto"
             style={{ backgroundColor: '#080808' }}
           >
+          <div
+            ref={mobileMenuRef}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Main menu"
+            className="contents"
+          >
             {/* Header row */}
             <div
               className="flex items-center justify-between px-6 py-4 flex-shrink-0 border-b"
@@ -357,6 +368,7 @@ export function Navigation() {
                 <LanguageSwitcher />
               </div>
             </div>
+          </div>
           </motion.div>
         )}
       </AnimatePresence>

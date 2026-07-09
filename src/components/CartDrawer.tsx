@@ -4,6 +4,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router';
 import { motion, AnimatePresence } from 'motion/react';
+import * as DialogPrimitive from '@radix-ui/react-dialog';
 
 const warmGradient = 'linear-gradient(135deg, #A68F59 0%, #B1643B 100%)';
 
@@ -22,32 +23,33 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
     toast.success(t('cart.removed'));
   };
 
-  if (!open) return null;
-
   return (
-    <AnimatePresence>
-      {open && (
-        <>
+    <DialogPrimitive.Root open={open} onOpenChange={(v) => { if (!v) onClose(); }}>
+      <AnimatePresence>
+        {open && (
+          <DialogPrimitive.Portal forceMount>
           {/* Backdrop */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            className="fixed inset-0 z-50"
-            style={{ backgroundColor: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(4px)' }}
-            onClick={onClose}
-          />
+          <DialogPrimitive.Overlay asChild forceMount>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              className="fixed inset-0 z-50"
+              style={{ backgroundColor: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(4px)' }}
+            />
+          </DialogPrimitive.Overlay>
 
           {/* Drawer */}
-          <motion.div
-            initial={{ x: '100%' }}
-            animate={{ x: 0 }}
-            exit={{ x: '100%' }}
-            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed right-0 top-0 h-full w-full max-w-md z-50 flex flex-col"
-            style={{ backgroundColor: '#0A0A0A' }}
-          >
+          <DialogPrimitive.Content asChild forceMount aria-describedby={undefined}>
+            <motion.div
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+              className="fixed right-0 top-0 h-full w-full max-w-md z-50 flex flex-col outline-none"
+              style={{ backgroundColor: '#0A0A0A' }}
+            >
             {/* Warm gradient top stripe */}
             <div style={{ height: '2px', background: warmGradient, flexShrink: 0 }} />
 
@@ -59,9 +61,11 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
               <div className="flex items-center gap-3">
                 <ShoppingBag className="w-4 h-4" style={{ color: '#A68F59' }} />
                 <div>
-                  <p className="text-xs tracking-[0.4em] uppercase mb-0.5" style={{ color: '#A68F59' }}>
-                    {t('cart.title')}
-                  </p>
+                  <DialogPrimitive.Title asChild>
+                    <p className="text-xs tracking-[0.4em] uppercase mb-0.5" style={{ color: '#A68F59' }}>
+                      {t('cart.title')}
+                    </p>
+                  </DialogPrimitive.Title>
                   {items.length > 0 && (
                     <p className="text-xs" style={{ color: '#7A6F66' }}>
                       {items.length} {items.length === 1 ? t('cart.item') : t('cart.items')}
@@ -69,14 +73,15 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                   )}
                 </div>
               </div>
-              <button
-                onClick={onClose}
-                className="w-8 h-8 flex items-center justify-center rounded-full transition-colors"
-                style={{ backgroundColor: 'rgba(166,143,89,0.08)', color: '#C8C0B8' }}
-                aria-label={t('a11y.close')}
-              >
-                <X className="w-4 h-4" />
-              </button>
+              <DialogPrimitive.Close asChild>
+                <button
+                  className="w-8 h-8 flex items-center justify-center rounded-full transition-colors"
+                  style={{ backgroundColor: 'rgba(166,143,89,0.08)', color: '#C8C0B8' }}
+                  aria-label={t('a11y.close')}
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </DialogPrimitive.Close>
             </div>
 
             {/* Items */}
@@ -197,9 +202,11 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                 </button>
               </div>
             )}
-          </motion.div>
-        </>
-      )}
-    </AnimatePresence>
+            </motion.div>
+          </DialogPrimitive.Content>
+          </DialogPrimitive.Portal>
+        )}
+      </AnimatePresence>
+    </DialogPrimitive.Root>
   );
 }
