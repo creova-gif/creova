@@ -1,5 +1,4 @@
 import { X, Minus, Plus, Trash2, ShoppingBag } from 'lucide-react';
-import { Button } from './ui/button';
 import { useCart } from '../context/CartContext';
 import { useLanguage } from '../context/LanguageContext';
 import { toast } from 'sonner';
@@ -14,11 +13,11 @@ interface CartDrawerProps {
 }
 
 export function CartDrawer({ open, onClose }: CartDrawerProps) {
-  const { items, removeItem, updateQuantity, totalPrice, clearCart } = useCart();
+  const { items, removeItem, updateQuantity, totalPrice } = useCart();
   const { t } = useLanguage();
   const navigate = useNavigate();
 
-  const handleRemoveItem = (id: string, name: string) => {
+  const handleRemoveItem = (id: string) => {
     removeItem(id);
     toast.success(t('cart.removed'));
   };
@@ -158,7 +157,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                             </button>
                           </div>
                           <button
-                            onClick={() => handleRemoveItem(item.id, item.name)}
+                            onClick={() => handleRemoveItem(item.id)}
                             className="w-8 h-8 flex items-center justify-center rounded-lg transition-colors"
                             style={{ color: '#7A6F66', backgroundColor: 'rgba(255,80,80,0.06)' }}
                           >

@@ -1,26 +1,11 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
 import { PageSEO } from '../components/PageSEO';
 import { Button } from '../components/ui/button';
 import { motion, AnimatePresence } from 'motion/react';
-import { Camera, Users, Package, PartyPopper, Plane, TrendingUp, Palette, Video, Settings, CheckCircle2, AlertCircle, Calendar, ArrowRight } from 'lucide-react';
-import { TiltCard } from '../components/TiltCard';
+import { Camera, Users, Package, PartyPopper, Plane, TrendingUp, Palette, Video, Settings, AlertCircle, Calendar, ArrowRight } from 'lucide-react';
 
 type ServiceCategory = 'photography' | 'video' | 'brand' | 'social' | 'events' | 'rental' | 'all';
-
-interface ServicePackage {
-  name: string;
-  tagline: string;
-  features: string[];
-}
-interface RentalPackage {
-  name: string;
-  capacity: string;
-  deposit: string;
-  features: string[];
-}
-type AnyPackage = ServicePackage | RentalPackage;
-
 
 export function ServicesPage() {
   const [activeTab, setActiveTab] = useState<ServiceCategory>('all');

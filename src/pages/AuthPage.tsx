@@ -7,11 +7,9 @@ import { Checkbox } from '../components/ui/checkbox';
 import { Card } from '../components/ui/card';
 import { Captcha } from '../components/Captcha';
 import { supabase } from '../utils/supabase/client';
-import { projectId, publicAnonKey } from '../utils/supabase/info';
 import { toast } from 'sonner';
 import { motion } from 'motion/react';
 import { Eye, EyeOff, Mail, Lock, User, ArrowLeft, Sparkles, Users, Smartphone, Palette, Tag } from 'lucide-react';
-import { useLanguage } from '../context/LanguageContext';
 import { logger } from '../utils/logger';
 
 type AuthMode = 'login' | 'signup' | 'forgot';
@@ -207,7 +205,7 @@ export function AuthPage() {
 
   const handleOAuthLogin = async (provider: 'google' | 'facebook' | 'github' | 'apple') => {
     try {
-      const { data, error } = await supabase.auth.signInWithOAuth({
+      const { error } = await supabase.auth.signInWithOAuth({
         provider: provider,
         options: {
           redirectTo: window.location.origin + '/auth/callback'
@@ -231,7 +229,6 @@ export function AuthPage() {
     }
   };
 
-  const { language } = useLanguage();
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#F5F1EB' }}>

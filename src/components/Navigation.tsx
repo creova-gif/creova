@@ -187,7 +187,7 @@ export function Navigation() {
                 onClick={() => setCartOpen(true)}
                 className="relative hover:bg-transparent"
                 style={{ color: '#121212' }}
-                aria-label={t('nav.cart.aria', { count: totalItems })}
+                aria-label={t('nav.cart.aria')}
               >
                 <ShoppingCart className="w-5 h-5" />
                 {totalItems > 0 && (

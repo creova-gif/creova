@@ -28,7 +28,7 @@ export function ProductQuickView({ product, isOpen, onClose }: ProductQuickViewP
   const [selectedSize, setSelectedSize] = useState<string>('');
   const [selectedColor, setSelectedColor] = useState<string>('');
   const [currentImage, setCurrentImage] = useState<string>('');
-  const { addToCart } = useCart();
+  const { addItem } = useCart();
   const { t } = useLanguage();
 
   if (!product) return null;
@@ -39,14 +39,13 @@ export function ProductQuickView({ product, isOpen, onClose }: ProductQuickViewP
       return;
     }
 
-    addToCart({
-      id: product.id,
-      name: product.name,
+    const variant = [selectedSize, selectedColor || product.colors?.[0]].filter(Boolean).join(' / ');
+    addItem({
+      id: variant ? `${product.id}-${variant}` : product.id,
+      name: variant ? `${product.name} (${variant})` : product.name,
       price: product.price,
       image: product.image,
-      quantity: 1,
-      size: selectedSize,
-      color: selectedColor || (product.colors?.[0] || '')
+      type: 'clothing'
     });
 
     toast.success(t('cart.added'));

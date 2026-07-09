@@ -17,7 +17,6 @@ import { Sankofa } from './components/Sankofa';
 import { AnalyticsTracker } from './components/AnalyticsTracker';
 import { ExitIntentModal } from './components/ExitIntentModal';
 import { ContactInfoBanner } from './components/ContactInfoBanner';
-import { CustomCursor } from './components/CustomCursor';
 import { ScrollProgressBar } from './components/ScrollProgressBar';
 import { GrainOverlay } from './components/GrainOverlay';
 
@@ -108,7 +107,7 @@ function AnimatedRoutes() {
   );
 }
 
-function LenisProvider() {
+export function LenisProvider() {
   useEffect(() => {
     let raf: number;
     let lenis: any;

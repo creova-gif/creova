@@ -8,7 +8,6 @@ import {
   useElements
 } from '@stripe/react-stripe-js';
 import { useCart } from '../context/CartContext';
-import { useLanguage } from '../context/LanguageContext';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
@@ -31,7 +30,7 @@ interface CheckoutFormProps {
   };
 }
 
-function CheckoutForm({ clientSecret, customerInfo }: CheckoutFormProps) {
+function CheckoutForm({ customerInfo }: CheckoutFormProps) {
   const stripe = useStripe();
   const elements = useElements();
   const navigate = useNavigate();
@@ -154,8 +153,7 @@ function CheckoutForm({ clientSecret, customerInfo }: CheckoutFormProps) {
 
 export function CheckoutPage() {
   const navigate = useNavigate();
-  const { items, totalPrice, clearCart } = useCart();
-  const { t } = useLanguage();
+  const { items, totalPrice } = useCart();
   const [clientSecret, setClientSecret] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [customerInfo, setCustomerInfo] = useState({

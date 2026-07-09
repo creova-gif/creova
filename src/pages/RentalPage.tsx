@@ -9,7 +9,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '../components/ui/popove
 import { Checkbox } from '../components/ui/checkbox';
 import { Captcha } from '../components/Captcha';
 import { motion } from 'motion/react';
-import { Camera, Video, Lightbulb, Mic, Package, Calendar as CalendarIcon, Clock, CheckCircle2, ArrowLeft, Star, Award, AlertCircle, ShieldCheck, Zap } from 'lucide-react';
+import { Camera, Video, Lightbulb, Mic, Package, Calendar as CalendarIcon, Clock, CheckCircle2, ArrowLeft, Star, AlertCircle, ShieldCheck, Zap } from 'lucide-react';
 import { toast } from 'sonner';
 import { projectId, publicAnonKey } from '../utils/supabase/info';
 import { format, differenceInDays } from 'date-fns';
@@ -131,7 +131,7 @@ export function RentalPage() {
   };
 
   const calculateTotal = () => {
-    if (!startDate || !endDate || formData.equipment.length === 0) return { daily: 0, total: 0, days: 0, deposit: 0 };
+    if (!startDate || !endDate || formData.equipment.length === 0) return { daily: 0, total: 0, days: 0, deposit: 0, discount: 0 };
     
     const days = Math.max(1, differenceInDays(endDate, startDate) + 1);
     const dailyRate = formData.equipment.reduce((sum, equipmentId) => {

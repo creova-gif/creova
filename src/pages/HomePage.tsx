@@ -94,6 +94,7 @@ function AnimatedStat({ number, label, icon: Icon, delay }: {
         whileHover={{ scale: 1.04 }}
         transition={{ duration: 0.4 }}
       >
+        <Icon className="w-6 h-6 mx-auto mb-3" style={{ color: '#A68F59' }} strokeWidth={1.5} />
         <span
           data-counter
           className="block font-light tracking-tight leading-none"

@@ -1,12 +1,9 @@
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { PageSEO } from '../components/PageSEO';
-import { Calendar, MapPin, Users, Clock, Lightbulb, Handshake, Star, ArrowRight, Award, FileText, ExternalLink, Check } from 'lucide-react';
-import photoSpotlight1 from '../assets/photo-event-networking.jpg';
+import { Calendar, MapPin, Users, Clock, Lightbulb, Handshake, Star, ArrowRight, Award, FileText, ExternalLink } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useCart } from '../context/CartContext';
-import { useLanguage } from '../context/LanguageContext';
-import { RevealOnScroll } from '../components/RevealOnScroll';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Textarea } from '../components/ui/textarea';
@@ -24,7 +21,6 @@ const warmGradient = 'linear-gradient(135deg, #A68F59 0%, #B1643B 100%)';
 
 export function EventsCollaboratePage() {
   const { addItem } = useCart();
-  const { t } = useLanguage();
   const [formData, setFormData] = useState({
     name: '',
     email: '',

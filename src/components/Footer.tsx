@@ -65,7 +65,10 @@ export function Footer() {
   const headlineInView = useInView(headlineRef, { once: true, margin: '-5% 0px' });
   const linksInView    = useInView(linksRef,    { once: true, margin: '-5% 0px' });
 
-  const COLUMNS = [
+  const COLUMNS: Array<{
+    titleKey: string;
+    links: Array<{ label?: string; labelKey?: string; href: string; external?: boolean }>;
+  }> = [
     {
       titleKey: 'footer.col.services',
       links: [
@@ -368,8 +371,8 @@ export function Footer() {
 
               <ul className="space-y-3.5">
                 {col.links.map((link, linkIdx) => {
-                  const label = 'labelKey' in link ? t(link.labelKey) : link.label;
-                  const isExternal = 'external' in link && link.external;
+                  const label = link.labelKey ? t(link.labelKey) : (link.label ?? '');
+                  const isExternal = Boolean(link.external);
                   return (
                     <motion.li
                       key={linkIdx}

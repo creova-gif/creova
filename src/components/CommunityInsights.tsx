@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import { Users, Globe, Heart, TrendingUp, Camera, ShoppingBag, Calendar, Palette } from 'lucide-react';
+import { Globe, Heart, TrendingUp, Camera, ShoppingBag, Calendar, Palette } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 
 export function CommunityInsights() {

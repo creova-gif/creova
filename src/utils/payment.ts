@@ -159,7 +159,7 @@ export async function createPaymentIntent(
 }
 
 export async function processPayment(
-  clientSecret: string,
+  _clientSecret: string,
   elements: any,
   stripe: any
 ) {

@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { 
-  DollarSign, Search, Filter, RefreshCw, AlertCircle, 
-  CheckCircle, Clock, XCircle, CreditCard, Calendar
+  DollarSign, Search, RefreshCw, AlertCircle, 
+  CheckCircle, Clock, CreditCard, Calendar
 } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
@@ -17,7 +17,6 @@ import {
   DialogTrigger,
 } from '../components/ui/dialog';
 import { Label } from '../components/ui/label';
-import { Textarea } from '../components/ui/textarea';
 
 interface Payment {
   paymentId: string;

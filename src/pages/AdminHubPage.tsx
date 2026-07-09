@@ -1,6 +1,6 @@
 import { motion } from 'motion/react';
 import { 
-  Shield, Users, BarChart3, DollarSign, 
+  Shield, BarChart3, DollarSign, 
   Mail, ArrowRight, Lock, Activity, Database
 } from 'lucide-react';
 import { useNavigate } from 'react-router';

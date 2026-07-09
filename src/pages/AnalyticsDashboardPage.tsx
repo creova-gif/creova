@@ -2,13 +2,13 @@ import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { 
   Users, Eye, MousePointer, Clock, TrendingUp, Globe, 
-  Monitor, Smartphone, Tablet, RefreshCw, Calendar,
+  Monitor, RefreshCw, Calendar,
   BarChart3, PieChart, Activity, ExternalLink
 } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { toast } from 'sonner';
 import { adminFetch } from '../utils/supabase/adminSession';
-import { LineChart, Line, BarChart, Bar, PieChart as RePieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { LineChart, Line, BarChart, Bar, PieChart as RePieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 interface AnalyticsData {
   status: string;
@@ -292,7 +292,7 @@ export function AnalyticsDashboardPage() {
                   outerRadius={80}
                   label={(entry) => `${entry.device}: ${entry.count}`}
                 >
-                  {analytics.devices.map((entry, index) => (
+                  {analytics.devices.map((_entry, index) => (
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                   ))}
                 </Pie>
@@ -326,7 +326,7 @@ export function AnalyticsDashboardPage() {
                   outerRadius={80}
                   label={(entry) => `${entry.browser}: ${entry.count}`}
                 >
-                  {analytics.browsers.map((entry, index) => (
+                  {analytics.browsers.map((_entry, index) => (
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                   ))}
                 </Pie>

@@ -1,17 +1,13 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router';
+import { Link } from 'react-router';
 import { PageSEO } from '../components/PageSEO';
 import { Button } from '../components/ui/button';
 import { CheckCircle2, Check, Target, Award, Shield, Clock, ArrowRight, Star, Users, Briefcase, Package, Plane, PartyPopper, Palette, Plus, Mail, MapPin } from 'lucide-react';
 import { motion } from 'motion/react';
 import { RevealOnScroll } from '../components/RevealOnScroll';
 import { BookingModal } from '../components/BookingModal';
-import { toast } from 'sonner';
-import { useLanguage } from '../context/LanguageContext';
 
 export function PricingPage() {
-  const { t } = useLanguage();
-  const navigate = useNavigate();
   const [bookingOpen, setBookingOpen] = useState(false);
   const [selectedService, setSelectedService] = useState<{
     name: string;

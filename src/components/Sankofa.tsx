@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useLocation } from 'react-router';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
-import { MessageCircle, X, Send, Star, HelpCircle } from 'lucide-react';
+import { X, Send, HelpCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useLanguage } from '../context/LanguageContext';
 const sankofaLogo = '/sankofa-profile.jpg';

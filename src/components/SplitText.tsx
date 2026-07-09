@@ -1,5 +1,7 @@
 import { useRef } from 'react';
-import { motion, useInView } from 'motion/react';
+import { motion, useInView, type Variants } from 'motion/react';
+
+type SplitTextTag = 'span' | 'div' | 'p' | 'h1' | 'h2' | 'h3';
 
 interface SplitTextProps {
   text: string;
@@ -9,7 +11,7 @@ interface SplitTextProps {
   stagger?: number;
   mode?: 'words' | 'chars';
   once?: boolean;
-  tag?: keyof JSX.IntrinsicElements;
+  tag?: SplitTextTag;
 }
 
 export function SplitText({
@@ -27,7 +29,7 @@ export function SplitText({
 
   const units = mode === 'chars' ? text.split('') : text.split(' ');
 
-  const containerVariants = {
+  const containerVariants: Variants = {
     hidden: {},
     visible: {
       transition: {
@@ -37,7 +39,7 @@ export function SplitText({
     },
   };
 
-  const unitVariants = {
+  const unitVariants: Variants = {
     hidden: {
       opacity: 0,
       y: mode === 'chars' ? 20 : 18,

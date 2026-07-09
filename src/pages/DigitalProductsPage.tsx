@@ -1,11 +1,9 @@
 import { useLanguage } from '../context/LanguageContext';
-import { Button } from '../components/ui/button';
 import { PageSEO } from '../components/PageSEO';
 import { useCart } from '../context/CartContext';
 import { toast } from 'sonner';
 import { Download, Heart, ChevronDown, Gift, Star, FileText, Camera, Palette, Package, Sliders, Wrench } from 'lucide-react';
 import { motion } from 'motion/react';
-import { LeadMagnetModal } from '../components/LeadMagnetModal';
 import { useState } from 'react';
 
 const warmGradient = 'linear-gradient(135deg, #A68F59 0%, #B1643B 100%)';
@@ -15,8 +13,6 @@ export function DigitalProductsPage() {
   const { t } = useLanguage();
   const [hoveredProduct, setHoveredProduct] = useState<string | null>(null);
   const [filter, setFilter] = useState('all');
-  const [selectedLeadMagnet, setSelectedLeadMagnet] = useState<any>(null);
-  const [isLeadMagnetModalOpen, setIsLeadMagnetModalOpen] = useState(false);
 
   const leadMagnets = [
     { id: 'photoshoot-checklist', title: 'Ultimate Photoshoot Preparation Checklist', description: 'Complete guide to prepare for your professional photoshoot - what to bring, how to pose, and styling tips.', fileType: 'PDF', value: '$25', icon: Camera, downloadUrl: '#' },
@@ -24,14 +20,6 @@ export function DigitalProductsPage() {
     { id: 'brand-color-guide', title: 'Brand Color Psychology Guide', description: 'Learn which colors resonate with your brand values and how to choose the perfect palette.', fileType: 'PDF', value: '$30', icon: Palette, downloadUrl: '#' },
     { id: 'content-planning-template', title: 'Monthly Content Planning Template', description: 'Notion template to organize your content strategy, plan posts, and track performance.', fileType: 'Template', value: '$35', icon: FileText, downloadUrl: '#' }
   ];
-
-  const handleLeadMagnetClick = (magnet: any) => {
-    setSelectedLeadMagnet(magnet);
-    setIsLeadMagnetModalOpen(true);
-    if (typeof (window as any).gtag === 'function') {
-      (window as any).gtag('event', 'view_item', { event_category: 'Lead Magnet', event_label: magnet.title });
-    }
-  };
 
   const digitalProducts = [
     { id: 'brand-kit-template', name: 'BRAND IDENTITY KIT', price: 69, image: 'https://images.unsplash.com/photo-1727755868081-c25d2b427ce3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtaW5pbWFsJTIwYnJhbmQlMjBpZGVudGl0eSUyMGRlc2lnbnxlbnwxfHx8fDE3NjMyMzE2OTF8MA&ixlib=rb-4.1.0&q=80&w=1080', hoverImage: 'https://images.unsplash.com/photo-1727755868081-c25d2b427ce3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtaW5pbWFsJTIwYnJhbmQlMjBpZGVudGl0eSUyMGRlc2lnbnxlbnwxfHx8fDE3NjMyMzE2OTF8MA&ixlib=rb-4.1.0&q=80&w=1080', type: 'Templates', description: 'Complete Canva template kit with logo layouts, color palettes, and social media templates', includes: '10+ Canva templates · Brand guide · Social kit', category: 'branding', badge: 'NEW' },
@@ -425,7 +413,6 @@ export function DigitalProductsPage() {
         </div>
       </section>
 
-      <LeadMagnetModal isOpen={isLeadMagnetModalOpen} onClose={() => setIsLeadMagnetModalOpen(false)} magnet={selectedLeadMagnet} />
     </div>
   );
 }

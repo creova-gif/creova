@@ -1,29 +1,20 @@
 import { useState } from 'react';
-import { Button } from '../components/ui/button';
-import { useCart } from '../context/CartContext';
 import { PageSEO } from '../components/PageSEO';
 import { useLanguage } from '../context/LanguageContext';
-import { toast } from 'sonner';
-import { Heart, Eye, Calendar, Package, Shirt, Tag, Sparkles } from 'lucide-react';
+import { Calendar, Package, Shirt, Tag, Sparkles } from 'lucide-react';
 import { motion } from 'motion/react';
-import { ProductQuickView } from '../components/ProductQuickView';
 import { SizeGuide } from '../components/SizeGuide';
-import { AddToCartDialog } from '../components/AddToCartDialog';
 import { FallDropTeaser } from '../components/FallDropTeaser';
 
 const warmGradient = 'linear-gradient(135deg, #A68F59 0%, #B1643B 100%)';
 
 export function ShopPage() {
-  const { addItem } = useCart();
   const { t } = useLanguage();
   const [selectedSizes, setSelectedSizes] = useState<Record<string, string>>({});
   const [selectedColors, setSelectedColors] = useState<Record<string, { name: string; hex: string }>>({});
   const [hoveredProduct, setHoveredProduct] = useState<string | null>(null);
   const [filter, setFilter] = useState('all');
-  const [quickViewProduct, setQuickViewProduct] = useState<any>(null);
   const [sizeGuideOpen, setSizeGuideOpen] = useState(false);
-  const [addToCartDialogOpen, setAddToCartDialogOpen] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState<any>(null);
 
   const colorPalette = {
     'Jet Black': '#000000',
@@ -76,19 +67,6 @@ export function ShopPage() {
   ];
 
   const filteredProducts = filter === 'all' ? products : products.filter(p => p.category === filter);
-
-  const handleAddToCart = (product: typeof products[0]) => {
-    const hasMultipleSizes = product.sizes.length > 1 || (product.sizes.length === 1 && product.sizes[0] !== 'One Size');
-    const size = selectedSizes[product.id];
-    if (hasMultipleSizes && !size) {
-      toast.error('Please select a size before adding to bag');
-      return;
-    }
-    const finalSize = size || product.sizes[0];
-    const color = selectedColors[product.id] || { name: product.colors[0], hex: colorPalette[product.colors[0] as keyof typeof colorPalette] };
-    addItem({ id: `${product.id}-${finalSize}-${color.name}`, name: `${product.name} - ${finalSize} - ${color.name}`, price: product.price, type: 'clothing', image: product.image });
-    toast.success('Added to bag', { description: `${product.name} (${finalSize}, ${color.name})` });
-  };
 
   const filterTabs = [
     { label: t('shop.filter.all').toUpperCase(), value: 'all' },
@@ -420,20 +398,7 @@ export function ShopPage() {
       </section>
 
       {/* Modals */}
-      <ProductQuickView product={quickViewProduct} isOpen={!!quickViewProduct} onClose={() => setQuickViewProduct(null)} />
       <SizeGuide isOpen={sizeGuideOpen} onClose={() => setSizeGuideOpen(false)} />
-      {selectedProduct && (
-        <AddToCartDialog
-          open={addToCartDialogOpen}
-          onOpenChange={setAddToCartDialogOpen}
-          product={selectedProduct}
-          colorPalette={colorPalette}
-          onAddToCart={(productId, size, color) => {
-            addItem({ id: `${productId}-${size}-${color.name}`, name: `${selectedProduct.name} - ${size} - ${color.name}`, price: selectedProduct.price, type: 'clothing', image: selectedProduct.image });
-            toast.success('Added to bag', { description: `${selectedProduct.name} (${size}, ${color.name})` });
-          }}
-        />
-      )}
     </div>
   );
 }

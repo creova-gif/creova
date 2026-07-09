@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from './ui/dialog';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { stripePromise, CustomerInfo, createPaymentIntent } from '../utils/payment';
-import { Loader2, CheckCircle2, CreditCard } from 'lucide-react';
+import { Loader2, CheckCircle2 } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface PaymentDialogProps {
@@ -26,7 +26,6 @@ interface PaymentDialogProps {
 
 function CheckoutForm({ 
   amount, 
-  items, 
   onSuccess,
   onCancel 
 }: { 
@@ -181,6 +180,7 @@ export function PaymentDialog({
       <DialogContent className="max-w-md">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
+          <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
 
         {!showPayment ? (

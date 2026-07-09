@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import { MessageCircle, Quote, Globe, TrendingUp, CheckCircle, MapPin, Award, Users } from 'lucide-react';
+import { MessageCircle, Quote, Globe, TrendingUp, CheckCircle, MapPin, Award } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
 import { useLanguage } from '../context/LanguageContext';

@@ -1,7 +1,7 @@
 import { motion } from 'motion/react';
 import { useLanguage } from '../context/LanguageContext';
 import { PageSEO } from '../components/PageSEO';
-import { useNavigate, Link } from 'react-router';
+import { useNavigate } from 'react-router';
 import { RevealOnScroll } from '../components/RevealOnScroll';
 import { 
   Star, 
@@ -29,7 +29,7 @@ import { Input } from '../components/ui/input';
 import { projectId, publicAnonKey } from '../utils/supabase/info';
 
 export function CommunityPage() {
-  const { language, t } = useLanguage();
+  const { language } = useLanguage();
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [notifyEmails, setNotifyEmails] = useState<{ [key: string]: string }>({
@@ -83,7 +83,7 @@ export function CommunityPage() {
         })
       });
 
-      const data = await response.json();
+      await response.json();
 
       if (response.ok) {
         toast.success(
@@ -711,14 +711,17 @@ export function CommunityPage() {
                       />
                       <Button 
                         onClick={handleJoinCommunity}
-                        className="w-full rounded-xl py-6 text-lg group relative overflow-hidden"
+                        disabled={isSubmitting}
+                        className="w-full rounded-xl py-6 text-lg group relative overflow-hidden disabled:opacity-60"
                         style={{ 
                           backgroundColor: tier.color,
                           color: '#FFFFFF'
                         }}
                       >
                         <span className="relative z-10 flex items-center justify-center gap-2">
-                          {language === 'fr' ? 'Rejoindre Gratuitement' : 'Join Free'}
+                          {isSubmitting
+                            ? (language === 'fr' ? 'Envoi...' : 'Joining...')
+                            : (language === 'fr' ? 'Rejoindre Gratuitement' : 'Join Free')}
                           <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                         </span>
                         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />

@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import { Database, ExternalLink, Copy, Code, FileText, Download, Search, Filter, BarChart3, Shield, CheckCircle } from 'lucide-react';
+import { Database, ExternalLink, Copy, Code, FileText, Download, Search, BarChart3, Shield, CheckCircle } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { toast } from 'sonner';
