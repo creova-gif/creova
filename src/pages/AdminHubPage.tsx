@@ -1,7 +1,7 @@
 import { motion } from 'motion/react';
-import { 
-  Shield, BarChart3, DollarSign, 
-  Mail, ArrowRight, Lock, Activity, Database
+import {
+  Shield, BarChart3, DollarSign,
+  Mail, ArrowRight, Lock, Activity, Database, Image
 } from 'lucide-react';
 import { useNavigate } from 'react-router';
 import { PageSEO } from '../components/PageSEO';
@@ -41,6 +41,14 @@ export function AdminHubPage() {
       path: '/admin/database',
       color: '#A68F59',
       stats: 'View data'
+    },
+    {
+      title: 'Work Portfolio',
+      description: 'Add, edit, or remove galleries shown on /work and the homepage',
+      icon: Image,
+      path: '/admin/galleries',
+      color: '#B1643B',
+      stats: 'Manage galleries'
     }
   ];
 
@@ -197,7 +205,7 @@ export function AdminHubPage() {
                     <strong>Admin Password</strong>
                   </p>
                   <p className="text-xs" style={{ color: '#7A6F66' }}>
-                    Set via <code>VITE_ADMIN_PASSWORD</code> environment variable
+                    Checked server-side against the <code>ADMIN_PASSWORD</code> Supabase secret — never shipped to the browser
                   </p>
                 </div>
               </div>

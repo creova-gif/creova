@@ -42,6 +42,7 @@ const AdminSubmissionsPage = lazy(() => import('./pages/AdminSubmissionsPage').t
 const AnalyticsDashboardPage = lazy(() => import('./pages/AnalyticsDashboardPage').then(m => ({ default: m.AnalyticsDashboardPage })));
 const RefundManagementPage = lazy(() => import('./pages/RefundManagementPage').then(m => ({ default: m.RefundManagementPage })));
 const AdminHubPage = lazy(() => import('./pages/AdminHubPage').then(m => ({ default: m.AdminHubPage })));
+const AdminGalleriesPage = lazy(() => import('./pages/AdminGalleriesPage').then(m => ({ default: m.AdminGalleriesPage })));
 const DatabaseAccessPage = lazy(() => import('./pages/DatabaseAccessPage').then(m => ({ default: m.DatabaseAccessPage })));
 const WorkPage = lazy(() => import('./pages/WorkPage').then(m => ({ default: m.WorkPage })));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage').then(m => ({ default: m.NotFoundPage })));
@@ -91,6 +92,7 @@ function AnimatedRoutes() {
             <Route path="/analytics/dashboard" element={<AdminAuth><AnalyticsDashboardPage /></AdminAuth>} />
             <Route path="/admin/refunds" element={<AdminAuth><RefundManagementPage /></AdminAuth>} />
             <Route path="/admin/hub" element={<AdminAuth><AdminHubPage /></AdminAuth>} />
+            <Route path="/admin/galleries" element={<AdminAuth><AdminGalleriesPage /></AdminAuth>} />
             <Route path="/admin/database" element={<AdminAuth><DatabaseAccessPage /></AdminAuth>} />
             <Route path="/seen" element={<SEENPage />} />
             <Route path="/checkout" element={<CheckoutPage />} />

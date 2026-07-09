@@ -34,6 +34,7 @@ import { Magnetic } from '../components/Magnetic';
 import { TiltCard } from '../components/TiltCard';
 import { FallDropTeaser } from '../components/FallDropTeaser';
 import { organizationSchema } from '../utils/structuredData';
+import { useGalleries } from '../hooks/useGalleries';
 
 function AnimatedStat({ number, label, icon: Icon, delay }: {
   number: string;
@@ -117,6 +118,8 @@ function AnimatedStat({ number, label, icon: Icon, delay }: {
 export function HomePage() {
   const { t } = useLanguage();
   const heroRef = useRef<HTMLElement>(null);
+  const { galleries } = useGalleries();
+  const featuredGalleries = galleries.slice(0, 6);
 
   const { scrollYProgress: heroScrollY } = useScroll({
     target: heroRef,
@@ -503,23 +506,16 @@ export function HomePage() {
               onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = '#F5F1EB'}
               onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = '#A68F59'}
             >
-              View all 10 galleries
+              View all {galleries.length} galleries
               <ArrowRight className="w-4 h-4" />
             </Link>
           </motion.div>
 
           {/* 2×3 preview grid */}
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {[
-              { title: 'Afro Caribbean Night', subtitle: 'Part II', org: 'BSSC', image: '/card-blackprint-session.jpg', pos: 'center 30%', url: 'https://creova.pixieset.com/afrocaribbeannightpart2/', accent: '#B1643B' },
-              { title: 'Hoop for Stars', subtitle: 'BLSA × BUGA', org: 'BLSA · BUGA', image: '/card-blsa.jpg', pos: 'center 35%', url: 'https://creova.pixieset.com/hoopforstarsblsaxbuga/', accent: '#A68F59' },
-              { title: 'FBF Podcast Stocks', subtitle: 'Brand Photography', org: 'Future Black Female', image: '/card-fbf.jpg', pos: 'center 20%', url: 'https://creova.pixieset.com/futureblackfemalefbfpodcaststocks/', accent: '#B1643B' },
-              { title: 'Level Up Symposium', subtitle: 'Brock University', org: 'Brock University', image: '/card-justin-panel.jpg', pos: 'center 25%', url: 'https://creova.pixieset.com/levelupsymposiumbrockuniversity/', accent: '#A68F59' },
-              { title: 'MASLAB × Always Carnival', subtitle: 'Cultural Night', org: 'BSSC', image: '/community-photo.jpg', pos: 'center 25%', url: 'https://creova.pixieset.com/maslabbsscxalwayscarnival/', accent: '#A68F59' },
-              { title: 'BLSA Photoshoot', subtitle: 'Brand & Portraits', org: 'BLSA', image: '/photo-beyond-agency.jpg', pos: 'center 25%', url: 'https://creova.pixieset.com/blsaphotoshoot/', accent: '#B1643B' },
-            ].map((item, i) => (
+            {featuredGalleries.map((item, i) => (
               <motion.a
-                key={i}
+                key={item.id}
                 href={item.url}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -536,7 +532,7 @@ export function HomePage() {
                   alt={item.title}
                   loading="lazy"
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  style={{ objectPosition: item.pos }}
+                  style={{ objectPosition: item.objectPosition }}
                 />
                 <div className="absolute inset-0" style={{
                   background: 'linear-gradient(to top, rgba(10,10,10,0.9) 0%, rgba(10,10,10,0.2) 60%, transparent 100%)'

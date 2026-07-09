@@ -1811,6 +1811,106 @@ app.get("/make-server-feacf0d8/refunds", requireAdmin, async (c) => {
 });
 
 // ============================================================================
+// GALLERY MANAGEMENT (Work portfolio — public read, admin-managed writes)
+//
+// WorkPage.tsx and HomePage.tsx used to hardcode the entire gallery list
+// (title, cover image, Pixieset link) directly in the React source, so
+// adding a new shoot meant editing and redeploying code. This moves that
+// data into the KV store: publicly readable so the storefront can render
+// it, but only mutable through requireAdmin routes.
+// ============================================================================
+
+const GALLERY_CATEGORIES = ["events", "sports", "brand", "conference"] as const;
+
+app.get("/make-server-feacf0d8/galleries", async (c) => {
+  try {
+    const galleries = await kv.getByPrefix("gallery_");
+    const sorted = galleries.sort((a: any, b: any) => (a.order ?? 0) - (b.order ?? 0));
+    return c.json({ status: "success", galleries: sorted });
+  } catch (error) {
+    console.error("Error retrieving galleries:", error);
+    return c.json({ error: "Failed to retrieve galleries: " + error.message }, 500);
+  }
+});
+
+app.post("/make-server-feacf0d8/admin/galleries", requireAdmin, async (c) => {
+  try {
+    const body = await c.req.json();
+    const { title, subtitle, category, org, year, image, objectPosition, url, accent, featured, order } = body;
+
+    if (!title || !image || !url) {
+      return c.json({ error: "Title, image, and url are required" }, 400);
+    }
+    if (category && !GALLERY_CATEGORIES.includes(category)) {
+      return c.json({ error: "Invalid category" }, 400);
+    }
+
+    const id = `gallery_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const gallery = {
+      id,
+      title,
+      subtitle: subtitle || "",
+      category: category || "events",
+      org: org || "",
+      year: year || String(new Date().getFullYear()),
+      image,
+      objectPosition: objectPosition || "center",
+      url,
+      accent: accent || "#A68F59",
+      featured: !!featured,
+      order: typeof order === "number" ? order : Date.now(),
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    };
+    await kv.set(id, gallery);
+
+    console.log(`Created gallery: ${id}`);
+    return c.json({ status: "success", gallery });
+  } catch (error) {
+    console.error("Error creating gallery:", error);
+    return c.json({ error: "Failed to create gallery: " + error.message }, 500);
+  }
+});
+
+app.post("/make-server-feacf0d8/admin/galleries/update", requireAdmin, async (c) => {
+  try {
+    const body = await c.req.json();
+    const { id, ...updates } = body;
+    if (!id) return c.json({ error: "Gallery id is required" }, 400);
+    if (updates.category && !GALLERY_CATEGORIES.includes(updates.category)) {
+      return c.json({ error: "Invalid category" }, 400);
+    }
+
+    const existing = await kv.get(id);
+    if (!existing) return c.json({ error: "Gallery not found" }, 404);
+
+    const updated = { ...existing, ...updates, id, updated_at: new Date().toISOString() };
+    await kv.set(id, updated);
+
+    console.log(`Updated gallery: ${id}`);
+    return c.json({ status: "success", gallery: updated });
+  } catch (error) {
+    console.error("Error updating gallery:", error);
+    return c.json({ error: "Failed to update gallery: " + error.message }, 500);
+  }
+});
+
+app.post("/make-server-feacf0d8/admin/galleries/delete", requireAdmin, async (c) => {
+  try {
+    const body = await c.req.json();
+    const { id } = body;
+    if (!id) return c.json({ error: "Gallery id is required" }, 400);
+
+    await kv.del(id);
+    console.log(`Deleted gallery: ${id}`);
+    return c.json({ status: "success" });
+  } catch (error) {
+    console.error("Error deleting gallery:", error);
+    return c.json({ error: "Failed to delete gallery: " + error.message }, 500);
+  }
+});
+
+// ============================================================================
 // EMAIL SENDING ENDPOINTS
 // ============================================================================
 
