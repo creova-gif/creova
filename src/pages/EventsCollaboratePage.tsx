@@ -445,7 +445,7 @@ export function EventsCollaboratePage() {
                    style={{ border: '1px solid rgba(166,143,89,0.3)', backgroundColor: 'rgba(166,143,89,0.1)' }}>
                 <Calendar className="w-4 h-4" style={{ color: '#A68F59' }} />
               </div>
-              <h3 className="text-lg tracking-tight mb-2" style={{ color: '#F5F1EB' }}>Upcoming Workshops</h3>
+              <h2 className="text-lg tracking-tight mb-2" style={{ color: '#F5F1EB' }}>Upcoming Workshops</h2>
               <p className="text-xs leading-relaxed mb-5" style={{ color: '#4A3E36' }}>Photography & content creation workshops across Ontario</p>
               <div className="flex items-center gap-2 text-xs group-hover:translate-x-1.5 transition-transform duration-300" style={{ color: '#A68F59' }}>
                 <span>Explore Events</span>
@@ -476,7 +476,7 @@ export function EventsCollaboratePage() {
                    style={{ border: '1px solid rgba(177,100,59,0.3)', backgroundColor: 'rgba(177,100,59,0.1)' }}>
                 <Handshake className="w-4 h-4" style={{ color: '#B1643B' }} />
               </div>
-              <h3 className="text-lg tracking-tight mb-2" style={{ color: '#F5F1EB' }}>Partnership Opportunities</h3>
+              <h2 className="text-lg tracking-tight mb-2" style={{ color: '#F5F1EB' }}>Partnership Opportunities</h2>
               <p className="text-xs leading-relaxed mb-5" style={{ color: '#4A3E36' }}>Co-branded campaigns, creative projects & community initiatives</p>
               <div className="flex items-center gap-2 text-xs group-hover:translate-x-1.5 transition-transform duration-300" style={{ color: '#B1643B' }}>
                 <span>View Opportunities</span>
@@ -507,7 +507,7 @@ export function EventsCollaboratePage() {
                    style={{ border: '1px solid rgba(166,143,89,0.3)', backgroundColor: 'rgba(166,143,89,0.1)' }}>
                 <Award className="w-4 h-4" style={{ color: '#A68F59' }} />
               </div>
-              <h3 className="text-lg tracking-tight mb-2" style={{ color: '#F5F1EB' }}>Past Collaborations</h3>
+              <h2 className="text-lg tracking-tight mb-2" style={{ color: '#F5F1EB' }}>Past Collaborations</h2>
               <p className="text-xs leading-relaxed mb-5" style={{ color: '#4A3E36' }}>Partner orgs, universities and community organizations</p>
               <div className="flex items-center gap-2 text-xs group-hover:translate-x-1.5 transition-transform duration-300" style={{ color: '#A68F59' }}>
                 <span>See Our Work</span>
@@ -536,7 +536,7 @@ export function EventsCollaboratePage() {
                    style={{ backgroundColor: 'rgba(255,255,255,0.2)' }}>
                 <FileText className="w-4 h-4" style={{ color: '#FFFFFF' }} />
               </div>
-              <h3 className="text-lg tracking-tight mb-2" style={{ color: '#FFFFFF' }}>Submit Proposal</h3>
+              <h2 className="text-lg tracking-tight mb-2" style={{ color: '#FFFFFF' }}>Submit Proposal</h2>
               <p className="text-xs leading-relaxed mb-5" style={{ color: 'rgba(255,255,255,0.75)' }}>Have an idea? Tell us about your project or partnership vision</p>
               <div className="flex items-center gap-2 text-xs group-hover:translate-x-1.5 transition-transform duration-300" style={{ color: 'rgba(255,255,255,0.85)' }}>
                 <span>Get Started</span>

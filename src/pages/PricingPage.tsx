@@ -989,7 +989,7 @@ export function PricingPage() {
                 className="bg-white border rounded-2xl p-6 hover:shadow-lg transition-all duration-300"
                 style={{ borderColor: '#E3DCD3' }}
               >
-                <h4 className="mb-3" style={{ color: '#121212' }}>{addon.name}</h4>
+                <h3 className="mb-3" style={{ color: '#121212' }}>{addon.name}</h3>
                 <p className="text-2xl sm:text-3xl mb-2" style={{ color: '#A68F59' }}>{addon.price}</p>
                 <p className="text-sm" style={{ color: '#7A6F66' }}>{addon.desc}</p>
               </motion.div>

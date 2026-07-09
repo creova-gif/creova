@@ -293,7 +293,7 @@ export function DigitalProductsPage() {
 
                 {/* Product info */}
                 <div className="space-y-1">
-                  <h3 className="text-[10px] tracking-wider leading-snug" style={{ color: '#121212' }}>{product.name}</h3>
+                  <h2 className="text-[10px] tracking-wider leading-snug" style={{ color: '#121212' }}>{product.name}</h2>
                   <p className="text-[9px] tracking-wide leading-relaxed" style={{ color: '#7A6F66' }}>{product.includes}</p>
                   <p className="text-sm font-light" style={{ color: '#121212' }}>${product.price} CAD</p>
 

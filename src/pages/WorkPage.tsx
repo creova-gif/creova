@@ -192,6 +192,18 @@ export function WorkPage() {
     { id: 'brand', label: 'Brand & Portraits', count: sorted.filter(p => p.category === 'brand').length },
   ];
 
+  const structuredData = useMemo(
+    () => galleryListSchema(sorted.map(g => ({
+      title: g.title,
+      subtitle: g.subtitle,
+      url: g.url,
+      image: g.image,
+      date: g.date,
+      itemCount: g.itemCount,
+    }))),
+    [sorted]
+  );
+
   if (loading || galleries.length === 0) {
     return (
       <div style={{ backgroundColor: '#0A0A0A', minHeight: '100vh' }} className="flex items-center justify-center px-4">
@@ -208,18 +220,6 @@ export function WorkPage() {
       </div>
     );
   }
-
-  const structuredData = useMemo(
-    () => galleryListSchema(sorted.map(g => ({
-      title: g.title,
-      subtitle: g.subtitle,
-      url: g.url,
-      image: g.image,
-      date: g.date,
-      itemCount: g.itemCount,
-    }))),
-    [sorted]
-  );
 
   return (
     <div style={{ backgroundColor: '#0A0A0A' }}>
