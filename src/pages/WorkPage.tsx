@@ -237,6 +237,7 @@ export function WorkPage() {
           src={sorted[0].image}
           alt=""
           aria-hidden="true"
+          fetchPriority="high"
           className="absolute inset-0 w-full h-full object-cover"
           style={{ objectPosition: sorted[0].objectPosition }}
         />

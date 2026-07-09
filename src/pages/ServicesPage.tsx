@@ -768,6 +768,7 @@ export function ServicesPage() {
                   <img
                     src={vid.poster}
                     alt={vid.label}
+                    loading="lazy"
                     className="absolute inset-0 w-full h-full object-cover group-hover:opacity-0 transition-opacity duration-700"
                   />
                   <div className="absolute inset-0" style={{

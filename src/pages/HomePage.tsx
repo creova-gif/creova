@@ -664,7 +664,7 @@ export function HomePage() {
 
       {/* Editorial Quote Strip */}
       <div className="relative overflow-hidden" style={{ backgroundColor: '#0A0A0A', minHeight: '520px' }}>
-        <img src="/community-photo.jpg" alt="" aria-hidden="true"
+        <img src="/community-photo.jpg" alt="" aria-hidden="true" loading="lazy"
           className="absolute inset-0 w-full h-full object-cover"
           style={{ objectPosition: 'center 30%', opacity: 0.18 }} />
         <div className="absolute inset-0 pointer-events-none" style={{
