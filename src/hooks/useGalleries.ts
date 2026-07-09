@@ -10,6 +10,12 @@ export interface Gallery {
   category: GalleryCategory;
   org: string;
   year: string;
+  /** ISO date (YYYY-MM-DD) — used for sorting and display */
+  date?: string;
+  /** Number of photos in the Pixieset collection */
+  itemCount?: number;
+  /** True if the Pixieset collection is password-protected */
+  locked?: boolean;
   image: string;
   objectPosition: string;
   url: string;

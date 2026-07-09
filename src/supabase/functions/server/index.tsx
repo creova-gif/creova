@@ -1836,7 +1836,7 @@ app.get("/make-server-feacf0d8/galleries", async (c) => {
 app.post("/make-server-feacf0d8/admin/galleries", requireAdmin, async (c) => {
   try {
     const body = await c.req.json();
-    const { title, subtitle, category, org, year, image, objectPosition, url, accent, featured, order } = body;
+    const { title, subtitle, category, org, year, date, itemCount, locked, image, objectPosition, url, accent, featured, order } = body;
 
     if (!title || !image || !url) {
       return c.json({ error: "Title, image, and url are required" }, 400);
@@ -1853,6 +1853,9 @@ app.post("/make-server-feacf0d8/admin/galleries", requireAdmin, async (c) => {
       category: category || "events",
       org: org || "",
       year: year || String(new Date().getFullYear()),
+      date: typeof date === "string" ? date : undefined,
+      itemCount: typeof itemCount === "number" ? itemCount : undefined,
+      locked: !!locked,
       image,
       objectPosition: objectPosition || "center",
       url,

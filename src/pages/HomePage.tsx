@@ -119,7 +119,14 @@ export function HomePage() {
   const { t } = useLanguage();
   const heroRef = useRef<HTMLElement>(null);
   const { galleries } = useGalleries();
-  const featuredGalleries = galleries.slice(0, 6);
+  // Prefer galleries flagged as featured; fall back to newest-first
+  const featuredGalleries = (() => {
+    const flagged = galleries.filter(g => g.featured);
+    const rest = [...galleries]
+      .filter(g => !g.featured)
+      .sort((a, b) => (b.date || `${b.year}-01-01`).localeCompare(a.date || `${a.year}-01-01`));
+    return [...flagged, ...rest].slice(0, 6);
+  })();
 
   const { scrollYProgress: heroScrollY } = useScroll({
     target: heroRef,

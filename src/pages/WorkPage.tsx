@@ -1,11 +1,22 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { PageSEO } from '../components/PageSEO';
-import { ExternalLink, ArrowRight, ArrowDown } from 'lucide-react';
+import { ExternalLink, ArrowRight, ArrowDown, Lock, Search, X } from 'lucide-react';
 import { Link } from 'react-router';
 import { RevealOnScroll } from '../components/RevealOnScroll';
 import { Button } from '../components/ui/button';
+import { Input } from '../components/ui/input';
 import { useGalleries, type Gallery } from '../hooks/useGalleries';
+
+const MONTHS_SHORT = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+function formatShortDate(iso?: string): string {
+  if (!iso) return '';
+  const parts = iso.split('-');
+  if (parts.length !== 3) return '';
+  const [year, month, day] = parts;
+  return `${MONTHS_SHORT[parseInt(month, 10) - 1]} ${parseInt(day, 10)}, ${year}`;
+}
 
 type Category = 'all' | 'events' | 'sports' | 'brand' | 'conference';
 
@@ -49,8 +60,8 @@ function ProjectCard({
           background: `linear-gradient(135deg, ${project.accent}1A 0%, rgba(8,8,8,0.2) 100%)`
         }} />
 
-        {/* Category — top left */}
-        <div className="absolute top-4 left-4">
+        {/* Category + lock — top left */}
+        <div className="absolute top-4 left-4 flex items-center gap-2">
           <span
             className="text-[9px] tracking-[0.35em] uppercase px-3 py-1.5 rounded-full backdrop-blur-sm"
             style={{
@@ -61,11 +72,32 @@ function ProjectCard({
           >
             {project.category === 'brand' ? 'Brand' : project.category === 'conference' ? 'Conference' : project.category === 'sports' ? 'Sports' : 'Event'}
           </span>
+          {project.locked && (
+            <span
+              className="text-[9px] tracking-[0.2em] uppercase px-2 py-1 rounded-full backdrop-blur-sm flex items-center gap-1"
+              style={{
+                backgroundColor: 'rgba(18,18,18,0.6)',
+                color: 'rgba(245,241,235,0.7)',
+                border: '1px solid rgba(245,241,235,0.15)',
+              }}
+              title="This gallery is password-protected on Pixieset"
+            >
+              <Lock className="w-2.5 h-2.5" />
+              Private
+            </span>
+          )}
         </div>
 
-        {/* Year — top right */}
-        <div className="absolute top-4 right-4">
-          <span className="text-[9px] tracking-[0.3em]" style={{ color: 'rgba(245,241,235,0.4)' }}>{project.year}</span>
+        {/* Item count + date — top right */}
+        <div className="absolute top-4 right-4 text-right">
+          {typeof project.itemCount === 'number' && project.itemCount > 0 && (
+            <div className="text-[10px] tracking-[0.25em]" style={{ color: 'rgba(245,241,235,0.55)' }}>
+              {project.itemCount} photos
+            </div>
+          )}
+          <div className="text-[9px] tracking-[0.3em]" style={{ color: 'rgba(245,241,235,0.35)' }}>
+            {project.date ? formatShortDate(project.date) : project.year}
+          </div>
         </div>
 
         {/* Bottom content */}
@@ -74,16 +106,22 @@ function ProjectCard({
             className="mb-3 transition-all duration-500 group-hover:w-10"
             style={{ width: '24px', height: '1px', backgroundColor: project.accent }}
           />
-          <p className="text-[10px] tracking-[0.3em] uppercase mb-1" style={{ color: project.accent }}>
-            {project.org}
-          </p>
+          {project.org && (
+            <p className="text-[10px] tracking-[0.3em] uppercase mb-1" style={{ color: project.accent }}>
+              {project.org}
+            </p>
+          )}
           <h2 className={`tracking-tight leading-tight mb-0.5 ${large ? 'text-2xl' : 'text-lg'}`} style={{ color: '#F5F1EB', fontWeight: 300 }}>
             {project.title}
           </h2>
-          <p className="text-sm mb-4" style={{ color: 'rgba(245,241,235,0.5)' }}>{project.subtitle}</p>
+          {project.subtitle && (
+            <p className="text-sm mb-4" style={{ color: 'rgba(245,241,235,0.5)' }}>{project.subtitle}</p>
+          )}
 
           <div className="flex items-center gap-2 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-400">
-            <span className="text-[10px] tracking-[0.25em] uppercase" style={{ color: project.accent }}>View Gallery</span>
+            <span className="text-[10px] tracking-[0.25em] uppercase" style={{ color: project.accent }}>
+              {project.locked ? 'Enter Password' : 'View Gallery'}
+            </span>
             <ExternalLink className="w-3 h-3" style={{ color: project.accent }} />
           </div>
         </div>
@@ -119,19 +157,38 @@ function ScrollIndicator() {
 
 export function WorkPage() {
   const [activeTab, setActiveTab] = useState<Category>('all');
+  const [query, setQuery] = useState('');
   const marqueeRef = useRef<HTMLDivElement>(null);
   const { galleries, loading } = useGalleries();
 
-  const filtered = activeTab === 'all'
-    ? galleries
-    : galleries.filter(p => p.category === activeTab);
+  const sorted = useMemo(() => {
+    // Newest first, using date if present, otherwise year
+    return [...galleries].sort((a, b) => {
+      const aDate = a.date || `${a.year}-01-01`;
+      const bDate = b.date || `${b.year}-01-01`;
+      return bDate.localeCompare(aDate);
+    });
+  }, [galleries]);
+
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return sorted.filter(p => {
+      if (activeTab !== 'all' && p.category !== activeTab) return false;
+      if (!q) return true;
+      return (
+        p.title.toLowerCase().includes(q) ||
+        p.subtitle.toLowerCase().includes(q) ||
+        p.org.toLowerCase().includes(q)
+      );
+    });
+  }, [sorted, activeTab, query]);
 
   const TABS: { id: Category; label: string; count: number }[] = [
-    { id: 'all', label: 'All Work', count: galleries.length },
-    { id: 'events', label: 'Events', count: galleries.filter(p => p.category === 'events').length },
-    { id: 'sports', label: 'Sports', count: galleries.filter(p => p.category === 'sports').length },
-    { id: 'brand', label: 'Brand & Headshots', count: galleries.filter(p => p.category === 'brand').length },
-    { id: 'conference', label: 'Conference', count: galleries.filter(p => p.category === 'conference').length },
+    { id: 'all', label: 'All Work', count: sorted.length },
+    { id: 'events', label: 'Events', count: sorted.filter(p => p.category === 'events').length },
+    { id: 'sports', label: 'Sports', count: sorted.filter(p => p.category === 'sports').length },
+    { id: 'conference', label: 'Conference & Panels', count: sorted.filter(p => p.category === 'conference').length },
+    { id: 'brand', label: 'Brand & Portraits', count: sorted.filter(p => p.category === 'brand').length },
   ];
 
   if (loading || galleries.length === 0) {
@@ -163,11 +220,11 @@ export function WorkPage() {
       <section className="relative overflow-hidden" style={{ height: '100svh', minHeight: '580px' }}>
         {/* Full-bleed background image */}
         <img
-          src={galleries[0].image}
+          src={sorted[0].image}
           alt=""
           aria-hidden="true"
           className="absolute inset-0 w-full h-full object-cover"
-          style={{ objectPosition: galleries[0].objectPosition }}
+          style={{ objectPosition: sorted[0].objectPosition }}
         />
 
         {/* Layered gradient overlay */}
@@ -202,7 +259,7 @@ export function WorkPage() {
             className="hidden sm:flex items-center gap-2"
           >
             <span className="text-[10px] tracking-[0.4em] uppercase" style={{ color: 'rgba(245,241,235,0.3)' }}>
-              {galleries.length} Projects · 2024
+              {sorted.length} Galleries · Since 2019
             </span>
           </motion.div>
         </div>
@@ -220,7 +277,7 @@ export function WorkPage() {
           }}
           aria-hidden="true"
         >
-          {galleries.length}
+          {sorted.length}
         </div>
 
         {/* Vertical side text — editorial */}
@@ -276,7 +333,7 @@ export function WorkPage() {
                         className="text-[9px] tracking-[0.5em] uppercase hidden sm:block"
                         style={{ color: 'rgba(245,241,235,0.2)' }}
                       >
-                        {galleries.length} projects · 2024
+                        {sorted.length} galleries · Since 2019
                       </motion.span>
                     </span>
                   </h1>
@@ -301,7 +358,7 @@ export function WorkPage() {
                 className="flex gap-10 lg:gap-12 flex-shrink-0"
               >
                 {[
-                  { n: String(galleries.length), l: 'Galleries' },
+                  { n: String(sorted.length), l: 'Galleries' },
                   { n: '100+', l: 'Events Shot' },
                   { n: '2024', l: 'Since' },
                 ].map((s) => (
@@ -348,30 +405,60 @@ export function WorkPage() {
         }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex overflow-x-auto gap-1 py-3 scrollbar-hide">
-            {TABS.map(tab => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className="flex items-center gap-2 px-4 py-2 rounded-full whitespace-nowrap transition-all duration-300 flex-shrink-0 text-xs tracking-wide"
-                style={{
-                  backgroundColor: activeTab === tab.id ? 'rgba(166,143,89,0.18)' : 'transparent',
-                  color: activeTab === tab.id ? '#A68F59' : 'rgba(245,241,235,0.3)',
-                  border: activeTab === tab.id ? '1px solid rgba(166,143,89,0.45)' : '1px solid transparent',
-                }}
-              >
-                {tab.label}
-                <span
-                  className="text-[9px] w-4 h-4 rounded-full flex items-center justify-center"
+          <div className="flex flex-col md:flex-row md:items-center gap-3 py-3">
+            <div className="flex overflow-x-auto gap-1 scrollbar-hide flex-1 min-w-0">
+              {TABS.map(tab => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className="flex items-center gap-2 px-4 py-2 rounded-full whitespace-nowrap transition-all duration-300 flex-shrink-0 text-xs tracking-wide"
                   style={{
-                    backgroundColor: activeTab === tab.id ? 'rgba(166,143,89,0.35)' : 'rgba(245,241,235,0.06)',
-                    color: activeTab === tab.id ? '#A68F59' : 'rgba(245,241,235,0.25)',
+                    backgroundColor: activeTab === tab.id ? 'rgba(166,143,89,0.18)' : 'transparent',
+                    color: activeTab === tab.id ? '#A68F59' : 'rgba(245,241,235,0.3)',
+                    border: activeTab === tab.id ? '1px solid rgba(166,143,89,0.45)' : '1px solid transparent',
                   }}
                 >
-                  {tab.count}
-                </span>
-              </button>
-            ))}
+                  {tab.label}
+                  <span
+                    className="text-[9px] px-1.5 min-w-[18px] h-[18px] rounded-full flex items-center justify-center"
+                    style={{
+                      backgroundColor: activeTab === tab.id ? 'rgba(166,143,89,0.35)' : 'rgba(245,241,235,0.06)',
+                      color: activeTab === tab.id ? '#A68F59' : 'rgba(245,241,235,0.25)',
+                    }}
+                  >
+                    {tab.count}
+                  </span>
+                </button>
+              ))}
+            </div>
+
+            {/* Search */}
+            <div className="relative w-full md:w-72 flex-shrink-0">
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 pointer-events-none" style={{ color: 'rgba(166,143,89,0.55)' }} />
+              <Input
+                type="search"
+                value={query}
+                onChange={e => setQuery(e.target.value)}
+                placeholder="Search galleries..."
+                aria-label="Search galleries"
+                className="pl-10 pr-9 py-2 text-xs rounded-full border"
+                style={{
+                  backgroundColor: 'rgba(245,241,235,0.04)',
+                  borderColor: 'rgba(166,143,89,0.15)',
+                  color: '#F5F1EB',
+                }}
+              />
+              {query && (
+                <button
+                  type="button"
+                  onClick={() => setQuery('')}
+                  className="absolute right-3 top-1/2 -translate-y-1/2"
+                  aria-label="Clear search"
+                >
+                  <X className="w-3.5 h-3.5" style={{ color: 'rgba(245,241,235,0.4)' }} />
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -379,29 +466,44 @@ export function WorkPage() {
       {/* ── GRID ── */}
       <section className="py-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeTab}
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.4 }}
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
-            >
-              {filtered.map((project, index) => {
-                // First featured project in "all" view → spans 2 columns
-                const isHero = activeTab === 'all' && index === 0;
-                return (
-                  <div
-                    key={project.id}
-                    className={isHero ? 'sm:col-span-2' : ''}
-                  >
-                    <ProjectCard project={project} index={index} large={isHero} />
-                  </div>
-                );
-              })}
-            </motion.div>
-          </AnimatePresence>
+          {filtered.length === 0 ? (
+            <div className="text-center py-24">
+              <p className="text-sm mb-3" style={{ color: 'rgba(245,241,235,0.5)' }}>
+                No galleries match your search.
+              </p>
+              <button
+                onClick={() => { setQuery(''); setActiveTab('all'); }}
+                className="text-xs tracking-widest uppercase"
+                style={{ color: '#A68F59' }}
+              >
+                Reset filters
+              </button>
+            </div>
+          ) : (
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeTab + query}
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.4 }}
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+              >
+                {filtered.map((project, index) => {
+                  // First card in "all"+no-query view spans 2 columns
+                  const isHero = activeTab === 'all' && !query && index === 0;
+                  return (
+                    <div
+                      key={project.id}
+                      className={isHero ? 'sm:col-span-2' : ''}
+                    >
+                      <ProjectCard project={project} index={index} large={isHero} />
+                    </div>
+                  );
+                })}
+              </motion.div>
+            </AnimatePresence>
+          )}
         </div>
       </section>
 
