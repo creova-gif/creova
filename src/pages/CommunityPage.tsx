@@ -1,7 +1,7 @@
 import { motion } from 'motion/react';
 import { useLanguage } from '../context/LanguageContext';
 import { PageSEO } from '../components/PageSEO';
-import { useNavigate } from 'react-router';
+import { useNavigate, Link } from 'react-router';
 import { RevealOnScroll } from '../components/RevealOnScroll';
 import {
   Star,
@@ -16,17 +16,29 @@ import {
   Check,
   ArrowRight,
   ExternalLink,
-  Award
+  Award,
+  Lock
 } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { toast } from 'sonner';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Input } from '../components/ui/input';
+import { useGalleries } from '../hooks/useGalleries';
 
 export function CommunityPage() {
   const { language } = useLanguage();
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
+  const { galleries } = useGalleries();
+
+  // Recent shoots with our named community partners — matched by org keyword
+  const partnerGalleries = useMemo(() => {
+    const keywords = ['BSSC', 'FBF', 'Future Black Female', 'BLSA'];
+    return galleries
+      .filter(g => keywords.some(k => g.org.includes(k) || g.title.includes(k)))
+      .sort((a, b) => (b.date || `${b.year}-01-01`).localeCompare(a.date || `${a.year}-01-01`))
+      .slice(0, 6);
+  }, [galleries]);
 
   const handleJoinCommunity = () => {
     if (!email || !email.includes('@')) {
@@ -676,6 +688,80 @@ export function CommunityPage() {
           </div>
         </div>
       </section>
+
+      {/* Recent Work with Our Partners */}
+      {partnerGalleries.length > 0 && (
+        <section className="py-20" style={{ backgroundColor: '#0A0A0A' }}>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-12"
+            >
+              <div>
+                <div className="flex items-center gap-4 mb-3">
+                  <div style={{ height: '1px', width: '40px', backgroundColor: '#A68F59' }} />
+                  <span className="text-xs tracking-[0.45em] uppercase" style={{ color: '#A68F59' }}>Recent Work</span>
+                </div>
+                <h2 className="text-4xl md:text-5xl font-light tracking-tight" style={{ color: '#F5F1EB' }}>
+                  {language === 'fr' ? 'Aux côtés de nos partenaires' : 'Shot alongside our partners'}
+                </h2>
+              </div>
+              <Link
+                to="/work"
+                className="inline-flex items-center gap-2 text-sm tracking-wide transition-colors duration-300 flex-shrink-0"
+                style={{ color: '#A68F59' }}
+                onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = '#F5F1EB'}
+                onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = '#A68F59'}
+              >
+                {language === 'fr' ? 'Voir tout le portfolio' : 'Browse full portfolio'}
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </motion.div>
+
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {partnerGalleries.map((gallery, i) => (
+                <motion.a
+                  key={gallery.id}
+                  href={gallery.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  initial={{ opacity: 0, y: 24 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.08, duration: 0.6 }}
+                  whileHover={{ scale: 1.02 }}
+                  className="group relative block overflow-hidden rounded-xl cursor-pointer"
+                  style={{ aspectRatio: '4/3', backgroundColor: '#111' }}
+                >
+                  <img
+                    src={gallery.image}
+                    alt={gallery.title}
+                    loading="lazy"
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    style={{ objectPosition: gallery.objectPosition }}
+                  />
+                  <div className="absolute inset-0" style={{
+                    background: 'linear-gradient(to top, rgba(10,10,10,0.9) 0%, rgba(10,10,10,0.2) 60%, transparent 100%)'
+                  }} />
+                  {gallery.locked && (
+                    <div className="absolute top-3 right-3 flex items-center gap-1 px-2 py-1 rounded-full text-[9px] tracking-widest uppercase"
+                         style={{ backgroundColor: 'rgba(18,18,18,0.6)', color: 'rgba(245,241,235,0.7)', border: '1px solid rgba(245,241,235,0.15)' }}>
+                      <Lock className="w-2.5 h-2.5" /> Private
+                    </div>
+                  )}
+                  <div className="absolute bottom-0 left-0 right-0 p-5">
+                    <div className="w-6 mb-2" style={{ height: '1px', backgroundColor: gallery.accent }} />
+                    <p className="text-[10px] tracking-[0.25em] uppercase mb-1" style={{ color: gallery.accent }}>{gallery.org}</p>
+                    <h3 className="text-base tracking-tight leading-tight" style={{ color: '#F5F1EB' }}>{gallery.title}</h3>
+                  </div>
+                </motion.a>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* CTA Section */}
       <section className="py-28 relative overflow-hidden" style={{ backgroundColor: '#0E0E0E' }}>

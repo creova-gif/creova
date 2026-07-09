@@ -1,9 +1,10 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useState, useMemo } from 'react';
+import { useNavigate, Link } from 'react-router';
 import { PageSEO } from '../components/PageSEO';
 import { Button } from '../components/ui/button';
 import { motion, AnimatePresence } from 'motion/react';
 import { Camera, Users, Package, PartyPopper, Plane, TrendingUp, Palette, Video, Settings, AlertCircle, Calendar, ArrowRight } from 'lucide-react';
+import { useGalleries } from '../hooks/useGalleries';
 
 type ServiceCategory = 'photography' | 'video' | 'brand' | 'social' | 'events' | 'rental' | 'all';
 
@@ -11,6 +12,15 @@ export function ServicesPage() {
   const [activeTab, setActiveTab] = useState<ServiceCategory>('all');
   const [hoveredService, setHoveredService] = useState<number | null>(null);
   const navigate = useNavigate();
+  const { galleries } = useGalleries();
+
+  const recentGalleries = useMemo(() => {
+    // Locked collections don't preview well as a teaser — prefer public ones, unlocked first
+    return [...galleries]
+      .sort((a, b) => (b.date || `${b.year}-01-01`).localeCompare(a.date || `${a.year}-01-01`))
+      .filter(g => !g.locked)
+      .slice(0, 6);
+  }, [galleries]);
 
   const tabs = [
     { id: 'all' as ServiceCategory, label: 'All Services', icon: Settings },
@@ -877,6 +887,74 @@ export function ServicesPage() {
                 ))}
               </div>
             </motion.div>
+          </div>
+        </section>
+      )}
+
+      {/* Recent Work */}
+      {recentGalleries.length > 0 && (
+        <section className="py-20" style={{ backgroundColor: '#0A0A0A', borderTop: '1px solid rgba(166,143,89,0.12)' }}>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-12"
+            >
+              <div>
+                <div className="flex items-center gap-4 mb-3">
+                  <div style={{ height: '1px', width: '40px', backgroundColor: '#A68F59' }} />
+                  <span className="text-xs tracking-[0.45em] uppercase" style={{ color: '#A68F59' }}>Recent Work</span>
+                </div>
+                <h2 className="text-4xl md:text-5xl tracking-tight font-light" style={{ color: '#F5F1EB' }}>
+                  See it in action
+                </h2>
+              </div>
+              <Link
+                to="/work"
+                className="inline-flex items-center gap-2 text-sm tracking-wide transition-colors duration-300 flex-shrink-0"
+                style={{ color: '#A68F59' }}
+              >
+                Browse full portfolio
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </motion.div>
+
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {recentGalleries.map((gallery, i) => (
+                <motion.a
+                  key={gallery.id}
+                  href={gallery.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  initial={{ opacity: 0, y: 24 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.08, duration: 0.6 }}
+                  whileHover={{ scale: 1.02 }}
+                  className="group relative block overflow-hidden rounded-xl cursor-pointer"
+                  style={{ aspectRatio: '4/3', backgroundColor: '#111' }}
+                >
+                  <img
+                    src={gallery.image}
+                    alt={gallery.title}
+                    loading="lazy"
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    style={{ objectPosition: gallery.objectPosition }}
+                  />
+                  <div className="absolute inset-0" style={{
+                    background: 'linear-gradient(to top, rgba(10,10,10,0.9) 0%, rgba(10,10,10,0.2) 60%, transparent 100%)'
+                  }} />
+                  <div className="absolute bottom-0 left-0 right-0 p-5">
+                    <div className="w-6 mb-2" style={{ height: '1px', backgroundColor: gallery.accent }} />
+                    {gallery.org && (
+                      <p className="text-[10px] tracking-[0.25em] uppercase mb-1" style={{ color: gallery.accent }}>{gallery.org}</p>
+                    )}
+                    <h3 className="text-base tracking-tight leading-tight" style={{ color: '#F5F1EB' }}>{gallery.title}</h3>
+                  </div>
+                </motion.a>
+              ))}
+            </div>
           </div>
         </section>
       )}
