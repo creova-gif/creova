@@ -12,7 +12,7 @@ import { Calendar } from '../components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '../components/ui/popover';
 import { motion } from 'motion/react';
 import { Camera, Video, Users, Package, PartyPopper, Wind, Palette, TrendingUp, Calendar as CalendarIcon, Clock, CheckCircle2, ArrowLeft, Star, Award } from 'lucide-react';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner';
 import { projectId, publicAnonKey } from '../utils/supabase/info';
 import { format } from 'date-fns';
 import { logger } from '../utils/logger';

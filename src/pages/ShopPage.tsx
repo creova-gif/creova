@@ -3,7 +3,7 @@ import { Button } from '../components/ui/button';
 import { useCart } from '../context/CartContext';
 import { PageSEO } from '../components/PageSEO';
 import { useLanguage } from '../context/LanguageContext';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner';
 import { Heart, Eye, Calendar, Package, Shirt, Tag, Sparkles } from 'lucide-react';
 import { motion } from 'motion/react';
 import { ProductQuickView } from '../components/ProductQuickView';

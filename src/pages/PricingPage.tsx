@@ -6,7 +6,7 @@ import { CheckCircle2, Check, Target, Award, Shield, Clock, ArrowRight, Star, Us
 import { motion } from 'motion/react';
 import { RevealOnScroll } from '../components/RevealOnScroll';
 import { BookingModal } from '../components/BookingModal';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner';
 import { useLanguage } from '../context/LanguageContext';
 
 export function PricingPage() {

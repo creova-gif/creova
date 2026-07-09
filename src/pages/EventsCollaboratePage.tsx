@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner';
 import { PageSEO } from '../components/PageSEO';
 import { Calendar, MapPin, Users, Clock, Lightbulb, Handshake, Star, ArrowRight, Award, FileText, ExternalLink, Check } from 'lucide-react';
 import photoSpotlight1 from '../assets/photo-event-networking.jpg';

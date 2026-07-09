@@ -4,7 +4,7 @@ import { motion } from 'motion/react';
 import { Lock, Eye, EyeOff, Shield } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner';
 import { adminLogin, clearAdminToken, getAdminToken } from '../utils/supabase/adminSession';
 
 // The password itself is never shipped to the client and never compared

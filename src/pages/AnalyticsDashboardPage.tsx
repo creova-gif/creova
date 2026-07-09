@@ -6,7 +6,7 @@ import {
   BarChart3, PieChart, Activity, ExternalLink
 } from 'lucide-react';
 import { Button } from '../components/ui/button';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner';
 import { adminFetch } from '../utils/supabase/adminSession';
 import { LineChart, Line, BarChart, Bar, PieChart as RePieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 

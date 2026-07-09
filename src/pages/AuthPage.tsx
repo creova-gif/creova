@@ -8,7 +8,7 @@ import { Card } from '../components/ui/card';
 import { Captcha } from '../components/Captcha';
 import { supabase } from '../utils/supabase/client';
 import { projectId, publicAnonKey } from '../utils/supabase/info';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner';
 import { motion } from 'motion/react';
 import { Eye, EyeOff, Mail, Lock, User, ArrowLeft, Sparkles, Users, Smartphone, Palette, Tag } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';

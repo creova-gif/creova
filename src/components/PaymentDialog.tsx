@@ -6,7 +6,7 @@ import { Label } from './ui/label';
 import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { stripePromise, CustomerInfo, createPaymentIntent } from '../utils/payment';
 import { Loader2, CheckCircle2, CreditCard } from 'lucide-react';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner';
 
 interface PaymentDialogProps {
   open: boolean;

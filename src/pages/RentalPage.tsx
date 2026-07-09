@@ -10,7 +10,7 @@ import { Checkbox } from '../components/ui/checkbox';
 import { Captcha } from '../components/Captcha';
 import { motion } from 'motion/react';
 import { Camera, Video, Lightbulb, Mic, Package, Calendar as CalendarIcon, Clock, CheckCircle2, ArrowLeft, Star, Award, AlertCircle, ShieldCheck, Zap } from 'lucide-react';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner';
 import { projectId, publicAnonKey } from '../utils/supabase/info';
 import { format, differenceInDays } from 'date-fns';
 import { logger } from '../utils/logger';

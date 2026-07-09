@@ -6,7 +6,7 @@ import { Label } from './ui/label';
 import { Textarea } from './ui/textarea';
 import { createBooking, CustomerInfo, BookingDetails } from '../utils/payment';
 import { Loader2, CheckCircle2 } from 'lucide-react';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner';
 import { PaymentDialog } from './PaymentDialog';
 
 interface BookingDialogProps {

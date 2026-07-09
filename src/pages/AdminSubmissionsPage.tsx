@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Mail, Phone, Calendar, DollarSign, Briefcase, FileText, RefreshCw, Check, Clock, X } from 'lucide-react';
 import { Button } from '../components/ui/button';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner';
 import { adminFetch } from '../utils/supabase/adminSession';
 
 interface Submission {

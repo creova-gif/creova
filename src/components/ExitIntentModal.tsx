@@ -3,7 +3,7 @@ import { X, Mail, Camera, Video, Palette, Calendar, ArrowRight } from 'lucide-re
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { motion, AnimatePresence } from 'motion/react';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner';
 import { useLanguage } from '../context/LanguageContext';
 import { projectId, publicAnonKey } from '../utils/supabase/info';
 

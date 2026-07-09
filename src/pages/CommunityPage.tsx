@@ -23,7 +23,7 @@ import {
   Calendar
 } from 'lucide-react';
 import { Button } from '../components/ui/button';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner';
 import { useState } from 'react';
 import { Input } from '../components/ui/input';
 import { projectId, publicAnonKey } from '../utils/supabase/info';

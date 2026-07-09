@@ -2,7 +2,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { Button } from '../components/ui/button';
 import { PageSEO } from '../components/PageSEO';
 import { useCart } from '../context/CartContext';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner';
 import { Download, Heart, ChevronDown, Gift, Star, FileText, Camera, Palette, Package, Sliders, Wrench } from 'lucide-react';
 import { motion } from 'motion/react';
 import { LeadMagnetModal } from '../components/LeadMagnetModal';
