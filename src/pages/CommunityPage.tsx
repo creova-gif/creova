@@ -3,9 +3,8 @@ import { useLanguage } from '../context/LanguageContext';
 import { PageSEO } from '../components/PageSEO';
 import { useNavigate } from 'react-router';
 import { RevealOnScroll } from '../components/RevealOnScroll';
-import { 
-  Star, 
-  Crown,
+import {
+  Star,
   Camera,
   Video,
   Palette,
@@ -16,27 +15,18 @@ import {
   MessageCircle,
   Check,
   ArrowRight,
-  Clock,
   ExternalLink,
-  Mail,
-  Award,
-  Calendar
+  Award
 } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { toast } from 'sonner';
 import { useState } from 'react';
 import { Input } from '../components/ui/input';
-import { projectId, publicAnonKey } from '../utils/supabase/info';
 
 export function CommunityPage() {
   const { language } = useLanguage();
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
-  const [notifyEmails, setNotifyEmails] = useState<{ [key: string]: string }>({
-    'creator': '',
-    'legacy': ''
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleJoinCommunity = () => {
     if (!email || !email.includes('@')) {
@@ -58,56 +48,6 @@ export function CommunityPage() {
           : '10% discount code: WELCOME10'
       );
     }, 2000);
-  };
-
-  const handleNotifyMeLaunch = async (tier: string) => {
-    setIsSubmitting(true);
-    const email = notifyEmails[tier];
-    if (!email || !email.includes('@')) {
-      toast.error(language === 'fr' ? 'Veuillez entrer une adresse email valide' : 'Please enter a valid email address');
-      setIsSubmitting(false);
-      return;
-    }
-
-    try {
-      const response = await fetch(`https://${projectId}.supabase.co/functions/v1/make-server-feacf0d8/notify-me`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${publicAnonKey}`
-        },
-        body: JSON.stringify({
-          email: email,
-          type: 'membership',
-          item_id: tier
-        })
-      });
-
-      await response.json();
-
-      if (response.ok) {
-        toast.success(
-          language === 'fr'
-            ? `Vous serez notifié quand ${tier} sera lancé! 📬`
-            : `You'll be notified when ${tier} launches! 📬`
-        );
-        setNotifyEmails(prev => ({ ...prev, [tier]: '' }));
-      } else {
-        toast.error(
-          language === 'fr'
-            ? 'Une erreur s\'est produite. Veuillez réessayer.'
-            : 'An error occurred. Please try again.'
-        );
-      }
-    } catch {
-      toast.error(
-        language === 'fr'
-          ? 'Erreur de connexion. Veuillez vérifier votre connexion Internet.'
-          : 'Connection error. Please check your internet connection.'
-      );
-    } finally {
-      setIsSubmitting(false);
-    }
   };
 
   const communityPartners = [
@@ -219,104 +159,33 @@ export function CommunityPage() {
     }
   ];
 
-  const tiers = [
-    {
-      id: 'community',
-      name: language === 'fr' ? 'Communauté' : 'Community',
-      subtitle: language === 'fr' ? 'Rejoignez la famille' : 'Join the Family',
-      price: language === 'fr' ? 'Gratuit' : 'Free',
-      icon: Heart,
-      color: '#A68F59',
-      available: true,
-      perks: language === 'fr' ? [
-        '10% de réduction sur votre première commande SEEN',
-        'Accès à la newsletter exclusive mensuelle',
-        'Invitations aux événements communautaires',
-        'Contenu des coulisses',
-        'Récompenses d\'anniversaire (20$ de crédit)',
-        'Programme de parrainage (15$ par référence)',
-        'Accès aux tutoriels de création de contenu',
-        'Support communautaire prioritaire'
-      ] : [
-        '10% off your first SEEN order',
-        'Access to exclusive monthly newsletter',
-        'Invitations to community events',
-        'Behind-the-scenes content',
-        'Birthday rewards ($20 credit)',
-        'Referral program ($15 per referral)',
-        'Content creation tutorials',
-        'Priority community support'
-      ]
-    },
-    {
-      id: 'creator',
-      name: language === 'fr' ? 'Créateur' : 'Creator',
-      subtitle: language === 'fr' ? 'Pour les visionnaires' : 'For Visionaries',
-      price: '$49/month',
-      priceAnnual: language === 'fr' ? '490$/an (économisez 98$)' : '$490/year (save $98)',
-      icon: Star,
-      color: '#B1643B',
-      available: false,
-      launchDate: language === 'fr' ? 'Lancement: Printemps 2026' : 'Launch: Spring 2026',
-      perks: language === 'fr' ? [
-        'Tous les avantages Communauté',
-        '20% de réduction sur tous les produits SEEN',
-        'Accès anticipé aux nouvelles collections (48h)',
-        'Couleurs exclusives membres uniquement',
-        'Réservation prioritaire pour les services (-15%)',
-        '1 session photo/vidéo gratuite par an (450$ de valeur)',
-        'Carnet de croquis CREOVA + guide de style',
-        'Groupe Discord privé des membres',
-        'Invitations VIP aux lancements et défilés',
-        'Consultation stratégique de marque trimestrielle'
-      ] : [
-        'All Community perks',
-        '20% off all SEEN products',
-        'Early access to new collections (48hrs)',
-        'Members-only exclusive colorways',
-        'Priority booking for services (15% off)',
-        '1 free photo/video session per year ($450 value)',
-        'CREOVA sketchbook + style guide',
-        'Private members Discord group',
-        'VIP invites to launches & fashion shows',
-        'Quarterly brand strategy consultation'
-      ]
-    },
-    {
-      id: 'legacy',
-      name: language === 'fr' ? 'Héritage' : 'Legacy',
-      subtitle: language === 'fr' ? 'Les icônes culturelles' : 'Cultural Icons',
-      price: '$149/month',
-      priceAnnual: language === 'fr' ? '1,490$/an (économisez 298$)' : '$1,490/year (save $298)',
-      icon: Crown,
-      color: '#121212',
-      available: false,
-      launchDate: language === 'fr' ? 'Lancement: Été 2026' : 'Launch: Summer 2026',
-      perks: language === 'fr' ? [
-        'Tous les avantages Créateur',
-        '30% de réduction sur tous les produits & services',
-        'Accès anticipé exclusif (1 semaine avant)',
-        'Pièces en édition limitée & collaborations',
-        'Forfait services annuel (1,500$ de crédit)',
-        'Session portrait de marque annuelle gratuite',
-        'Consultation de garde-robe & stylisme personnalisé',
-        'Service de conciergerie dédié',
-        'Événements exclusifs membres Legacy uniquement',
-        'Partenariats de co-création de contenu'
-      ] : [
-        'All Creator perks',
-        '30% off all products & services',
-        'Exclusive early access (1 week early)',
-        'Limited edition pieces & collaborations',
-        'Annual services package ($1,500 credit)',
-        'Free annual brand portrait session',
-        'Personal wardrobe consultation & styling',
-        'Dedicated concierge service',
-        'Legacy-only exclusive member events',
-        'Content co-creation partnerships'
-      ]
-    }
-  ];
+  const communityTier = {
+    id: 'community',
+    name: language === 'fr' ? 'Communauté' : 'Community',
+    subtitle: language === 'fr' ? 'Rejoignez la famille' : 'Join the Family',
+    price: language === 'fr' ? 'Gratuit' : 'Free',
+    icon: Heart,
+    color: '#A68F59',
+    perks: language === 'fr' ? [
+      '10% de réduction sur votre première commande SEEN',
+      'Accès à la newsletter exclusive mensuelle',
+      'Invitations aux événements communautaires',
+      'Contenu des coulisses',
+      'Récompenses d\'anniversaire (20$ de crédit)',
+      'Programme de parrainage (15$ par référence)',
+      'Accès aux tutoriels de création de contenu',
+      'Support communautaire prioritaire'
+    ] : [
+      '10% off your first SEEN order',
+      'Access to exclusive monthly newsletter',
+      'Invitations to community events',
+      'Behind-the-scenes content',
+      'Birthday rewards ($20 credit)',
+      'Referral program ($15 per referral)',
+      'Content creation tutorials',
+      'Priority community support'
+    ]
+  };
 
   const services = [
     {
@@ -570,7 +439,7 @@ export function CommunityPage() {
                 <div className="absolute bottom-0 left-0 right-0 px-5 py-4">
                   <div className="flex items-end justify-between">
                     <div>
-                      <p className="text-[10px] tracking-[0.2em] font-semibold mb-1" style={{ color: '#A68F59', fontFamily: 'var(--font-brand)' }}>BROCK UNIVERSITY</p>
+                      <p className="text-[10px] tracking-[0.2em] font-semibold mb-1" style={{ color: '#A68F59', fontFamily: 'var(--font-display)' }}>BROCK UNIVERSITY</p>
                       <h4 className="text-lg italic leading-tight" style={{ color: '#FFFFFF', fontFamily: 'var(--font-display)' }}>BLACK STUDENT<br />ASSOCIATION</h4>
                     </div>
                     <div className="text-right space-y-1">
@@ -588,7 +457,7 @@ export function CommunityPage() {
               </div>
               <div className="p-6">
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="text-[10px] tracking-[0.15em] uppercase font-semibold px-2 py-1 rounded" style={{ backgroundColor: '#121212', color: '#A68F59', fontFamily: 'var(--font-brand)' }}>BLSA</span>
+                  <span className="text-[10px] tracking-[0.15em] uppercase font-semibold px-2 py-1 rounded" style={{ backgroundColor: '#121212', color: '#A68F59', fontFamily: 'var(--font-display)' }}>BLSA</span>
                   <span className="text-[10px] tracking-widest uppercase" style={{ color: '#7A6F66' }}>Student Leadership</span>
                 </div>
                 <h3 className="text-xl mb-3" style={{ color: '#121212' }}>Black Student Association (BLSA)</h3>
@@ -603,7 +472,7 @@ export function CommunityPage() {
         </div>
       </section>
 
-      {/* Membership Tiers */}
+      {/* Community Tier */}
       <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
@@ -617,146 +486,70 @@ export function CommunityPage() {
             </h2>
             <p className="text-xl max-w-2xl mx-auto" style={{ color: '#7A6F66' }}>
               {language === 'fr'
-                ? 'Commencez gratuitement avec la Communauté - niveaux premium à venir!'
-                : 'Start free with Community - premium tiers coming soon!'}
+                ? 'Rejoignez gratuitement notre communauté créative'
+                : 'Join our creative community, free'}
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-8 mb-12">
-            {tiers.map((tier, index) => {
-              const Icon = tier.icon;
-              const isAvailable = tier.available;
-              
-              return (
-                <RevealOnScroll key={tier.name} mode='3d' delay={index * 0.12}>
-                <div
-                  className={`relative rounded-3xl p-8 border-2 h-full flex flex-col ${
-                    isAvailable ? 'shadow-2xl' : 'shadow-lg'
-                  }`}
-                  style={{
-                    backgroundColor: '#FFFFFF',
-                    borderColor: isAvailable ? tier.color : '#E3DCD3'
-                  }}
-                >
-                  {isAvailable && (
-                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-sm"
-                         style={{ backgroundColor: tier.color, color: '#FFFFFF' }}>
-                      {language === 'fr' ? 'DISPONIBLE MAINTENANT' : 'AVAILABLE NOW'}
-                    </div>
-                  )}
-
-                  {!isAvailable && (
-                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-sm flex items-center gap-2 whitespace-nowrap"
-                         style={{ backgroundColor: '#E3DCD3', color: '#121212' }}>
-                      <Clock className="w-3 h-3" />
-                      {language === 'fr' ? 'BIENTÔT DISPONIBLE' : 'COMING SOON'}
-                    </div>
-                  )}
-
-                  <div className="text-center mb-6">
-                    <div className={`w-16 h-16 rounded-2xl mx-auto mt-2 mb-4 flex items-center justify-center ${!isAvailable && 'grayscale'}`}
-                         style={{ backgroundColor: `${tier.color}20` }}>
-                      <Icon className="w-8 h-8" style={{ color: tier.color }} />
-                    </div>
-                    <h3 className="text-3xl mb-2" style={{ color: '#121212' }}>{tier.name}</h3>
-                    <p className="text-sm mb-4" style={{ color: '#7A6F66' }}>{tier.subtitle}</p>
-                    
-                    <div className="h-8 mb-4 flex items-center justify-center">
-                      {tier.launchDate && (
-                        <p className="text-sm flex items-center gap-2" style={{ color: '#B1643B' }}>
-                          <Calendar className="w-4 h-4" />
-                          {tier.launchDate}
-                        </p>
-                      )}
-                    </div>
-                    
-                    <div className="mb-2">
-                      <span className="text-4xl" style={{ color: tier.color }}>
-                        {tier.price.includes('$') ? tier.price.split('/')[0] : tier.price}
-                      </span>
-                      {tier.price.includes('/') && (
-                        <span className="text-lg" style={{ color: '#7A6F66' }}>
-                          /{tier.price.split('/')[1]}
-                        </span>
-                      )}
-                    </div>
-                    <div className="h-6">
-                      {tier.priceAnnual && (
-                        <p className="text-sm" style={{ color: '#7A6F66' }}>{tier.priceAnnual}</p>
-                      )}
-                    </div>
+          <div className="max-w-md mx-auto mb-12">
+            <RevealOnScroll mode='3d'>
+              <div
+                className="relative rounded-3xl p-8 border-2 h-full flex flex-col shadow-2xl"
+                style={{
+                  backgroundColor: '#FFFFFF',
+                  borderColor: communityTier.color
+                }}
+              >
+                <div className="text-center mb-6">
+                  <div className="w-16 h-16 rounded-2xl mx-auto mt-2 mb-4 flex items-center justify-center"
+                       style={{ backgroundColor: `${communityTier.color}20` }}>
+                    <communityTier.icon className="w-8 h-8" style={{ color: communityTier.color }} />
                   </div>
+                  <h3 className="text-3xl mb-2" style={{ color: '#121212' }}>{communityTier.name}</h3>
+                  <p className="text-sm mb-4" style={{ color: '#7A6F66' }}>{communityTier.subtitle}</p>
 
-                  <div className="space-y-3 mb-8 flex-grow">
-                    {tier.perks.slice(0, isAvailable ? tier.perks.length : 6).map((perk, idx) => (
-                      <div key={idx} className="flex items-start gap-2">
-                        <Check className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: tier.color }} />
-                        <span className="text-sm" style={{ color: '#121212' }}>{perk}</span>
-                      </div>
-                    ))}
-                    {!isAvailable && tier.perks.length > 6 && (
-                      <p className="text-sm text-center pt-2" style={{ color: '#7A6F66' }}>
-                        {language === 'fr' ? `+${tier.perks.length - 6} autres avantages` : `+${tier.perks.length - 6} more benefits`}
-                      </p>
-                    )}
+                  <div className="mb-2">
+                    <span className="text-4xl" style={{ color: communityTier.color }}>
+                      {communityTier.price}
+                    </span>
                   </div>
-
-                  {isAvailable ? (
-                    <div className="space-y-3">
-                      <Input
-                        type="email"
-                        placeholder={language === 'fr' ? 'Votre email' : 'Your email'}
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        className="rounded-xl"
-                        style={{ borderColor: tier.color }}
-                      />
-                      <Button 
-                        onClick={handleJoinCommunity}
-                        disabled={isSubmitting}
-                        className="w-full rounded-xl py-6 text-lg group relative overflow-hidden disabled:opacity-60"
-                        style={{ 
-                          backgroundColor: tier.color,
-                          color: '#FFFFFF'
-                        }}
-                      >
-                        <span className="relative z-10 flex items-center justify-center gap-2">
-                          {isSubmitting
-                            ? (language === 'fr' ? 'Envoi...' : 'Joining...')
-                            : (language === 'fr' ? 'Rejoindre Gratuitement' : 'Join Free')}
-                          <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                        </span>
-                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-                      </Button>
-                    </div>
-                  ) : (
-                    <div className="space-y-3">
-                      <Input
-                        type="email"
-                        placeholder={language === 'fr' ? 'Votre email' : 'Your email'}
-                        value={notifyEmails[tier.id]}
-                        onChange={(e) => setNotifyEmails(prev => ({ ...prev, [tier.id]: e.target.value }))}
-                        className="rounded-xl"
-                        style={{ borderColor: tier.color }}
-                      />
-                      <Button
-                        onClick={() => handleNotifyMeLaunch(tier.id)}
-                        className="w-full rounded-xl py-6 text-lg border-2"
-                        style={{ 
-                          backgroundColor: 'transparent',
-                          color: tier.color,
-                          borderColor: tier.color
-                        }}
-                      >
-                        <Mail className="w-5 h-5 mr-2" />
-                        {language === 'fr' ? 'Me Notifier au Lancement' : 'Notify Me at Launch'}
-                      </Button>
-                    </div>
-                  )}
                 </div>
-                </RevealOnScroll>
-              );
-            })}
+
+                <div className="space-y-3 mb-8 flex-grow">
+                  {communityTier.perks.map((perk, idx) => (
+                    <div key={idx} className="flex items-start gap-2">
+                      <Check className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: communityTier.color }} />
+                      <span className="text-sm" style={{ color: '#121212' }}>{perk}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="space-y-3">
+                  <Input
+                    type="email"
+                    placeholder={language === 'fr' ? 'Votre email' : 'Your email'}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="rounded-xl"
+                    style={{ borderColor: communityTier.color }}
+                  />
+                  <Button
+                    onClick={handleJoinCommunity}
+                    className="w-full rounded-xl py-6 text-lg group relative overflow-hidden"
+                    style={{
+                      backgroundColor: communityTier.color,
+                      color: '#FFFFFF'
+                    }}
+                  >
+                    <span className="relative z-10 flex items-center justify-center gap-2">
+                      {language === 'fr' ? 'Rejoindre Gratuitement' : 'Join Free'}
+                      <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                    </span>
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                  </Button>
+                </div>
+              </div>
+            </RevealOnScroll>
           </div>
         </div>
       </section>
@@ -840,7 +633,7 @@ export function CommunityPage() {
                   <div className="absolute bottom-0 left-0 right-0 px-5 py-4">
                     <div className="flex items-end justify-between">
                       <div>
-                        <p className="text-[10px] tracking-[0.2em] font-semibold mb-1" style={{ color: '#A68F59', fontFamily: 'var(--font-brand)' }}>{partner.captionLeft.line1}</p>
+                        <p className="text-[10px] tracking-[0.2em] font-semibold mb-1" style={{ color: '#A68F59', fontFamily: 'var(--font-display)' }}>{partner.captionLeft.line1}</p>
                         <h4 className="text-lg italic leading-tight whitespace-pre-line" style={{ color: '#FFFFFF', fontFamily: 'var(--font-display)' }}>{partner.captionLeft.line2}</h4>
                       </div>
                     </div>
@@ -848,7 +641,7 @@ export function CommunityPage() {
                 </div>
                 <div className="p-6">
                   <div className="flex items-center gap-2 mb-3">
-                    <span className="text-[10px] tracking-[0.15em] uppercase font-semibold px-2 py-1 rounded" style={{ backgroundColor: '#121212', color: '#A68F59', fontFamily: 'var(--font-brand)' }}>{partner.badge}</span>
+                    <span className="text-[10px] tracking-[0.15em] uppercase font-semibold px-2 py-1 rounded" style={{ backgroundColor: '#121212', color: '#A68F59', fontFamily: 'var(--font-display)' }}>{partner.badge}</span>
                     <span className="text-[10px] tracking-widest uppercase" style={{ color: '#7A6F66' }}>{partner.badgeSub}</span>
                   </div>
                   <h3 className="text-xl mb-3" style={{ color: '#121212' }}>{partner.name}</h3>
@@ -913,7 +706,7 @@ export function CommunityPage() {
             {/* Eyebrow */}
             <div className="flex items-center justify-center gap-3 mb-8">
               <div className="h-px w-12" style={{ backgroundColor: '#A68F59' }} />
-              <span className="text-xs tracking-[0.3em] uppercase" style={{ color: '#A68F59', fontFamily: 'var(--font-brand)' }}>
+              <span className="text-xs tracking-[0.3em] uppercase" style={{ color: '#A68F59', fontFamily: 'var(--font-display)' }}>
                 {language === 'fr' ? 'Rejoignez le Mouvement' : 'Join the Movement'}
               </span>
               <div className="h-px w-12" style={{ backgroundColor: '#A68F59' }} />
@@ -953,7 +746,7 @@ export function CommunityPage() {
               </Button>
             </div>
 
-            <p className="mt-8 text-xs tracking-widest uppercase" style={{ color: 'rgba(245,241,235,0.3)', fontFamily: 'var(--font-brand)' }}>
+            <p className="mt-8 text-xs tracking-widest uppercase" style={{ color: 'rgba(245,241,235,0.3)', fontFamily: 'var(--font-display)' }}>
               {language === 'fr'
                 ? 'Aucune carte de crédit requise pour l\'adhésion Communauté'
                 : 'No credit card required for Community membership'}

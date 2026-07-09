@@ -98,7 +98,6 @@ export function Footer() {
         { labelKey: 'footer.link.shop',        href: '/shop' },
         { labelKey: 'footer.link.digital',     href: '/digital-products' },
         { labelKey: 'footer.link.events',      href: '/experience' },
-        { labelKey: 'footer.link.memberships', href: '/memberships' },
       ],
     },
     {

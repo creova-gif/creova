@@ -85,7 +85,6 @@ export function TermsOfServicePage() {
                   <li>E-commerce sales (SEEN fashion collection and merchandise)</li>
                   <li>Digital product sales (presets, templates, guides)</li>
                   <li>Event ticketing and workshop registration</li>
-                  <li>Membership subscriptions (Creator and Legacy tiers)</li>
                 </ul>
               </div>
             </div>
@@ -140,33 +139,11 @@ export function TermsOfServicePage() {
               </div>
             </div>
 
-            {/* 4. Memberships */}
+            {/* 4. Cancellation and Refund Policy */}
             <div>
               <div className="flex items-center gap-3 mb-4">
                 <CheckCircle2 className="w-6 h-6" style={{ color: '#A68F59' }} />
-                <h2 className="text-2xl" style={{ color: '#121212' }}>4. Membership Subscriptions</h2>
-              </div>
-              <div className="space-y-3" style={{ color: '#7A6F66' }}>
-                <p><strong style={{ color: '#121212' }}>Subscription Terms:</strong></p>
-                <ul className="list-disc pl-6 space-y-2">
-                  <li>Memberships are annual subscriptions billed once per year</li>
-                  <li>Creator Membership: $299 CAD/year</li>
-                  <li>Legacy Membership: $599 CAD/year</li>
-                  <li>Memberships auto-renew annually unless cancelled</li>
-                  <li>You may cancel your membership at any time; cancellation takes effect at the end of the current billing period</li>
-                  <li>No pro-rated refunds are provided for partial membership periods</li>
-                </ul>
-                
-                <p className="pt-3"><strong style={{ color: '#121212' }}>Member Benefits:</strong> All advertised benefits are 
-                valid for active members only. Benefits cannot be transferred or redeemed for cash value.</p>
-              </div>
-            </div>
-
-            {/* 5. Cancellation and Refund Policy */}
-            <div>
-              <div className="flex items-center gap-3 mb-4">
-                <CheckCircle2 className="w-6 h-6" style={{ color: '#A68F59' }} />
-                <h2 className="text-2xl" style={{ color: '#121212' }}>5. Cancellation and Refund Policy</h2>
+                <h2 className="text-2xl" style={{ color: '#121212' }}>4. Cancellation and Refund Policy</h2>
               </div>
               <div className="space-y-3" style={{ color: '#7A6F66' }}>
                 <p><strong style={{ color: '#121212' }}>Service Cancellations:</strong></p>
@@ -186,11 +163,11 @@ export function TermsOfServicePage() {
               </div>
             </div>
 
-            {/* 6. Intellectual Property */}
+            {/* 5. Intellectual Property */}
             <div>
               <div className="flex items-center gap-3 mb-4">
                 <CheckCircle2 className="w-6 h-6" style={{ color: '#A68F59' }} />
-                <h2 className="text-2xl" style={{ color: '#121212' }}>6. Intellectual Property Rights</h2>
+                <h2 className="text-2xl" style={{ color: '#121212' }}>5. Intellectual Property Rights</h2>
               </div>
               <div className="space-y-3" style={{ color: '#7A6F66' }}>
                 <p><strong style={{ color: '#121212' }}>Photography and Videography:</strong></p>
@@ -207,11 +184,11 @@ export function TermsOfServicePage() {
               </div>
             </div>
 
-            {/* 7. User Conduct */}
+            {/* 6. User Conduct */}
             <div>
               <div className="flex items-center gap-3 mb-4">
                 <CheckCircle2 className="w-6 h-6" style={{ color: '#A68F59' }} />
-                <h2 className="text-2xl" style={{ color: '#121212' }}>7. User Conduct</h2>
+                <h2 className="text-2xl" style={{ color: '#121212' }}>6. User Conduct</h2>
               </div>
               <div className="space-y-3" style={{ color: '#7A6F66' }}>
                 <p>By using CREOVA services, you agree to:</p>
@@ -226,11 +203,11 @@ export function TermsOfServicePage() {
               </div>
             </div>
 
-            {/* 8. Limitation of Liability */}
+            {/* 7. Limitation of Liability */}
             <div>
               <div className="flex items-center gap-3 mb-4">
                 <CheckCircle2 className="w-6 h-6" style={{ color: '#A68F59' }} />
-                <h2 className="text-2xl" style={{ color: '#121212' }}>8. Limitation of Liability</h2>
+                <h2 className="text-2xl" style={{ color: '#121212' }}>7. Limitation of Liability</h2>
               </div>
               <div className="space-y-3" style={{ color: '#7A6F66' }}>
                 <p>CREOVA is not liable for:</p>
@@ -244,11 +221,11 @@ export function TermsOfServicePage() {
               </div>
             </div>
 
-            {/* 9. Privacy and Data Protection */}
+            {/* 8. Privacy and Data Protection */}
             <div>
               <div className="flex items-center gap-3 mb-4">
                 <CheckCircle2 className="w-6 h-6" style={{ color: '#A68F59' }} />
-                <h2 className="text-2xl" style={{ color: '#121212' }}>9. Privacy and Data Protection</h2>
+                <h2 className="text-2xl" style={{ color: '#121212' }}>8. Privacy and Data Protection</h2>
               </div>
               <div className="space-y-3" style={{ color: '#7A6F66' }}>
                 <p>Your privacy is important to us. Please review our <button 
@@ -259,11 +236,11 @@ export function TermsOfServicePage() {
               </div>
             </div>
 
-            {/* 10. Modifications to Terms */}
+            {/* 9. Modifications to Terms */}
             <div>
               <div className="flex items-center gap-3 mb-4">
                 <CheckCircle2 className="w-6 h-6" style={{ color: '#A68F59' }} />
-                <h2 className="text-2xl" style={{ color: '#121212' }}>10. Modifications to Terms</h2>
+                <h2 className="text-2xl" style={{ color: '#121212' }}>9. Modifications to Terms</h2>
               </div>
               <div className="space-y-3" style={{ color: '#7A6F66' }}>
                 <p>CREOVA reserves the right to modify these Terms at any time. Changes will be effective immediately upon 
@@ -272,11 +249,11 @@ export function TermsOfServicePage() {
               </div>
             </div>
 
-            {/* 11. Governing Law */}
+            {/* 10. Governing Law */}
             <div>
               <div className="flex items-center gap-3 mb-4">
                 <CheckCircle2 className="w-6 h-6" style={{ color: '#A68F59' }} />
-                <h2 className="text-2xl" style={{ color: '#121212' }}>11. Governing Law</h2>
+                <h2 className="text-2xl" style={{ color: '#121212' }}>10. Governing Law</h2>
               </div>
               <div className="space-y-3" style={{ color: '#7A6F66' }}>
                 <p>These Terms are governed by the laws of the Province of Ontario and the federal laws of Canada. 

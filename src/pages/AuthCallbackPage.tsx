@@ -20,7 +20,7 @@ export function AuthCallbackPage() {
       settled = true;
       setStatus('success');
       setMessage('Successfully authenticated! Redirecting...');
-      redirectTimer = setTimeout(() => navigate('/memberships'), 2000);
+      redirectTimer = setTimeout(() => navigate('/community'), 2000);
     };
 
     const fail = (msg: string) => {

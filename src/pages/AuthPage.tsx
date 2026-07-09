@@ -170,8 +170,7 @@ export function AuthPage() {
 
       if (data.session) {
         toast.success('Welcome back!');
-        // Redirect to memberships or dashboard
-        navigate('/memberships');
+        navigate('/community');
       }
     } catch {
       toast.error('An error occurred during login');

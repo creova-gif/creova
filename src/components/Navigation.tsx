@@ -246,7 +246,7 @@ export function Navigation() {
 
             {/* Nav links — large editorial */}
             <div className="flex-1 px-6 py-6">
-              {[...navLinks, { name: 'Memberships', path: '/memberships' }, { name: 'Book a Session', path: '/booking' }].map((link, i) => (
+              {[...navLinks, { name: 'Book a Session', path: '/booking' }].map((link, i) => (
                 <motion.div
                   key={link.path}
                   initial={{ opacity: 0, x: 24 }}

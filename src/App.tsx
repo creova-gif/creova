@@ -34,7 +34,6 @@ const TermsOfServicePage = lazy(() => import('./pages/TermsOfServicePage').then(
 const PrivacyPolicyPage = lazy(() => import('./pages/PrivacyPolicyPage').then(m => ({ default: m.PrivacyPolicyPage })));
 const AuthPage = lazy(() => import('./pages/AuthPage').then(m => ({ default: m.AuthPage })));
 const AuthCallbackPage = lazy(() => import('./pages/AuthCallbackPage').then(m => ({ default: m.AuthCallbackPage })));
-const MembershipsPage = lazy(() => import('./pages/MembershipsPage'));
 const CheckoutPage = lazy(() => import('./pages/CheckoutPage').then(m => ({ default: m.CheckoutPage })));
 const OrderConfirmationPage = lazy(() => import('./pages/OrderConfirmationPage').then(m => ({ default: m.OrderConfirmationPage })));
 const PaymentSuccessPage = lazy(() => import('./pages/PaymentSuccessPage').then(m => ({ default: m.PaymentSuccessPage })));
@@ -81,8 +80,6 @@ function AnimatedRoutes() {
             <Route path="/collaborate" element={<Navigate to="/experience" replace />} />
             <Route path="/community" element={<CommunityPage />} />
             <Route path="/about" element={<Navigate to="/community" replace />} />
-            <Route path="/memberships" element={<MembershipsPage />} />
-            <Route path="/membership" element={<Navigate to="/memberships" replace />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/booking" element={<BookingPage />} />
             <Route path="/rental" element={<RentalPage />} />

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router';
 import { motion, AnimatePresence } from 'motion/react';
 import { Lock, ArrowRight, Mail, CheckCircle2 } from 'lucide-react';
 import { Input } from './ui/input';
@@ -6,7 +7,7 @@ import { toast } from 'sonner';
 import { projectId, publicAnonKey } from '../utils/supabase/info';
 
 const warmGradient = 'linear-gradient(135deg, #A68F59 0%, #B1643B 100%)';
-const LAUNCH_DATE = new Date('2026-10-01T00:00:00');
+const LAUNCH_DATE = new Date('2026-11-01T00:00:00');
 
 // Real style codes from the FW2026 tech pack — names redacted
 const DROP_01 = [
@@ -88,7 +89,7 @@ function StyleRow({ code, label, cat, index }: { code: string; label: string; ca
       {/* Redacted name */}
       <span
         className="text-[11px] flex-1 select-none"
-        style={{ color: 'rgba(245,241,235,0.18)', fontFamily: 'var(--font-brand)', letterSpacing: '0.05em' }}
+        style={{ color: 'rgba(245,241,235,0.18)', fontFamily: 'var(--font-display)', letterSpacing: '0.05em' }}
       >
         {label}
       </span>
@@ -209,6 +210,22 @@ export function FallDropTeaser() {
             >
               14 styles. 2 drops. Zero leaks — until the day it lands.
             </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.4 }}
+            >
+              <Link
+                to="/seen"
+                className="inline-flex items-center gap-1.5 text-[11px] mt-4 transition-opacity hover:opacity-70"
+                style={{ color: 'rgba(166,143,89,0.7)' }}
+              >
+                Also launching: the SEEN storytelling app
+                <ArrowRight className="w-3 h-3" />
+              </Link>
+            </motion.div>
           </div>
 
           {/* Countdown */}

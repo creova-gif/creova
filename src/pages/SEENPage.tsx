@@ -536,7 +536,7 @@ export function SEENPage() {
               transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
               className="h-px w-8 flex-shrink-0" style={{ backgroundColor: '#148F77' }}
             />
-            <span className="text-xs tracking-[0.4em] uppercase" style={{ color: '#148F77', fontFamily: 'var(--font-brand)' }}>
+            <span className="text-xs tracking-[0.4em] uppercase" style={{ color: '#148F77', fontFamily: 'var(--font-display)' }}>
               A CREOVA ORIGINAL PLATFORM
             </span>
             <motion.div
@@ -875,6 +875,37 @@ export function SEENPage() {
               </motion.div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* SEEN Ecosystem — App + Capsule */}
+      <section className="py-24 px-4" style={{ backgroundColor: '#0A0A0A' }}>
+        <div className="max-w-4xl mx-auto text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+          >
+            <p className="text-xs tracking-[0.3em] uppercase mb-4" style={{ color: '#A68F59' }}>
+              One Ecosystem, Two Expressions
+            </p>
+            <h2 className="text-3xl md:text-5xl mb-6" style={{ color: '#F5F1EB' }}>
+              SEEN is a platform — and a collection.
+            </h2>
+            <p className="text-base max-w-xl mx-auto mb-10" style={{ color: '#7A6F66' }}>
+              Alongside the storytelling app, SEEN by CREOVA is also a wearable FW2026 capsule —
+              built by the same creative team, launching this November. Same name, same story, worn on your sleeve.
+            </p>
+            <Link
+              to="/shop"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-medium tracking-wide transition-all duration-300 hover:opacity-90"
+              style={{ backgroundColor: 'rgba(166, 143, 89, 0.1)', border: '1px solid rgba(166, 143, 89, 0.3)', color: '#A68F59' }}
+            >
+              Explore the FW2026 Capsule
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </motion.div>
         </div>
       </section>
 

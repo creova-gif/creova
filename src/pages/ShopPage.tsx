@@ -83,7 +83,7 @@ export function ShopPage() {
     <div style={{ backgroundColor: '#F5F1EB' }}>
       <PageSEO
         title="Shop — SEEN Fall/Winter Capsule"
-        description="SEEN by CREOVA — Vol. 01 Fall/Winter 2026 capsule collection. 14 styles of culturally rich streetwear, footwear and accessories. Pre-order now, ships Fall 2026."
+        description="SEEN by CREOVA — Vol. 01 Fall/Winter 2026 capsule collection. 14 styles of culturally rich streetwear, footwear and accessories. Pre-order now, ships November 2026."
         path="/shop"
         jsonLd={productListSchema(products)}
       />
@@ -97,7 +97,7 @@ export function ShopPage() {
       >
         <span className="flex items-center justify-center gap-3">
           <Package className="w-3.5 h-3.5" />
-          Pre-Order Now — SEEN Fall/Winter Capsule · Vol. 01 · Ships Fall 2026
+          Pre-Order Now — SEEN Fall/Winter Capsule · Vol. 01 · Ships November 2026
           <Calendar className="w-3.5 h-3.5" />
         </span>
       </motion.div>
@@ -164,7 +164,7 @@ export function ShopPage() {
                 style={{ backgroundColor: 'rgba(166,143,89,0.1)', border: '1px solid rgba(166,143,89,0.3)', color: '#A68F59' }}
               >
                 <Calendar className="w-3.5 h-3.5" />
-                Pre-Order · FW Capsule · Ships Fall 2026
+                Pre-Order · FW Capsule · Ships November 2026
               </motion.div>
             </div>
 
