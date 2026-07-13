@@ -47,8 +47,8 @@ CREOVA is a full-service creative agency built around elevating BIPOC-owned busi
 ### Installation
 
 ```bash
-git clone https://github.com/creova-gif/CREOVA.git
-cd CREOVA
+git clone https://github.com/creova-gif/creova.git
+cd creova
 npm install
 ```
 
