@@ -258,19 +258,30 @@ function AppContent() {
   );
 }
 
+/**
+ * The app tree minus the router and HelmetProvider, so the prerenderer can
+ * supply StaticRouter + its own Helmet context while the browser uses
+ * BrowserRouter. Not intended for direct use — render <App /> instead.
+ */
+export function AppShell() {
+  return (
+    <LanguageProvider>
+      <CartProvider>
+        <ScrollToTop />
+        <ErrorBoundary>
+          <AppContent />
+        </ErrorBoundary>
+      </CartProvider>
+    </LanguageProvider>
+  );
+}
+
 export default function App() {
   return (
     <HelmetProvider>
-      <LanguageProvider>
-        <CartProvider>
-          <Router>
-            <ScrollToTop />
-            <ErrorBoundary>
-              <AppContent />
-            </ErrorBoundary>
-          </Router>
-        </CartProvider>
-      </LanguageProvider>
+      <Router>
+        <AppShell />
+      </Router>
     </HelmetProvider>
   );
 }
