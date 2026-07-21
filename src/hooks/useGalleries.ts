@@ -33,8 +33,17 @@ const API_BASE = `https://${projectId}.supabase.co/functions/v1/make-server-feac
  * code change — see AdminGalleriesPage.
  */
 export function useGalleries() {
-  const [galleries, setGalleries] = useState<Gallery[]>([]);
-  const [loading, setLoading] = useState(true);
+  // During prerendering there is no browser to run the fetch below, so the
+  // build script fetches the galleries once and hands them over on globalThis.
+  // Without this /work would prerender its empty state — telling JS-less
+  // crawlers the portfolio is "being updated" and omitting the ItemList schema.
+  const prerendered =
+    typeof window === 'undefined'
+      ? (globalThis as { __CREOVA_GALLERIES__?: Gallery[] }).__CREOVA_GALLERIES__
+      : undefined;
+
+  const [galleries, setGalleries] = useState<Gallery[]>(prerendered ?? []);
+  const [loading, setLoading] = useState(!prerendered);
   const [error, setError] = useState(false);
   const [refetchIndex, setRefetchIndex] = useState(0);
 

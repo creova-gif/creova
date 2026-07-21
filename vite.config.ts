@@ -4,7 +4,7 @@
   import tailwindcss from '@tailwindcss/vite';
   import path from 'path';
 
-  export default defineConfig({
+  export default defineConfig(({ isSsrBuild }) => ({
     plugins: [react(), tailwindcss()],
     resolve: {
       extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
@@ -44,10 +44,15 @@
       chunkSizeWarningLimit: 1000,
       rollupOptions: {
         output: {
-          manualChunks: {
-            'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-            'animation-vendor': ['framer-motion'],
-          }
+          // Vendor splitting only applies to the browser bundle. In an SSR
+          // build react/react-dom are external, and Rollup errors if an
+          // external module is named in manualChunks.
+          manualChunks: isSsrBuild
+            ? undefined
+            : {
+                'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+                'animation-vendor': ['framer-motion'],
+              }
         }
       }
     },
@@ -60,4 +65,4 @@
       host: '0.0.0.0',
       allowedHosts: true,
     },
-  });
+  }));
