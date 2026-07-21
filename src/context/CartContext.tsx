@@ -23,6 +23,9 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>(() => {
+    // Lazy initializers run during render, including on the server during
+    // prerendering — guard before touching storage.
+    if (typeof window === 'undefined') return [];
     try {
       const saved = localStorage.getItem('creova_cart');
       return saved ? JSON.parse(saved) : [];

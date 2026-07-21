@@ -16,7 +16,10 @@ interface Message {
 }
 
 export function Sankofa() {
-  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // Read at render time, so guard for the server during prerendering.
+  const prefersReduced =
+    typeof window !== 'undefined' &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const [isOpen, setIsOpen] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);

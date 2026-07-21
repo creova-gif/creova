@@ -1442,10 +1442,15 @@ const translations = {
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [language, setLanguageState] = useState<Language>(() => {
+    // Lazy initializers run during render, including on the server during
+    // prerendering. Default to 'en' there so prerendered HTML is deterministic;
+    // the client re-reads the real preference on mount.
+    if (typeof window === 'undefined') return 'en';
+
     // Check localStorage or browser language
     const saved = localStorage.getItem('creova-language') as Language;
     if (saved && (saved === 'en' || saved === 'fr')) return saved;
-    
+
     // Detect browser language
     const browserLang = navigator.language.toLowerCase();
     if (browserLang.startsWith('fr')) return 'fr';

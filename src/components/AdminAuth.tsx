@@ -66,7 +66,7 @@ export function AdminAuth({ children }: { children: React.ReactNode }) {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#F5F1EB' }}>
-        <PageSEO title="Admin" description="CREOVA staff admin dashboard." path={window.location.pathname} noIndex />
+        <PageSEO title="Admin" description="CREOVA staff admin dashboard." path={typeof window !== 'undefined' ? window.location.pathname : '/admin'} noIndex />
         <div className="animate-pulse text-center">
           <Shield className="w-12 h-12 mx-auto mb-4" style={{ color: '#B1643B' }} />
           <p style={{ color: '#121212' }}>Verifying access...</p>
@@ -78,7 +78,7 @@ export function AdminAuth({ children }: { children: React.ReactNode }) {
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen flex items-center justify-center px-4" style={{ backgroundColor: '#F5F1EB' }}>
-        <PageSEO title="Admin Access" description="CREOVA staff admin dashboard." path={window.location.pathname} noIndex />
+        <PageSEO title="Admin Access" description="CREOVA staff admin dashboard." path={typeof window !== 'undefined' ? window.location.pathname : '/admin'} noIndex />
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
