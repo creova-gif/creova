@@ -24,7 +24,6 @@ const HomePage = lazy(() => import('./pages/HomePage').then(m => ({ default: m.H
 const ServicesPage = lazy(() => import('./pages/ServicesPage').then(m => ({ default: m.ServicesPage })));
 const PricingPage = lazy(() => import('./pages/PricingPage').then(m => ({ default: m.PricingPage })));
 const ShopPage = lazy(() => import('./pages/ShopPage').then(m => ({ default: m.ShopPage })));
-const DigitalProductsPage = lazy(() => import('./pages/DigitalProductsPage').then(m => ({ default: m.DigitalProductsPage })));
 const EventsCollaboratePage = lazy(() => import('./pages/EventsCollaboratePage').then(m => ({ default: m.EventsCollaboratePage })));
 const CommunityPage = lazy(() => import('./pages/CommunityPage').then(m => ({ default: m.CommunityPage })));
 const ContactPage = lazy(() => import('./pages/ContactPage').then(m => ({ default: m.ContactPage })));
@@ -73,7 +72,8 @@ function AnimatedRoutes() {
             <Route path="/services" element={<ServicesPage />} />
             <Route path="/pricing" element={<PricingPage />} />
             <Route path="/shop" element={<ShopPage />} />
-            <Route path="/digital-products" element={<DigitalProductsPage />} />
+            <Route path="/shop/digital" element={<ShopPage />} />
+            <Route path="/digital-products" element={<Navigate to="/shop/digital" replace />} />
             <Route path="/experience" element={<EventsCollaboratePage />} />
             <Route path="/events" element={<Navigate to="/experience" replace />} />
             <Route path="/collaborate" element={<Navigate to="/experience" replace />} />

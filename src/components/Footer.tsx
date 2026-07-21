@@ -96,7 +96,7 @@ export function Footer() {
       links: [
         { labelKey: 'footer.link.seen',        href: '/seen' },
         { labelKey: 'footer.link.shop',        href: '/shop' },
-        { labelKey: 'footer.link.digital',     href: '/digital-products' },
+        { labelKey: 'footer.link.digital',     href: '/shop/digital' },
         { labelKey: 'footer.link.events',      href: '/experience' },
       ],
     },

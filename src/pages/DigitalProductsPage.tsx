@@ -9,7 +9,16 @@ import { productListSchema } from '../utils/structuredData';
 
 const warmGradient = 'linear-gradient(135deg, #A68F59 0%, #B1643B 100%)';
 
-export function DigitalProductsPage() {
+interface DigitalProductsPageProps {
+  /**
+   * When rendered inside ShopPage's "Digital" tab, the page-level <PageSEO>
+   * and the standalone hero are suppressed — ShopPage owns both. The route
+   * /shop/digital renders this embedded; there is no standalone route.
+   */
+  embedded?: boolean;
+}
+
+export function DigitalProductsPage({ embedded = false }: DigitalProductsPageProps = {}) {
   const { addItem } = useCart();
   const { t } = useLanguage();
   const [hoveredProduct, setHoveredProduct] = useState<string | null>(null);
@@ -61,15 +70,20 @@ export function DigitalProductsPage() {
 
   return (
     <div style={{ backgroundColor: '#F5F1EB' }}>
+      {/*
+        Rendered in both modes: ShopPage only emits its own <PageSEO> for the
+        apparel tab, so /shop/digital would otherwise ship with no title or
+        canonical at all.
+      */}
       <PageSEO
         title="Digital Products"
         description="Premium templates, presets, and tools for creatives — brand kits, social media templates, Lightroom presets, content calendars, and more. Launching November 2026."
-        path="/digital-products"
+        path="/shop/digital"
         jsonLd={productListSchema(digitalProducts)}
       />
 
       {/* Hero — editorial asymmetric split */}
-      <section className="relative overflow-hidden" style={{ backgroundColor: '#0A0A0A', minHeight: '480px' }}>
+      <section className={`relative overflow-hidden ${embedded ? 'hidden' : ''}`} style={{ backgroundColor: '#0A0A0A', minHeight: '480px' }}>
         {/* Subtle ambient glows */}
         <div className="absolute inset-0 pointer-events-none" style={{
           background: `radial-gradient(ellipse 50% 80% at 0% 50%, rgba(166,143,89,0.07) 0%, transparent 60%),

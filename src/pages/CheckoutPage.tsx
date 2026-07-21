@@ -261,7 +261,7 @@ export function CheckoutPage() {
               Browse the SEEN Shop
             </button>
             <button
-              onClick={() => navigate('/digital-products')}
+              onClick={() => navigate('/shop/digital')}
               className="px-8 py-3 rounded-lg text-sm font-medium border transition-colors"
               style={{ borderColor: 'rgba(166,143,89,0.35)', color: '#C8C0B8', backgroundColor: 'transparent' }}
             >

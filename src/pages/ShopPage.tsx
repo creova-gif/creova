@@ -1,10 +1,12 @@
 import { useState } from 'react';
+import { Link, useLocation } from 'react-router';
 import { PageSEO } from '../components/PageSEO';
 import { useLanguage } from '../context/LanguageContext';
 import { Calendar, Package, Shirt, Tag, Sparkles } from 'lucide-react';
 import { motion } from 'motion/react';
 import { SizeGuide } from '../components/SizeGuide';
 import { FallDropTeaser } from '../components/FallDropTeaser';
+import { DigitalProductsPage } from './DigitalProductsPage';
 import { productListSchema } from '../utils/structuredData';
 
 const warmGradient = 'linear-gradient(135deg, #A68F59 0%, #B1643B 100%)';
@@ -16,6 +18,11 @@ export function ShopPage() {
   const [hoveredProduct, setHoveredProduct] = useState<string | null>(null);
   const [filter, setFilter] = useState('all');
   const [sizeGuideOpen, setSizeGuideOpen] = useState(false);
+
+  // The Digital collection lives at /shop/digital rather than its own
+  // top-level page, so it stays a real indexable URL while costing no nav slot.
+  const { pathname } = useLocation();
+  const activeCollection: 'apparel' | 'digital' = pathname.startsWith('/shop/digital') ? 'digital' : 'apparel';
 
   const colorPalette = {
     'Jet Black': '#000000',
@@ -81,12 +88,14 @@ export function ShopPage() {
 
   return (
     <div style={{ backgroundColor: '#F5F1EB' }}>
-      <PageSEO
-        title="Shop — SEEN Fall/Winter Capsule"
-        description="SEEN by CREOVA — Vol. 01 Fall/Winter 2026 capsule collection. 14 styles of culturally rich streetwear, footwear and accessories. Pre-order now, ships November 2026."
-        path="/shop"
-        jsonLd={productListSchema(products)}
-      />
+      {activeCollection === 'apparel' && (
+        <PageSEO
+          title="Shop — SEEN Fall/Winter Capsule"
+          description="SEEN by CREOVA — Vol. 01 Fall/Winter 2026 capsule collection. 14 styles of culturally rich streetwear, footwear and accessories. Pre-order now, ships November 2026."
+          path="/shop"
+          jsonLd={productListSchema(products)}
+        />
+      )}
 
       {/* Announcement banner — warm gradient */}
       <motion.div
@@ -213,6 +222,41 @@ export function ShopPage() {
         </div>
       </section>
 
+      {/* Collection switcher — Apparel / Digital */}
+      <nav
+        aria-label="Shop collections"
+        className="border-b"
+        style={{ backgroundColor: '#0A0A0A', borderColor: 'rgba(166,143,89,0.2)' }}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex gap-1">
+          {([
+            { key: 'apparel', to: '/shop', label: t('shop.tab.apparel'), Icon: Shirt },
+            { key: 'digital', to: '/shop/digital', label: t('shop.tab.digital'), Icon: Sparkles },
+          ] as const).map(({ key, to, label, Icon }) => {
+            const active = activeCollection === key;
+            return (
+              <Link
+                key={key}
+                to={to}
+                aria-current={active ? 'page' : undefined}
+                className="relative flex items-center gap-2 px-5 py-4 text-xs tracking-[0.3em] uppercase transition-colors duration-200"
+                style={{ color: active ? '#F5F1EB' : '#7A6F66' }}
+              >
+                <Icon className="w-3.5 h-3.5" />
+                {label}
+                {active && (
+                  <span className="absolute bottom-0 left-5 right-5" style={{ height: '2px', background: warmGradient }} />
+                )}
+              </Link>
+            );
+          })}
+        </div>
+      </nav>
+
+      {activeCollection === 'digital' ? (
+        <DigitalProductsPage embedded />
+      ) : (
+      <>
       <FallDropTeaser />
 
       {/* Dark filter bar */}
@@ -409,6 +453,9 @@ export function ShopPage() {
           </div>
         </div>
       </section>
+
+      </>
+      )}
 
       {/* Modals */}
       <SizeGuide isOpen={sizeGuideOpen} onClose={() => setSizeGuideOpen(false)} />

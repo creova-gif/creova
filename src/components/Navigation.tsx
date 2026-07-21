@@ -32,7 +32,6 @@ export function Navigation() {
     { name: 'Work', path: '/work' },
     { name: t('nav.services'), path: '/services' },
     { name: t('nav.shop'), path: '/shop' },
-    { name: 'Digital', path: '/digital-products' },
     { name: t('nav.experience'), path: '/experience' },
     { name: t('nav.community'), path: '/community' },
     { name: t('nav.contact'), path: '/contact' },

@@ -111,7 +111,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                     {t('cart.btn.shop')}
                   </button>
                   <button
-                    onClick={() => { onClose(); navigate('/digital-products'); }}
+                    onClick={() => { onClose(); navigate('/shop/digital'); }}
                     className="w-full py-3 rounded-lg text-sm font-medium border"
                     style={{ borderColor: 'rgba(166,143,89,0.3)', color: '#C8C0B8', backgroundColor: 'transparent' }}
                   >
