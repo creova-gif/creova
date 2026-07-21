@@ -303,7 +303,17 @@ export function ShopPage() {
                   {/* Size hover */}
                   {hoveredProduct === product.id && product.sizes.length > 1 && (
                     <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="pt-1.5">
-                      <p className="text-[9px] tracking-widest mb-1" style={{ color: '#7A6F66' }}>SELECT SIZE</p>
+                      <div className="flex items-center justify-between mb-1">
+                        <p className="text-[9px] tracking-widest" style={{ color: '#7A6F66' }}>SELECT SIZE</p>
+                        <button
+                          type="button"
+                          onClick={() => setSizeGuideOpen(true)}
+                          className="text-[9px] tracking-wide underline underline-offset-2 transition-colors hover:no-underline"
+                          style={{ color: '#A68F59' }}
+                        >
+                          {t('product.size.guide')}
+                        </button>
+                      </div>
                       <div className="flex gap-1 flex-wrap">
                         {product.sizes.map(size => (
                           <button key={size} onClick={() => setSelectedSizes(prev => ({ ...prev, [product.id]: size }))}
