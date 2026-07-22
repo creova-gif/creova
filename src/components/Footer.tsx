@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { Link } from 'react-router';
+import { Link } from '../i18n/LocaleLink';
 import { motion, useInView } from 'motion/react';
 import { ArrowUpRight, Instagram, Mail, Linkedin, Star, MapPin } from 'lucide-react';
 import creovaLogo from '../assets/creova-logo.png';

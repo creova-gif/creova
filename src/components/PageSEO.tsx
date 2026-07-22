@@ -1,4 +1,6 @@
 import { Helmet } from 'react-helmet-async';
+import { useLocation } from 'react-router';
+import { localeFromPath, stripLocale, absoluteUrl } from '../i18n/locale';
 
 const SITE_URL = 'https://creova.ca';
 const DEFAULT_OG_IMAGE = `${SITE_URL}/card-blackprint.jpg`;
@@ -27,8 +29,17 @@ export function PageSEO({
   jsonLd,
 }: PageSEOProps) {
   const fullTitle = `${title} | CREOVA — Creative Agency`;
-  const canonicalUrl = `${SITE_URL}${path === '/' ? '' : path}`;
   const schemas = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
+
+  // `path` is authored unprefixed (e.g. "/services"). The locale comes from the
+  // URL, so the same component yields /services and /fr/services correctly.
+  const { pathname } = useLocation();
+  const locale = localeFromPath(pathname);
+  const barePath = stripLocale(path);
+
+  const canonicalUrl = absoluteUrl(barePath, locale, SITE_URL);
+  const enUrl = absoluteUrl(barePath, 'en', SITE_URL);
+  const frUrl = absoluteUrl(barePath, 'fr', SITE_URL);
 
   return (
     <Helmet>
@@ -36,6 +47,15 @@ export function PageSEO({
       <meta name="description" content={description} />
       <link rel="canonical" href={canonicalUrl} />
       <meta name="robots" content={noIndex ? 'noindex, nofollow' : 'index, follow'} />
+
+      {/*
+        hreflang lets Google serve the right language and stops the two
+        versions competing as duplicates. Omitted on noindex pages, which have
+        no French counterpart.
+      */}
+      {!noIndex && <link rel="alternate" hrefLang="en" href={enUrl} />}
+      {!noIndex && <link rel="alternate" hrefLang="fr" href={frUrl} />}
+      {!noIndex && <link rel="alternate" hrefLang="x-default" href={enUrl} />}
 
       <meta property="og:type" content={ogType} />
       <meta property="og:url" content={canonicalUrl} />

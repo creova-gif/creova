@@ -60,6 +60,35 @@ function PageLoader() {
   );
 }
 
+/**
+ * Public pages, served at both the bare path (English) and under /fr (French).
+ * Paths are relative — the locale prefix is applied when the table is rendered.
+ */
+const LOCALIZED_ROUTES: Array<{ path: string; element: React.ReactNode }> = [
+  { path: '', element: <HomePage /> },
+  { path: 'work', element: <WorkPage /> },
+  { path: 'services', element: <ServicesPage /> },
+  { path: 'pricing', element: <PricingPage /> },
+  { path: 'shop', element: <ShopPage /> },
+  { path: 'shop/digital', element: <ShopPage /> },
+  { path: 'experience', element: <EventsCollaboratePage /> },
+  { path: 'community', element: <CommunityPage /> },
+  { path: 'contact', element: <ContactPage /> },
+  { path: 'booking', element: <BookingPage /> },
+  { path: 'rental', element: <RentalPage /> },
+  { path: 'seen', element: <SEENPage /> },
+  { path: 'terms-of-service', element: <TermsOfServicePage /> },
+  { path: 'privacy-policy', element: <PrivacyPolicyPage /> },
+];
+
+/** Legacy paths kept alive as redirects. English only — they were never localized. */
+const LEGACY_REDIRECTS: Array<{ from: string; to: string }> = [
+  { from: '/digital-products', to: '/shop/digital' },
+  { from: '/events', to: '/experience' },
+  { from: '/collaborate', to: '/experience' },
+  { from: '/about', to: '/community' },
+];
+
 function AnimatedRoutes() {
   const location = useLocation();
   return (
@@ -67,33 +96,29 @@ function AnimatedRoutes() {
       <AnimatePresence mode="wait" initial={false}>
         <PageTransition locationKey={location.pathname}>
           <Routes location={location}>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/work" element={<WorkPage />} />
-            <Route path="/services" element={<ServicesPage />} />
-            <Route path="/pricing" element={<PricingPage />} />
-            <Route path="/shop" element={<ShopPage />} />
-            <Route path="/shop/digital" element={<ShopPage />} />
-            <Route path="/digital-products" element={<Navigate to="/shop/digital" replace />} />
-            <Route path="/experience" element={<EventsCollaboratePage />} />
-            <Route path="/events" element={<Navigate to="/experience" replace />} />
-            <Route path="/collaborate" element={<Navigate to="/experience" replace />} />
-            <Route path="/community" element={<CommunityPage />} />
-            <Route path="/about" element={<Navigate to="/community" replace />} />
-            <Route path="/contact" element={<ContactPage />} />
-            <Route path="/booking" element={<BookingPage />} />
-            <Route path="/rental" element={<RentalPage />} />
-            <Route path="/terms-of-service" element={<TermsOfServicePage />} />
-            <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+            {/* French first: /fr/x must win over the bare table's catch-alls. */}
+            {LOCALIZED_ROUTES.map(({ path, element }) => (
+              <Route key={`fr-${path}`} path={`/fr${path ? `/${path}` : ''}`} element={element} />
+            ))}
+            {LOCALIZED_ROUTES.map(({ path, element }) => (
+              <Route key={`en-${path}`} path={`/${path}`} element={element} />
+            ))}
+
+            {LEGACY_REDIRECTS.map(({ from, to }) => (
+              <Route key={from} path={from} element={<Navigate to={to} replace />} />
+            ))}
+
+            {/* Transactional + admin: English only, all noindex. */}
+            <Route path="/checkout" element={<CheckoutPage />} />
+            <Route path="/order-confirmation" element={<OrderConfirmationPage />} />
+            <Route path="/payment-success" element={<PaymentSuccessPage />} />
             <Route path="/admin/submissions" element={<AdminAuth><AdminSubmissionsPage /></AdminAuth>} />
             <Route path="/analytics/dashboard" element={<AdminAuth><AnalyticsDashboardPage /></AdminAuth>} />
             <Route path="/admin/refunds" element={<AdminAuth><RefundManagementPage /></AdminAuth>} />
             <Route path="/admin/hub" element={<AdminAuth><AdminHubPage /></AdminAuth>} />
             <Route path="/admin/galleries" element={<AdminAuth><AdminGalleriesPage /></AdminAuth>} />
             <Route path="/admin/database" element={<AdminAuth><DatabaseAccessPage /></AdminAuth>} />
-            <Route path="/seen" element={<SEENPage />} />
-            <Route path="/checkout" element={<CheckoutPage />} />
-            <Route path="/order-confirmation" element={<OrderConfirmationPage />} />
-            <Route path="/payment-success" element={<PaymentSuccessPage />} />
+
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </PageTransition>

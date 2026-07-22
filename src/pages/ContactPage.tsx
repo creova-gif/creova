@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router';
+import { Link } from '../i18n/LocaleLink';
 import { PageSEO } from '../components/PageSEO';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';

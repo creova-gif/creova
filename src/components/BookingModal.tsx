@@ -4,7 +4,7 @@ import { projectId, publicAnonKey } from '../utils/supabase/info';
 import { toast } from 'sonner';
 import { logger } from '../utils/logger';
 import { motion } from 'motion/react';
-import { useNavigate } from 'react-router';
+import { useNavigate } from '../i18n/LocaleLink';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from './ui/dialog';
 import { Button } from './ui/button';
 import { Input } from './ui/input';

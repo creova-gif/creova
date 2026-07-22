@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate } from '../i18n/LocaleLink';
 import { motion } from 'motion/react';
 import { Lock, Eye, EyeOff, Shield } from 'lucide-react';
 import { Button } from './ui/button';

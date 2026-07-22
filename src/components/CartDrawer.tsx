@@ -2,7 +2,7 @@ import { X, Minus, Plus, Trash2, ShoppingBag } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useLanguage } from '../context/LanguageContext';
 import { toast } from 'sonner';
-import { useNavigate } from 'react-router';
+import { useNavigate } from '../i18n/LocaleLink';
 import { motion, AnimatePresence } from 'motion/react';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 

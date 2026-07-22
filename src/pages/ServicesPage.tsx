@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { useNavigate, Link } from 'react-router';
+import { useNavigate, Link } from '../i18n/LocaleLink';
 import { PageSEO } from '../components/PageSEO';
 import { Button } from '../components/ui/button';
 import { motion, AnimatePresence } from 'motion/react';

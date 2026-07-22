@@ -1,5 +1,7 @@
 import { useState } from 'react';
-import { Link, useLocation } from 'react-router';
+import { useLocation } from 'react-router';
+import { Link } from '../i18n/LocaleLink';
+import { stripLocale } from '../i18n/locale';
 import { PageSEO } from '../components/PageSEO';
 import { useLanguage } from '../context/LanguageContext';
 import { Calendar, Package, Shirt, Tag, Sparkles } from 'lucide-react';
@@ -22,7 +24,10 @@ export function ShopPage() {
   // The Digital collection lives at /shop/digital rather than its own
   // top-level page, so it stays a real indexable URL while costing no nav slot.
   const { pathname } = useLocation();
-  const activeCollection: 'apparel' | 'digital' = pathname.startsWith('/shop/digital') ? 'digital' : 'apparel';
+  // stripLocale first — a raw startsWith('/shop/digital') silently fails on
+  // /fr/shop/digital and renders the apparel tab instead.
+  const activeCollection: 'apparel' | 'digital' =
+    stripLocale(pathname).startsWith('/shop/digital') ? 'digital' : 'apparel';
 
   const colorPalette = {
     'Jet Black': '#000000',

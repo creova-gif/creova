@@ -1,7 +1,7 @@
 import { motion } from 'motion/react';
 import { useLanguage } from '../context/LanguageContext';
 import { PageSEO } from '../components/PageSEO';
-import { useNavigate, Link } from 'react-router';
+import { useNavigate, Link } from '../i18n/LocaleLink';
 import { RevealOnScroll } from '../components/RevealOnScroll';
 import {
   Star,

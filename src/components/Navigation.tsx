@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Link, NavLink } from 'react-router';
+import { Link, NavLink } from '../i18n/LocaleLink';
 import { Menu, X, ShoppingCart, ChevronDown, ArrowUpRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Button } from './ui/button';

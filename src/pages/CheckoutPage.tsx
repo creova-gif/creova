@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate } from '../i18n/LocaleLink';
 import { loadStripe } from '@stripe/stripe-js';
 import {
   PaymentElement,

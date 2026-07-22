@@ -1,4 +1,4 @@
-import { Link } from 'react-router';
+import { Link } from '../i18n/LocaleLink';
 import { motion } from 'motion/react';
 import { Home, Mail, ArrowRight } from 'lucide-react';
 import { PageSEO } from '../components/PageSEO';

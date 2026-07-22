@@ -1,6 +1,6 @@
 import { motion } from 'motion/react';
 import { ArrowRight, ExternalLink, Quote } from 'lucide-react';
-import { Link } from 'react-router';
+import { Link } from '../i18n/LocaleLink';
 
 import { useLanguage } from '../context/LanguageContext';
 import logoBSSC from '../assets/logo-bssc.png';

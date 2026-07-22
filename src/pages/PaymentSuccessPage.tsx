@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate } from '../i18n/LocaleLink';
 import { CheckCircle2, ArrowRight } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { motion } from 'motion/react';

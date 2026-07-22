@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { PageSEO } from '../components/PageSEO';
 import { ExternalLink, ArrowRight, ArrowDown, Lock, Search, X } from 'lucide-react';
-import { Link } from 'react-router';
+import { Link } from '../i18n/LocaleLink';
 import { RevealOnScroll } from '../components/RevealOnScroll';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';

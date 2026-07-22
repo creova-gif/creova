@@ -3,7 +3,7 @@ import {
   Shield, BarChart3, DollarSign,
   Mail, ArrowRight, Lock, Activity, Database, Image
 } from 'lucide-react';
-import { useNavigate } from 'react-router';
+import { useNavigate } from '../i18n/LocaleLink';
 import { PageSEO } from '../components/PageSEO';
 
 export function AdminHubPage() {

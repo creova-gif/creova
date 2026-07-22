@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router';
+import { Link } from '../i18n/LocaleLink';
 import { motion, AnimatePresence } from 'motion/react';
 import { Lock, ArrowRight, Mail, CheckCircle2 } from 'lucide-react';
 import { Input } from './ui/input';

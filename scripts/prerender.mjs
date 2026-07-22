@@ -18,7 +18,7 @@ import { fileURLToPath } from 'node:url';
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const buildDir = join(root, 'build');
 
-const ROUTES = [
+const BASE_ROUTES = [
   '/',
   '/work',
   '/services',
@@ -33,6 +33,12 @@ const ROUTES = [
   '/seen',
   '/terms-of-service',
   '/privacy-policy',
+];
+
+// English at the bare path, French under /fr — mirrors src/i18n/locale.ts.
+const ROUTES = [
+  ...BASE_ROUTES,
+  ...BASE_ROUTES.map((r) => (r === '/' ? '/fr' : `/fr${r}`)),
 ];
 
 /**
@@ -104,7 +110,11 @@ async function main() {
         page = page.replace(/<html\b[^>]*>/i, `<html ${htmlAttrs}>`);
       }
       if (head) {
-        page = page.replace('</head>', `  ${head}\n  </head>`);
+        // Helmet serialises React's camelCase prop name verbatim, so hreflang
+        // ships as hrefLang. HTML attribute names are case-insensitive so
+        // browsers and Google handle it, but plenty of SEO auditors regex for
+        // the lowercase form — normalise so it isn't reported as missing.
+        page = page.replace('</head>', `  ${head.replace(/\bhrefLang=/g, 'hreflang=')}\n  </head>`);
       }
       page = page.replace(
         /<div id="root">\s*<\/div>/,

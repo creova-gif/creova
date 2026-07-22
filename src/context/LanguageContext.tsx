@@ -1,5 +1,10 @@
 import { useContext, useState, ReactNode, useEffect } from 'react';
+// Deliberately the raw router useNavigate, NOT the locale-aware wrapper:
+// setLanguage already resolves the target locale itself, and the wrapper would
+// re-apply the *current* locale on top and strip the prefix back off.
+import { useLocation, useNavigate } from 'react-router';
 import { LanguageContext, Language } from './LanguageContextInstance';
+import { localeFromPath, withLocale } from '../i18n/locale';
 
 // SEO-optimized translations
 const translations = {
@@ -1441,38 +1446,33 @@ const translations = {
 };
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguageState] = useState<Language>(() => {
-    // Lazy initializers run during render, including on the server during
-    // prerendering. Default to 'en' there so prerendered HTML is deterministic;
-    // the client re-reads the real preference on mount.
-    if (typeof window === 'undefined') return 'en';
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
 
-    // Check localStorage or browser language
-    const saved = localStorage.getItem('creova-language') as Language;
-    if (saved && (saved === 'en' || saved === 'fr')) return saved;
-
-    // Detect browser language
-    const browserLang = navigator.language.toLowerCase();
-    if (browserLang.startsWith('fr')) return 'fr';
-    return 'en';
-  });
+  // The URL is the single source of truth for language: /fr/* is French,
+  // everything else English. Previously this lived in React state + localStorage,
+  // which meant both languages shared one URL and only one could ever be
+  // indexed. Deriving it from the path is what makes hreflang possible.
+  const language = localeFromPath(pathname) as Language;
   const [isChanging, setIsChanging] = useState(false);
 
   const setLanguage = (lang: Language) => {
     if (lang === language) return;
     setIsChanging(true);
-    
-    // Cinematic swap effect
-    setTimeout(() => {
-      setLanguageState(lang);
+
+    // Remember the choice so the language switch can be honoured on a later
+    // visit, but it no longer *determines* the language — the URL does.
+    try {
       localStorage.setItem('creova-language', lang);
-      // Update HTML lang attribute for SEO
-      document.documentElement.lang = lang;
-      
-      setTimeout(() => {
-        setIsChanging(false);
-      }, 150); // slight delay after content swap to remove overlay
-    }, 150); // delay to let overlay fade in
+    } catch {
+      /* private browsing */
+    }
+
+    // Cinematic swap effect: navigate to the same page in the other locale.
+    setTimeout(() => {
+      navigate(withLocale(`${pathname}${window.location.search}${window.location.hash}`, lang));
+      setTimeout(() => setIsChanging(false), 150);
+    }, 150);
   };
 
   const t = (key: string): string => {

@@ -1,5 +1,5 @@
 import { useState, useRef, useCallback } from 'react';
-import { Link } from 'react-router';
+import { Link } from '../i18n/LocaleLink';
 import { motion, useMotionValue, useSpring, useTransform, useReducedMotion } from 'motion/react';
 import { ArrowRight, Play, Globe, Shield, Mic, BookOpen, Heart, Star, ChevronDown, Lock, Layers, Award } from 'lucide-react';
 import seenForyou from '../assets/seen-foryou.jpg';

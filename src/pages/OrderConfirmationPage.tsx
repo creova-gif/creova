@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router';
+import { useSearchParams } from 'react-router';
+import { useNavigate } from '../i18n/LocaleLink';
 import { motion } from 'motion/react';
 import { CheckCircle2, Package, Mail, ArrowRight, Download } from 'lucide-react';
 import { Button } from '../components/ui/button';
