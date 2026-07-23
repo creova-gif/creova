@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from '../i18n/LocaleLink';
+import { useLanguage } from '../context/LanguageContext';
 import { PageSEO } from '../components/PageSEO';
 import { Button } from '../components/ui/button';
 import { CheckCircle2, Check, Target, Award, Shield, Clock, ArrowRight, Star, Users, Briefcase, Package, Plane, PartyPopper, Palette, Plus, Mail, MapPin } from 'lucide-react';
@@ -8,6 +9,9 @@ import { RevealOnScroll } from '../components/RevealOnScroll';
 import { BookingModal } from '../components/BookingModal';
 
 export function PricingPage() {
+  const { language } = useLanguage();
+  // Commercial page → vous register (see mixed-register decision).
+  const fr = language === 'fr';
   const [bookingOpen, setBookingOpen] = useState(false);
   const [selectedService, setSelectedService] = useState<{
     name: string;
@@ -46,10 +50,10 @@ export function PricingPage() {
         <p className="text-xs sm:text-sm tracking-wide" style={{ color: '#E3DCD3' }}>
           <span className="inline-flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: '#A68F59' }} />
-            <strong style={{ color: '#A68F59' }}>Limited availability:</strong>
-            {' '}Currently accepting 4 new client projects for Q3 2026 —{' '}
+            <strong style={{ color: '#A68F59' }}>{fr ? 'Places limitées :' : 'Limited availability:'}</strong>
+            {' '}{fr ? 'On accepte actuellement 4 nouveaux projets clients pour le T3 2026 —' : 'Currently accepting 4 new client projects for Q3 2026 —'}{' '}
             <Link to="/contact" className="underline underline-offset-2 hover:opacity-80 transition-opacity" style={{ color: '#F5F1EB' }}>
-              book your free discovery call →
+              {fr ? 'réservez votre appel découverte gratuit →' : 'book your free discovery call →'}
             </Link>
           </span>
         </p>
@@ -73,11 +77,11 @@ export function PricingPage() {
             >
               <div className="flex items-center gap-4 mb-8">
                 <div className="w-10 h-px" style={{ backgroundColor: '#A68F59' }} />
-                <span className="text-xs tracking-[0.45em] uppercase" style={{ color: '#A68F59' }}>Transparent Pricing</span>
+                <span className="text-xs tracking-[0.45em] uppercase" style={{ color: '#A68F59' }}>{fr ? 'Tarifs transparents' : 'Transparent Pricing'}</span>
               </div>
               <h1 className="tracking-tight leading-none mb-8" style={{ fontSize: 'clamp(3.2rem, 7vw, 7rem)' }}>
                 <span className="block font-light mb-3" style={{ color: '#F5F1EB' }}>
-                  Real Value.
+                  {fr ? 'Vraie valeur.' : 'Real Value.'}
                 </span>
                 <span className="block italic" style={{
                   backgroundImage: 'linear-gradient(95deg, #A68F59 0%, #E3DCD3 65%)',
@@ -85,14 +89,14 @@ export function PricingPage() {
                   backgroundClip: 'text',
                   color: 'transparent',
                 }}>
-                  Real Results.
+                  {fr ? 'Vrais résultats.' : 'Real Results.'}
                 </span>
               </h1>
               <p className="text-base leading-relaxed max-w-lg" style={{ color: '#7A6F66' }}>
-                Dedicated creative time, strategic thinking, and long-term brand value — transparent pricing for every Canadian business.
+                {fr ? "Du temps créatif dédié, une réflexion stratégique et une valeur de marque à long terme — des tarifs transparents pour chaque entreprise canadienne." : 'Dedicated creative time, strategic thinking, and long-term brand value — transparent pricing for every Canadian business.'}
               </p>
               <div className="flex flex-wrap gap-6 mt-8">
-                {['Pro Equipment', 'Expert Editing', 'Commercial License'].map((tag, i) => (
+                {(fr ? ['Équipement pro', 'Montage expert', 'Licence commerciale'] : ['Pro Equipment', 'Expert Editing', 'Commercial License']).map((tag, i) => (
                   <div key={i} className="flex items-center gap-2">
                     <div className="w-1 h-1 rounded-full" style={{ backgroundColor: '#A68F59' }} />
                     <span className="text-sm" style={{ color: 'rgba(245,241,235,0.5)' }}>{tag}</span>
@@ -109,19 +113,19 @@ export function PricingPage() {
               className="py-16 pl-0 lg:pl-12 flex flex-col justify-center gap-3"
             >
               {[
-                { label: 'Photography', range: 'from $450', icon: '📷' },
-                { label: 'Videography', range: 'from $500', icon: '🎥' },
-                { label: 'Brand & Design', range: 'from $750', icon: '🎨' },
-                { label: 'Events', range: 'from $750', icon: '🎉' },
-                { label: 'Social Media', range: 'from $950/mo', icon: '📱' },
-                { label: 'Aerial', range: 'from $600', icon: '🚁' },
+                { label: fr ? 'Photographie' : 'Photography', target: '#family', range: fr ? 'à partir de 450 $' : 'from $450', icon: '📷' },
+                { label: fr ? 'Vidéographie' : 'Videography', target: '#events', range: fr ? 'à partir de 500 $' : 'from $500', icon: '🎥' },
+                { label: fr ? 'Marque et design' : 'Brand & Design', target: '#brand', range: fr ? 'à partir de 750 $' : 'from $750', icon: '🎨' },
+                { label: fr ? 'Événements' : 'Events', target: '#events', range: fr ? 'à partir de 750 $' : 'from $750', icon: '🎉' },
+                { label: fr ? 'Médias sociaux' : 'Social Media', target: '#design', range: fr ? 'à partir de 950 $/mois' : 'from $950/mo', icon: '📱' },
+                { label: fr ? 'Aérien' : 'Aerial', target: '#aerial', range: fr ? 'à partir de 600 $' : 'from $600', icon: '🚁' },
               ].map((item, i) => (
                 <motion.button
                   key={item.label}
                   initial={{ opacity: 0, x: 16 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.2 + i * 0.06 }}
-                  onClick={() => scrollToSection(`#${item.label.toLowerCase().split(' ')[0]}`)}
+                  onClick={() => scrollToSection(item.target)}
                   className="flex items-center justify-between px-4 py-3 rounded-xl text-left transition-all duration-200 group"
                   style={{ backgroundColor: 'rgba(245,241,235,0.03)', border: '1px solid rgba(166,143,89,0.1)' }}
                   onMouseEnter={e => (e.currentTarget.style.backgroundColor = 'rgba(166,143,89,0.07)')}
@@ -150,19 +154,19 @@ export function PricingPage() {
           >
             <div className="flex items-center gap-5 mb-3">
               <div style={{ height: '1px', width: '40px', backgroundColor: 'rgba(18,18,18,0.2)' }} />
-              <p className="text-xs tracking-[0.5em] uppercase" style={{ color: '#A68F59' }}>Browse By Category</p>
+              <p className="text-xs tracking-[0.5em] uppercase" style={{ color: '#A68F59' }}>{fr ? 'Parcourir par catégorie' : 'Browse By Category'}</p>
             </div>
-            <h2 className="text-3xl font-light tracking-tight" style={{ color: '#121212' }}>Choose Your Service</h2>
+            <h2 className="text-3xl font-light tracking-tight" style={{ color: '#121212' }}>{fr ? 'Choisissez votre service' : 'Choose Your Service'}</h2>
           </motion.div>
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
             {[
-              { name: 'Family', id: '#family', icon: Users },
-              { name: 'Brand', id: '#brand', icon: Briefcase },
-              { name: 'Product', id: '#commerce', icon: Package },
-              { name: 'Aerial', id: '#aerial', icon: Plane },
-              { name: 'Events', id: '#events', icon: PartyPopper },
-              { name: 'Design', id: '#design', icon: Palette }
+              { name: fr ? 'Famille' : 'Family', id: '#family', icon: Users },
+              { name: fr ? 'Marque' : 'Brand', id: '#brand', icon: Briefcase },
+              { name: fr ? 'Produit' : 'Product', id: '#commerce', icon: Package },
+              { name: fr ? 'Aérien' : 'Aerial', id: '#aerial', icon: Plane },
+              { name: fr ? 'Événements' : 'Events', id: '#events', icon: PartyPopper },
+              { name: fr ? 'Design' : 'Design', id: '#design', icon: Palette }
             ].map((category, index) => {
               const IconComponent = category.icon;
               return (
@@ -205,10 +209,10 @@ export function PricingPage() {
           >
             <div className="flex items-center gap-5 mb-3">
               <div style={{ height: '1px', width: '40px', backgroundColor: 'rgba(18,18,18,0.2)' }} />
-              <p className="text-xs tracking-[0.5em] uppercase" style={{ color: '#A68F59' }}>Our Value</p>
+              <p className="text-xs tracking-[0.5em] uppercase" style={{ color: '#A68F59' }}>{fr ? 'Notre valeur' : 'Our Value'}</p>
             </div>
             <h2 className="text-4xl font-light tracking-tight" style={{ color: '#121212' }}>
-              Why Our Pricing Reflects Our Value
+              {fr ? 'Pourquoi nos tarifs reflètent notre valeur' : 'Why Our Pricing Reflects Our Value'}
             </h2>
           </motion.div>
 
@@ -216,23 +220,23 @@ export function PricingPage() {
             {[
               {
                 icon: Clock,
-                title: 'Dedicated Time',
-                description: 'We track our hours to maintain high-quality, intentional work — not rushed outputs'
+                title: fr ? 'Temps dédié' : 'Dedicated Time',
+                description: fr ? "On suit nos heures pour garantir un travail de grande qualité et réfléchi — jamais bâclé" : 'We track our hours to maintain high-quality, intentional work — not rushed outputs'
               },
               {
                 icon: Award,
-                title: 'Client-Focused',
-                description: 'We focus on clients who value design, storytelling, and measurable results'
+                title: fr ? 'Centrés sur le client' : 'Client-Focused',
+                description: fr ? 'On se concentre sur les clients qui valorisent le design, le récit et des résultats mesurables' : 'We focus on clients who value design, storytelling, and measurable results'
               },
               {
                 icon: Target,
-                title: 'High Standards',
-                description: 'Every offering is built to set a higher precedent of creative value'
+                title: fr ? 'Normes élevées' : 'High Standards',
+                description: fr ? 'Chaque offre est conçue pour établir un plus haut standard de valeur créative' : 'Every offering is built to set a higher precedent of creative value'
               },
               {
                 icon: Shield,
-                title: 'Brand Building',
-                description: 'We\'re not here to just "make content" — we build brands with meaning'
+                title: fr ? 'Bâtir des marques' : 'Brand Building',
+                description: fr ? 'On n’est pas là pour seulement « faire du contenu » — on bâtit des marques qui ont du sens' : 'We\'re not here to just "make content" — we build brands with meaning'
               }
             ].map((item, index) => (
               <RevealOnScroll key={index} mode='3d' delay={index * 0.1}>
@@ -276,30 +280,30 @@ export function PricingPage() {
           >
             <div className="h-1 w-20 mx-auto mb-6" style={{ backgroundColor: '#A68F59' }}></div>
             <h2 className="text-4xl mb-4" style={{ color: '#121212' }}>
-              All Packages Include
+              {fr ? 'Tous les forfaits incluent' : 'All Packages Include'}
             </h2>
             <p className="text-xl" style={{ color: '#7A6F66' }}>
-              Premium features included in every service
+              {fr ? 'Des caractéristiques haut de gamme incluses dans chaque service' : 'Premium features included in every service'}
             </p>
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
             {[
               {
-                title: 'Professional Equipment',
-                description: 'Industry-standard cameras, lighting, and editing software'
+                title: fr ? 'Équipement professionnel' : 'Professional Equipment',
+                description: fr ? "Caméras, éclairage et logiciels de montage aux normes de l'industrie" : 'Industry-standard cameras, lighting, and editing software'
               },
               {
-                title: 'Online Delivery',
-                description: 'Secure gallery or video delivery with download access'
+                title: fr ? 'Livraison en ligne' : 'Online Delivery',
+                description: fr ? 'Livraison sécurisée par galerie ou vidéo avec accès au téléchargement' : 'Secure gallery or video delivery with download access'
               },
               {
-                title: 'Pre-Session Consultation',
-                description: 'Planning call to align on vision and goals'
+                title: fr ? 'Consultation avant séance' : 'Pre-Session Consultation',
+                description: fr ? 'Appel de planification pour aligner la vision et les objectifs' : 'Planning call to align on vision and goals'
               },
               {
-                title: 'Usage License',
-                description: 'Commercial or personal use rights included'
+                title: fr ? "Licence d'utilisation" : 'Usage License',
+                description: fr ? 'Droits commerciaux ou personnels inclus' : 'Commercial or personal use rights included'
               }
             ].map((item, index) => (
               <motion.div
@@ -331,7 +335,7 @@ export function PricingPage() {
             style={{ borderColor: '#E3DCD3' }}
           >
             <p className="text-sm" style={{ color: '#7A6F66' }}>
-              <span style={{ color: '#121212' }}>Note:</span> All prices are in CAD and subject to 13% HST (Ontario)
+              <span style={{ color: '#121212' }}>{fr ? 'Note :' : 'Note:'}</span> {fr ? 'Tous les prix sont en dollars canadiens et assujettis à la TVH de 13 % (Ontario)' : 'All prices are in CAD and subject to 13% HST (Ontario)'}
             </p>
           </motion.div>
         </div>
@@ -347,18 +351,18 @@ export function PricingPage() {
             className="text-center mb-12"
           >
             <h2 className="text-4xl mb-4" style={{ color: '#121212' }}>
-              Family Portrait Photography
+              {fr ? 'Photographie de portraits de famille' : 'Family Portrait Photography'}
             </h2>
             <p className="text-xl" style={{ color: '#7A6F66' }}>
-              Capture timeless moments with your loved ones
+              {fr ? 'Immortalisez des moments intemporels avec vos proches' : 'Capture timeless moments with your loved ones'}
             </p>
           </motion.div>
 
           <div className="grid md:grid-cols-3 gap-8">
             {[
-              { name: 'Mini Memories', price: '$450', time: '45 min', photos: '10 photos', popular: false, priceNum: 450 },
-              { name: 'Timeless Bonds', price: '$650', time: '1.5 hours', photos: '25 photos', popular: true, priceNum: 650 },
-              { name: 'Legacy Heirloom', price: '$950', time: '2 hours', photos: '40+ photos', popular: false, priceNum: 950 }
+              { name: fr ? 'Petits souvenirs' : 'Mini Memories', price: '$450', time: '45 min', photos: fr ? '10 photos' : '10 photos', popular: false, priceNum: 450 },
+              { name: fr ? 'Liens intemporels' : 'Timeless Bonds', price: '$650', time: fr ? '1 h 30' : '1.5 hours', photos: '25 photos', popular: true, priceNum: 650 },
+              { name: fr ? 'Héritage vivant' : 'Legacy Heirloom', price: '$950', time: fr ? '2 heures' : '2 hours', photos: '40+ photos', popular: false, priceNum: 950 }
             ].map((pkg, index) => (
               <RevealOnScroll key={index} mode='3d' delay={index * 0.1}>
               <div
@@ -370,7 +374,7 @@ export function PricingPage() {
                 {pkg.popular && (
                   <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full text-xs"
                        style={{ backgroundColor: '#A68F59', color: '#F5F1EB' }}>
-                    MOST POPULAR
+                    {fr ? 'LE PLUS POPULAIRE' : 'MOST POPULAR'}
                   </div>
                 )}
                 <h3 className="text-2xl mb-4" style={{ color: '#121212' }}>{pkg.name}</h3>
@@ -389,7 +393,7 @@ export function PricingPage() {
                   </div>
                 </div>
                 <Button 
-                  onClick={() => handleBookNow(pkg.name, pkg.priceNum, `${pkg.time} session • ${pkg.photos}`)}
+                  onClick={() => handleBookNow(pkg.name, pkg.priceNum, fr ? `Séance de ${pkg.time} • ${pkg.photos}` : `${pkg.time} session • ${pkg.photos}`)}
                   className="w-full rounded-xl py-6 transition-all duration-300"
                   style={{ backgroundColor: pkg.popular ? '#121212' : '#F5F1EB', color: pkg.popular ? '#F5F1EB' : '#121212' }}
                   onMouseEnter={(e) => {
@@ -403,7 +407,7 @@ export function PricingPage() {
                     e.currentTarget.style.transform = 'translateY(0)';
                   }}
                 >
-                  Book Session
+                  {fr ? 'Réserver une séance' : 'Book Session'}
                 </Button>
               </div>
               </RevealOnScroll>
@@ -423,37 +427,37 @@ export function PricingPage() {
           >
             <div className="h-1 w-20 mx-auto mb-6" style={{ backgroundColor: '#B1643B' }}></div>
             <h2 className="text-4xl mb-4" style={{ color: '#121212' }}>
-              CREOVA Brand Identity Series
+              {fr ? "Série Identité de marque CREOVA" : 'CREOVA Brand Identity Series'}
             </h2>
             <p className="text-xl" style={{ color: '#7A6F66' }}>
-              Professional visual storytelling for businesses and entrepreneurs
+              {fr ? 'Un récit visuel professionnel pour les entreprises et les entrepreneurs' : 'Professional visual storytelling for businesses and entrepreneurs'}
             </p>
           </motion.div>
 
           <div className="grid md:grid-cols-3 gap-8">
             {[
               {
-                name: 'Profile Pro',
+                name: fr ? 'Profil Pro' : 'Profile Pro',
                 price: '$750',
-                description: 'Clean, consistent headshots that represent your brand\'s people with professionalism',
-                features: ['1 to 1.5-hour session', 'Up to 10 team members', '1 outfit per person', 'Neutral backgrounds', '1 retouched headshot per person'],
-                addon: 'Additional team members $50/person',
+                description: fr ? "Des portraits corporatifs nets et cohérents qui représentent les gens de votre marque avec professionnalisme" : 'Clean, consistent headshots that represent your brand\'s people with professionalism',
+                features: fr ? ['Séance de 1 h à 1 h 30', "Jusqu'à 10 membres de l'équipe", '1 tenue par personne', 'Arrière-plans neutres', '1 portrait retouché par personne'] : ['1 to 1.5-hour session', 'Up to 10 team members', '1 outfit per person', 'Neutral backgrounds', '1 retouched headshot per person'],
+                addon: fr ? 'Membres supplémentaires 50 $/personne' : 'Additional team members $50/person',
                 highlighted: false
               },
               {
-                name: 'Workspace Stories',
+                name: fr ? "Histoires d'équipe" : 'Workspace Stories',
                 price: '$1,100',
-                description: 'Capture your brand\'s energy, workflow, and culture in an authentic way',
-                features: ['2-hour on-location session', 'Group headshots + candids', 'Up to 15 team members', '20+ edited photos', 'Website & social ready'],
-                addon: 'Additional team members $40/person',
+                description: fr ? "Captez l'énergie, le flux de travail et la culture de votre marque de façon authentique" : 'Capture your brand\'s energy, workflow, and culture in an authentic way',
+                features: fr ? ['Séance de 2 heures sur place', 'Portraits de groupe et spontanés', "Jusqu'à 15 membres de l'équipe", '20+ photos retouchées', 'Prêtes pour le web et les réseaux'] : ['2-hour on-location session', 'Group headshots + candids', 'Up to 15 team members', '20+ edited photos', 'Website & social ready'],
+                addon: fr ? 'Membres supplémentaires 40 $/personne' : 'Additional team members $40/person',
                 highlighted: true
               },
               {
-                name: 'Brand Vision Suite',
+                name: fr ? 'Suite Vision de marque' : 'Brand Vision Suite',
                 price: '$1,600',
-                description: 'Complete visual identity experience for brands ready to showcase their story',
-                features: ['3–4 hours guided direction', 'Team headshots + BTS', 'Culture/space photography', '50+ curated photos', 'Optional 1-min video (+$300)'],
-                addon: 'Additional team members $35/person',
+                description: fr ? "Une expérience d'identité visuelle complète pour les marques prêtes à raconter leur histoire" : 'Complete visual identity experience for brands ready to showcase their story',
+                features: fr ? ['3 à 4 heures de direction guidée', "Portraits d'équipe et coulisses", 'Photographie de culture/espace', '50+ photos sélectionnées', 'Vidéo de 1 min en option (+300 $)'] : ['3–4 hours guided direction', 'Team headshots + BTS', 'Culture/space photography', '50+ curated photos', 'Optional 1-min video (+$300)'],
+                addon: fr ? 'Membres supplémentaires 35 $/personne' : 'Additional team members $35/person',
                 highlighted: false
               }
             ].map((pkg, index) => (
@@ -467,13 +471,13 @@ export function PricingPage() {
                 {pkg.highlighted && (
                   <div className="absolute -top-4 right-6 px-4 py-1.5 rounded-full text-xs"
                        style={{ backgroundColor: '#B1643B', color: '#F5F1EB' }}>
-                    RECOMMENDED
+                    {fr ? 'RECOMMANDÉ' : 'RECOMMENDED'}
                   </div>
                 )}
                 <h3 className="text-2xl mb-3" style={{ color: '#121212' }}>{pkg.name}</h3>
                 <div className="mb-4">
                   <span className="text-4xl" style={{ color: '#121212' }}>{pkg.price}</span>
-                  <span className="text-sm ml-2" style={{ color: '#7A6F66' }}>starting at</span>
+                  <span className="text-sm ml-2" style={{ color: '#7A6F66' }}>{fr ? 'à partir de' : 'starting at'}</span>
                 </div>
                 <p className="text-sm mb-6 leading-relaxed" style={{ color: '#7A6F66' }}>
                   {pkg.description}
@@ -488,7 +492,7 @@ export function PricingPage() {
                 </div>
                 <div className="pt-4 border-t mb-6" style={{ borderColor: '#E3DCD3' }}>
                   <p className="text-xs" style={{ color: '#7A6F66' }}>
-                    Add-on: {pkg.addon}
+                    {fr ? 'Option : ' : 'Add-on: '}{pkg.addon}
                   </p>
                 </div>
                 <Button 
@@ -504,7 +508,7 @@ export function PricingPage() {
                     e.currentTarget.style.transform = 'translateY(0)';
                   }}
                 >
-                  <Link to="/booking">Get Started</Link>
+                  <Link to="/booking">{fr ? 'Commencer' : 'Get Started'}</Link>
                 </Button>
               </div>
               </RevealOnScroll>
@@ -523,10 +527,10 @@ export function PricingPage() {
             className="text-center mb-12"
           >
             <h2 className="text-4xl mb-4" style={{ color: '#121212' }}>
-              CREOVA Commerce Collection
+              {fr ? 'Collection Commerce CREOVA' : 'CREOVA Commerce Collection'}
             </h2>
             <p className="text-xl" style={{ color: '#7A6F66' }}>
-              For makers, entrepreneurs, and product storytellers
+              {fr ? 'Pour les artisans, les entrepreneurs et les conteurs de produits' : 'For makers, entrepreneurs, and product storytellers'}
             </p>
           </motion.div>
 
@@ -538,24 +542,33 @@ export function PricingPage() {
             style={{ borderColor: '#E3DCD3' }}
           >
             <div className="text-center mb-8">
-              <h3 className="text-3xl mb-4" style={{ color: '#121212' }}>Product Spotlight</h3>
+              <h3 className="text-3xl mb-4" style={{ color: '#121212' }}>{fr ? 'Vitrine Produit' : 'Product Spotlight'}</h3>
               <div className="mb-4">
                 <span className="text-5xl" style={{ color: '#121212' }}>$750</span>
-                <span className="text-lg ml-2" style={{ color: '#7A6F66' }}>starting at</span>
+                <span className="text-lg ml-2" style={{ color: '#7A6F66' }}>{fr ? 'à partir de' : 'starting at'}</span>
               </div>
               <p className="text-lg max-w-2xl mx-auto" style={{ color: '#7A6F66' }}>
-                Strategic content that helps your product sell and speak for itself
+                {fr ? 'Du contenu stratégique qui aide votre produit à se vendre et à parler de lui-même' : 'Strategic content that helps your product sell and speak for itself'}
               </p>
             </div>
 
             <div className="grid md:grid-cols-2 gap-6 mb-8">
               {[
+                ...(fr ? [
+                  '10 photos de produits stylisées sur mesure (studio ou mise en situation)',
+                  'Vidéo produit de 1 minute (démo, caractéristique ou mise en situation)',
+                  "Photos à plat, scènes d'utilisation ou style éditorial créatif",
+                  "Licence d'utilisation commerciale en ligne incluse",
+                  'Consultation de style (accessoires, guide de planche tendance)',
+                  'Optimisées pour Shopify, Instagram, Amazon'
+                ] : [
                 '10 custom-styled product photos (studio or lifestyle)',
                 '1-minute product video (demo, feature, or lifestyle)',
                 'Flat-lays, in-use scenes, or creative editorial style',
                 'Online commercial use license included',
                 'Styling consultation (props, moodboard guidance)',
                 'Optimized for Shopify, Instagram, Amazon'
+                ])
               ].map((feature, idx) => (
                 <div key={idx} className="flex items-start gap-3">
                   <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0"
@@ -584,7 +597,7 @@ export function PricingPage() {
               >
                 <Link to="/booking">
                   <span className="flex items-center gap-2">
-                    Book Product Session
+                    {fr ? 'Réserver une séance produit' : 'Book Product Session'}
                     <ArrowRight className="w-4 h-4" />
                   </span>
                 </Link>
@@ -605,10 +618,10 @@ export function PricingPage() {
           >
             <h2 className="text-4xl md:text-5xl mb-4 tracking-tight flex items-center justify-center gap-3" style={{ color: '#121212' }}>
               <Plane className="w-10 h-10" style={{ color: '#A68F59' }} />
-              CREOVA Aerial Vision Packages
+              {fr ? 'Forfaits Vision aérienne CREOVA' : 'CREOVA Aerial Vision Packages'}
             </h2>
             <p className="text-xl max-w-3xl mx-auto leading-relaxed" style={{ color: '#7A6F66' }}>
-              Cinematic perspectives that elevate your brand from above
+              {fr ? 'Des perspectives cinématographiques qui élèvent votre marque, vue du ciel' : 'Cinematic perspectives that elevate your brand from above'}
             </p>
           </motion.div>
 
@@ -631,24 +644,33 @@ export function PricingPage() {
               }}
             >
               <div className="text-center mb-8">
-                <h3 className="text-3xl mb-4" style={{ color: '#121212' }}>Aerial Vision Session</h3>
+                <h3 className="text-3xl mb-4" style={{ color: '#121212' }}>{fr ? 'Séance Vision aérienne' : 'Aerial Vision Session'}</h3>
                 <div className="mb-4">
                   <span className="text-5xl" style={{ color: '#121212' }}>$500</span>
-                  <span className="text-lg ml-2" style={{ color: '#7A6F66' }}>starting at</span>
+                  <span className="text-lg ml-2" style={{ color: '#7A6F66' }}>{fr ? 'à partir de' : 'starting at'}</span>
                 </div>
                 <p className="text-base leading-relaxed" style={{ color: '#7A6F66' }}>
-                  A clean, powerful aerial content package for real estate, events, and landscapes.
+                  {fr ? "Un forfait de contenu aérien net et percutant pour l'immobilier, les événements et les paysages." : 'A clean, powerful aerial content package for real estate, events, and landscapes.'}
                 </p>
               </div>
 
               <div className="space-y-3 mb-8">
                 {[
+                  ...(fr ? [
+                  'Séance de drone professionnelle de 1 heure',
+                  '20+ photos aériennes haute résolution',
+                  'Vidéo aérienne cinématographique de 30 à 60 s',
+                  'Opérateur de drone licencié et assuré',
+                  'Étalonnage des couleurs de base',
+                  'Livraison en 3 à 5 jours'
+                  ] : [
                   '1-hour professional drone session',
                   '20+ high-resolution aerial photos',
                   '30–60 second cinematic aerial video',
                   'Licensed & insured drone operator',
                   'Basic colour grading',
                   'Delivery within 3–5 days'
+                  ])
                 ].map((feature, idx) => (
                   <div key={idx} className="flex items-start gap-3">
                     <Check className="w-5 h-5 mt-0.5 flex-shrink-0" style={{ color: '#A68F59' }} />
@@ -673,7 +695,7 @@ export function PricingPage() {
               >
                 <Link to="/booking">
                   <span className="flex items-center justify-center gap-2">
-                    Book Aerial Session
+                    {fr ? 'Réserver une séance aérienne' : 'Book Aerial Session'}
                     <ArrowRight className="w-4 h-4" />
                   </span>
                 </Link>
@@ -703,18 +725,30 @@ export function PricingPage() {
               </div>
 
               <div className="text-center mb-8">
-                <h3 className="text-3xl mb-4" style={{ color: '#121212' }}>Aerial Cinematic Experience</h3>
+                <h3 className="text-3xl mb-4" style={{ color: '#121212' }}>{fr ? 'Expérience cinématographique aérienne' : 'Aerial Cinematic Experience'}</h3>
                 <div className="mb-4">
                   <span className="text-5xl" style={{ color: '#121212' }}>$900</span>
-                  <span className="text-lg ml-2" style={{ color: '#7A6F66' }}>starting at</span>
+                  <span className="text-lg ml-2" style={{ color: '#7A6F66' }}>{fr ? 'à partir de' : 'starting at'}</span>
                 </div>
                 <p className="text-base leading-relaxed" style={{ color: '#7A6F66' }}>
-                  Premium cinematic aerial storytelling for brands, events, and tourism campaigns that need more depth and production value.
+                  {fr ? "Un récit aérien cinématographique haut de gamme pour les marques, les événements et les campagnes touristiques qui exigent plus de profondeur et de valeur de production." : 'Premium cinematic aerial storytelling for brands, events, and tourism campaigns that need more depth and production value.'}
                 </p>
               </div>
 
               <div className="space-y-3 mb-8">
                 {[
+                  ...(fr ? [
+                  'Séance de drone avancée de 2 heures',
+                  '40+ photos aériennes haut de gamme',
+                  'Bobine aérienne cinématographique de 1 à 2 min',
+                  'Conception sonore incluse',
+                  'Transitions animées créatives',
+                  'Formats prêts pour les réseaux et le web',
+                  'Étalonnage des couleurs avancé et retouches',
+                  "Repérage de lieux (au besoin)",
+                  'Opérateur licencié et assuré',
+                  'Livraison en 5 à 7 jours'
+                  ] : [
                   '2-hour advanced drone session',
                   '40+ premium-grade aerial photos',
                   '1–2 minute cinematic aerial reel',
@@ -725,6 +759,7 @@ export function PricingPage() {
                   'Location scouting (if needed)',
                   'Licensed & insured operator',
                   'Delivery within 5–7 days'
+                  ])
                 ].map((feature, idx) => (
                   <div key={idx} className="flex items-start gap-3">
                     <Check className="w-5 h-5 mt-0.5 flex-shrink-0" style={{ color: '#B1643B' }} />
@@ -749,7 +784,7 @@ export function PricingPage() {
               >
                 <Link to="/booking">
                   <span className="flex items-center justify-center gap-2">
-                    Book Premium Experience
+                    {fr ? "Réserver l'expérience premium" : 'Book Premium Experience'}
                     <ArrowRight className="w-4 h-4" />
                   </span>
                 </Link>
@@ -767,16 +802,16 @@ export function PricingPage() {
           >
             <h4 className="text-2xl mb-6 text-center flex items-center justify-center gap-2" style={{ color: '#121212' }}>
               <Plus className="w-6 h-6" style={{ color: '#A68F59' }} />
-              Optional Enhancements
+              {fr ? 'Bonifications optionnelles' : 'Optional Enhancements'}
             </h4>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {[
-                { name: 'Long-Form Aerial Reel', detail: '2–3 minutes', price: '+ $200' },
-                { name: 'Photo + Drone Combo', detail: 'Ground & aerial', price: 'from $750' },
-                { name: 'Voiceover Script + Narration', detail: 'Professional VO', price: '+ $150' },
-                { name: 'Rush Delivery', detail: '48 hours', price: '+ $100' },
-                { name: 'Permit Handling', detail: 'If required', price: 'Quoted' },
-                { name: 'Additional Location', detail: 'Per location', price: '+ $150' }
+                { name: fr ? 'Bobine aérienne longue' : 'Long-Form Aerial Reel', detail: fr ? '2 à 3 minutes' : '2–3 minutes', price: '+ $200' },
+                { name: fr ? 'Combo photo + drone' : 'Photo + Drone Combo', detail: fr ? 'Sol et aérien' : 'Ground & aerial', price: fr ? 'à partir de 750 $' : 'from $750' },
+                { name: fr ? 'Script de voix hors champ + narration' : 'Voiceover Script + Narration', detail: fr ? 'Voix hors champ pro' : 'Professional VO', price: '+ $150' },
+                { name: fr ? 'Livraison accélérée' : 'Rush Delivery', detail: fr ? '48 heures' : '48 hours', price: '+ $100' },
+                { name: fr ? 'Gestion des permis' : 'Permit Handling', detail: fr ? 'Si requis' : 'If required', price: fr ? 'Sur devis' : 'Quoted' },
+                { name: fr ? 'Lieu supplémentaire' : 'Additional Location', detail: fr ? 'Par lieu' : 'Per location', price: '+ $150' }
               ].map((enhancement, idx) => (
                 <div key={idx} className="p-4 rounded-xl border" style={{ borderColor: '#E3DCD3', backgroundColor: '#F5F1EB' }}>
                   <div className="mb-2" style={{ color: '#121212' }}>{enhancement.name}</div>
@@ -799,18 +834,18 @@ export function PricingPage() {
             className="text-center mb-12"
           >
             <h2 className="text-4xl mb-4" style={{ color: '#121212' }}>
-              Event Coverage (Photo + Video)
+              {fr ? "Couverture d'événements (photo + vidéo)" : 'Event Coverage (Photo + Video)'}
             </h2>
             <p className="text-xl" style={{ color: '#7A6F66' }}>
-              Comprehensive documentation of your special occasions
+              {fr ? 'Une documentation complète de vos occasions spéciales' : 'Comprehensive documentation of your special occasions'}
             </p>
           </motion.div>
 
           <div className="grid md:grid-cols-3 gap-8">
             {[
-              { name: 'Essence Package', price: '$750', time: '3 hours' },
-              { name: 'Signature Story', price: '$1,350', time: '6 hours' },
-              { name: 'Heritage Experience', price: '$2,550', time: '8-10 hours' }
+              { name: fr ? 'Forfait Essence' : 'Essence Package', price: '$750', time: fr ? '3 heures' : '3 hours' },
+              { name: fr ? 'Récit Signature' : 'Signature Story', price: '$1,350', time: fr ? '6 heures' : '6 hours' },
+              { name: fr ? 'Expérience Héritage' : 'Heritage Experience', price: '$2,550', time: fr ? '8 à 10 heures' : '8-10 hours' }
             ].map((pkg, index) => (
               <RevealOnScroll key={index} mode='3d' delay={index * 0.1}>
               <div
@@ -848,7 +883,7 @@ export function PricingPage() {
                     e.currentTarget.style.transform = 'translateY(0)';
                   }}
                 >
-                  <Link to="/booking">Book Event</Link>
+                  <Link to="/booking">{fr ? "Réserver l'événement" : 'Book Event'}</Link>
                 </Button>
               </div>
               </RevealOnScroll>
@@ -864,23 +899,23 @@ export function PricingPage() {
             style={{ borderColor: '#E3DCD3' }}
           >
             <h3 className="text-2xl mb-6 text-center" style={{ color: '#121212' }}>
-              Popular Event Add-Ons
+              {fr ? "Options d'événement populaires" : 'Popular Event Add-Ons'}
             </h3>
             <div className="grid md:grid-cols-2 gap-4">
               <div className="flex justify-between items-center p-4 rounded-xl" style={{ backgroundColor: '#F5F1EB' }}>
-                <span style={{ color: '#121212' }}>360 Booth Camera</span>
+                <span style={{ color: '#121212' }}>{fr ? 'Caméra cabine 360' : '360 Booth Camera'}</span>
                 <span style={{ color: '#A68F59' }}>+$650</span>
               </div>
               <div className="flex justify-between items-center p-4 rounded-xl" style={{ backgroundColor: '#F5F1EB' }}>
-                <span style={{ color: '#121212' }}>Drone Footage</span>
+                <span style={{ color: '#121212' }}>{fr ? 'Images par drone' : 'Drone Footage'}</span>
                 <span style={{ color: '#A68F59' }}>+$200</span>
               </div>
               <div className="flex justify-between items-center p-4 rounded-xl" style={{ backgroundColor: '#F5F1EB' }}>
-                <span style={{ color: '#121212' }}>Extra Hour Coverage</span>
+                <span style={{ color: '#121212' }}>{fr ? 'Heure de couverture supplémentaire' : 'Extra Hour Coverage'}</span>
                 <span style={{ color: '#A68F59' }}>+$150</span>
               </div>
               <div className="flex justify-between items-center p-4 rounded-xl" style={{ backgroundColor: '#F5F1EB' }}>
-                <span style={{ color: '#121212' }}>Same-Day Edit Video</span>
+                <span style={{ color: '#121212' }}>{fr ? 'Vidéo montée le jour même' : 'Same-Day Edit Video'}</span>
                 <span style={{ color: '#A68F59' }}>+$300</span>
               </div>
             </div>
@@ -899,18 +934,18 @@ export function PricingPage() {
           >
             <div className="h-1 w-20 mx-auto mb-6" style={{ backgroundColor: '#B1643B' }}></div>
             <h2 className="text-4xl mb-4" style={{ color: '#121212' }}>
-              Graphic Design & Branding
+              {fr ? 'Design graphique et image de marque' : 'Graphic Design & Branding'}
             </h2>
             <p className="text-xl" style={{ color: '#7A6F66' }}>
-              Complete visual identity systems for your brand
+              {fr ? "Des systèmes d'identité visuelle complets pour votre marque" : 'Complete visual identity systems for your brand'}
             </p>
           </motion.div>
 
           <div className="grid md:grid-cols-3 gap-8">
             {[
-              { name: 'Brand Essentials Kit', price: '$600', desc: 'Quick-start pack' },
-              { name: 'Visual Starter Identity', price: '$1,200', desc: 'Foundation system' },
-              { name: 'Signature Identity Suite', price: '$3,000+', desc: 'Full visual world' }
+              { name: fr ? 'Trousse Essentiels de marque' : 'Brand Essentials Kit', price: '$600', desc: fr ? 'Trousse de démarrage rapide' : 'Quick-start pack' },
+              { name: fr ? 'Identité visuelle de départ' : 'Visual Starter Identity', price: '$1,200', desc: fr ? 'Système de base' : 'Foundation system' },
+              { name: fr ? 'Suite Identité Signature' : 'Signature Identity Suite', price: '$3,000+', desc: fr ? 'Univers visuel complet' : 'Full visual world' }
             ].map((pkg, index) => (
               <RevealOnScroll key={index} mode='3d' delay={index * 0.1}>
               <div
@@ -945,7 +980,7 @@ export function PricingPage() {
                     e.currentTarget.style.transform = 'translateY(0)';
                   }}
                 >
-                  <Link to="/booking">Get Quote</Link>
+                  <Link to="/booking">{fr ? 'Obtenir un devis' : 'Get Quote'}</Link>
                 </Button>
               </div>
               </RevealOnScroll>
@@ -964,21 +999,21 @@ export function PricingPage() {
             className="text-center mb-12"
           >
             <h2 className="text-4xl mb-4" style={{ color: '#121212' }}>
-              Add-Ons & Extras
+              {fr ? 'Options et extras' : 'Add-Ons & Extras'}
             </h2>
             <p className="text-xl" style={{ color: '#7A6F66' }}>
-              Enhance any package with these optional services
+              {fr ? "Bonifiez n'importe quel forfait avec ces services optionnels" : 'Enhance any package with these optional services'}
             </p>
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
-              { name: 'Extra Hour (photo/video)', price: '$100$150', desc: 'Extend your session coverage' },
-              { name: 'Drone Footage', price: '$200', desc: 'Add aerial perspectives' },
-              { name: 'Raw (Unedited) Footage', price: '$150', desc: 'Access to all raw files' },
-              { name: 'Expedited Delivery', price: '$100', desc: '72-hour turnaround' },
-              { name: 'Custom Album', price: 'from $175', desc: 'Professional photo book' },
-              { name: 'Travel Outside City', price: 'Custom', desc: 'Quoted per distance' }
+              { name: fr ? 'Heure supplémentaire (photo/vidéo)' : 'Extra Hour (photo/video)', price: '$100$150', desc: fr ? 'Prolongez la couverture de votre séance' : 'Extend your session coverage' },
+              { name: fr ? 'Images par drone' : 'Drone Footage', price: '$200', desc: fr ? 'Ajoutez des perspectives aériennes' : 'Add aerial perspectives' },
+              { name: fr ? 'Séquences brutes (non montées)' : 'Raw (Unedited) Footage', price: '$150', desc: fr ? 'Accès à tous les fichiers bruts' : 'Access to all raw files' },
+              { name: fr ? 'Livraison accélérée' : 'Expedited Delivery', price: '$100', desc: fr ? 'Délai de 72 heures' : '72-hour turnaround' },
+              { name: fr ? 'Album personnalisé' : 'Custom Album', price: fr ? 'à partir de 175 $' : 'from $175', desc: fr ? 'Livre photo professionnel' : 'Professional photo book' },
+              { name: fr ? "Déplacement hors de la ville" : 'Travel Outside City', price: fr ? 'Sur mesure' : 'Custom', desc: fr ? 'Sur devis selon la distance' : 'Quoted per distance' }
             ].map((addon, index) => (
               <motion.div
                 key={index}
@@ -1009,7 +1044,7 @@ export function PricingPage() {
           >
             <div className="h-1 w-20 mx-auto mb-6" style={{ backgroundColor: '#A68F59' }}></div>
             <h2 className="text-4xl mb-4" style={{ color: '#121212' }}>
-              Special Offers & Discounts
+              {fr ? 'Offres spéciales et rabais' : 'Special Offers & Discounts'}
             </h2>
           </motion.div>
           
@@ -1026,13 +1061,13 @@ export function PricingPage() {
                 <Star className="w-6 h-6" style={{ color: '#A68F59' }} />
               </div>
               <h3 className="text-2xl mb-4" style={{ color: '#121212' }}>
-                Community & Student Rates
+                {fr ? 'Tarifs communauté et étudiants' : 'Community & Student Rates'}
               </h3>
               <p className="mb-4 leading-relaxed" style={{ color: '#7A6F66' }}>
-                Discounted pricing available for students, nonprofits, and grassroots organizations.
+                {fr ? "Tarifs réduits offerts aux étudiants, aux OBNL et aux organisations communautaires." : 'Discounted pricing available for students, nonprofits, and grassroots organizations.'}
               </p>
               <p className="text-sm" style={{ color: '#7A6F66' }}>
-                Proof of affiliation may be required
+                {fr ? "Une preuve d'affiliation peut être exigée" : 'Proof of affiliation may be required'}
               </p>
             </motion.div>
 
@@ -1048,21 +1083,21 @@ export function PricingPage() {
                 <Award className="w-6 h-6" style={{ color: '#B1643B' }} />
               </div>
               <h3 className="text-2xl mb-4" style={{ color: '#121212' }}>
-                Loyalty & Referral Discounts
+                {fr ? 'Rabais fidélité et recommandation' : 'Loyalty & Referral Discounts'}
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
-                  <p className="text-sm mb-1" style={{ color: '#7A6F66' }}>Photo + Video Bundle</p>
-                  <p className="text-2xl" style={{ color: '#A68F59' }}>10% OFF</p>
+                  <p className="text-sm mb-1" style={{ color: '#7A6F66' }}>{fr ? 'Forfait photo + vidéo' : 'Photo + Video Bundle'}</p>
+                  <p className="text-2xl" style={{ color: '#A68F59' }}>{fr ? '10 % DE RABAIS' : '10% OFF'}</p>
                 </div>
                 <div>
-                  <p className="text-sm mb-1" style={{ color: '#7A6F66' }}>Returning Clients</p>
-                  <p className="text-2xl" style={{ color: '#A68F59' }}>15% OFF</p>
+                  <p className="text-sm mb-1" style={{ color: '#7A6F66' }}>{fr ? 'Clients fidèles' : 'Returning Clients'}</p>
+                  <p className="text-2xl" style={{ color: '#A68F59' }}>{fr ? '15 % DE RABAIS' : '15% OFF'}</p>
                 </div>
                 <div>
-                  <p className="text-sm mb-1" style={{ color: '#7A6F66' }}>Referral Bonus</p>
+                  <p className="text-sm mb-1" style={{ color: '#7A6F66' }}>{fr ? 'Prime de recommandation' : 'Referral Bonus'}</p>
                   <p className="text-2xl" style={{ color: '#A68F59' }}>$25</p>
-                  <p className="text-xs" style={{ color: '#7A6F66' }}>credit for both</p>
+                  <p className="text-xs" style={{ color: '#7A6F66' }}>{fr ? 'crédit pour les deux' : 'credit for both'}</p>
                 </div>
               </div>
             </motion.div>
@@ -1077,7 +1112,7 @@ export function PricingPage() {
             style={{ backgroundColor: '#121212' }}
           >
             <h3 className="text-2xl mb-4" style={{ color: '#F5F1EB' }}>
-              Booking & Contact
+              {fr ? 'Réservation et contact' : 'Booking & Contact'}
             </h3>
             <div className="flex flex-wrap gap-6 justify-center items-center text-lg" style={{ color: '#E3DCD3' }}>
               <span className="flex items-center gap-2">
@@ -1087,7 +1122,7 @@ export function PricingPage() {
               <span>•</span>
               <span className="flex items-center gap-2">
                 <MapPin className="w-5 h-5" />
-                Ontario – Travel Canada-wide
+                {fr ? 'Ontario – Déplacements partout au Canada' : 'Ontario – Travel Canada-wide'}
               </span>
             </div>
           </motion.div>
@@ -1104,18 +1139,23 @@ export function PricingPage() {
             className="text-center mb-12"
           >
             <h2 className="text-4xl mb-4" style={{ color: '#121212' }}>
-              Booking Policies & Terms
+              {fr ? 'Politiques et conditions de réservation' : 'Booking Policies & Terms'}
             </h2>
             <p className="text-xl" style={{ color: '#7A6F66' }}>
-              Clear, professional terms for every project
+              {fr ? 'Des conditions claires et professionnelles pour chaque projet' : 'Clear, professional terms for every project'}
             </p>
           </motion.div>
           
           <div className="space-y-6">
             {[
               {
-                title: 'Payment Terms',
-                items: [
+                title: fr ? 'Modalités de paiement' : 'Payment Terms',
+                items: fr ? [
+                  'Acompte requis pour réserver votre date (non remboursable)',
+                  'Le paiement complet doit être effectué avant de recevoir les fichiers finaux',
+                  'Tous les principaux modes de paiement acceptés',
+                  'Ententes de service professionnelles fournies pour toutes les réservations'
+                ] : [
                   'Retainer required to secure your booking date (non-refundable)',
                   'Full payment must be completed before receiving final files',
                   'All major payment methods accepted',
@@ -1123,8 +1163,13 @@ export function PricingPage() {
                 ]
               },
               {
-                title: 'Cancellation & Rescheduling Policy',
-                items: [
+                title: fr ? "Politique d'annulation et de report" : 'Cancellation & Rescheduling Policy',
+                items: fr ? [
+                  "Préavis de 24 heures requis pour les annulations ou reports",
+                  "Des frais d'annulation de 150 $ CA s'appliquent pour toute annulation dans les 24 heures",
+                  'On fera de notre mieux pour accommoder les reports selon les disponibilités',
+                  "Les acomptes sont non remboursables, mais applicables aux séances reportées"
+                ] : [
                   '24-hour notice required for cancellations or rescheduling',
                   '$150 CAD cancellation fee applies for cancellations within 24 hours',
                   'We\'ll work to accommodate rescheduling based on availability',
@@ -1132,8 +1177,13 @@ export function PricingPage() {
                 ]
               },
               {
-                title: 'What You\'ll Receive',
-                items: [
+                title: fr ? 'Ce que vous recevrez' : 'What You\'ll Receive',
+                items: fr ? [
+                  'Images haute résolution optimisées pour le web, les médias sociaux et l’impression',
+                  'Montage et étalonnage des couleurs professionnels sur tous les livrables',
+                  'Galerie en ligne sécurisée avec accès au téléchargement',
+                  "Licence d'utilisation commerciale ou personnelle incluse"
+                ] : [
                   'High-resolution images optimized for web, social media, and print',
                   'Professional editing and color grading on all deliverables',
                   'Secure online gallery with download access',
@@ -1185,10 +1235,10 @@ export function PricingPage() {
             viewport={{ once: true }}
           >
             <h2 className="text-4xl md:text-5xl mb-6" style={{ color: '#F5F1EB' }}>
-              Ready to Get Started?
+              {fr ? 'Prêt à commencer ?' : 'Ready to Get Started?'}
             </h2>
             <p className="text-xl mb-10" style={{ color: '#E3DCD3' }}>
-              Book your session or request a custom quote tailored to your needs
+              {fr ? 'Réservez votre séance ou demandez un devis personnalisé adapté à vos besoins' : 'Book your session or request a custom quote tailored to your needs'}
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
               <Button 
@@ -1207,7 +1257,7 @@ export function PricingPage() {
                   e.currentTarget.style.transform = 'translateY(0)';
                 }}
               >
-                <Link to="/booking">Book Your Session</Link>
+                <Link to="/booking">{fr ? 'Réserver votre séance' : 'Book Your Session'}</Link>
               </Button>
               <Button 
                 asChild
@@ -1230,7 +1280,7 @@ export function PricingPage() {
                   e.currentTarget.style.transform = 'translateY(0)';
                 }}
               >
-                <Link to="/services">View All Services</Link>
+                <Link to="/services">{fr ? 'Voir tous les services' : 'View All Services'}</Link>
               </Button>
             </div>
           </motion.div>
