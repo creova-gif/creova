@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { PageSEO } from '../components/PageSEO';
 import { ExternalLink, ArrowRight, ArrowDown, Lock, Search, X } from 'lucide-react';
 import { Link } from '../i18n/LocaleLink';
+import { useLanguage } from '../context/LanguageContext';
 import { RevealOnScroll } from '../components/RevealOnScroll';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
@@ -32,6 +33,8 @@ function ProjectCard({
   index: number;
   large?: boolean;
 }) {
+  // Portfolio page → tu register (see mixed-register decision).
+  const fr = useLanguage().language === 'fr';
   return (
     <RevealOnScroll mode="3d" delay={index * 0.06}>
       <motion.a
@@ -71,7 +74,9 @@ function ProjectCard({
               border: `1px solid ${project.accent}44`,
             }}
           >
-            {project.category === 'brand' ? 'Brand' : project.category === 'conference' ? 'Conference' : project.category === 'sports' ? 'Sports' : 'Event'}
+            {fr
+              ? (project.category === 'brand' ? 'Marque' : project.category === 'conference' ? 'Conférence' : project.category === 'sports' ? 'Sport' : 'Événement')
+              : (project.category === 'brand' ? 'Brand' : project.category === 'conference' ? 'Conference' : project.category === 'sports' ? 'Sports' : 'Event')}
           </span>
           {project.locked && (
             <span
@@ -84,7 +89,7 @@ function ProjectCard({
               title="This gallery is password-protected on Pixieset"
             >
               <Lock className="w-2.5 h-2.5" />
-              Private
+              {fr ? 'Privé' : 'Private'}
             </span>
           )}
         </div>
@@ -93,7 +98,7 @@ function ProjectCard({
         <div className="absolute top-4 right-4 text-right">
           {typeof project.itemCount === 'number' && project.itemCount > 0 && (
             <div className="text-[10px] tracking-[0.25em]" style={{ color: 'rgba(245,241,235,0.55)' }}>
-              {project.itemCount} photos
+              {project.itemCount} {fr ? 'photos' : 'photos'}
             </div>
           )}
           <div className="text-[9px] tracking-[0.3em]" style={{ color: 'rgba(245,241,235,0.35)' }}>
@@ -121,7 +126,7 @@ function ProjectCard({
 
           <div className="flex items-center gap-2 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-400">
             <span className="text-[10px] tracking-[0.25em] uppercase" style={{ color: project.accent }}>
-              {project.locked ? 'Enter Password' : 'View Gallery'}
+              {fr ? (project.locked ? 'Entrer le mot de passe' : 'Voir la galerie') : (project.locked ? 'Enter Password' : 'View Gallery')}
             </span>
             <ExternalLink className="w-3 h-3" style={{ color: project.accent }} />
           </div>
@@ -132,6 +137,7 @@ function ProjectCard({
 }
 
 function ScrollIndicator() {
+  const fr = useLanguage().language === 'fr';
   const [visible, setVisible] = useState(true);
   useEffect(() => {
     const handler = () => setVisible(window.scrollY < 60);
@@ -145,7 +151,7 @@ function ScrollIndicator() {
       transition={{ duration: 0.3 }}
       className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none"
     >
-      <span className="text-[9px] tracking-[0.5em] uppercase" style={{ color: 'rgba(245,241,235,0.35)' }}>Scroll</span>
+      <span className="text-[9px] tracking-[0.5em] uppercase" style={{ color: 'rgba(245,241,235,0.35)' }}>{fr ? 'Défiler' : 'Scroll'}</span>
       <motion.div
         animate={{ y: [0, 6, 0] }}
         transition={{ repeat: Infinity, duration: 1.5, ease: 'easeInOut' }}
@@ -157,6 +163,7 @@ function ScrollIndicator() {
 }
 
 export function WorkPage() {
+  const fr = useLanguage().language === 'fr';
   const [activeTab, setActiveTab] = useState<Category>('all');
   const [query, setQuery] = useState('');
   const marqueeRef = useRef<HTMLDivElement>(null);
@@ -185,11 +192,11 @@ export function WorkPage() {
   }, [sorted, activeTab, query]);
 
   const TABS: { id: Category; label: string; count: number }[] = [
-    { id: 'all', label: 'All Work', count: sorted.length },
-    { id: 'events', label: 'Events', count: sorted.filter(p => p.category === 'events').length },
-    { id: 'sports', label: 'Sports', count: sorted.filter(p => p.category === 'sports').length },
-    { id: 'conference', label: 'Conference & Panels', count: sorted.filter(p => p.category === 'conference').length },
-    { id: 'brand', label: 'Brand & Portraits', count: sorted.filter(p => p.category === 'brand').length },
+    { id: 'all', label: fr ? 'Tout' : 'All Work', count: sorted.length },
+    { id: 'events', label: fr ? 'Événements' : 'Events', count: sorted.filter(p => p.category === 'events').length },
+    { id: 'sports', label: fr ? 'Sport' : 'Sports', count: sorted.filter(p => p.category === 'sports').length },
+    { id: 'conference', label: fr ? 'Conférences et panels' : 'Conference & Panels', count: sorted.filter(p => p.category === 'conference').length },
+    { id: 'brand', label: fr ? 'Marque et portraits' : 'Brand & Portraits', count: sorted.filter(p => p.category === 'brand').length },
   ];
 
   const structuredData = useMemo(
@@ -214,7 +221,7 @@ export function WorkPage() {
         />
         {!loading && (
           <p className="text-center" style={{ color: 'rgba(245,241,235,0.4)' }}>
-            Our portfolio is being updated — check back shortly.
+            {fr ? 'Notre portfolio est en cours de mise à jour — reviens bientôt.' : 'Our portfolio is being updated — check back shortly.'}
           </p>
         )}
       </div>
@@ -269,7 +276,7 @@ export function WorkPage() {
             className="flex items-center gap-3"
           >
             <div style={{ height: '1px', width: '32px', backgroundColor: '#A68F59' }} />
-            <span className="text-[10px] tracking-[0.55em] uppercase" style={{ color: '#A68F59' }}>Selected Work</span>
+            <span className="text-[10px] tracking-[0.55em] uppercase" style={{ color: '#A68F59' }}>{fr ? 'Travaux choisis' : 'Selected Work'}</span>
           </motion.div>
 
           <motion.div
@@ -279,7 +286,7 @@ export function WorkPage() {
             className="hidden sm:flex items-center gap-2"
           >
             <span className="text-[10px] tracking-[0.4em] uppercase" style={{ color: 'rgba(245,241,235,0.3)' }}>
-              {sorted.length} Galleries · Since 2019
+              {sorted.length} {fr ? 'galeries · Depuis 2019' : 'Galleries · Since 2019'}
             </span>
           </motion.div>
         </div>
@@ -327,7 +334,7 @@ export function WorkPage() {
                   {/* MASSIVE "Creative" — takes up the width */}
                   <h1 className="leading-none">
                     <span className="block font-light tracking-tighter" style={{ fontSize: 'clamp(72px, 15vw, 200px)', color: '#F5F1EB' }}>
-                      Creative
+                      {fr ? 'Créatif' : 'Creative'}
                     </span>
                     {/* Small italic "/ Portfolio." — scale contrast is the technique */}
                     <span className="flex items-end justify-between mt-1">
@@ -344,7 +351,7 @@ export function WorkPage() {
                           color: 'transparent',
                         }}
                       >
-                        / Portfolio.
+                        {fr ? '/ Portfolio.' : '/ Portfolio.'}
                       </motion.span>
                       <motion.span
                         initial={{ opacity: 0 }}
@@ -353,7 +360,7 @@ export function WorkPage() {
                         className="text-[9px] tracking-[0.5em] uppercase hidden sm:block"
                         style={{ color: 'rgba(245,241,235,0.2)' }}
                       >
-                        {sorted.length} galleries · Since 2019
+                        {sorted.length} {fr ? 'galeries · Depuis 2019' : 'galleries · Since 2019'}
                       </motion.span>
                     </span>
                   </h1>
@@ -366,7 +373,7 @@ export function WorkPage() {
                   className="mt-5 text-base leading-relaxed max-w-md"
                   style={{ color: 'rgba(245,241,235,0.5)' }}
                 >
-                  Photography and brand content for BIPOC-led organizations, cultural events, and community institutions across Niagara and Ontario.
+                  {fr ? "Photographie et contenu de marque pour les organisations dirigées par des personnes BIPOC, les événements culturels et les institutions communautaires de Niagara et de l'Ontario." : 'Photography and brand content for BIPOC-led organizations, cultural events, and community institutions across Niagara and Ontario.'}
                 </motion.p>
               </div>
 
@@ -378,9 +385,9 @@ export function WorkPage() {
                 className="flex gap-10 lg:gap-12 flex-shrink-0"
               >
                 {[
-                  { n: String(sorted.length), l: 'Galleries' },
-                  { n: '100+', l: 'Events Shot' },
-                  { n: '2024', l: 'Since' },
+                  { n: String(sorted.length), l: fr ? 'Galeries' : 'Galleries' },
+                  { n: '100+', l: fr ? 'Événements couverts' : 'Events Shot' },
+                  { n: '2024', l: fr ? 'Depuis' : 'Since' },
                 ].map((s) => (
                   <div key={s.l}>
                     <div className="text-3xl font-light tracking-tight" style={{ color: '#A68F59' }}>{s.n}</div>
@@ -402,7 +409,7 @@ export function WorkPage() {
         aria-hidden="true"
       >
         <div ref={marqueeRef} className="flex whitespace-nowrap">
-          {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map((item, i) => (
+          {[...(fr ? ['CREOVA', 'PHOTOGRAPHIE', 'ÉVÉNEMENTS', 'SPORT', 'MARQUE', 'CONFÉRENCES', 'NIAGARA', '2024', 'CULTUREL', 'COMMUNAUTÉ'] : MARQUEE_ITEMS)].flatMap(x => [x, x, x]).map((item, i) => (
             <span
               key={i}
               className="inline-flex items-center gap-4 text-[9px] tracking-[0.5em] uppercase flex-shrink-0"
@@ -459,8 +466,8 @@ export function WorkPage() {
                 type="search"
                 value={query}
                 onChange={e => setQuery(e.target.value)}
-                placeholder="Search galleries..."
-                aria-label="Search galleries"
+                placeholder={fr ? 'Rechercher des galeries...' : 'Search galleries...'}
+                aria-label={fr ? 'Rechercher des galeries' : 'Search galleries'}
                 className="pl-10 pr-9 py-2 text-xs rounded-full border"
                 style={{
                   backgroundColor: 'rgba(245,241,235,0.04)',
@@ -473,7 +480,7 @@ export function WorkPage() {
                   type="button"
                   onClick={() => setQuery('')}
                   className="absolute right-3 top-1/2 -translate-y-1/2"
-                  aria-label="Clear search"
+                  aria-label={fr ? 'Effacer la recherche' : 'Clear search'}
                 >
                   <X className="w-3.5 h-3.5" style={{ color: 'rgba(245,241,235,0.4)' }} />
                 </button>
@@ -489,14 +496,14 @@ export function WorkPage() {
           {filtered.length === 0 ? (
             <div className="text-center py-24">
               <p className="text-sm mb-3" style={{ color: 'rgba(245,241,235,0.5)' }}>
-                No galleries match your search.
+                {fr ? 'Aucune galerie ne correspond à ta recherche.' : 'No galleries match your search.'}
               </p>
               <button
                 onClick={() => { setQuery(''); setActiveTab('all'); }}
                 className="text-xs tracking-widest uppercase"
                 style={{ color: '#A68F59' }}
               >
-                Reset filters
+                {fr ? 'Réinitialiser les filtres' : 'Reset filters'}
               </button>
             </div>
           ) : (
@@ -540,14 +547,14 @@ export function WorkPage() {
             <div>
               <div className="flex items-center justify-center gap-4 mb-6">
                 <div style={{ height: '1px', width: '32px', backgroundColor: 'rgba(166,143,89,0.4)' }} />
-                <span className="text-[9px] tracking-[0.55em] uppercase" style={{ color: '#A68F59' }}>Full Portfolio</span>
+                <span className="text-[9px] tracking-[0.55em] uppercase" style={{ color: '#A68F59' }}>{fr ? 'Portfolio complet' : 'Full Portfolio'}</span>
                 <div style={{ height: '1px', width: '32px', backgroundColor: 'rgba(166,143,89,0.4)' }} />
               </div>
               <h3 className="text-3xl md:text-4xl font-light tracking-tight mb-4" style={{ color: '#F5F1EB' }}>
-                Every photo, full resolution
+                {fr ? 'Chaque photo, pleine résolution' : 'Every photo, full resolution'}
               </h3>
               <p className="text-base mb-10 leading-relaxed" style={{ color: 'rgba(245,241,235,0.4)' }}>
-                All galleries live on Pixieset with full-resolution downloads available.
+                {fr ? 'Toutes les galeries sont hébergées sur Pixieset avec téléchargements en pleine résolution.' : 'All galleries live on Pixieset with full-resolution downloads available.'}
               </p>
               <div className="flex flex-wrap gap-4 justify-center">
                 <a
@@ -559,7 +566,7 @@ export function WorkPage() {
                   onMouseEnter={e => { (e.currentTarget as HTMLElement).style.backgroundColor = '#F5F1EB'; }}
                   onMouseLeave={e => { (e.currentTarget as HTMLElement).style.backgroundColor = '#A68F59'; }}
                 >
-                  View Full Portfolio
+                  {fr ? 'Voir le portfolio complet' : 'View Full Portfolio'}
                   <ExternalLink className="w-4 h-4" />
                 </a>
                 <Button
@@ -569,7 +576,7 @@ export function WorkPage() {
                   style={{ backgroundColor: 'transparent', borderColor: 'rgba(166,143,89,0.35)', color: '#A68F59' }}
                 >
                   <Link to="/booking">
-                    Book a Shoot
+                    {fr ? 'Réserve une séance' : 'Book a Shoot'}
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Link>
                 </Button>
