@@ -4,9 +4,11 @@ import { CheckCircle2, ArrowRight } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { motion } from 'motion/react';
 import { PageSEO } from '../components/PageSEO';
+import { useLanguage } from '../context/LanguageContext';
 
 export function PaymentSuccessPage() {
   const navigate = useNavigate();
+  const fr = useLanguage().language === 'fr';
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -38,18 +40,18 @@ export function PaymentSuccessPage() {
           transition={{ delay: 0.2, duration: 0.6 }}
         >
           <h1 className="text-4xl mb-4" style={{ color: '#121212' }}>
-            Payment Successful!
+            {fr ? 'Paiement réussi !' : 'Payment Successful!'}
           </h1>
           <p className="text-xl mb-8" style={{ color: '#4A3E36' }}>
-            Thank you for your order. We'll send you a confirmation email shortly.
+            {fr ? "Merci pour votre commande. Nous vous enverrons un courriel de confirmation sous peu." : "Thank you for your order. We'll send you a confirmation email shortly."}
           </p>
 
           <div className="space-y-4 mb-12" style={{ color: '#7A6F66' }}>
             <p>
-              Your order is being processed and you'll receive an update within 24 hours.
+              {fr ? "Votre commande est en cours de traitement et vous recevrez une mise à jour dans les 24 heures." : "Your order is being processed and you'll receive an update within 24 hours."}
             </p>
             <p className="text-sm">
-              If you have any questions, feel free to contact us at{' '}
+              {fr ? 'Pour toute question, écrivez-nous à ' : 'If you have any questions, feel free to contact us at '}{' '}
               <a
                 href="mailto:support@creova.ca"
                 className="underline"
@@ -67,7 +69,7 @@ export function PaymentSuccessPage() {
               variant="outline"
               className="px-8"
             >
-              Back to Home
+              {fr ? "Retour à l'accueil" : 'Back to Home'}
             </Button>
             <Button
               onClick={() => navigate('/shop')}
@@ -75,7 +77,7 @@ export function PaymentSuccessPage() {
               className="px-8"
               style={{ backgroundColor: '#121212', color: '#F5F1EB' }}
             >
-              Continue Shopping
+              {fr ? 'Continuer vos achats' : 'Continue Shopping'}
               <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
           </div>

@@ -6,9 +6,11 @@ import { CheckCircle2, Package, Mail, ArrowRight, Download } from 'lucide-react'
 import { Button } from '../components/ui/button';
 import { Link } from 'react-router';
 import { PageSEO } from '../components/PageSEO';
+import { useLanguage } from '../context/LanguageContext';
 
 export function OrderConfirmationPage() {
   const navigate = useNavigate();
+  const fr = useLanguage().language === 'fr';
   const [searchParams] = useSearchParams();
   const [orderDetails, setOrderDetails] = useState<any>(null);
   const paymentIntentId = searchParams.get('payment_intent');
@@ -64,7 +66,7 @@ export function OrderConfirmationPage() {
               className="text-4xl md:text-5xl mb-4"
               style={{ color: '#121212' }}
             >
-              Order Confirmed!
+              {fr ? 'Commande confirmée !' : 'Order Confirmed!'}
             </motion.h1>
 
             <motion.p
@@ -74,7 +76,7 @@ export function OrderConfirmationPage() {
               className="text-xl mb-8"
               style={{ color: '#7A6F66' }}
             >
-              Thank you for your purchase. Your order has been successfully processed.
+              {fr ? 'Merci pour votre achat. Votre commande a été traitée avec succès.' : 'Thank you for your purchase. Your order has been successfully processed.'}
             </motion.p>
 
             {/* Order Number */}
@@ -84,7 +86,7 @@ export function OrderConfirmationPage() {
               transition={{ delay: 0.5 }}
               className="bg-white rounded-2xl p-8 mb-8"
             >
-              <p className="text-sm mb-2" style={{ color: '#7A6F66' }}>Order Number</p>
+              <p className="text-sm mb-2" style={{ color: '#7A6F66' }}>{fr ? 'Numéro de commande' : 'Order Number'}</p>
               <p className="text-3xl mb-6" style={{ color: '#121212' }}>
                 #{orderDetails.orderId}
               </p>
@@ -96,9 +98,9 @@ export function OrderConfirmationPage() {
                     <Mail className="w-5 h-5" style={{ color: '#A68F59' }} />
                   </div>
                   <div>
-                    <h3 className="mb-1" style={{ color: '#121212' }}>Email Sent</h3>
+                    <h3 className="mb-1" style={{ color: '#121212' }}>{fr ? 'Courriel envoyé' : 'Email Sent'}</h3>
                     <p className="text-sm" style={{ color: '#7A6F66' }}>
-                      Order confirmation sent to your email
+                      {fr ? 'Confirmation de commande envoyée à votre courriel' : 'Order confirmation sent to your email'}
                     </p>
                   </div>
                 </div>
@@ -109,9 +111,9 @@ export function OrderConfirmationPage() {
                     <Package className="w-5 h-5" style={{ color: '#A68F59' }} />
                   </div>
                   <div>
-                    <h3 className="mb-1" style={{ color: '#121212' }}>Processing</h3>
+                    <h3 className="mb-1" style={{ color: '#121212' }}>{fr ? 'Traitement' : 'Processing'}</h3>
                     <p className="text-sm" style={{ color: '#7A6F66' }}>
-                      Your order is being prepared
+                      {fr ? 'Votre commande est en préparation' : 'Your order is being prepared'}
                     </p>
                   </div>
                 </div>
@@ -122,9 +124,9 @@ export function OrderConfirmationPage() {
                     <Download className="w-5 h-5" style={{ color: '#A68F59' }} />
                   </div>
                   <div>
-                    <h3 className="mb-1" style={{ color: '#121212' }}>Receipt</h3>
+                    <h3 className="mb-1" style={{ color: '#121212' }}>{fr ? 'Reçu' : 'Receipt'}</h3>
                     <p className="text-sm" style={{ color: '#7A6F66' }}>
-                      Available in your email
+                      {fr ? 'Disponible dans votre courriel' : 'Available in your email'}
                     </p>
                   </div>
                 </div>
@@ -139,7 +141,7 @@ export function OrderConfirmationPage() {
               className="bg-white rounded-2xl p-8 mb-8 text-left"
             >
               <h2 className="text-2xl mb-6" style={{ color: '#121212' }}>
-                What's Next?
+                {fr ? 'Et ensuite ?' : "What's Next?"}
               </h2>
               <div className="space-y-4">
                 <div className="flex items-start gap-3">
@@ -148,9 +150,9 @@ export function OrderConfirmationPage() {
                     <span className="text-xs" style={{ color: '#F5F1EB' }}>1</span>
                   </div>
                   <div>
-                    <h3 className="mb-1" style={{ color: '#121212' }}>Order Processing</h3>
+                    <h3 className="mb-1" style={{ color: '#121212' }}>{fr ? 'Traitement de la commande' : 'Order Processing'}</h3>
                     <p className="text-sm" style={{ color: '#7A6F66' }}>
-                      We're preparing your items for shipment. This typically takes 1-2 business days.
+                      {fr ? 'Nous préparons vos articles pour expédition. Cela prend généralement 1 à 2 jours ouvrables.' : "We're preparing your items for shipment. This typically takes 1-2 business days."}
                     </p>
                   </div>
                 </div>
@@ -161,9 +163,9 @@ export function OrderConfirmationPage() {
                     <span className="text-xs" style={{ color: '#F5F1EB' }}>2</span>
                   </div>
                   <div>
-                    <h3 className="mb-1" style={{ color: '#121212' }}>Shipping Notification</h3>
+                    <h3 className="mb-1" style={{ color: '#121212' }}>{fr ? "Avis d'expédition" : 'Shipping Notification'}</h3>
                     <p className="text-sm" style={{ color: '#7A6F66' }}>
-                      You'll receive an email with tracking information once your order ships.
+                      {fr ? "Vous recevrez un courriel avec les informations de suivi dès que votre commande sera expédiée." : "You'll receive an email with tracking information once your order ships."}
                     </p>
                   </div>
                 </div>
@@ -174,9 +176,9 @@ export function OrderConfirmationPage() {
                     <span className="text-xs" style={{ color: '#F5F1EB' }}>3</span>
                   </div>
                   <div>
-                    <h3 className="mb-1" style={{ color: '#121212' }}>Delivery</h3>
+                    <h3 className="mb-1" style={{ color: '#121212' }}>{fr ? 'Livraison' : 'Delivery'}</h3>
                     <p className="text-sm" style={{ color: '#7A6F66' }}>
-                      Estimated delivery: 5-7 business days for standard shipping.
+                      {fr ? 'Livraison estimée : 5 à 7 jours ouvrables pour la livraison standard.' : 'Estimated delivery: 5-7 business days for standard shipping.'}
                     </p>
                   </div>
                 </div>
@@ -206,7 +208,7 @@ export function OrderConfirmationPage() {
               >
                 <Link to="/shop">
                   <span className="flex items-center gap-2">
-                    Continue Shopping
+                    {fr ? 'Continuer vos achats' : 'Continue Shopping'}
                     <ArrowRight className="w-5 h-5" />
                   </span>
                 </Link>
@@ -227,7 +229,7 @@ export function OrderConfirmationPage() {
                   e.currentTarget.style.color = '#121212';
                 }}
               >
-                <Link to="/">Go to Homepage</Link>
+                <Link to="/">{fr ? "Aller à l'accueil" : 'Go to Homepage'}</Link>
               </Button>
             </motion.div>
 
@@ -240,9 +242,9 @@ export function OrderConfirmationPage() {
               style={{ borderColor: '#E3DCD3' }}
             >
               <p className="text-sm" style={{ color: '#7A6F66' }}>
-                Questions about your order?{' '}
+                {fr ? 'Des questions sur votre commande ?' : 'Questions about your order?'}{' '}
                 <Link to="/contact" className="underline" style={{ color: '#A68F59' }}>
-                  Contact our support team
+                  {fr ? 'Contactez notre équipe de soutien' : 'Contact our support team'}
                 </Link>
               </p>
             </motion.div>

@@ -2,10 +2,13 @@ import { Link } from '../i18n/LocaleLink';
 import { motion } from 'motion/react';
 import { Home, Mail, ArrowRight } from 'lucide-react';
 import { PageSEO } from '../components/PageSEO';
+import { useLanguage } from '../context/LanguageContext';
 
 const warmGradient = 'linear-gradient(135deg, #A68F59 0%, #B1643B 100%)';
 
 export function NotFoundPage() {
+  // Transactional/utility page → vous register.
+  const fr = useLanguage().language === 'fr';
   return (
     <div className="min-h-screen flex items-center justify-center px-6 py-24 overflow-hidden" style={{ backgroundColor: '#0A0A0A' }}>
       <PageSEO
@@ -28,7 +31,7 @@ export function NotFoundPage() {
           className="flex items-center gap-3 mb-8"
         >
           <div style={{ height: '1px', width: '32px', background: warmGradient }} />
-          <span className="text-[10px] tracking-[0.5em] uppercase" style={{ color: '#A68F59' }}>CREOVA · Error</span>
+          <span className="text-[10px] tracking-[0.5em] uppercase" style={{ color: '#A68F59' }}>{fr ? 'CREOVA · Erreur' : 'CREOVA · Error'}</span>
         </motion.div>
 
         {/* Giant "404" scale contrast */}
@@ -57,7 +60,7 @@ export function NotFoundPage() {
             color: 'transparent',
           }}
         >
-          / This page doesn't exist.
+          {fr ? "/ Cette page n'existe pas." : "/ This page doesn't exist."}
         </motion.p>
 
         <motion.p
@@ -67,7 +70,7 @@ export function NotFoundPage() {
           className="text-sm font-light leading-relaxed mb-10 max-w-xs"
           style={{ color: 'rgba(245,241,235,0.35)' }}
         >
-          The page you're looking for has moved or never existed. Let's get you somewhere real.
+          {fr ? "La page que vous cherchez a été déplacée ou n'a jamais existé. Ramenons-vous en terrain connu." : "The page you're looking for has moved or never existed. Let's get you somewhere real."}
         </motion.p>
 
         {/* CTAs */}
@@ -83,7 +86,7 @@ export function NotFoundPage() {
             style={{ background: warmGradient, color: '#F5F1EB' }}
           >
             <Home size={14} />
-            Go Home
+            {fr ? "Accueil" : 'Go Home'}
           </Link>
           <Link
             to="/contact"
@@ -91,7 +94,7 @@ export function NotFoundPage() {
             style={{ border: '1px solid rgba(166,143,89,0.3)', color: '#A68F59' }}
           >
             <Mail size={14} />
-            Contact Us
+            {fr ? 'Nous joindre' : 'Contact Us'}
             <ArrowRight size={14} />
           </Link>
         </motion.div>
