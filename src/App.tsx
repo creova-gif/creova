@@ -108,10 +108,19 @@ function AnimatedRoutes() {
               <Route key={from} path={from} element={<Navigate to={to} replace />} />
             ))}
 
-            {/* Transactional + admin: English only, all noindex. */}
+            {/*
+              Transactional: noindex, so intentionally NOT in LOCALIZED_ROUTES
+              (kept out of the prerender/hreflang set). But they still need a
+              /fr/* route so a French shopper — whose locale-aware navigate()
+              sends them to /fr/checkout — stays in French through the flow
+              instead of hitting the 404 catch-all.
+            */}
             <Route path="/checkout" element={<CheckoutPage />} />
+            <Route path="/fr/checkout" element={<CheckoutPage />} />
             <Route path="/order-confirmation" element={<OrderConfirmationPage />} />
+            <Route path="/fr/order-confirmation" element={<OrderConfirmationPage />} />
             <Route path="/payment-success" element={<PaymentSuccessPage />} />
+            <Route path="/fr/payment-success" element={<PaymentSuccessPage />} />
             <Route path="/admin/submissions" element={<AdminAuth><AdminSubmissionsPage /></AdminAuth>} />
             <Route path="/analytics/dashboard" element={<AdminAuth><AnalyticsDashboardPage /></AdminAuth>} />
             <Route path="/admin/refunds" element={<AdminAuth><RefundManagementPage /></AdminAuth>} />

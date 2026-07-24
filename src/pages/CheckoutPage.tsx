@@ -16,6 +16,7 @@ import { CreditCard, Lock, CheckCircle2, ArrowLeft, Loader2 } from 'lucide-react
 import { toast } from 'sonner';
 import { projectId, publicAnonKey } from '../utils/supabase/info';
 import { PageSEO } from '../components/PageSEO';
+import { useLanguage } from '../context/LanguageContext';
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY ?? '');
 
@@ -35,6 +36,8 @@ function CheckoutForm({ customerInfo }: CheckoutFormProps) {
   const stripe = useStripe();
   const elements = useElements();
   const navigate = useNavigate();
+  // Commercial page → vous register.
+  const fr = useLanguage().language === 'fr';
   const { clearCart } = useCart();
   const [isProcessing, setIsProcessing] = useState(false);
   const [message, setMessage] = useState('');
@@ -71,13 +74,13 @@ function CheckoutForm({ customerInfo }: CheckoutFormProps) {
     });
 
     if (error) {
-      setMessage(error.message || 'An error occurred');
+      setMessage(error.message || (fr ? "Une erreur s'est produite" : 'An error occurred'));
       setIsProcessing(false);
-      toast.error('Payment failed', {
+      toast.error(fr ? 'Échec du paiement' : 'Payment failed', {
         description: error.message
       });
     } else if (paymentIntent && paymentIntent.status === 'succeeded') {
-      toast.success('Payment successful!');
+      toast.success(fr ? 'Paiement réussi !' : 'Payment successful!');
       clearCart();
       navigate('/order-confirmation?payment_intent=' + paymentIntent.id);
     }
@@ -94,8 +97,8 @@ function CheckoutForm({ customerInfo }: CheckoutFormProps) {
             <CreditCard className="w-5 h-5" style={{ color: '#A68F59' }} />
           </div>
           <div>
-            <h3 className="text-lg" style={{ color: '#121212' }}>Payment Information</h3>
-            <p className="text-sm" style={{ color: '#7A6F66' }}>Secure payment powered by Stripe</p>
+            <h3 className="text-lg" style={{ color: '#121212' }}>{fr ? 'Informations de paiement' : 'Payment Information'}</h3>
+            <p className="text-sm" style={{ color: '#7A6F66' }}>{fr ? 'Paiement sécurisé propulsé par Stripe' : 'Secure payment powered by Stripe'}</p>
           </div>
         </div>
 
@@ -134,19 +137,19 @@ function CheckoutForm({ customerInfo }: CheckoutFormProps) {
         {isProcessing ? (
           <span className="flex items-center justify-center gap-2">
             <Loader2 className="w-5 h-5 animate-spin" />
-            Processing Payment...
+            {fr ? 'Traitement du paiement...' : 'Processing Payment...'}
           </span>
         ) : (
           <span className="flex items-center justify-center gap-2">
             <Lock className="w-5 h-5" />
-            Complete Secure Payment
+            {fr ? 'Compléter le paiement sécurisé' : 'Complete Secure Payment'}
           </span>
         )}
       </Button>
 
       <div className="flex items-center justify-center gap-2 text-sm" style={{ color: '#7A6F66' }}>
         <Lock className="w-4 h-4" />
-        <span>Secured by Stripe • SSL Encrypted</span>
+        <span>{fr ? 'Sécurisé par Stripe • Chiffrement SSL' : 'Secured by Stripe • SSL Encrypted'}</span>
       </div>
     </form>
   );
@@ -154,6 +157,7 @@ function CheckoutForm({ customerInfo }: CheckoutFormProps) {
 
 export function CheckoutPage() {
   const navigate = useNavigate();
+  const fr = useLanguage().language === 'fr';
   const { items, totalPrice } = useCart();
   const [clientSecret, setClientSecret] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -181,7 +185,7 @@ export function CheckoutPage() {
     // Validate customer info
     if (!customerInfo.name || !customerInfo.email || !customerInfo.address || 
         !customerInfo.city || !customerInfo.postalCode) {
-      toast.error('Please fill in all required fields');
+      toast.error(fr ? 'Veuillez remplir tous les champs obligatoires' : 'Please fill in all required fields');
       return;
     }
 
@@ -218,8 +222,8 @@ export function CheckoutPage() {
         throw new Error('Failed to create payment intent');
       }
     } catch (error) {
-      toast.error('Failed to initialize payment', {
-        description: 'Please try again or contact support'
+      toast.error(fr ? "Échec de l'initialisation du paiement" : 'Failed to initialize payment', {
+        description: fr ? 'Veuillez réessayer ou joindre le soutien' : 'Please try again or contact support'
       });
     } finally {
       setIsLoading(false);
@@ -245,12 +249,12 @@ export function CheckoutPage() {
           </div>
           <div className="flex items-center gap-4 mb-4">
             <div style={{ height: '1px', width: '40px', backgroundColor: 'rgba(166,143,89,0.4)' }} />
-            <p className="text-xs tracking-[0.45em] uppercase" style={{ color: '#A68F59' }}>Checkout</p>
+            <p className="text-xs tracking-[0.45em] uppercase" style={{ color: '#A68F59' }}>{fr ? 'Paiement' : 'Checkout'}</p>
             <div style={{ height: '1px', width: '40px', backgroundColor: 'rgba(166,143,89,0.4)' }} />
           </div>
-          <h1 className="text-3xl md:text-4xl font-light mb-4" style={{ color: '#F5F1EB' }}>Your cart is empty</h1>
+          <h1 className="text-3xl md:text-4xl font-light mb-4" style={{ color: '#F5F1EB' }}>{fr ? 'Votre panier est vide' : 'Your cart is empty'}</h1>
           <p className="text-base mb-10 max-w-sm" style={{ color: '#7A6F66' }}>
-            Browse the SEEN collection or our digital resources to find something worth owning.
+            {fr ? 'Parcourez la collection SEEN ou nos ressources numériques pour trouver quelque chose qui en vaut la peine.' : 'Browse the SEEN collection or our digital resources to find something worth owning.'}
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
             <button
@@ -258,14 +262,14 @@ export function CheckoutPage() {
               className="px-8 py-3 rounded-lg text-sm font-medium text-white transition-opacity hover:opacity-90"
               style={{ background: 'linear-gradient(135deg, #A68F59 0%, #B1643B 100%)' }}
             >
-              Browse the SEEN Shop
+              {fr ? 'Parcourir la boutique SEEN' : 'Browse the SEEN Shop'}
             </button>
             <button
               onClick={() => navigate('/shop/digital')}
               className="px-8 py-3 rounded-lg text-sm font-medium border transition-colors"
               style={{ borderColor: 'rgba(166,143,89,0.35)', color: '#C8C0B8', backgroundColor: 'transparent' }}
             >
-              Digital Resources
+              {fr ? 'Ressources numériques' : 'Digital Resources'}
             </button>
           </div>
         </div>
@@ -295,11 +299,11 @@ export function CheckoutPage() {
               style={{ color: '#7A6F66' }}
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Shop
+              {fr ? 'Retour à la boutique' : 'Back to Shop'}
             </Button>
-            <h1 className="text-3xl md:text-4xl" style={{ color: '#121212' }}>Secure Checkout</h1>
+            <h1 className="text-3xl md:text-4xl" style={{ color: '#121212' }}>{fr ? 'Paiement sécurisé' : 'Secure Checkout'}</h1>
             <p className="text-lg mt-2" style={{ color: '#7A6F66' }}>
-              Complete your purchase with secure payment
+              {fr ? 'Complétez votre achat avec un paiement sécurisé' : 'Complete your purchase with secure payment'}
             </p>
           </motion.div>
         </div>
@@ -320,12 +324,12 @@ export function CheckoutPage() {
                   {/* Customer Information */}
                   <div className="bg-white rounded-2xl p-8">
                     <h2 className="text-2xl mb-6" style={{ color: '#121212' }}>
-                      Contact Information
+                      {fr ? 'Coordonnées' : 'Contact Information'}
                     </h2>
-                    
+
                     <div className="space-y-4">
                       <div>
-                        <Label htmlFor="name">Full Name *</Label>
+                        <Label htmlFor="name">{fr ? 'Nom complet *' : 'Full Name *'}</Label>
                         <Input
                           id="name"
                           autoComplete="name"
@@ -338,7 +342,7 @@ export function CheckoutPage() {
                       </div>
 
                       <div>
-                        <Label htmlFor="email">Email Address *</Label>
+                        <Label htmlFor="email">{fr ? 'Adresse courriel *' : 'Email Address *'}</Label>
                         <Input
                           id="email"
                           type="email"
@@ -356,12 +360,12 @@ export function CheckoutPage() {
                   {/* Shipping Address */}
                   <div className="bg-white rounded-2xl p-8">
                     <h2 className="text-2xl mb-6" style={{ color: '#121212' }}>
-                      Shipping Address
+                      {fr ? 'Adresse de livraison' : 'Shipping Address'}
                     </h2>
-                    
+
                     <div className="space-y-4">
                       <div>
-                        <Label htmlFor="address">Street Address *</Label>
+                        <Label htmlFor="address">{fr ? 'Adresse municipale *' : 'Street Address *'}</Label>
                         <Input
                           id="address"
                           autoComplete="street-address"
@@ -375,7 +379,7 @@ export function CheckoutPage() {
 
                       <div className="grid md:grid-cols-2 gap-4">
                         <div>
-                          <Label htmlFor="city">City *</Label>
+                          <Label htmlFor="city">{fr ? 'Ville *' : 'City *'}</Label>
                           <Input
                             id="city"
                             autoComplete="address-level2"
@@ -388,7 +392,7 @@ export function CheckoutPage() {
                         </div>
 
                         <div>
-                          <Label htmlFor="province">Province *</Label>
+                          <Label htmlFor="province">{fr ? 'Province *' : 'Province *'}</Label>
                           <select
                             id="province"
                             autoComplete="address-level1"
@@ -406,7 +410,7 @@ export function CheckoutPage() {
                       </div>
 
                       <div>
-                        <Label htmlFor="postalCode">Postal Code *</Label>
+                        <Label htmlFor="postalCode">{fr ? 'Code postal *' : 'Postal Code *'}</Label>
                         <Input
                           id="postalCode"
                           autoComplete="postal-code"
@@ -430,10 +434,10 @@ export function CheckoutPage() {
                     {isLoading ? (
                       <span className="flex items-center justify-center gap-2">
                         <Loader2 className="w-5 h-5 animate-spin" />
-                        Loading...
+                        {fr ? 'Chargement...' : 'Loading...'}
                       </span>
                     ) : (
-                      'Continue to Payment'
+                      fr ? 'Continuer vers le paiement' : 'Continue to Payment'
                     )}
                   </button>
                 </form>
@@ -452,7 +456,7 @@ export function CheckoutPage() {
             >
               <div className="bg-white rounded-2xl p-8 sticky top-24">
                 <h2 className="text-2xl mb-6" style={{ color: '#121212' }}>
-                  Order Summary
+                  {fr ? 'Récapitulatif de commande' : 'Order Summary'}
                 </h2>
 
                 {/* Cart Items */}
@@ -469,7 +473,7 @@ export function CheckoutPage() {
                       <div className="flex-1">
                         <h3 className="mb-1" style={{ color: '#121212' }}>{item.name}</h3>
                         <p className="text-sm mb-1" style={{ color: '#7A6F66' }}>
-                          Quantity: {item.quantity}
+                          {fr ? 'Quantité' : 'Quantity'}: {item.quantity}
                         </p>
                         <p style={{ color: '#A68F59' }}>
                           ${(item.price * item.quantity).toFixed(2)}
@@ -482,24 +486,24 @@ export function CheckoutPage() {
                 {/* Pricing Breakdown */}
                 <div className="space-y-3 pb-4 mb-4 border-b" style={{ borderColor: '#E3DCD3' }}>
                   <div className="flex justify-between">
-                    <span style={{ color: '#7A6F66' }}>Subtotal</span>
+                    <span style={{ color: '#7A6F66' }}>{fr ? 'Sous-total' : 'Subtotal'}</span>
                     <span style={{ color: '#121212' }}>${subtotal.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span style={{ color: '#7A6F66' }}>Shipping</span>
+                    <span style={{ color: '#7A6F66' }}>{fr ? 'Livraison' : 'Shipping'}</span>
                     <span style={{ color: '#121212' }}>
-                      {shipping === 0 ? 'FREE' : `$${shipping.toFixed(2)}`}
+                      {shipping === 0 ? (fr ? 'GRATUIT' : 'FREE') : `$${shipping.toFixed(2)}`}
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span style={{ color: '#7A6F66' }}>HST (13%)</span>
+                    <span style={{ color: '#7A6F66' }}>{fr ? 'TVH (13 %)' : 'HST (13%)'}</span>
                     <span style={{ color: '#121212' }}>${hst.toFixed(2)}</span>
                   </div>
                 </div>
 
                 {/* Total */}
                 <div className="flex justify-between items-center mb-6">
-                  <span className="text-xl" style={{ color: '#121212' }}>Total</span>
+                  <span className="text-xl" style={{ color: '#121212' }}>{fr ? 'Total' : 'Total'}</span>
                   <span className="text-3xl" style={{ color: '#121212' }}>
                     ${total.toFixed(2)}
                   </span>
@@ -509,15 +513,15 @@ export function CheckoutPage() {
                 <div className="pt-6 border-t space-y-3" style={{ borderColor: '#E3DCD3' }}>
                   <div className="flex items-center gap-2 text-sm" style={{ color: '#7A6F66' }}>
                     <CheckCircle2 className="w-4 h-4" style={{ color: '#A68F59' }} />
-                    <span>Secure SSL encryption</span>
+                    <span>{fr ? 'Chiffrement SSL sécurisé' : 'Secure SSL encryption'}</span>
                   </div>
                   <div className="flex items-center gap-2 text-sm" style={{ color: '#7A6F66' }}>
                     <CheckCircle2 className="w-4 h-4" style={{ color: '#A68F59' }} />
-                    <span>PCI compliant payment processing</span>
+                    <span>{fr ? 'Traitement des paiements conforme PCI' : 'PCI compliant payment processing'}</span>
                   </div>
                   <div className="flex items-center gap-2 text-sm" style={{ color: '#7A6F66' }}>
                     <CheckCircle2 className="w-4 h-4" style={{ color: '#A68F59' }} />
-                    <span>Money-back guarantee</span>
+                    <span>{fr ? 'Garantie de remboursement' : 'Money-back guarantee'}</span>
                   </div>
                 </div>
               </div>
