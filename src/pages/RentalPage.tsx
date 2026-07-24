@@ -15,9 +15,12 @@ import { projectId, publicAnonKey } from '../utils/supabase/info';
 import { format, differenceInDays } from 'date-fns';
 import { logger } from '../utils/logger';
 import { PageSEO } from '../components/PageSEO';
+import { useLanguage } from '../context/LanguageContext';
 
 export function RentalPage() {
   const navigate = useNavigate();
+  // Commercial page → vous register.
+  const fr = useLanguage().language === 'fr';
   const [startDate, setStartDate] = useState<Date>();
   const [endDate, setEndDate] = useState<Date>();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -42,78 +45,103 @@ export function RentalPage() {
   const handleCaptchaExpire = () => {
     setCaptchaToken(null);
     logger.log('CAPTCHA expired, please verify again');
-    toast.error('Security verification expired. Please verify again.');
+    toast.error(fr ? 'La vérification de sécurité a expiré. Veuillez vérifier de nouveau.' : 'Security verification expired. Please verify again.');
   };
 
   const handleCaptchaError = (error: string) => {
     setCaptchaToken(null);
     if (window.location.hostname === 'creova.ca') {
-      toast.error('Security Verification Issue', {
-        description: error || 'Unable to verify. Please refresh and try again.'
+      toast.error(fr ? 'Problème de vérification de sécurité' : 'Security Verification Issue', {
+        description: error || (fr ? 'Vérification impossible. Veuillez actualiser et réessayer.' : 'Unable to verify. Please refresh and try again.')
       });
     }
   };
 
   const equipmentOptions = [
-    { 
-      id: 'osmo-kit', 
-      name: 'DJI Osmo Creator Kit',
+    {
+      id: 'osmo-kit',
+      name: fr ? 'Trousse Créateur DJI Osmo' : 'DJI Osmo Creator Kit',
       icon: Video,
       price: 175,
       deposit: 400,
-      includes: [
+      includes: fr ? [
+        'DJI Osmo Pocket 3 ou Action 5 Pro',
+        'Système de micro sans fil (2 émetteurs)',
+        "Perche d'extension et trépied",
+        'Batteries et stockage supplémentaires'
+      ] : [
         'DJI Osmo Pocket 3 or Action 5 Pro',
         'Wireless Mic System (2x transmitters)',
         'Extension Rod & Tripod',
         'Extra Batteries & Storage'
       ]
     },
-    { 
-      id: 'photography-kit', 
-      name: 'Photography Kit',
+    {
+      id: 'photography-kit',
+      name: fr ? 'Trousse Photographie' : 'Photography Kit',
       icon: Camera,
       price: 150,
       deposit: 350,
-      includes: [
+      includes: fr ? [
+        'Caméra reflex/sans miroir professionnelle',
+        'Ensemble de plusieurs objectifs (grand-angle, standard, portrait)',
+        'Sac de caméra et accessoires',
+        'Batteries et cartes mémoire supplémentaires'
+      ] : [
         'Professional DSLR/Mirrorless Camera',
         'Multiple Lens Kit (Wide, Standard, Portrait)',
         'Camera Bag & Accessories',
         'Extra Batteries & Memory Cards'
       ]
     },
-    { 
-      id: 'videography-kit', 
-      name: 'Videography Kit',
+    {
+      id: 'videography-kit',
+      name: fr ? 'Trousse Vidéographie' : 'Videography Kit',
       icon: Video,
       price: 250,
       deposit: 500,
-      includes: [
+      includes: fr ? [
+        'Caméra cinéma professionnelle',
+        'Stabilisateur à cardan',
+        'Filtres ND et accessoires',
+        'Batteries et stockage supplémentaires'
+      ] : [
         'Professional Cinema Camera',
         'Gimbal Stabilizer',
         'ND Filters & Accessories',
         'Extra Batteries & Storage'
       ]
     },
-    { 
-      id: 'lighting-package', 
-      name: 'Lighting Package',
+    {
+      id: 'lighting-package',
+      name: fr ? 'Forfait Éclairage' : 'Lighting Package',
       icon: Lightbulb,
       price: 100,
       deposit: 200,
-      includes: [
+      includes: fr ? [
+        '3 panneaux d\'éclairage DEL',
+        "Boîtes à lumière et pieds d'éclairage",
+        'Gélatines de couleur et diffuseurs',
+        'Étui de transport'
+      ] : [
         '3x LED Panel Lights',
         'Softboxes & Light Stands',
         'Color Gels & Diffusers',
         'Carrying Case'
       ]
     },
-    { 
-      id: 'audio-package', 
-      name: 'Audio Package',
+    {
+      id: 'audio-package',
+      name: fr ? 'Forfait Audio' : 'Audio Package',
       icon: Mic,
       price: 75,
       deposit: 150,
-      includes: [
+      includes: fr ? [
+        'Micros-cravates professionnels',
+        'Micro-canon',
+        'Enregistreur audio',
+        'Câbles XLR et accessoires'
+      ] : [
         'Professional Lavalier Microphones',
         'Shotgun Microphone',
         'Audio Recorder',
@@ -164,32 +192,32 @@ export function RentalPage() {
 
     // Validation
     if (formData.equipment.length === 0) {
-      toast.error('Please select at least one equipment item');
+      toast.error(fr ? 'Veuillez sélectionner au moins un équipement' : 'Please select at least one equipment item');
       return;
     }
 
     if (!formData.name || !formData.email || !formData.phone) {
-      toast.error('Please fill in all required fields');
+      toast.error(fr ? 'Veuillez remplir tous les champs obligatoires' : 'Please fill in all required fields');
       return;
     }
 
     if (!startDate || !endDate) {
-      toast.error('Please select rental start and end dates');
+      toast.error(fr ? 'Veuillez sélectionner les dates de début et de fin de location' : 'Please select rental start and end dates');
       return;
     }
 
     if (endDate < startDate) {
-      toast.error('End date must be after start date');
+      toast.error(fr ? 'La date de fin doit être postérieure à la date de début' : 'End date must be after start date');
       return;
     }
 
     if (!formData.agreedToTerms) {
-      toast.error('Please agree to the rental terms and conditions');
+      toast.error(fr ? 'Veuillez accepter les conditions de location' : 'Please agree to the rental terms and conditions');
       return;
     }
 
     if (!captchaToken) {
-      toast.error('Please complete the security verification');
+      toast.error(fr ? 'Veuillez compléter la vérification de sécurité' : 'Please complete the security verification');
       return;
     }
 
@@ -232,8 +260,8 @@ export function RentalPage() {
       const data = await response.json();
 
       if (response.ok) {
-        toast.success('Rental request submitted!', {
-          description: 'We\'ll contact you within 24 hours to confirm availability and arrange pickup.'
+        toast.success(fr ? 'Demande de location envoyée !' : 'Rental request submitted!', {
+          description: fr ? 'Nous vous joindrons dans les 24 heures pour confirmer la disponibilité et organiser le ramassage.' : 'We\'ll contact you within 24 hours to confirm availability and arrange pickup.'
         });
         
         // Reset form
@@ -259,8 +287,8 @@ export function RentalPage() {
         throw new Error(data.error || 'Failed to submit rental request');
       }
     } catch {
-      toast.error('Failed to submit rental request', {
-        description: 'Please try again or contact us directly.'
+      toast.error(fr ? "Échec de l'envoi de la demande de location" : 'Failed to submit rental request', {
+        description: fr ? 'Veuillez réessayer ou nous joindre directement.' : 'Please try again or contact us directly.'
       });
     } finally {
       setIsSubmitting(false);
@@ -297,7 +325,7 @@ export function RentalPage() {
                 style={{ color: 'rgba(166,143,89,0.6)' }}
               >
                 <ArrowLeft className="w-3.5 h-3.5 mr-2" />
-                Back
+                {fr ? 'Retour' : 'Back'}
               </Button>
 
               <motion.div
@@ -307,7 +335,7 @@ export function RentalPage() {
                 className="flex items-center gap-3 mb-6"
               >
                 <div style={{ height: '1px', width: '32px', backgroundColor: 'rgba(166,143,89,0.5)' }} />
-                <span className="text-[10px] tracking-[0.5em] uppercase" style={{ color: '#A68F59' }}>Equipment Rental</span>
+                <span className="text-[10px] tracking-[0.5em] uppercase" style={{ color: '#A68F59' }}>{fr ? "Location d'équipement" : 'Equipment Rental'}</span>
               </motion.div>
 
               <motion.h1
@@ -317,7 +345,7 @@ export function RentalPage() {
                 className="font-light leading-none tracking-tighter"
                 style={{ fontSize: 'clamp(64px, 12vw, 160px)', color: '#F5F1EB' }}
               >
-                Rent.
+                {fr ? 'Louez.' : 'Rent.'}
               </motion.h1>
 
               <motion.h2
@@ -333,7 +361,7 @@ export function RentalPage() {
                   color: 'transparent',
                 }}
               >
-                / Pro-Grade Gear.
+                {fr ? '/ Équipement de calibre pro.' : '/ Pro-Grade Gear.'}
               </motion.h2>
 
               <motion.p
@@ -343,7 +371,7 @@ export function RentalPage() {
                 className="text-sm font-light max-w-sm"
                 style={{ color: 'rgba(245,241,235,0.4)' }}
               >
-                Cameras · Lighting · Audio — for your next creative project.
+                {fr ? 'Caméras · Éclairage · Audio — pour votre prochain projet créatif.' : 'Cameras · Lighting · Audio — for your next creative project.'}
               </motion.p>
             </div>
 
@@ -355,10 +383,10 @@ export function RentalPage() {
               className="hidden md:flex flex-col gap-3 w-56 ml-16"
             >
               {[
-                { icon: Camera, label: 'Photography Kit', desc: '$150/day · $350 deposit', color: '#A68F59' },
-                { icon: Video, label: 'Creator Kit', desc: '$175/day · $400 deposit', color: '#B1643B' },
-                { icon: Lightbulb, label: 'Lighting Kit', desc: '$85/day · $200 deposit', color: '#A68F59' },
-                { icon: Zap, label: 'Multi-day savings', desc: 'Up to 15% off 7+ days', color: '#B1643B' },
+                { icon: Camera, label: fr ? 'Trousse Photographie' : 'Photography Kit', desc: fr ? '150 $/jour · dépôt 350 $' : '$150/day · $350 deposit', color: '#A68F59' },
+                { icon: Video, label: fr ? 'Trousse Créateur' : 'Creator Kit', desc: fr ? '175 $/jour · dépôt 400 $' : '$175/day · $400 deposit', color: '#B1643B' },
+                { icon: Lightbulb, label: fr ? "Trousse Éclairage" : 'Lighting Kit', desc: fr ? '85 $/jour · dépôt 200 $' : '$85/day · $200 deposit', color: '#A68F59' },
+                { icon: Zap, label: fr ? 'Économies multi-jours' : 'Multi-day savings', desc: fr ? "Jusqu'à 15 % de rabais dès 7 jours" : 'Up to 15% off 7+ days', color: '#B1643B' },
               ].map((item, i) => (
                 <motion.div
                   key={item.label}
@@ -400,10 +428,10 @@ export function RentalPage() {
               {/* Equipment Selection */}
               <div>
                 <h2 className="text-2xl mb-2" style={{ color: '#121212' }}>
-                  Select Equipment
+                  {fr ? "Sélectionner l'équipement" : 'Select Equipment'}
                 </h2>
                 <p className="text-sm mb-6" style={{ color: '#7A6F66' }}>
-                  Choose one or more equipment packages for your rental
+                  {fr ? 'Choisissez un ou plusieurs forfaits d\'équipement pour votre location' : 'Choose one or more equipment packages for your rental'}
                 </p>
                 <div className="space-y-4">
                   {equipmentOptions.map((equipment) => {
@@ -434,10 +462,10 @@ export function RentalPage() {
                                 </h3>
                                 <div className="flex items-center gap-4 mt-1">
                                   <span className="text-lg" style={{ color: '#A68F59' }}>
-                                    ${equipment.price}/day
+                                    ${equipment.price}{fr ? '/jour' : '/day'}
                                   </span>
                                   <span className="text-sm" style={{ color: '#7A6F66' }}>
-                                    Deposit: ${equipment.deposit}
+                                    {fr ? 'Dépôt' : 'Deposit'}: ${equipment.deposit}
                                   </span>
                                 </div>
                               </div>
@@ -461,14 +489,14 @@ export function RentalPage() {
               {/* Rental Period */}
               <div className="border-t pt-8" style={{ borderColor: '#E3DCD3' }}>
                 <h2 className="text-2xl mb-6" style={{ color: '#121212' }}>
-                  Rental Period
+                  {fr ? 'Période de location' : 'Rental Period'}
                 </h2>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Start Date */}
                   <div>
                     <Label className="mb-2 block" style={{ color: '#121212' }}>
-                      Start Date *
+                      {fr ? 'Date de début *' : 'Start Date *'}
                     </Label>
                     <Popover>
                       <PopoverTrigger asChild>
@@ -478,7 +506,7 @@ export function RentalPage() {
                           style={{ color: startDate ? '#121212' : '#7A6F66' }}
                         >
                           <CalendarIcon className="mr-2 h-4 w-4" />
-                          {startDate ? format(startDate, 'PPP') : 'Pick start date'}
+                          {startDate ? format(startDate, 'PPP') : (fr ? 'Choisir la date de début' : 'Pick start date')}
                         </Button>
                       </PopoverTrigger>
                       <PopoverContent className="w-auto p-0" align="start">
@@ -496,7 +524,7 @@ export function RentalPage() {
                   {/* End Date */}
                   <div>
                     <Label className="mb-2 block" style={{ color: '#121212' }}>
-                      End Date *
+                      {fr ? 'Date de fin *' : 'End Date *'}
                     </Label>
                     <Popover>
                       <PopoverTrigger asChild>
@@ -506,7 +534,7 @@ export function RentalPage() {
                           style={{ color: endDate ? '#121212' : '#7A6F66' }}
                         >
                           <CalendarIcon className="mr-2 h-4 w-4" />
-                          {endDate ? format(endDate, 'PPP') : 'Pick end date'}
+                          {endDate ? format(endDate, 'PPP') : (fr ? 'Choisir la date de fin' : 'Pick end date')}
                         </Button>
                       </PopoverTrigger>
                       <PopoverContent className="w-auto p-0" align="start">
@@ -532,29 +560,29 @@ export function RentalPage() {
                   >
                     <div className="space-y-2">
                       <div className="flex justify-between items-center">
-                        <span style={{ color: '#121212' }}>Daily Rate:</span>
-                        <span style={{ color: '#121212' }}>${pricing.daily}/day</span>
+                        <span style={{ color: '#121212' }}>{fr ? 'Tarif quotidien :' : 'Daily Rate:'}</span>
+                        <span style={{ color: '#121212' }}>${pricing.daily}{fr ? '/jour' : '/day'}</span>
                       </div>
                       <div className="flex justify-between items-center">
-                        <span style={{ color: '#121212' }}>Rental Duration:</span>
-                        <span style={{ color: '#121212' }}>{pricing.days} day{pricing.days > 1 ? 's' : ''}</span>
+                        <span style={{ color: '#121212' }}>{fr ? 'Durée de location :' : 'Rental Duration:'}</span>
+                        <span style={{ color: '#121212' }}>{pricing.days} {fr ? (pricing.days > 1 ? 'jours' : 'jour') : `day${pricing.days > 1 ? 's' : ''}`}</span>
                       </div>
                       {pricing.discount > 0 && (
                         <div className="flex justify-between items-center">
-                          <span style={{ color: '#B1643B' }}>Multi-day Discount:</span>
+                          <span style={{ color: '#B1643B' }}>{fr ? 'Rabais multi-jours :' : 'Multi-day Discount:'}</span>
                           <span style={{ color: '#B1643B' }}>-{pricing.discount}%</span>
                         </div>
                       )}
                       <div className="flex justify-between items-center pt-2 border-t" style={{ borderColor: '#A68F59' }}>
-                        <span className="font-medium" style={{ color: '#121212' }}>Total Rental Cost:</span>
+                        <span className="font-medium" style={{ color: '#121212' }}>{fr ? 'Coût total de location :' : 'Total Rental Cost:'}</span>
                         <span className="text-xl font-medium" style={{ color: '#A68F59' }}>${pricing.total} CAD</span>
                       </div>
                       <div className="flex justify-between items-center pt-2 border-t" style={{ borderColor: '#A68F59' }}>
-                        <span className="font-medium" style={{ color: '#B1643B' }}>Security Deposit:</span>
+                        <span className="font-medium" style={{ color: '#B1643B' }}>{fr ? 'Dépôt de garantie :' : 'Security Deposit:'}</span>
                         <span className="text-lg font-medium" style={{ color: '#B1643B' }}>${pricing.deposit} CAD</span>
                       </div>
                       <p className="text-xs pt-2" style={{ color: '#7A6F66' }}>
-                        Deposit is fully refundable upon equipment return in good condition
+                        {fr ? "Le dépôt est entièrement remboursable au retour de l'équipement en bon état" : 'Deposit is fully refundable upon equipment return in good condition'}
                       </p>
                     </div>
                   </motion.div>
@@ -564,14 +592,14 @@ export function RentalPage() {
               {/* Contact Information */}
               <div className="border-t pt-8" style={{ borderColor: '#E3DCD3' }}>
                 <h2 className="text-2xl mb-6" style={{ color: '#121212' }}>
-                  Your Information
+                  {fr ? 'Vos informations' : 'Your Information'}
                 </h2>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Name */}
                   <div>
                     <Label htmlFor="name" className="mb-2 block" style={{ color: '#121212' }}>
-                      Full Name *
+                      {fr ? 'Nom complet *' : 'Full Name *'}
                     </Label>
                     <Input
                       id="name"
@@ -586,7 +614,7 @@ export function RentalPage() {
                   {/* Email */}
                   <div>
                     <Label htmlFor="email" className="mb-2 block" style={{ color: '#121212' }}>
-                      Email Address *
+                      {fr ? 'Adresse courriel *' : 'Email Address *'}
                     </Label>
                     <Input
                       id="email"
@@ -602,7 +630,7 @@ export function RentalPage() {
                   {/* Phone */}
                   <div>
                     <Label htmlFor="phone" className="mb-2 block" style={{ color: '#121212' }}>
-                      Phone Number *
+                      {fr ? 'Numéro de téléphone *' : 'Phone Number *'}
                     </Label>
                     <Input
                       id="phone"
@@ -618,14 +646,14 @@ export function RentalPage() {
                   {/* Pickup Location */}
                   <div>
                     <Label htmlFor="pickupLocation" className="mb-2 block" style={{ color: '#121212' }}>
-                      Preferred Pickup Location
+                      {fr ? 'Lieu de ramassage préféré' : 'Preferred Pickup Location'}
                     </Label>
                     <Input
                       id="pickupLocation"
                       value={formData.pickupLocation}
                       onChange={(e) => setFormData({ ...formData, pickupLocation: e.target.value })}
                       className="h-12"
-                      placeholder="CREOVA Studio, Ontario"
+                      placeholder={fr ? 'Studio CREOVA, Ontario' : 'CREOVA Studio, Ontario'}
                     />
                   </div>
                 </div>
@@ -634,35 +662,35 @@ export function RentalPage() {
               {/* Additional Details */}
               <div className="border-t pt-8" style={{ borderColor: '#E3DCD3' }}>
                 <h2 className="text-2xl mb-6" style={{ color: '#121212' }}>
-                  Additional Details
+                  {fr ? 'Détails supplémentaires' : 'Additional Details'}
                 </h2>
 
                 <div className="space-y-6">
                   {/* Purpose */}
                   <div>
                     <Label htmlFor="purpose" className="mb-2 block" style={{ color: '#121212' }}>
-                      Purpose of Rental
+                      {fr ? 'But de la location' : 'Purpose of Rental'}
                     </Label>
                     <Input
                       id="purpose"
                       value={formData.purpose}
                       onChange={(e) => setFormData({ ...formData, purpose: e.target.value })}
                       className="h-12"
-                      placeholder="e.g., Wedding videography, Product shoot, Short film"
+                      placeholder={fr ? 'p. ex. vidéographie de mariage, séance produit, court métrage' : 'e.g., Wedding videography, Product shoot, Short film'}
                     />
                   </div>
 
                   {/* Special Requests */}
                   <div>
                     <Label htmlFor="specialRequests" className="mb-2 block" style={{ color: '#121212' }}>
-                      Special Requests or Questions
+                      {fr ? 'Demandes spéciales ou questions' : 'Special Requests or Questions'}
                     </Label>
                     <Textarea
                       id="specialRequests"
                       value={formData.specialRequests}
                       onChange={(e) => setFormData({ ...formData, specialRequests: e.target.value })}
                       rows={4}
-                      placeholder="Any additional equipment needs, delivery preferences, or questions..."
+                      placeholder={fr ? "Besoins d'équipement supplémentaires, préférences de livraison ou questions..." : 'Any additional equipment needs, delivery preferences, or questions...'}
                     />
                   </div>
 
@@ -675,10 +703,10 @@ export function RentalPage() {
                     />
                     <div>
                       <Label htmlFor="hasInsurance" className="cursor-pointer" style={{ color: '#121212' }}>
-                        I have equipment insurance coverage
+                        {fr ? "J'ai une couverture d'assurance pour l'équipement" : 'I have equipment insurance coverage'}
                       </Label>
                       <p className="text-xs mt-1" style={{ color: '#7A6F66' }}>
-                        Optional but recommended for high-value rentals
+                        {fr ? 'Facultatif, mais recommandé pour les locations de grande valeur' : 'Optional but recommended for high-value rentals'}
                       </p>
                     </div>
                   </div>
@@ -693,10 +721,10 @@ export function RentalPage() {
                     />
                     <div>
                       <Label htmlFor="agreedToTerms" className="cursor-pointer" style={{ color: '#121212' }}>
-                        I agree to the rental terms and conditions *
+                        {fr ? "J'accepte les conditions de location *" : 'I agree to the rental terms and conditions *'}
                       </Label>
                       <p className="text-xs mt-1" style={{ color: '#7A6F66' }}>
-                        Including damage policy, return requirements, and security deposit terms
+                        {fr ? 'Y compris la politique de dommages, les exigences de retour et les conditions du dépôt de garantie' : 'Including damage policy, return requirements, and security deposit terms'}
                       </p>
                     </div>
                   </div>
@@ -723,12 +751,12 @@ export function RentalPage() {
                   {isSubmitting ? (
                     <>
                       <Clock className="w-5 h-5 mr-2 animate-spin" />
-                      Submitting...
+                      {fr ? 'Envoi...' : 'Submitting...'}
                     </>
                   ) : (
                     <>
                       <CheckCircle2 className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" />
-                      Submit Rental Request
+                      {fr ? 'Envoyer la demande de location' : 'Submit Rental Request'}
                     </>
                   )}
                 </Button>
@@ -738,13 +766,12 @@ export function RentalPage() {
                   onClick={() => navigate(-1)}
                   className="h-14 px-8"
                 >
-                  Cancel
+                  {fr ? 'Annuler' : 'Cancel'}
                 </Button>
               </div>
 
               <p className="text-xs text-center" style={{ color: '#7A6F66' }}>
-                By submitting this form, you agree to be contacted by CREOVA regarding your equipment rental request. 
-                We typically respond within 24 hours to confirm availability.
+                {fr ? "En soumettant ce formulaire, vous acceptez d'être contacté par CREOVA au sujet de votre demande de location d'équipement. Nous répondons généralement dans les 24 heures pour confirmer la disponibilité." : 'By submitting this form, you agree to be contacted by CREOVA regarding your equipment rental request. We typically respond within 24 hours to confirm availability.'}
               </p>
             </div>
           </motion.form>
@@ -755,10 +782,41 @@ export function RentalPage() {
       <section className="py-16" style={{ backgroundColor: '#121212' }}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl md:text-4xl text-center mb-12" style={{ color: '#F5F1EB' }}>
-            Rental Terms & Policies
+            {fr ? 'Conditions et politiques de location' : 'Rental Terms & Policies'}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {[
+            {(fr ? [
+              {
+                icon: ShieldCheck,
+                title: 'Dépôt de garantie',
+                description: "Dépôt remboursable exigé au ramassage. Remis dans les 5 jours ouvrables après le retour de l'équipement en bon état."
+              },
+              {
+                icon: Clock,
+                title: 'Période de location',
+                description: 'Journée de 24 heures (p. ex. ramassage lundi 9 h, retour mardi avant 9 h). Rabais multi-jours appliqués automatiquement.'
+              },
+              {
+                icon: Package,
+                title: 'Ramassage et retour',
+                description: "L'équipement doit être ramassé et retourné à notre local en Ontario. Livraison disponible moyennant des frais supplémentaires."
+              },
+              {
+                icon: AlertCircle,
+                title: 'Politique de dommages',
+                description: "Le locataire est responsable des dommages ou de la perte de l'équipement. Options d'assurance et exonérations de dommages disponibles."
+              },
+              {
+                icon: CheckCircle2,
+                title: 'Réservation',
+                description: "Réservez au moins 48 heures à l'avance. Pièce d'identité valide et entente de location signée requises au ramassage."
+              },
+              {
+                icon: Star,
+                title: "Qualité de l'équipement",
+                description: "Tout l'équipement est entretenu professionnellement, testé avant chaque location et inclut des batteries de rechange et des accessoires."
+              }
+            ] : [
               {
                 icon: ShieldCheck,
                 title: 'Security Deposit',
@@ -789,7 +847,7 @@ export function RentalPage() {
                 title: 'Equipment Quality',
                 description: 'All equipment is professionally maintained, tested before each rental, and includes backup batteries and accessories.'
               }
-            ].map((feature, i) => (
+            ]).map((feature, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 20 }}
