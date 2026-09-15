@@ -17,3 +17,11 @@ jobs:
       - run: npm run lint
       - run: npm run typecheck
       - run: npm run build
+      # No automated test suite exists in this repo. This step exists so
+      # that absence is a visible, explicit fact in every CI run rather
+      # than a silent gap — see CREOVA OS TESTING_MINIMUM_STANDARD.md's
+      # no-test policy. Do not replace this with invented/placeholder
+      # tests merely to make this step "do more."
+      - name: Record test status
+        run: |
+          echo "TEST STATUS: ABSENT -- no automated test suite exists for this repository yet."
