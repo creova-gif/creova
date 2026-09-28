@@ -40,25 +40,26 @@
       target: 'esnext',
       outDir: 'build',
       sourcemap: false,
-      minify: 'esbuild',
       chunkSizeWarningLimit: 1000,
-      rollupOptions: {
+      rolldownOptions: {
         output: {
           // Vendor splitting only applies to the browser bundle. In an SSR
-          // build react/react-dom are external, and Rollup errors if an
+          // build react/react-dom are external, and Rolldown errors if an
           // external module is named in manualChunks.
-          manualChunks: isSsrBuild
+          codeSplitting: isSsrBuild
             ? undefined
             : {
-                'react-vendor': ['react', 'react-dom', 'react-router'],
-                'animation-vendor': ['framer-motion'],
-              }
-        }
-      }
-    },
-    esbuild: {
-      drop: process.env.NODE_ENV === 'production' ? ['console', 'debugger'] : [],
-      legalComments: 'none',
+                groups: [
+                  { name: 'react-vendor', test: /node_modules[\\/](react|react-dom|react-router)/, priority: 20 },
+                  { name: 'animation-vendor', test: /node_modules[\\/](motion|framer-motion)/, priority: 20 },
+                ],
+              },
+          minify: process.env.NODE_ENV === 'production'
+            ? { compress: { dropConsole: true, dropDebugger: true } }
+            : true,
+          comments: { legal: false },
+        },
+      },
     },
     server: {
       port: Number(process.env.PORT) || 5000,
