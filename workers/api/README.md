@@ -90,7 +90,9 @@ Cited from Cloudflare's docs:
 
 Nothing here needs Workers Paid, KV, Durable Objects, R2, Queues, or a custom domain.
 
-Page views and custom events are Analytics Engine points, not D1 rows. `page_exit` is accepted and not stored. Each IP can cause at most 200 tracking points per UTC day per isolate, and at most 20 tracking requests per minute per path. A D1 failure on a form still sends the Resend mail and the Airtable sync and returns 202.
+Page views and custom events are Analytics Engine points, not D1 rows. `page_exit` is accepted and not stored. Each IP can cause at most 200 tracking points per UTC day per isolate, and at most 20 tracking requests per minute per path. A D1 failure on a Turnstile-gated form still sends the Resend mail and the Airtable sync and returns 202. Event-interest signups have no captcha, so they write D1 and Airtable only and do not email.
+
+Public forms that email `support@creova.one` all require Turnstile: contact, collaboration, booking, rental, notify-me, and lead magnet. Contact and booking also send the customer a receipt. Admin `send-*` routes email only with an admin session.
 
 Check usage in the dashboard: Workers → the `creova` Worker, and D1 → `creova` → Metrics → Row metrics.
 
@@ -106,7 +108,28 @@ Not D1. A counter write on every request would spend the rows-written budget.
 
 `track-pageview` writes one Analytics Engine data point and no D1 row. `track-event` writes one point, except `page_exit`, which is dropped. Session and visitor counters are not stored.
 
-At portfolio volume that stays inside 100,000 data points per day. The Workers request cap binds first: a home or `/work` view is about three Worker requests (GET `/galleries`, POST `/track-pageview`, POST `/track-event` for `page_exit`) and one data point. 100,000 requests/day is about 33,000 of those views. D1 reads on `/galleries` are the gallery rows only (a primary-key range). D1 writes on a page view are zero.
+At portfolio volume that stays inside 100,000 data points per day. The Workers request cap binds first. D1 reads on `/galleries` are the gallery rows only (a primary-key range). D1 writes on a page view are zero.
+
+A home or `/work` view, measured against the browser calls and a local Worker:
+
+- `GET /galleries` is a simple GET (no custom headers). It does not send a CORS preflight.
+- `POST /track-pageview` and `POST /track-event` use `Content-Type: application/json`, so each sends an `OPTIONS` preflight. The Worker answers with `Access-Control-Max-Age: 600`, and the browser caches that preflight for 600 seconds. A preflight is a Worker request and counts toward the 100,000/day cap.
+
+While the client still sends `page_exit` (one extra POST per view after more than 2 seconds on the page):
+
+| Cache | Worker requests per view | Views per day at 100,000 requests |
+|---|---|---|
+| Cold (both preflights) | 5 = GET + POST pageview + POST page_exit + 2 OPTIONS | 20,000 |
+| Warm (preflights cached) | 3 = GET + two POSTs | 33,333 |
+
+After the client stops sending `page_exit` (the server still returns 204 if an old client does):
+
+| Cache | Worker requests per view | Views per day at 100,000 requests |
+|---|---|---|
+| Cold (one preflight) | 3 = GET + OPTIONS + POST pageview | 33,333 |
+| Warm (preflight cached) | 2 = GET + POST pageview | 50,000 |
+
+The safe ceiling while any client still sends `page_exit` is about **20,000–33,000** home or `/work` views a day. After that POST is gone, the same cap is about **33,000–50,000**. One Analytics Engine data point per view either way (`page_exit` is not stored). Pages that do not call `/galleries` are one request cheaper.
 
 ## Galleries
 
