@@ -13,6 +13,8 @@ id_rsa
 # Build output
 build/
 dist/
+# SSR bundle consumed by scripts/prerender.mjs. Not part of the Pages artifact.
+.ssr
 
 # Node.js
 node_modules/

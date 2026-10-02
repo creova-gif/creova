@@ -23,14 +23,14 @@ jobs:
 
       - uses: actions/setup-node@v7
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
 
       - name: Install dependencies
-        run: npm install --legacy-peer-deps
+        run: npm ci
 
       - name: Build
-        run: npm run build:client-only
+        run: npm run build
         env:
           # Public values, inlined into the browser bundle. Prefer Actions
           # variables; secrets are accepted so either store works.

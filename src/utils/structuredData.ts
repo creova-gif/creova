@@ -1,4 +1,6 @@
-const SITE_URL = 'https://creova.one';
+import { absoluteUrl } from '../i18n/locale';
+
+const SITE_URL = 'https://www.creova.one';
 
 /**
  * CREOVA has no public storefront — it's a service-area business, so this
@@ -10,7 +12,7 @@ export const organizationSchema = {
   '@type': 'ProfessionalService',
   name: 'CREOVA',
   alternateName: 'CREOVA Creative Agency',
-  url: SITE_URL,
+  url: `${SITE_URL}/`,
   logo: `${SITE_URL}/logo.png`,
   image: `${SITE_URL}/card-blackprint.jpg`,
   description:
@@ -50,7 +52,7 @@ export function productSchema(product: {
     category: product.category,
     offers: {
       '@type': 'Offer',
-      url: `${SITE_URL}/shop#${product.id}`,
+      url: absoluteUrl(`/shop#${product.id}`, 'en'),
       priceCurrency: 'CAD',
       price: product.price,
       availability: 'https://schema.org/PreOrder',
@@ -84,7 +86,7 @@ export function breadcrumbSchema(items: Array<{ name: string; path: string }>) {
       '@type': 'ListItem',
       position: i + 1,
       name: item.name,
-      item: `${SITE_URL}${item.path}`,
+      item: absoluteUrl(item.path, 'en'),
     })),
   };
 }

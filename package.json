@@ -85,7 +85,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build && cp build/index.html build/404.html && npm run build:ssr && npm run prerender",
-    "build:ssr": "vite build --ssr src/entry-server.tsx --outDir build/server",
+    "build:ssr": "vite build --ssr src/entry-server.tsx --outDir .ssr",
     "prerender": "node scripts/prerender.mjs",
     "build:client-only": "vite build && cp build/index.html build/404.html",
     "typecheck": "tsc --noEmit",
