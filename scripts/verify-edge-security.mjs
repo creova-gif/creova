@@ -115,7 +115,7 @@ async function main() {
 
     const lone = [];
     for (let i = 1; i <= 6; i++) {
-      const res = await post(app.port, "/create-booking", {
+      const res = await post(app.port, "/submit-rental", {
         headers: { "x-forwarded-for": `198.51.100.${i}` },
         body: {},
       });
@@ -187,6 +187,8 @@ async function main() {
     "/payments",
     "/create-refund",
     "/refunds",
+    "/create-booking",
+    "/create-rental",
   ];
   const pay = await boot(
     {

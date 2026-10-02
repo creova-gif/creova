@@ -1,7 +1,7 @@
 // Email Template Utilities for CREOVA
 // Bilingual (EN/FR) email templates for booking confirmations, contact forms, etc.
 
-import { escapeHtml, escapeHtmlAttr, escapeHtmlMultiline, safeCreovaUrl } from "./guards.ts";
+import { escapeHtml, escapeHtmlAttr, escapeHtmlMultiline } from "./guards.ts";
 
 export interface BookingEmailData {
   customerName: string;
@@ -201,12 +201,6 @@ export const bookingConfirmationEN = (data: BookingEmailData): string => {
         </ol>
       </div>
       
-      ${safeCreovaUrl(data.checkoutUrl) ? `
-      <div style="text-align: center;">
-        <a href="${safeCreovaUrl(data.checkoutUrl)}" class="button">Complete Payment</a>
-      </div>
-      ` : ''}
-      
       <p><strong>Questions?</strong> Reply to this email or call us at <a href="tel:+14372608925" style="color: #D4A843;">+1 (437) 260-8925</a></p>
       
       <p style="margin-top: 30px;">Best regards,<br><strong>The CREOVA Team</strong><br>Ontario, Canada</p>
@@ -387,12 +381,6 @@ export const bookingConfirmationFR = (data: BookingEmailData): string => {
           <li>Préparez-vous pour une expérience créative incroyable!</li>
         </ol>
       </div>
-      
-      ${safeCreovaUrl(data.checkoutUrl) ? `
-      <div style="text-align: center;">
-        <a href="${safeCreovaUrl(data.checkoutUrl)}" class="button">Compléter le Paiement</a>
-      </div>
-      ` : ''}
       
       <p><strong>Des questions?</strong> Répondez à cet email ou appelez-nous au <a href="tel:+14372608925" style="color: #D4A843;">+1 (437) 260-8925</a></p>
       

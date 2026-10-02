@@ -16,6 +16,7 @@ import { format, differenceInDays } from 'date-fns';
 import { logger } from '../utils/logger';
 import { PageSEO } from '../components/PageSEO';
 import { useLanguage } from '../context/LanguageContext';
+import { publicFormStatusMessage } from '../utils/publicFormStatus';
 
 export function RentalPage() {
   const navigate = useNavigate();
@@ -259,8 +260,6 @@ export function RentalPage() {
         }
       );
 
-      const data = await response.json();
-
       if (response.ok) {
         toast.success(fr ? 'Demande de location envoyée !' : 'Rental request submitted!', {
           description: fr ? 'Nous vous joindrons dans les 24 heures pour confirmer la disponibilité et organiser le ramassage.' : 'We\'ll contact you within 24 hours to confirm availability and arrange pickup.'
@@ -288,7 +287,15 @@ export function RentalPage() {
       } else {
         setCaptchaToken(null);
         setCaptchaReset((n) => n + 1);
-        throw new Error(data.error || 'Failed to submit rental request');
+        const statusMessage = publicFormStatusMessage(response.status, fr);
+        if (statusMessage) {
+          toast.error(statusMessage);
+          return;
+        }
+        toast.error(fr ? "Échec de l'envoi de la demande de location" : 'Failed to submit rental request', {
+          description: fr ? 'Veuillez réessayer ou nous joindre directement.' : 'Please try again or contact us directly.'
+        });
+        return;
       }
     } catch {
       setCaptchaToken(null);

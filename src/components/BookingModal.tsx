@@ -4,15 +4,15 @@ import { projectId, publicAnonKey } from '../utils/supabase/info';
 import { toast } from 'sonner';
 import { logger } from '../utils/logger';
 import { motion } from 'motion/react';
-import { useNavigate } from '../i18n/LocaleLink';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from './ui/dialog';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { Textarea } from './ui/textarea';
-import { Calendar, User, ArrowRight } from 'lucide-react';
+import { Calendar, User, ArrowRight, Check } from 'lucide-react';
 import { Captcha } from './Captcha';
+import { publicFormStatusMessage } from '../utils/publicFormStatus';
 
 interface BookingModalProps {
   isOpen: boolean;
@@ -23,8 +23,7 @@ interface BookingModalProps {
 }
 
 export function BookingModal({ isOpen, onClose, service, package: packageName, price }: BookingModalProps) {
-  const { t } = useLanguage();
-  const navigate = useNavigate();
+  const { t, language } = useLanguage();
   
   const [formData, setFormData] = useState({
     name: '',
@@ -39,6 +38,12 @@ export function BookingModal({ isOpen, onClose, service, package: packageName, p
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const [captchaReset, setCaptchaReset] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const closeModal = () => {
+    setIsSubmitted(false);
+    onClose();
+  };
 
   const handleChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -90,19 +95,13 @@ export function BookingModal({ isOpen, onClose, service, package: packageName, p
       if (!response.ok) {
         setCaptchaToken(null);
         setCaptchaReset((n) => n + 1);
-        toast.error(t('booking.error.fields'));
+        const statusMessage = publicFormStatusMessage(response.status, language === 'fr');
+        toast.error(statusMessage ?? t('booking.error.fields'));
         return;
       }
 
-      toast.success(t('booking.success.received'));
       logger.log('Booking request stored');
-      onClose();
-      navigate('/checkout', {
-        state: {
-          bookingDetails: formData,
-          type: 'service'
-        }
-      });
+      setIsSubmitted(true);
     } catch {
       setCaptchaToken(null);
       setCaptchaReset((n) => n + 1);
@@ -131,18 +130,35 @@ export function BookingModal({ isOpen, onClose, service, package: packageName, p
   ];
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={(open) => { if (!open) closeModal(); }}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-3xl flex items-center gap-2" style={{ color: '#121212' }}>
             <Calendar className="w-7 h-7" style={{ color: '#D4A843' }} />
-            {t('booking.title')}
+            {isSubmitted ? t('booking.success.received') : t('booking.title')}
           </DialogTitle>
           <DialogDescription style={{ color: '#777777' }}>
-            {t('booking.desc')}
+            {isSubmitted ? t('booking.success.confirmed') : t('booking.desc')}
           </DialogDescription>
         </DialogHeader>
 
+        {isSubmitted ? (
+          <div className="py-8 text-center space-y-4">
+            <div className="mx-auto w-14 h-14 rounded-full flex items-center justify-center" style={{ backgroundColor: '#F8F9FA' }}>
+              <Check className="w-7 h-7" style={{ color: '#D4A843' }} />
+            </div>
+            <p style={{ color: '#121212' }}>{t('booking.success.received')}</p>
+            <p className="text-sm" style={{ color: '#777777' }}>{t('booking.success.confirmed')}</p>
+            <Button
+              type="button"
+              onClick={closeModal}
+              className="rounded-xl py-6 px-8"
+              style={{ backgroundColor: '#121212', color: '#F8F9FA' }}
+            >
+              {t('booking.btn.close')}
+            </Button>
+          </div>
+        ) : (
         <form onSubmit={handleSubmit} className="space-y-6 mt-6">
           {/* Personal Information */}
           <div className="space-y-4">
@@ -304,7 +320,7 @@ export function BookingModal({ isOpen, onClose, service, package: packageName, p
             <Button
               type="button"
               variant="outline"
-              onClick={onClose}
+              onClick={closeModal}
               className="flex-1 rounded-xl py-6"
             >
               {t('booking.btn.cancel')}
@@ -320,6 +336,7 @@ export function BookingModal({ isOpen, onClose, service, package: packageName, p
             </Button>
           </div>
         </form>
+        )}
       </DialogContent>
     </Dialog>
   );

@@ -210,6 +210,7 @@ const translations = {
     'digital.filter.business': 'Business',
     'digital.filter.photography': 'Photography',
     'digital.filter.video': 'Video',
+    'digital.closed': 'Shop closed',
     
     // Experience - SEO
     'experience.title': 'Creative Workshops & Community Events',
@@ -363,6 +364,7 @@ const translations = {
     'cart.empty.subtitle': 'Add some items to get started',
     'cart.continue': 'Continue Shopping',
     'cart.checkout': 'Checkout',
+    'cart.closed': 'Shop closed. Checkout is no longer available.',
     'cart.subtotal': 'Subtotal',
     'cart.shipping': 'Shipping',
     'cart.total': 'Total',
@@ -454,7 +456,8 @@ const translations = {
     'booking.deposit.desc': 'A 50% deposit is required to secure your booking. The remaining balance is due on the day of service.',
     'booking.deposit.label': 'Required Deposit: ',
     'booking.btn.cancel': 'Cancel',
-    'booking.btn.continue': 'Continue to Payment',
+    'booking.btn.close': 'Close',
+    'booking.btn.continue': 'Submit request',
     'booking.error.fields': 'Please fill in all required fields.',
     'booking.error.email': 'Please enter a valid email address.',
     'booking.success.received': "Booking received! We'll confirm shortly.",
@@ -930,6 +933,7 @@ const translations = {
     'digital.filter.business': 'Affaires',
     'digital.filter.photography': 'Photographie',
     'digital.filter.video': 'Vidéo',
+    'digital.closed': 'Boutique fermée',
     
     // Experience - SEO
     'experience.title': 'Ateliers Créatifs & Événements Communautaires',
@@ -1084,6 +1088,7 @@ const translations = {
     'cart.empty.subtitle': 'Ajoutez des articles pour commencer',
     'cart.continue': 'Continuer les Achats',
     'cart.checkout': 'Passer la Commande',
+    'cart.closed': 'Boutique fermée. Le paiement n\'est plus disponible.',
     'cart.subtotal': 'Sous-total',
     'cart.shipping': 'Livraison',
     'cart.total': 'Total',
@@ -1175,7 +1180,8 @@ const translations = {
     'booking.deposit.desc': 'Un dépôt de 50 % est requis pour confirmer votre réservation. Le solde restant est dû le jour du service.',
     'booking.deposit.label': 'Dépôt Requis : ',
     'booking.btn.cancel': 'Annuler',
-    'booking.btn.continue': 'Continuer vers le Paiement',
+    'booking.btn.close': 'Fermer',
+    'booking.btn.continue': 'Envoyer la demande',
     'booking.error.fields': 'Veuillez remplir tous les champs obligatoires.',
     'booking.error.email': 'Veuillez entrer une adresse courriel valide.',
     'booking.success.received': 'Réservation reçue ! Nous confirmerons sous peu.',

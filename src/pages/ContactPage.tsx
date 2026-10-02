@@ -14,9 +14,10 @@ import { toast } from 'sonner';
 import { projectId, publicAnonKey } from '../utils/supabase/info';
 import { useLanguage } from '../context/LanguageContext';
 import { logger } from '../utils/logger';
+import { publicFormStatusMessage } from '../utils/publicFormStatus';
 
 export function ContactPage() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -74,8 +75,6 @@ export function ContactPage() {
         }
       );
 
-      const data = await response.json();
-
       if (response.ok) {
         // The submission handler sends the notification after it verifies
         // the captcha token. A second public email call would reuse a
@@ -98,7 +97,15 @@ export function ContactPage() {
       } else {
         setCaptchaToken(null);
         setCaptchaReset((n) => n + 1);
-        throw new Error(data.error || 'Failed to send message');
+        const statusMessage = publicFormStatusMessage(response.status, language === 'fr');
+        if (statusMessage) {
+          toast.error(statusMessage);
+          return;
+        }
+        toast.error(t('contact.form.error.title'), {
+          description: t('contact.form.error.description')
+        });
+        return;
       }
     } catch {
       setCaptchaToken(null);

@@ -8,6 +8,8 @@ import {
   COMMERCE_GONE_STATUS,
   COMMERCE_ROUTES,
   consumeRateLimit,
+  collaborationAdminSubject,
+  contactAdminSubject,
   contactReceivedHtml,
   isUsableTurnstileSecret,
   oneLine,
@@ -407,69 +409,6 @@ app.get("/make-server-feacf0d8/audit-logs/export", requireAdmin, async (c) => {
   }
 });
 
-// Create booking for services
-app.post("/make-server-feacf0d8/create-booking", rateLimit(10, 60000), async (c) => {
-  try {
-    const body = await c.req.json();
-    const { service, customer_info, booking_details, amount, currency = 'cad' } = body;
-
-    const bookingId = `booking_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
-    await kv.set(bookingId, {
-      service,
-      customer_info,
-      booking_details,
-      amount,
-      currency,
-      status: 'pending',
-      created_at: new Date().toISOString()
-    });
-
-    console.log(`Created booking: ${bookingId}`);
-
-    return c.json({
-      bookingId,
-      status: 'success',
-      message: 'Booking created successfully'
-    });
-  } catch (error) {
-    console.error("Error creating booking:", error);
-    return c.json({ error: "Failed to create booking" }, 500);
-  }
-});
-
-// Create equipment rental
-app.post("/make-server-feacf0d8/create-rental", rateLimit(10, 60000), async (c) => {
-  try {
-    const body = await c.req.json();
-    const { equipment, customer_info, rental_details, amount, currency = 'cad' } = body;
-
-    const rentalId = `rental_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
-    await kv.set(rentalId, {
-      equipment,
-      customer_info,
-      rental_details,
-      amount,
-      currency,
-      status: 'pending',
-      created_at: new Date().toISOString()
-    });
-
-    console.log(`Created rental: ${rentalId}`);
-
-    return c.json({
-      rentalId,
-      status: 'success',
-      message: 'Rental created successfully'
-    });
-  } catch (error) {
-    console.error("Error creating rental:", error);
-    return c.json({ error: "Failed to create rental" }, 500);
-  }
-});
-
-
 // Email notification signup (for product launches, memberships, etc.)
 app.post("/make-server-feacf0d8/notify-me", rateLimit(10, 60000), async (c) => {
   try {
@@ -685,7 +624,7 @@ app.post("/make-server-feacf0d8/submit-contact", rateLimit(5, 60000), async (c) 
               body: JSON.stringify({
                 from: 'CREOVA <support@creova.one>',
                 to: ['support@creova.one'],
-                subject: `📧 New Contact: ${oneLine(service || 'General Inquiry')} — ${oneLine(name)}`,
+                subject: contactAdminSubject(service.value, name),
                 html: adminContactNotification(contactEmailData),
                 reply_to: oneLine(email)
               })
@@ -772,7 +711,7 @@ app.post("/make-server-feacf0d8/submit-collaboration", rateLimit(5, 60000), asyn
             body: JSON.stringify({
               from: 'CREOVA <support@creova.one>',
               to: ['support@creova.one'],
-              subject: `🤝 New Collaboration Request: ${oneLine(organization || name)}`,
+              subject: collaborationAdminSubject(organization.value, name),
               html: adminCollaborationNotification(collaborationEmailData),
               reply_to: oneLine(email),
             }),
@@ -1529,7 +1468,7 @@ app.post("/make-server-feacf0d8/send-contact-notification", requireAdmin, rateLi
       body: JSON.stringify({
         from: 'CREOVA <support@creova.one>',
         to: ['support@creova.one'],
-        subject: `📧 New Contact: ${oneLine(contactData.service || 'General Inquiry')} - ${oneLine(contactData.name)}`,
+        subject: contactAdminSubject(contactData.service, contactData.name),
         html: adminEmailHtml,
         reply_to: oneLine(contactData.email)
       })
@@ -1582,7 +1521,7 @@ app.post("/make-server-feacf0d8/send-collaboration-notification", requireAdmin, 
       body: JSON.stringify({
         from: 'CREOVA <support@creova.one>',
         to: ['support@creova.one'],
-        subject: `🤝 New Collaboration Request: ${oneLine(collaborationData.organization || collaborationData.name)}`,
+        subject: collaborationAdminSubject(collaborationData.organization, collaborationData.name),
         html: adminEmailHtml,
         reply_to: oneLine(collaborationData.email)
       })

@@ -17,6 +17,7 @@ import { projectId, publicAnonKey } from '../utils/supabase/info';
 import { format } from 'date-fns';
 import { logger } from '../utils/logger';
 import { useLanguage } from '../context/LanguageContext';
+import { publicFormStatusMessage } from '../utils/publicFormStatus';
 
 export function BookingPage() {
   const navigate = useNavigate();
@@ -208,14 +209,20 @@ export function BookingPage() {
         }
       );
 
-      const data = await response.json();
-
       if (response.ok) {
         setIsSubmitted(true);
       } else {
         setCaptchaToken(null);
         setCaptchaReset((n) => n + 1);
-        throw new Error(data.error || 'Failed to submit booking');
+        const statusMessage = publicFormStatusMessage(response.status, fr);
+        if (statusMessage) {
+          toast.error(statusMessage);
+          return;
+        }
+        toast.error(fr ? "Échec de l'envoi de la réservation" : 'Failed to submit booking', {
+          description: fr ? 'Veuillez réessayer ou nous joindre directement.' : 'Please try again or contact us directly.'
+        });
+        return;
       }
     } catch {
       setCaptchaToken(null);

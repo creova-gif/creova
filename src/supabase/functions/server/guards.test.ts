@@ -7,13 +7,16 @@ import {
   PRODUCT_CATALOG,
   bookingReceivedHtml,
   captchaDevSkip,
+  collaborationAdminSubject,
   computeTrustedCartTotalCents,
   consumeRateLimit,
+  contactAdminSubject,
   contactReceivedHtml,
   escapeHtml,
   escapeHtmlMultiline,
   isUsableTurnstileSecret,
   oneLine,
+  optionalText,
   parseAllowedOrigins,
   parseEmailAddress,
   rateLimitClientIp,
@@ -221,6 +224,26 @@ test("rateLimit counts inside one isolate and then rejects", () => {
   assert.equal(consumeRateLimit(buckets, "unknown:/submit-contact", 1_000, 5, 60_000), true);
 });
 
+test("admin email subjects use the text value, not the optionalText object", () => {
+  const service = optionalText("Brand film", 160);
+  assert.equal(service.ok, true);
+  if (!service.ok) return;
+  assert.equal(contactAdminSubject(service.value, "Ada\nLovelace"), "📧 New Contact: Brand film — Ada Lovelace");
+  assert.equal(contactAdminSubject(undefined, "Ada"), "📧 New Contact: General Inquiry — Ada");
+  assert.equal(oneLine(service).includes("[object Object]"), true);
+  assert.equal(contactAdminSubject(service.value, "Ada").includes("[object Object]"), false);
+
+  const organization = optionalText("Studio", 160);
+  assert.equal(organization.ok, true);
+  if (!organization.ok) return;
+  assert.equal(
+    collaborationAdminSubject(organization.value, "Ada"),
+    "🤝 New Collaboration Request: Studio",
+  );
+  assert.equal(collaborationAdminSubject(undefined, "Ada"), "🤝 New Collaboration Request: Ada");
+  assert.equal(collaborationAdminSubject(organization.value, "Ada").includes("[object Object]"), false);
+});
+
 test("commerce routes share one gone response", () => {
   assert.equal(COMMERCE_GONE_STATUS, 410);
   assert.deepEqual(COMMERCE_GONE_BODY, { error: "This service is no longer available" });
@@ -237,6 +260,8 @@ test("commerce routes share one gone response", () => {
     "/make-server-feacf0d8/payments",
     "/make-server-feacf0d8/create-refund",
     "/make-server-feacf0d8/refunds",
+    "/make-server-feacf0d8/create-booking",
+    "/make-server-feacf0d8/create-rental",
   ]) {
     assert.equal(COMMERCE_ROUTES.includes(path as (typeof COMMERCE_ROUTES)[number]), true);
   }

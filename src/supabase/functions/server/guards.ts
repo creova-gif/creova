@@ -23,7 +23,7 @@ export const COMMERCE_GONE_BODY = {
   error: "This service is no longer available",
 } as const;
 
-/** Shop, checkout, tickets, memberships, subscriptions, and refunds. */
+/** Shop, checkout, tickets, memberships, subscriptions, refunds, and the unused booking/rental writers. */
 export const COMMERCE_ROUTES = [
   "/make-server-feacf0d8/create-ticket",
   "/make-server-feacf0d8/create-payment-intent",
@@ -36,6 +36,8 @@ export const COMMERCE_ROUTES = [
   "/make-server-feacf0d8/payments",
   "/make-server-feacf0d8/create-refund",
   "/make-server-feacf0d8/refunds",
+  "/make-server-feacf0d8/create-booking",
+  "/make-server-feacf0d8/create-rental",
 ] as const;
 
 export const DEFAULT_ALLOWED_ORIGINS = [
@@ -131,6 +133,16 @@ export function oneLine(value: unknown, max = 200): string {
     out += code <= 31 || code === 127 ? " " : ch;
   }
   return out.replace(/ +/g, " ").trim().slice(0, max);
+}
+
+/** Admin contact subject. Pass the string from optionalText().value, not the result object. */
+export function contactAdminSubject(service: string | undefined, name: string): string {
+  return `📧 New Contact: ${oneLine(service || "General Inquiry")} — ${oneLine(name)}`;
+}
+
+/** Admin collaboration subject. Pass optionalText().value, not the result object. */
+export function collaborationAdminSubject(organization: string | undefined, name: string): string {
+  return `🤝 New Collaboration Request: ${oneLine(organization || name)}`;
 }
 
 export function escapeHtmlAttr(value: unknown): string {
