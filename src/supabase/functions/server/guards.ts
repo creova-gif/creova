@@ -316,6 +316,12 @@ export function requiredText(value: unknown, max: number): string | null {
   return trimmed;
 }
 
+/** A finite number that is zero or greater. Anything else is dropped before kv.set. */
+export function finiteNonNegative(value: unknown): number | undefined {
+  if (typeof value !== "number" || !Number.isFinite(value) || value < 0) return undefined;
+  return value;
+}
+
 export function optionalText(
   value: unknown,
   max: number,
