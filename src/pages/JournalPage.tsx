@@ -2,6 +2,7 @@ import { Link } from '../i18n/LocaleLink';
 import { PageSEO } from '../components/PageSEO';
 import { useLanguage } from '../context/LanguageContext';
 import { JOURNAL } from '../data/journal';
+import { absoluteUrl } from '../i18n/locale';
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const MONTHS_FR = ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.', 'août', 'sept.', 'oct.', 'nov.', 'déc.'];
@@ -19,12 +20,12 @@ export function JournalPage() {
     '@context': 'https://schema.org',
     '@type': 'Blog',
     name: fr ? 'Le Journal CREOVA' : 'The CREOVA Journal',
-    url: 'https://creova.one/journal',
+    url: absoluteUrl('/journal', fr ? 'fr' : 'en'),
     blogPost: posts.map((p) => ({
       '@type': 'BlogPosting',
       headline: (fr ? p.fr : p.en).title,
       datePublished: p.date,
-      url: `https://creova.one/journal/${p.slug}`,
+      url: absoluteUrl(`/journal/${p.slug}`, fr ? 'fr' : 'en'),
     })),
   };
 

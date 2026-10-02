@@ -4,8 +4,9 @@ import { ArrowRight, ArrowUpRight } from 'lucide-react';
 import { Link } from '../i18n/LocaleLink';
 import { PageSEO } from '../components/PageSEO';
 import { useLanguage } from '../context/LanguageContext';
+import { absoluteUrl } from '../i18n/locale';
 
-const SITE_URL = 'https://creova.one';
+const SITE_URL = 'https://www.creova.one';
 
 // Founder's own words, sharpened with CREOVA's own problem-framing language
 // (from the pitch deck: "the representation & visibility gap for BIPOC
@@ -39,10 +40,10 @@ export function AboutPage() {
   const inView = useInView(ref, { once: true, margin: '-12% 0px' });
 
   const jsonLd = [
-    { '@context': 'https://schema.org', '@type': 'AboutPage', name: fr ? 'À propos de CREOVA' : 'About CREOVA', url: `${SITE_URL}/about` },
+    { '@context': 'https://schema.org', '@type': 'AboutPage', name: fr ? 'À propos de CREOVA' : 'About CREOVA', url: absoluteUrl('/about', fr ? 'fr' : 'en') },
     {
       '@context': 'https://schema.org', '@type': 'Person', name: 'Justin Mafie', jobTitle: fr ? 'Fondateur' : 'Founder',
-      worksFor: { '@type': 'Organization', name: 'CREOVA', url: SITE_URL }, image: `${SITE_URL}/card-justin-panel.jpg`,
+      worksFor: { '@type': 'Organization', name: 'CREOVA', url: `${SITE_URL}/` }, image: `${SITE_URL}/card-justin-panel.jpg`,
     },
   ];
 

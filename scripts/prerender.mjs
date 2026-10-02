@@ -84,9 +84,18 @@ const SITEMAP_PRIORITY = {
   '/terms-of-service': '0.3', '/privacy-policy': '0.3',
 };
 
+// Pages returns 200 for the trailing-slash directory URL (route/index.html)
+// and 301s the slashless path. Sitemap locs use that 200 URL.
+const SITE_URL = 'https://www.creova.one';
+
+function canonicalLoc(route) {
+  const path = route === '/' ? '/' : (route.endsWith('/') ? route : `${route}/`);
+  return `${SITE_URL}${path}`;
+}
+
 function writeSitemap() {
   const urls = ROUTES.map((r) => {
-    const loc = `https://creova.one${r === '/' ? '/' : r}`;
+    const loc = canonicalLoc(r);
     const priority = SITEMAP_PRIORITY[r] ?? (r.startsWith('/fr') ? '0.6' : '0.7');
     const changefreq = r === '/' ? 'weekly' : 'monthly';
     return `  <url><loc>${loc}</loc><priority>${priority}</priority><changefreq>${changefreq}</changefreq></url>`;

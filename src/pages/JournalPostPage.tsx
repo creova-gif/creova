@@ -3,6 +3,9 @@ import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { PageSEO } from '../components/PageSEO';
 import { useLanguage } from '../context/LanguageContext';
 import { getPost, JOURNAL } from '../data/journal';
+import { absoluteUrl } from '../i18n/locale';
+
+const SITE_URL = 'https://www.creova.one';
 
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 const MONTHS_FR = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
@@ -25,10 +28,10 @@ export function JournalPostPage({ slug }: { slug: string }) {
     description: c.metaDescription,
     datePublished: post.date,
     dateModified: post.date,
-    image: `https://creova.one${post.cover}`,
+    image: `${SITE_URL}${post.cover}`,
     author: { '@type': 'Organization', name: 'CREOVA' },
-    publisher: { '@type': 'Organization', name: 'CREOVA', url: 'https://creova.one' },
-    mainEntityOfPage: `https://creova.one/journal/${post.slug}`,
+    publisher: { '@type': 'Organization', name: 'CREOVA', url: `${SITE_URL}/` },
+    mainEntityOfPage: absoluteUrl(`/journal/${post.slug}`, fr ? 'fr' : 'en'),
     articleSection: post.category,
   };
 
@@ -36,7 +39,7 @@ export function JournalPostPage({ slug }: { slug: string }) {
 
   return (
     <div style={{ backgroundColor: '#121212' }}>
-      <PageSEO title={c.title} description={c.metaDescription} path={`/journal/${slug}`} ogImage={`https://creova.one${post.cover}`} jsonLd={jsonLd} />
+      <PageSEO title={c.title} description={c.metaDescription} path={`/journal/${slug}`} ogImage={`${SITE_URL}${post.cover}`} jsonLd={jsonLd} />
 
       <article>
         {/* Header */}
