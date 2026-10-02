@@ -1,6 +1,8 @@
 // Email Template Utilities for CREOVA
 // Bilingual (EN/FR) email templates for booking confirmations, contact forms, etc.
 
+import { escapeHtml, escapeHtmlAttr, escapeHtmlMultiline } from "./guards.ts";
+
 export interface BookingEmailData {
   customerName: string;
   customerEmail: string;
@@ -172,20 +174,20 @@ export const bookingConfirmationEN = (data: BookingEmailData): string => {
       <div class="details-box">
         <h3>📋 Booking Details</h3>
         <ul>
-          <li><strong>Service:</strong> ${data.service}</li>
-          <li><strong>Package:</strong> ${data.package}</li>
-          <li><strong>Preferred Date:</strong> ${data.preferredDate}</li>
-          <li><strong>Preferred Time:</strong> ${data.preferredTime}</li>
-          <li><strong>Location:</strong> ${data.location}</li>
-          ${data.numberOfPeople ? `<li><strong>Number of People:</strong> ${data.numberOfPeople}</li>` : ''}
-          <li><strong>Deposit Amount:</strong> $${data.amount} CAD</li>
+          <li><strong>Service:</strong> ${escapeHtml(data.service)}</li>
+          <li><strong>Package:</strong> ${escapeHtml(data.package)}</li>
+          <li><strong>Preferred Date:</strong> ${escapeHtml(data.preferredDate)}</li>
+          <li><strong>Preferred Time:</strong> ${escapeHtml(data.preferredTime)}</li>
+          <li><strong>Location:</strong> ${escapeHtml(data.location)}</li>
+          ${data.numberOfPeople ? `<li><strong>Number of People:</strong> ${escapeHtml(data.numberOfPeople)}</li>` : ''}
+          ${Number(data.amount) > 0 ? `<li><strong>Deposit Amount:</strong> $${escapeHtml(data.amount)} CAD</li>` : ''}
         </ul>
       </div>
       
       ${data.specialRequests ? `
       <div class="details-box">
         <h3>💬 Special Requests</h3>
-        <p style="margin: 0;">${data.specialRequests}</p>
+        <p style="margin: 0;">${escapeHtmlMultiline(data.specialRequests)}</p>
       </div>
       ` : ''}
       
@@ -198,12 +200,6 @@ export const bookingConfirmationEN = (data: BookingEmailData): string => {
           <li>Get ready for an amazing creative experience!</li>
         </ol>
       </div>
-      
-      ${data.checkoutUrl ? `
-      <div style="text-align: center;">
-        <a href="${data.checkoutUrl}" class="button">Complete Payment</a>
-      </div>
-      ` : ''}
       
       <p><strong>Questions?</strong> Reply to this email or call us at <a href="tel:+14372608925" style="color: #D4A843;">+1 (437) 260-8925</a></p>
       
@@ -359,20 +355,20 @@ export const bookingConfirmationFR = (data: BookingEmailData): string => {
       <div class="details-box">
         <h3>📋 Détails de la Réservation</h3>
         <ul>
-          <li><strong>Service:</strong> ${data.service}</li>
-          <li><strong>Forfait:</strong> ${data.package}</li>
-          <li><strong>Date Préférée:</strong> ${data.preferredDate}</li>
-          <li><strong>Heure Préférée:</strong> ${data.preferredTime}</li>
-          <li><strong>Lieu:</strong> ${data.location}</li>
-          ${data.numberOfPeople ? `<li><strong>Nombre de Personnes:</strong> ${data.numberOfPeople}</li>` : ''}
-          <li><strong>Montant du Dépôt:</strong> ${data.amount} $ CAD</li>
+          <li><strong>Service:</strong> ${escapeHtml(data.service)}</li>
+          <li><strong>Forfait:</strong> ${escapeHtml(data.package)}</li>
+          <li><strong>Date Préférée:</strong> ${escapeHtml(data.preferredDate)}</li>
+          <li><strong>Heure Préférée:</strong> ${escapeHtml(data.preferredTime)}</li>
+          <li><strong>Lieu:</strong> ${escapeHtml(data.location)}</li>
+          ${data.numberOfPeople ? `<li><strong>Nombre de Personnes:</strong> ${escapeHtml(data.numberOfPeople)}</li>` : ''}
+          ${Number(data.amount) > 0 ? `<li><strong>Montant du Dépôt:</strong> ${escapeHtml(data.amount)} $ CAD</li>` : ''}
         </ul>
       </div>
       
       ${data.specialRequests ? `
       <div class="details-box">
         <h3>💬 Demandes Spéciales</h3>
-        <p style="margin: 0;">${data.specialRequests}</p>
+        <p style="margin: 0;">${escapeHtmlMultiline(data.specialRequests)}</p>
       </div>
       ` : ''}
       
@@ -385,12 +381,6 @@ export const bookingConfirmationFR = (data: BookingEmailData): string => {
           <li>Préparez-vous pour une expérience créative incroyable!</li>
         </ol>
       </div>
-      
-      ${data.checkoutUrl ? `
-      <div style="text-align: center;">
-        <a href="${data.checkoutUrl}" class="button">Compléter le Paiement</a>
-      </div>
-      ` : ''}
       
       <p><strong>Des questions?</strong> Répondez à cet email ou appelez-nous au <a href="tel:+14372608925" style="color: #D4A843;">+1 (437) 260-8925</a></p>
       
@@ -496,45 +486,47 @@ export const adminBookingNotification = (data: BookingEmailData): string => {
       <h2>Customer Information</h2>
       <div class="info-grid">
         <div class="info-label">Name:</div>
-        <div class="info-value">${data.customerName}</div>
+        <div class="info-value">${escapeHtml(data.customerName)}</div>
         
         <div class="info-label">Email:</div>
-        <div class="info-value"><a href="mailto:${data.customerEmail}">${data.customerEmail}</a></div>
+        <div class="info-value"><a href="mailto:${escapeHtmlAttr(data.customerEmail)}">${escapeHtml(data.customerEmail)}</a></div>
         
         <div class="info-label">Phone:</div>
-        <div class="info-value"><a href="tel:${data.customerPhone}">${data.customerPhone}</a></div>
+        <div class="info-value"><a href="tel:${escapeHtmlAttr(data.customerPhone)}">${escapeHtml(data.customerPhone)}</a></div>
       </div>
       
       <h2>Booking Details</h2>
       <div class="info-grid">
         <div class="info-label">Service:</div>
-        <div class="info-value"><strong>${data.service}</strong></div>
+        <div class="info-value"><strong>${escapeHtml(data.service)}</strong></div>
         
         <div class="info-label">Package:</div>
-        <div class="info-value">${data.package}</div>
+        <div class="info-value">${escapeHtml(data.package)}</div>
         
         <div class="info-label">Preferred Date:</div>
-        <div class="info-value"><strong>${data.preferredDate}</strong></div>
+        <div class="info-value"><strong>${escapeHtml(data.preferredDate)}</strong></div>
         
         <div class="info-label">Preferred Time:</div>
-        <div class="info-value"><strong>${data.preferredTime}</strong></div>
+        <div class="info-value"><strong>${escapeHtml(data.preferredTime)}</strong></div>
         
         <div class="info-label">Location:</div>
-        <div class="info-value">${data.location}</div>
+        <div class="info-value">${escapeHtml(data.location)}</div>
         
         ${data.numberOfPeople ? `
         <div class="info-label">Number of People:</div>
-        <div class="info-value">${data.numberOfPeople}</div>
+        <div class="info-value">${escapeHtml(data.numberOfPeople)}</div>
         ` : ''}
         
+        ${Number(data.amount) > 0 ? `
         <div class="info-label">Deposit Amount:</div>
-        <div class="info-value"><strong style="color: #2E7D32; font-size: 18px;">$${data.amount} CAD</strong></div>
+        <div class="info-value"><strong style="color: #2E7D32; font-size: 18px;">$${escapeHtml(data.amount)} CAD</strong></div>
+        ` : ''}
       </div>
       
       ${data.specialRequests ? `
       <h2>Special Requests</h2>
       <div style="background-color: #F8F9FA; padding: 15px; border-radius: 4px;">
-        ${data.specialRequests}
+        ${escapeHtmlMultiline(data.specialRequests)}
       </div>
       ` : ''}
       
@@ -619,35 +611,35 @@ export const adminContactNotification = (data: ContactEmailData): string => {
       <h2>Contact Information</h2>
       <div class="info-grid">
         <div class="info-label">Name:</div>
-        <div>${data.name}</div>
+        <div>${escapeHtml(data.name)}</div>
         
         <div class="info-label">Email:</div>
-        <div><a href="mailto:${data.email}">${data.email}</a></div>
+        <div><a href="mailto:${escapeHtmlAttr(data.email)}">${escapeHtml(data.email)}</a></div>
         
         ${data.phone ? `
         <div class="info-label">Phone:</div>
-        <div><a href="tel:${data.phone}">${data.phone}</a></div>
+        <div><a href="tel:${escapeHtmlAttr(data.phone)}">${escapeHtml(data.phone)}</a></div>
         ` : ''}
         
         ${data.service ? `
         <div class="info-label">Service:</div>
-        <div><strong>${data.service}</strong></div>
+        <div><strong>${escapeHtml(data.service)}</strong></div>
         ` : ''}
         
         ${data.budget ? `
         <div class="info-label">Budget:</div>
-        <div>${data.budget}</div>
+        <div>${escapeHtml(data.budget)}</div>
         ` : ''}
         
         ${data.timeline ? `
         <div class="info-label">Timeline:</div>
-        <div>${data.timeline}</div>
+        <div>${escapeHtml(data.timeline)}</div>
         ` : ''}
       </div>
       
       <h2>Message</h2>
       <div class="message-box">
-        ${data.message.replace(/\n/g, '<br>')}
+        ${escapeHtmlMultiline(data.message)}
       </div>
       
       <p style="margin-top: 30px;"><strong>⏰ Action Required:</strong> Respond within 24 hours</p>
@@ -717,35 +709,35 @@ export const adminCollaborationNotification = (data: CollaborationEmailData): st
       <h2>Partner Information</h2>
       <div class="info-grid">
         <div class="info-label">Name:</div>
-        <div>${data.name}</div>
+        <div>${escapeHtml(data.name)}</div>
         
         <div class="info-label">Email:</div>
-        <div><a href="mailto:${data.email}">${data.email}</a></div>
+        <div><a href="mailto:${escapeHtmlAttr(data.email)}">${escapeHtml(data.email)}</a></div>
         
         ${data.organization ? `
         <div class="info-label">Organization:</div>
-        <div><strong>${data.organization}</strong></div>
+        <div><strong>${escapeHtml(data.organization)}</strong></div>
         ` : ''}
         
         ${data.collaborationType ? `
         <div class="info-label">Collaboration Type:</div>
-        <div>${data.collaborationType}</div>
+        <div>${escapeHtml(data.collaborationType)}</div>
         ` : ''}
         
         ${data.timeline ? `
         <div class="info-label">Timeline:</div>
-        <div>${data.timeline}</div>
+        <div>${escapeHtml(data.timeline)}</div>
         ` : ''}
         
         ${data.budget ? `
         <div class="info-label">Budget:</div>
-        <div>${data.budget}</div>
+        <div>${escapeHtml(data.budget)}</div>
         ` : ''}
       </div>
       
       <h2>Project Description</h2>
       <div class="message-box">
-        ${data.projectDescription.replace(/\n/g, '<br>')}
+        ${escapeHtmlMultiline(data.projectDescription)}
       </div>
       
       <p style="margin-top: 30px;"><strong>⏰ Priority:</strong> Review and respond within 48 hours</p>

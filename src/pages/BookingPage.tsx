@@ -17,6 +17,7 @@ import { projectId, publicAnonKey } from '../utils/supabase/info';
 import { format } from 'date-fns';
 import { logger } from '../utils/logger';
 import { useLanguage } from '../context/LanguageContext';
+import { publicFormStatusMessage } from '../utils/publicFormStatus';
 
 export function BookingPage() {
   const navigate = useNavigate();
@@ -28,6 +29,7 @@ export function BookingPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [captchaReset, setCaptchaReset] = useState(0);
   const [formData, setFormData] = useState({
     service: initialService,
     package: '',
@@ -207,14 +209,24 @@ export function BookingPage() {
         }
       );
 
-      const data = await response.json();
-
       if (response.ok) {
         setIsSubmitted(true);
       } else {
-        throw new Error(data.error || 'Failed to submit booking');
+        setCaptchaToken(null);
+        setCaptchaReset((n) => n + 1);
+        const statusMessage = publicFormStatusMessage(response.status, fr);
+        if (statusMessage) {
+          toast.error(statusMessage);
+          return;
+        }
+        toast.error(fr ? "Échec de l'envoi de la réservation" : 'Failed to submit booking', {
+          description: fr ? 'Veuillez réessayer ou nous joindre directement.' : 'Please try again or contact us directly.'
+        });
+        return;
       }
     } catch {
+      setCaptchaToken(null);
+      setCaptchaReset((n) => n + 1);
       toast.error(fr ? "Échec de l'envoi de la réservation" : 'Failed to submit booking', {
         description: fr ? 'Veuillez réessayer ou nous joindre directement.' : 'Please try again or contact us directly.'
       });
@@ -655,7 +667,7 @@ export function BookingPage() {
                 <h2 className="text-2xl mb-6" style={{ color: '#121212' }}>
                   {fr ? 'Vérifiez votre réservation' : 'Verify Your Booking'}
                 </h2>
-                <Captcha onVerify={handleCaptchaVerify} onExpire={handleCaptchaExpire} onError={handleCaptchaError} />
+                <Captcha action="booking" resetNonce={captchaReset} onVerify={handleCaptchaVerify} onExpire={handleCaptchaExpire} onError={handleCaptchaError} />
               </div>
 
               {/* Submit Button */}
