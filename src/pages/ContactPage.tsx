@@ -11,7 +11,7 @@ import { MapPin, Phone, Mail, Clock, Star } from 'lucide-react';
 import { GOOGLE_REVIEW_URL } from '../config';
 import { motion } from 'motion/react';
 import { toast } from 'sonner';
-import { projectId, publicAnonKey } from '../utils/supabase/info';
+import { apiUrl } from '../utils/api';
 import { useLanguage } from '../context/LanguageContext';
 import { logger } from '../utils/logger';
 import { publicFormStatusMessage } from '../utils/publicFormStatus';
@@ -63,13 +63,14 @@ export function ContactPage() {
     setIsSubmitting(true);
 
     try {
+      const url = apiUrl('/submit-contact');
+      if (!url) throw new Error('API is not configured');
       const response = await fetch(
-        `https://${projectId}.supabase.co/functions/v1/make-server-feacf0d8/submit-contact`,
+        url,
         {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${publicAnonKey}`
           },
           body: JSON.stringify({ ...formData, captchaToken })
         }

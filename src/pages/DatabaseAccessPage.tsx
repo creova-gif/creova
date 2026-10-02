@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import { Database, ExternalLink, Copy, Code, FileText, Download, Search, BarChart3, Shield, CheckCircle } from 'lucide-react';
+import { Database, Copy, Code, FileText, Download, Search, BarChart3, CheckCircle } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { toast } from 'sonner';
@@ -16,121 +16,39 @@ export function DatabaseAccessPage() {
     {
       title: 'All Contact Forms',
       icon: FileText,
-      sql: `SELECT 
-  key,
-  value->>'name' as name,
-  value->>'email' as email,
-  value->>'service' as service,
-  value->>'status' as status,
-  value->>'created_at' as submitted_at
-FROM kv_store_feacf0d8 
-WHERE key LIKE 'contact_%' 
-ORDER BY created_at DESC;`
+      sql: "SELECT key,\n  json_extract(value, '$.name') AS name,\n  json_extract(value, '$.email') AS email,\n  json_extract(value, '$.service') AS service,\n  json_extract(value, '$.status') AS status,\n  updated_at\nFROM kv\nWHERE key >= 'contact_' AND key < 'contact`'\nORDER BY updated_at DESC;"
     },
     {
       title: 'All Collaboration Requests',
       icon: FileText,
-      sql: `SELECT 
-  key,
-  value->>'name' as name,
-  value->>'email' as email,
-  value->>'organization' as organization,
-  value->>'collaborationType' as type,
-  value->>'status' as status
-FROM kv_store_feacf0d8 
-WHERE key LIKE 'collaboration_%' 
-ORDER BY created_at DESC;`
+      sql: "SELECT key,\n  json_extract(value, '$.name') AS name,\n  json_extract(value, '$.email') AS email,\n  json_extract(value, '$.organization') AS organization,\n  json_extract(value, '$.status') AS status,\n  updated_at\nFROM kv\nWHERE key >= 'collaboration_' AND key < 'collaboration`'\nORDER BY updated_at DESC;"
     },
     {
-      title: 'All Shop Orders',
+      title: 'Bookings and Rentals',
       icon: BarChart3,
-      sql: `SELECT 
-  key,
-  value->'customer_info'->>'name' as customer,
-  value->'customer_info'->>'email' as email,
-  value->>'amount' as amount,
-  value->>'status' as status,
-  value->>'created_at' as order_date
-FROM kv_store_feacf0d8 
-WHERE key LIKE 'order_%' 
-ORDER BY created_at DESC;`
+      sql: "SELECT 'booking' AS source, COUNT(*) AS n FROM kv WHERE key >= 'booking_' AND key < 'booking`'\nUNION ALL\nSELECT 'rental', COUNT(*) FROM kv WHERE key >= 'rental_' AND key < 'rental`'\nUNION ALL\nSELECT 'contact', COUNT(*) FROM kv WHERE key >= 'contact_' AND key < 'contact`';"
     },
     {
-      title: 'All Event Tickets',
-      icon: BarChart3,
-      sql: `SELECT 
-  key,
-  value->>'ticket_code' as ticket_code,
-  value->'customer_info'->>'name' as customer,
-  value->>'quantity' as quantity,
-  value->>'total_amount' as amount,
-  value->>'status' as status
-FROM kv_store_feacf0d8 
-WHERE key LIKE 'ticket_%' 
-ORDER BY created_at DESC;`
-    },
-    {
-      title: 'All Memberships',
-      icon: Shield,
-      sql: `SELECT 
-  key,
-  value->>'member_number' as member_number,
-  value->>'membership_type' as type,
-  value->'customer_info'->>'name' as member_name,
-  value->'customer_info'->>'email' as email,
-  value->>'status' as status,
-  value->>'expires_at' as expires
-FROM kv_store_feacf0d8 
-WHERE key LIKE 'membership_%' 
-ORDER BY created_at DESC;`
-    },
-    {
-      title: 'Revenue Summary',
-      icon: BarChart3,
-      sql: `SELECT 
-  CASE 
-    WHEN key LIKE 'order_%' THEN 'Shop Orders'
-    WHEN key LIKE 'ticket_%' THEN 'Event Tickets'
-    WHEN key LIKE 'booking_%' THEN 'Bookings'
-    WHEN key LIKE 'rental_%' THEN 'Rentals'
-  END as source,
-  COUNT(*) as transactions,
-  SUM(CAST(value->>'amount' AS DECIMAL)) as total
-FROM kv_store_feacf0d8
-WHERE key LIKE 'order_%' 
-   OR key LIKE 'ticket_%' 
-   OR key LIKE 'booking_%'
-   OR key LIKE 'rental_%'
-GROUP BY source
-ORDER BY total DESC;`
-    },
-    {
-      title: 'Last 7 Days Activity',
+      title: 'Galleries',
       icon: Search,
-      sql: `SELECT * FROM kv_store_feacf0d8
-WHERE created_at >= NOW() - INTERVAL '7 days'
-ORDER BY created_at DESC;`
+      sql: "SELECT key, json_extract(value, '$.title') AS title, updated_at\nFROM kv\nWHERE key >= 'gallery_' AND key < 'gallery`'\nORDER BY key;"
     },
     {
-      title: 'Search by Email',
+      title: 'Search Contacts by Email',
       icon: Search,
-      sql: `SELECT * FROM kv_store_feacf0d8
-WHERE value::text LIKE '%customer@email.com%';
--- Replace with actual email`
+      sql: "SELECT key, value\nFROM kv\nWHERE key >= 'contact_' AND key < 'contact`'\n  AND json_extract(value, '$.email') = 'customer@example.com';"
     }
   ];
 
   const dataTypes = [
     { prefix: 'contact_', type: 'Contact Forms', color: '#D4A843' },
     { prefix: 'collaboration_', type: 'Collaboration Requests', color: '#B1643B' },
-    { prefix: 'order_', type: 'Shop Orders', color: '#D4A843' },
-    { prefix: 'ticket_', type: 'Event Tickets', color: '#B1643B' },
-    { prefix: 'membership_', type: 'Memberships', color: '#D4A843' },
-    { prefix: 'rental_', type: 'Equipment Rentals', color: '#B1643B' },
-    { prefix: 'digital_', type: 'Digital Products', color: '#D4A843' },
-    { prefix: 'notification_', type: 'Email Signups', color: '#B1643B' },
     { prefix: 'booking_', type: 'Service Bookings', color: '#D4A843' },
-    { prefix: 'preorder_', type: 'Pre-orders', color: '#B1643B' }
+    { prefix: 'rental_', type: 'Equipment Rentals', color: '#B1643B' },
+    { prefix: 'gallery_', type: 'Work Galleries', color: '#D4A843' },
+    { prefix: 'notification_', type: 'Email Signups', color: '#B1643B' },
+    { prefix: 'lead_magnet_', type: 'Lead Magnets', color: '#D4A843' },
+    { prefix: 'event_interest_', type: 'Event Interest', color: '#B1643B' }
   ];
 
   return (
@@ -155,20 +73,20 @@ WHERE value::text LIKE '%customer@email.com%';
                 </div>
                 <div>
                   <h1 className="text-3xl mb-1" style={{ color: '#121212' }}>
-                    Supabase Database Access
+                    D1 database
                   </h1>
                   <p style={{ color: '#777777' }}>
-                    Direct access to your CREOVA data
+                    Leads and galleries in the creova D1 table kv
                   </p>
                 </div>
               </div>
               <Button
-                onClick={() => window.open('https://supabase.com/dashboard', '_blank')}
+                onClick={() => copyToClipboard("npx wrangler d1 execute creova --remote --command \"SELECT key FROM kv LIMIT 5;\"", 'Command')}
                 className="flex items-center gap-2"
                 style={{ backgroundColor: '#121212' }}
               >
-                Open Supabase Dashboard
-                <ExternalLink className="w-4 h-4" />
+                Copy wrangler command
+                <Copy className="w-4 h-4" />
               </Button>
             </div>
           </div>
@@ -193,11 +111,11 @@ WHERE value::text LIKE '%customer@email.com%';
                   <div className="p-4 rounded-xl" style={{ backgroundColor: '#F8F9FA' }}>
                     <div className="text-sm mb-2" style={{ color: '#777777' }}>Database Table</div>
                     <div className="flex items-center justify-between gap-4">
-                      <code className="text-lg" style={{ color: '#121212' }}>kv_store_feacf0d8</code>
+                      <code className="text-lg" style={{ color: '#121212' }}>kv</code>
                       <Button
                         size="sm"
                         variant="outline"
-                        onClick={() => copyToClipboard('kv_store_feacf0d8', 'Table name')}
+                        onClick={() => copyToClipboard('kv', 'Table name')}
                       >
                         <Copy className="w-4 h-4" />
                       </Button>
@@ -205,15 +123,15 @@ WHERE value::text LIKE '%customer@email.com%';
                   </div>
 
                   <div className="p-4 rounded-xl" style={{ backgroundColor: '#F8F9FA' }}>
-                    <div className="text-sm mb-2" style={{ color: '#777777' }}>Dashboard URL</div>
+                    <div className="text-sm mb-2" style={{ color: '#777777' }}>Database</div>
                     <div className="flex items-center justify-between gap-4">
-                      <div className="text-sm" style={{ color: '#121212' }}>supabase.com/dashboard</div>
+                      <div className="text-sm" style={{ color: '#121212' }}>D1 creova</div>
                       <Button
                         size="sm"
                         variant="outline"
-                        onClick={() => window.open('https://supabase.com/dashboard', '_blank')}
+                        onClick={() => copyToClipboard('creova', 'Database name')}
                       >
-                        <ExternalLink className="w-4 h-4" />
+                        <Copy className="w-4 h-4" />
                       </Button>
                     </div>
                   </div>
@@ -228,11 +146,11 @@ WHERE value::text LIKE '%customer@email.com%';
                     <div>
                       <div className="mb-1" style={{ color: '#121212' }}>How to Access:</div>
                       <ol className="text-sm space-y-1 list-decimal list-inside" style={{ color: '#777777' }}>
-                        <li>Go to supabase.com/dashboard</li>
-                        <li>Login to your account</li>
-                        <li>Select your CREOVA project</li>
-                        <li>Click "Table Editor" in left sidebar</li>
-                        <li>Open "kv_store_feacf0d8" table</li>
+                        <li>From workers/api, run npx wrangler login</li>
+                        <li>Run npx wrangler d1 execute creova --remote</li>
+                        <li>Or open the Cloudflare dashboard, D1, database creova, Console</li>
+                        <li>Query the kv table with a primary-key range, not LIKE</li>
+                        <li>Shop, ticket, and membership rows are not written. Those routes return 410</li>
                       </ol>
                     </div>
                   </div>
@@ -351,47 +269,46 @@ WHERE value::text LIKE '%customer@email.com%';
               <CardContent>
                 <div className="grid md:grid-cols-3 gap-4">
                   <a
-                    href="https://supabase.com/docs"
+                    href="https://developers.cloudflare.com/d1/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="p-4 rounded-xl border-2 hover:shadow-md transition-all"
                     style={{ borderColor: '#E0E0E0' }}
                   >
                     <Code className="w-6 h-6 mb-2" style={{ color: '#D4A843' }} />
-                    <div className="mb-1" style={{ color: '#121212' }}>Supabase Docs</div>
+                    <div className="mb-1" style={{ color: '#121212' }}>D1 docs</div>
                     <div className="text-sm" style={{ color: '#777777' }}>
-                      Complete documentation
+                      Cloudflare D1
                     </div>
                   </a>
 
                   <a
-                    href="https://supabase.com/docs/guides/database/overview"
+                    href="https://developers.cloudflare.com/d1/worker-api/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="p-4 rounded-xl border-2 hover:shadow-md transition-all"
                     style={{ borderColor: '#E0E0E0' }}
                   >
                     <Database className="w-6 h-6 mb-2" style={{ color: '#B1643B' }} />
-                    <div className="mb-1" style={{ color: '#121212' }}>SQL Reference</div>
+                    <div className="mb-1" style={{ color: '#121212' }}>Worker API</div>
                     <div className="text-sm" style={{ color: '#777777' }}>
-                      Learn SQL queries
+                      Prepared statements
                     </div>
                   </a>
 
-                  <button
-                    onClick={() => {
-                      window.open('https://supabase.com/docs/guides/database/overview', '_blank');
-                      toast.success('Opening documentation in new tab');
-                    }}
-                    className="p-4 rounded-xl border-2 hover:shadow-md transition-all text-left"
+                  <a
+                    href="https://developers.cloudflare.com/d1/platform/pricing/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-4 rounded-xl border-2 hover:shadow-md transition-all"
                     style={{ borderColor: '#E0E0E0' }}
                   >
                     <Download className="w-6 h-6 mb-2" style={{ color: '#D4A843' }} />
-                    <div className="mb-1" style={{ color: '#121212' }}>Full Guide</div>
+                    <div className="mb-1" style={{ color: '#121212' }}>Free-tier limits</div>
                     <div className="text-sm" style={{ color: '#777777' }}>
-                      View complete documentation
+                      Rows read and written
                     </div>
-                  </button>
+                  </a>
                 </div>
               </CardContent>
             </Card>
