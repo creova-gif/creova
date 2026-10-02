@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "wrangler dev --local",
-    "test": "vitest run && vitest run --config vitest.local.config.ts && vitest run --config vitest.dummy.config.ts",
+    "test": "vitest run && vitest run --config vitest.local.config.ts && vitest run --config vitest.dummy.config.ts && vitest run --config vitest.admin-unconfigured.config.ts",
     "typecheck": "wrangler types && tsc --noEmit",
     "cf-typegen": "wrangler types"
   },

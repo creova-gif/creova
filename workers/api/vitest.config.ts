@@ -15,7 +15,11 @@ export default defineConfig({
   ],
   test: {
     include: ["test/**/*.test.ts"],
-    exclude: ["test/local-skip.test.ts", "test/dummy-secret.test.ts"],
+    exclude: [
+      "test/local-skip.test.ts",
+      "test/dummy-secret.test.ts",
+      "test/admin-unconfigured.test.ts",
+    ],
     setupFiles: ["./test/setup.ts"],
   },
 });

@@ -5,6 +5,7 @@ import { Lock, ArrowRight, Mail, CheckCircle2 } from 'lucide-react';
 import { Input } from './ui/input';
 import { toast } from 'sonner';
 import { apiUrl } from '../utils/api';
+import { Captcha } from './Captcha';
 
 const warmGradient = 'linear-gradient(135deg, #D4A843 0%, #B1643B 100%)';
 const LAUNCH_DATE = new Date('2026-11-01T00:00:00');
@@ -110,11 +111,17 @@ export function FallDropTeaser() {
   const [email, setEmail] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [captchaReset, setCaptchaReset] = useState(0);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       toast.error('Enter a valid email address');
+      return;
+    }
+    if (!captchaToken) {
+      toast.error('Please complete the CAPTCHA verification');
       return;
     }
     setSubmitting(true);
@@ -132,11 +139,14 @@ export function FallDropTeaser() {
             leadMagnetId: 'fw2026_waitlist',
             leadMagnetTitle: 'CREOVA FW 2026 Early Access',
             subscribedAt: new Date().toISOString(),
+            captchaToken,
           }),
         }
       );
       setSubmitted(true);
       setEmail('');
+      setCaptchaToken(null);
+      setCaptchaReset((n) => n + 1);
     } catch {
       toast.error('Something went wrong — try again.');
     } finally {
@@ -352,10 +362,11 @@ export function FallDropTeaser() {
               <motion.form
                 key="form"
                 onSubmit={handleSubmit}
-                className="flex flex-col sm:flex-row gap-2"
+                className="flex flex-col gap-3"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
               >
+                <div className="flex flex-col sm:flex-row gap-2">
                 <div className="relative flex-1">
                   <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5" style={{ color: 'rgba(212,168,67,0.5)' }} />
                   <Input
@@ -381,6 +392,15 @@ export function FallDropTeaser() {
                   {submitting ? 'Joining…' : 'Get Early Access'}
                   {!submitting && <ArrowRight className="w-3.5 h-3.5" />}
                 </button>
+                </div>
+                <Captcha
+                  action="lead-magnet"
+                  theme="dark"
+                  resetNonce={captchaReset}
+                  onVerify={setCaptchaToken}
+                  onExpire={() => setCaptchaToken(null)}
+                  onError={() => setCaptchaToken(null)}
+                />
               </motion.form>
             )}
           </AnimatePresence>

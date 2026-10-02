@@ -18,7 +18,7 @@ jobs:
       - run: npm run typecheck
       - run: npm run build
       - name: Run guard tests
-        run: node --experimental-strip-types --test src/supabase/functions/server/guards.test.ts workers/api/src/guards.test.ts
+        run: node --experimental-strip-types --test src/supabase/functions/server/guards.test.ts workers/api/src/guards.test.ts workers/api/src/analytics.test.ts
       - name: Install worker dependencies
         working-directory: workers/api
         run: npm ci

@@ -14,6 +14,8 @@ export default defineConfig({
           ADMIN_SESSION_SECRET: "test-admin-session-secret",
           CREOVA_ENV: "test",
           TURNSTILE_SECRET_KEY: "1x0000000000000000000000000000000AA",
+          EMAIL_SERVICE_API_KEY: "re_test_key",
+          AIRTABLE_API_KEY: "pat_test_key",
         },
       },
     }),
