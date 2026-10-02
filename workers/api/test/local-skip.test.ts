@@ -71,6 +71,19 @@ describe("local captcha skip", () => {
     expect(await contact.json()).toEqual({ error: "Security verification is not configured" });
   });
 
+  it("stores event interest in Airtable and does not email", async () => {
+    const before = calls.length;
+    const res = await postJson(
+      "/make-server-feacf0d8/subscribe-event-interest",
+      { email: "ada@creova.one", eventId: "fall-brand-photography", eventName: "Workshop" },
+      "203.0.113.66",
+    );
+    expect(res.status).toBe(200);
+    const sent = calls.slice(before);
+    expect(sent.some((url) => url.startsWith("https://api.airtable.com"))).toBe(true);
+    expect(sent.some((url) => url.startsWith("https://api.resend.com"))).toBe(false);
+  });
+
   it("still emails and syncs Airtable when the D1 write fails", async () => {
     await env.DB.prepare("DROP TABLE kv").run();
     const before = calls.length;

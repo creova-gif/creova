@@ -194,7 +194,7 @@ const rateLimit = (maxRequests: number, windowMs: number) => {
     const key = `${ip}:${c.req.path}`;
     const allowed = consumeRateLimit(rateLimitMap, key, now, maxRequests, windowMs);
     if (!allowed) {
-      console.log(`Rate limit exceeded for ${ip} on ${c.req.path}`);
+      console.log(`Rate limit exceeded on ${c.req.path}`);
       return c.json({ error: "Too many requests. Please try again later." }, 429);
     }
 
@@ -661,7 +661,8 @@ app.post("/make-server-feacf0d8/subscribe-lead-magnet", rateLimit(3, 60000), asy
 
 // Subscribe to event interest (teaser events page — /experience). Twelve
 // cards share this route, so it uses length caps and a per-IP daily cap
-// instead of a Turnstile widget on every card.
+// instead of a Turnstile widget on every card. It does not send email:
+// Resend's free quota is reserved for Turnstile-gated forms.
 app.post("/make-server-feacf0d8/subscribe-event-interest", rateLimit(5, 60000), async (c) => {
   try {
     const parsedBody = await readBoundedJson(c, SIGNUP_BODY_MAX);
@@ -699,11 +700,6 @@ app.post("/make-server-feacf0d8/subscribe-event-interest", rateLimit(5, 60000), 
       "Submitted At": new Date().toISOString(), Source: "experience-page",
       "Supabase Record ID": interestId,
     }));
-    deferAdminNotice(
-      c,
-      `Event interest: ${oneLine(eventName.value || eventId.value || "general")}`,
-      `<p>Event interest ${escapeHtml(interestId)}</p><p>${escapeHtml(email)}</p>`,
-    );
 
     return c.json({
       status: "success",
