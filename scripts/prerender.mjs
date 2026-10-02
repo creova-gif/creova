@@ -161,7 +161,7 @@ async function main() {
 
   await loadGalleries();
 
-  const { render } = await import(join(buildDir, 'server', 'entry-server.js'));
+  const { render } = await import(join(root, '.ssr', 'entry-server.js'));
 
   let failed = 0;
   for (const route of ROUTES) {
