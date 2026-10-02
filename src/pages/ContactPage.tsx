@@ -76,22 +76,9 @@ export function ContactPage() {
       const data = await response.json();
 
       if (response.ok) {
-        // Send admin notification email
-        try {
-          await fetch(
-            `https://${projectId}.supabase.co/functions/v1/make-server-feacf0d8/send-contact-notification`,
-            {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${publicAnonKey}`
-              },
-              body: JSON.stringify(formData)
-            }
-          );
-        } catch {
-          // Don't block success message if email notification fails
-        }
+        // The submission handler sends the notification after it verifies
+        // the captcha token. A second public email call would reuse a
+        // single-use token and was an unauthenticated mail route.
 
         toast.success(t('contact.form.success.title'), {
           description: t('contact.form.success.description')

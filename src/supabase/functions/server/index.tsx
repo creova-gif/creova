@@ -2,6 +2,15 @@ import { Hono } from "npm:hono";
 import { cors } from "npm:hono/cors";
 import { logger } from "npm:hono/logger";
 import * as kv from "./kv_store.tsx";
+import {
+  catalogUnitCents,
+  escapeHtml,
+  isUsableTurnstileSecret,
+  oneLine,
+  parseAllowedOrigins,
+  resolveChargeCents,
+  turnstileGate,
+} from "./guards.ts";
 
 const app = new Hono();
 
@@ -56,6 +65,38 @@ const rateLimit = (maxRequests: number, windowMs: number) => {
     await next();
   };
 };
+
+// Turnstile: verify the token with the secret. Missing secret fails closed
+// unless CREOVA_ENV / ENVIRONMENT is an explicit local/dev value.
+async function requireTurnstile(token: unknown): Promise<{ ok: true } | { ok: false; status: number; error: string }> {
+  const rawSecret = Deno.env.get("TURNSTILE_SECRET_KEY") ?? "";
+  const environment = Deno.env.get("CREOVA_ENV") || Deno.env.get("ENVIRONMENT") || "";
+  const gate = turnstileGate({
+    secretConfigured: isUsableTurnstileSecret(rawSecret),
+    environment,
+    token,
+  });
+  if (gate.action === "reject") {
+    console.error(gate.error);
+    return { ok: false, status: gate.status, error: gate.error };
+  }
+  if (gate.action === "skip") return { ok: true };
+
+  const verifyResponse = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({
+      secret: rawSecret.trim(),
+      response: String(token),
+    }),
+  });
+  const verifyData = await verifyResponse.json().catch(() => ({ success: false }));
+  if (!verifyData.success) {
+    console.log("Turnstile verification failed:", verifyData);
+    return { ok: false, status: 400, error: "Security verification failed. Please try again." };
+  }
+  return { ok: true };
+}
 
 // ---------------------------------------------------------------------------
 // Security: Admin session tokens
@@ -236,97 +277,9 @@ const MEMBERSHIP_PRICING: Record<string, { price: number; name: string }> = {
   legacy: { price: 49900, name: "CREOVA Legacy Membership" }, // $499 CAD in cents
 };
 
-// ---------------------------------------------------------------------------
-// Security: server-side cart pricing catalog
-//
-// create-payment-intent used to forward whatever "amount" the client sent
-// straight to Stripe — anyone could edit the request and pay any price they
-// wanted. This mirrors the real per-item prices from src/pages/ShopPage.tsx
-// and src/pages/DigitalProductsPage.tsx so cart totals can be recomputed and
-// verified server-side instead of trusted blindly.
-//
-// Known limitation: this covers Shop + Digital Product SKUs only. Service
-// bookings and rentals still don't have a server-side price catalog (their
-// prices live only as page copy, not structured data) — create-payment-intent
-// falls back to a sanity-bound check for those, not an exact-match one. That
-// gap is tracked as a follow-up, not silently ignored.
-// ---------------------------------------------------------------------------
-const PRODUCT_CATALOG: Record<string, number> = {
-  // Shop — src/pages/ShopPage.tsx
-  "graphic-tee-soft-power": 55,
-  "graphic-tee-visibility": 55,
-  "graphic-tee-resistance": 55,
-  "graphic-tee-diaspora": 55,
-  "graphic-tee-archive": 58,
-  "graphic-tee-community": 55,
-  "longsleeve-archive": 60,
-  "longsleeve-heritage": 60,
-  "oversized-hoodie-earth": 85,
-  "crewneck-visibility": 78,
-  "hoodie-soft-power": 85,
-  "crewneck-archive": 78,
-  "varsity-jacket-premium": 175,
-  "windbreaker-light": 120,
-  "bomber-jacket": 165,
-  "cargo-pants-utility": 95,
-  "jogger-pants-comfort": 85,
-  "tracksuit-set-archive": 135,
-  "tracksuit-set-heritage": 145,
-  "bucket-hat-seen": 38,
-  "dad-hat-logo": 32,
-  "beanie-winter": 28,
-  "canvas-tote-archive": 45,
-  "fanny-pack-utility": 48,
-  "crew-socks-archive": 18,
-  "ankle-socks-essential": 15,
-  "phone-case-leather": 35,
-  "ipad-case-sleeve": 52,
-  "laptop-sleeve-13": 65,
-  "laptop-sleeve-15": 72,
-  "keychain-metal": 22,
-  "keychain-leather": 28,
-  // Digital products — src/pages/DigitalProductsPage.tsx
-  "brand-kit-template": 69,
-  "social-media-templates": 42,
-  "content-calendar": 28,
-  "pricing-guide-template": 55,
-  "lightroom-presets": 48,
-  "video-intro-templates": 65,
-  "client-onboarding-kit": 82,
-  "brand-strategy-workbook": 35,
-  "email-marketing-templates": 52,
-};
-
-const HST_RATE = 0.13; // Ontario
-const FREE_SHIPPING_THRESHOLD = 100;
-const FLAT_SHIPPING = 15;
-
-/**
- * Recomputes a cart total from the trusted catalog above. Returns
- * allRecognized: false if any item isn't in the catalog (e.g. a service
- * booking) — callers should treat that as "can't verify," not "verified,"
- * and fall back to a sanity-bound check instead of blocking the purchase.
- */
-function computeTrustedCartTotalCents(items: unknown): { totalCents: number; allRecognized: boolean } {
-  if (!Array.isArray(items) || items.length === 0) {
-    return { totalCents: 0, allRecognized: false };
-  }
-  let subtotal = 0;
-  let allRecognized = true;
-  for (const item of items as any[]) {
-    const price = PRODUCT_CATALOG[item?.id];
-    const qty = Number(item?.quantity) > 0 ? Number(item.quantity) : 1;
-    if (typeof price !== "number") {
-      allRecognized = false;
-      continue;
-    }
-    subtotal += price * qty;
-  }
-  if (!allRecognized) return { totalCents: 0, allRecognized: false };
-  const hst = subtotal * HST_RATE;
-  const shipping = subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : FLAT_SHIPPING;
-  return { totalCents: Math.round((subtotal + hst + shipping) * 100), allRecognized: true };
-}
+// Cart prices live in ./guards.ts (PRODUCT_CATALOG). create-payment-intent
+// charges that total only. Unrecognized items are rejected — client `amount`
+// and client `price` are never forwarded to Stripe.
 
 // Security: Add security headers middleware
 app.use('*', async (c, next) => {
@@ -360,12 +313,16 @@ app.use('*', async (c, next) => {
 // Enable logger
 app.use('*', logger(console.log));
 
-// Enable CORS for all routes and methods
+// Browser callers are limited to the production site. Override with
+// ALLOWED_ORIGINS (comma-separated) on the function. A wildcard is ignored.
 app.use(
   "/*",
   cors({
-    origin: "*",
-    allowHeaders: ["Content-Type", "Authorization"],
+    origin: (origin) => {
+      const allowed = parseAllowedOrigins(Deno.env.get("ALLOWED_ORIGINS"));
+      return origin && allowed.includes(origin) ? origin : "";
+    },
+    allowHeaders: ["Content-Type", "Authorization", "X-Admin-Session"],
     allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     exposeHeaders: ["Content-Length"],
     maxAge: 600,
@@ -602,23 +559,21 @@ app.post("/make-server-feacf0d8/create-ticket", async (c) => {
 app.post("/make-server-feacf0d8/create-payment-intent", rateLimit(10, 60000), async (c) => {
   try {
     const body = await c.req.json();
-    const { amount, currency, customer_info, items } = body;
+    const { amount, customer_info, items } = body;
 
-    // Never trust a non-positive or absurd amount, regardless of whether the
-    // cart contents are recognizable below.
-    if (typeof amount !== "number" || !Number.isFinite(amount) || amount <= 0 || amount > 10_000_000) {
-      return c.json({ error: "Invalid amount" }, 400);
+    // Charge the catalog total. Client `amount` and per-item `price` are not
+    // used. Anything the catalog cannot price is rejected.
+    const priced = resolveChargeCents(amount, items);
+    if (!priced.ok) {
+      console.warn(`Rejected payment intent: ${priced.error}`);
+      return c.json({ error: priced.error }, 400);
     }
-
-    // Where every cart item is a known Shop/Digital Product SKU, recompute
-    // the total from the trusted catalog and reject a mismatch outright —
-    // this is the real fix for "the customer sets their own price." Carts
-    // containing a service/booking item (no catalog entry) fall back to the
-    // sanity bound above only; see the PRODUCT_CATALOG comment for why.
-    const { totalCents: trustedCents, allRecognized } = computeTrustedCartTotalCents(items);
-    if (allRecognized && Math.abs(trustedCents - Math.round(amount)) > 1) {
-      console.warn(`Rejected payment intent: client sent ${amount}, trusted total is ${trustedCents}`);
-      return c.json({ error: "Order total does not match the current prices" }, 400);
+    const chargeCents = priced.totalCents;
+    const customer = customer_info && typeof customer_info === "object" ? customer_info : {};
+    const customerName = typeof customer.name === "string" ? oneLine(customer.name) : "";
+    const customerEmail = typeof customer.email === "string" ? oneLine(customer.email) : "";
+    if (!customerName || !customerEmail) {
+      return c.json({ error: "Customer name and email are required" }, 400);
     }
 
     // Get Stripe secret key from environment
@@ -637,12 +592,19 @@ app.post("/make-server-feacf0d8/create-payment-intent", rateLimit(10, 60000), as
         "Content-Type": "application/x-www-form-urlencoded",
       },
       body: new URLSearchParams({
-        amount: amount.toString(),
-        currency: currency,
+        amount: String(chargeCents),
+        currency: "cad",
         "automatic_payment_methods[enabled]": "true",
-        "metadata[customer_name]": customer_info.name,
-        "metadata[customer_email]": customer_info.email,
-        "metadata[order_items]": JSON.stringify(items),
+        "metadata[customer_name]": customerName,
+        "metadata[customer_email]": customerEmail,
+        "metadata[order_items]": JSON.stringify(
+          Array.isArray(items)
+            ? items.map((item: { id?: unknown; quantity?: unknown }) => ({
+                id: typeof item?.id === "string" ? item.id : "",
+                quantity: typeof item?.quantity === "number" ? item.quantity : 1,
+              }))
+            : []
+        ),
       }),
     });
 
@@ -657,10 +619,16 @@ app.post("/make-server-feacf0d8/create-payment-intent", rateLimit(10, 60000), as
     const orderId = `order_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     await kv.set(orderId, {
       payment_intent_id: paymentIntent.id,
-      amount,
-      currency,
+      amount: chargeCents,
+      currency: "cad",
       customer_info,
-      items,
+      items: Array.isArray(items)
+        ? items.map((item: { id?: unknown; quantity?: unknown }) => ({
+            id: typeof item?.id === "string" ? item.id : "",
+            quantity: typeof item?.quantity === "number" ? item.quantity : 1,
+            unitPriceCents: typeof item?.id === "string" ? catalogUnitCents(item.id) : null,
+          }))
+        : [],
       status: 'pending',
       created_at: new Date().toISOString()
     });
@@ -804,11 +772,14 @@ app.post("/make-server-feacf0d8/purchase-digital-product", async (c) => {
     const body = await c.req.json();
     const { product_id, customer_info, amount, payment_intent_id } = body;
 
-    // Confirm real money actually moved before handing out a download token.
-    // No trusted catalog exists for digital-product pricing yet, so we can
-    // only verify the payment succeeded, not that the amount was correct —
-    // see create-payment-intent for the same limitation.
-    const paymentCheck = await verifyStripePaymentSucceeded(payment_intent_id);
+    // The download token requires a succeeded PaymentIntent for this SKU's
+    // catalog unit price in cents. Checkout charges tax and shipping on top,
+    // so a cart PaymentIntent will not satisfy this route — that is intentional.
+    const expectedCents = catalogUnitCents(product_id);
+    if (expectedCents === null) {
+      return c.json({ error: "Unknown product" }, 400);
+    }
+    const paymentCheck = await verifyStripePaymentSucceeded(payment_intent_id, expectedCents);
     if (!paymentCheck.ok) {
       return c.json({ error: paymentCheck.error }, 402);
     }
@@ -1104,7 +1075,7 @@ app.post("/make-server-feacf0d8/create-subscription-checkout", rateLimit(5, 6000
 });
 
 // Submit contact form
-app.post("/make-server-feacf0d8/submit-contact", async (c) => {
+app.post("/make-server-feacf0d8/submit-contact", rateLimit(5, 60000), async (c) => {
   try {
     const body = await c.req.json();
     const { name, email, phone, service, message, budget, timeline, captchaToken } = body;
@@ -1113,28 +1084,9 @@ app.post("/make-server-feacf0d8/submit-contact", async (c) => {
       return c.json({ error: "Name, email, and message are required" }, 400);
     }
 
-    // Server-side Cloudflare Turnstile verification
-    const turnstileSecretKey = Deno.env.get("TURNSTILE_SECRET_KEY");
-    if (turnstileSecretKey) {
-      if (!captchaToken) {
-        return c.json({ error: "Security verification required" }, 400);
-      }
-      const verifyResponse = await fetch(
-        'https://challenges.cloudflare.com/turnstile/v0/siteverify',
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: new URLSearchParams({
-            secret: turnstileSecretKey,
-            response: captchaToken,
-          }),
-        }
-      );
-      const verifyData = await verifyResponse.json();
-      if (!verifyData.success) {
-        console.log('Turnstile verification failed for contact form:', verifyData);
-        return c.json({ error: "Security verification failed. Please try again." }, 400);
-      }
+    const captcha = await requireTurnstile(captchaToken);
+    if (!captcha.ok) {
+      return c.json({ error: captcha.error }, captcha.status);
     }
 
     const contactId = `contact_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
@@ -1173,9 +1125,9 @@ app.post("/make-server-feacf0d8/submit-contact", async (c) => {
               headers: { 'Authorization': `Bearer ${emailApiKey}`, 'Content-Type': 'application/json' },
               body: JSON.stringify({
                 from: 'CREOVA <support@creova.one>',
-                to: [email],
+                to: [oneLine(email)],
                 subject: "We've received your message — CREOVA",
-                html: `<div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#121212"><h2 style="color:#D4A843">Thanks for reaching out, ${name}!</h2><p>We've received your message and will get back to you within 1–2 business days.</p><p style="color:#777777;font-size:14px">In the meantime, follow us on Instagram <a href="https://www.instagram.com/creativeinnovation__" style="color:#D4A843">@creativeinnovation__</a></p><p>— The CREOVA Team</p></div>`
+                html: `<div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#121212"><h2 style="color:#D4A843">Thanks for reaching out, ${escapeHtml(name)}!</h2><p>We've received your message and will get back to you within 1–2 business days.</p><p style="color:#777777;font-size:14px">In the meantime, follow us on Instagram <a href="https://www.instagram.com/creativeinnovation__" style="color:#D4A843">@creativeinnovation__</a></p><p>— The CREOVA Team</p></div>`
               })
             }),
             fetch('https://api.resend.com/emails', {
@@ -1184,9 +1136,9 @@ app.post("/make-server-feacf0d8/submit-contact", async (c) => {
               body: JSON.stringify({
                 from: 'CREOVA <support@creova.one>',
                 to: ['support@creova.one'],
-                subject: `📧 New Contact: ${service || 'General Inquiry'} — ${name}`,
+                subject: `📧 New Contact: ${oneLine(service || 'General Inquiry')} — ${oneLine(name)}`,
                 html: adminContactNotification(contactEmailData),
-                reply_to: email
+                reply_to: oneLine(email)
               })
             })
           ]);
@@ -1208,13 +1160,18 @@ app.post("/make-server-feacf0d8/submit-contact", async (c) => {
 });
 
 // Submit collaboration form
-app.post("/make-server-feacf0d8/submit-collaboration", async (c) => {
+app.post("/make-server-feacf0d8/submit-collaboration", rateLimit(5, 60000), async (c) => {
   try {
     const body = await c.req.json();
-    const { name, email, organization, collaborationType, projectDescription, timeline, budget } = body;
+    const { name, email, organization, collaborationType, projectDescription, timeline, budget, captchaToken } = body;
 
     if (!name || !email || !projectDescription) {
       return c.json({ error: "Name, email, and project description are required" }, 400);
+    }
+
+    const captcha = await requireTurnstile(captchaToken);
+    if (!captcha.ok) {
+      return c.json({ error: captcha.error }, captcha.status);
     }
 
     const collaborationId = `collaboration_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
@@ -1241,6 +1198,30 @@ app.post("/make-server-feacf0d8/submit-collaboration", async (c) => {
       "Supabase Record ID": collaborationId,
     });
 
+    const emailApiKey = Deno.env.get('EMAIL_SERVICE_API_KEY');
+    if (emailApiKey) {
+      const collaborationEmailData: CollaborationEmailData = {
+        name, email, organization, collaborationType, projectDescription, timeline, budget,
+      };
+      (async () => {
+        try {
+          await fetch('https://api.resend.com/emails', {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${emailApiKey}`, 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              from: 'CREOVA <support@creova.one>',
+              to: ['support@creova.one'],
+              subject: `🤝 New Collaboration Request: ${oneLine(organization || name)}`,
+              html: adminCollaborationNotification(collaborationEmailData),
+              reply_to: oneLine(email),
+            }),
+          });
+        } catch (e) {
+          console.error('Failed to send collaboration email:', e);
+        }
+      })();
+    }
+
     return c.json({
       collaborationId,
       status: 'success',
@@ -1253,7 +1234,7 @@ app.post("/make-server-feacf0d8/submit-collaboration", async (c) => {
 });
 
 // Submit booking form
-app.post("/make-server-feacf0d8/submit-booking", async (c) => {
+app.post("/make-server-feacf0d8/submit-booking", rateLimit(5, 60000), async (c) => {
   try {
     const body = await c.req.json();
     const { 
@@ -1277,31 +1258,9 @@ app.post("/make-server-feacf0d8/submit-booking", async (c) => {
       return c.json({ error: "Service, name, email, and phone are required" }, 400);
     }
 
-    // Verify Cloudflare Turnstile token
-    if (captchaToken) {
-      const turnstileSecretKey = Deno.env.get("TURNSTILE_SECRET_KEY");
-
-      if (turnstileSecretKey) {
-        const verifyResponse = await fetch(
-          'https://challenges.cloudflare.com/turnstile/v0/siteverify',
-          {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: new URLSearchParams({
-              secret: turnstileSecretKey,
-              response: captchaToken,
-            }),
-          }
-        );
-        const verifyData = await verifyResponse.json();
-        if (!verifyData.success) {
-          console.log('Turnstile verification failed:', verifyData);
-          return c.json({ error: "Security verification failed. Please try again." }, 400);
-        }
-        console.log('Turnstile verification successful');
-      } else {
-        console.warn('TURNSTILE_SECRET_KEY not configured - skipping verification');
-      }
+    const captcha = await requireTurnstile(captchaToken);
+    if (!captcha.ok) {
+      return c.json({ error: captcha.error }, captcha.status);
     }
 
     const bookingId = `booking_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
@@ -1350,7 +1309,7 @@ app.post("/make-server-feacf0d8/submit-booking", async (c) => {
               headers: { 'Authorization': `Bearer ${emailApiKey}`, 'Content-Type': 'application/json' },
               body: JSON.stringify({
                 from: 'CREOVA Bookings <bookings@creova.one>',
-                to: [email],
+                to: [oneLine(email)],
                 subject: 'Booking Request Received — CREOVA',
                 html: getBookingConfirmationTemplate('en', emailData)
               })
@@ -1361,9 +1320,9 @@ app.post("/make-server-feacf0d8/submit-booking", async (c) => {
               body: JSON.stringify({
                 from: 'CREOVA <support@creova.one>',
                 to: ['support@creova.one'],
-                subject: `🎬 New Booking: ${service} — ${name}`,
+                subject: `🎬 New Booking: ${oneLine(service)} — ${oneLine(name)}`,
                 html: adminBookingNotification(emailData),
-                reply_to: email
+                reply_to: oneLine(email)
               })
             })
           ]);
@@ -1385,7 +1344,7 @@ app.post("/make-server-feacf0d8/submit-booking", async (c) => {
 });
 
 // Submit rental form
-app.post("/make-server-feacf0d8/submit-rental", async (c) => {
+app.post("/make-server-feacf0d8/submit-rental", rateLimit(5, 60000), async (c) => {
   try {
     const body = await c.req.json();
     const { 
@@ -1403,11 +1362,17 @@ app.post("/make-server-feacf0d8/submit-rental", async (c) => {
       purpose,
       specialRequests,
       hasInsurance,
-      submittedAt
+      submittedAt,
+      captchaToken
     } = body;
 
     if (!equipment || equipment.length === 0 || !name || !email || !phone || !startDate || !endDate) {
       return c.json({ error: "Equipment, name, email, phone, and rental dates are required" }, 400);
+    }
+
+    const captcha = await requireTurnstile(captchaToken);
+    if (!captcha.ok) {
+      return c.json({ error: captcha.error }, captcha.status);
     }
 
     const rentalId = `rental_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
@@ -2015,7 +1980,7 @@ import {
 } from "./email-templates.tsx";
 
 // Send booking confirmation email
-app.post("/make-server-feacf0d8/send-booking-confirmation", async (c) => {
+app.post("/make-server-feacf0d8/send-booking-confirmation", rateLimit(5, 60000), requireAdmin, async (c) => {
   try {
     const body = await c.req.json();
     const { to, bookingDetails, amount, language, checkoutUrl } = body;
@@ -2088,7 +2053,7 @@ app.post("/make-server-feacf0d8/send-booking-confirmation", async (c) => {
       body: JSON.stringify({
         from: 'CREOVA <support@creova.one>',
         to: ['support@creova.one'],
-        subject: `🎬 New Booking: ${bookingDetails.service} - ${bookingDetails.name}`,
+        subject: `🎬 New Booking: ${oneLine(bookingDetails.service)} - ${oneLine(bookingDetails.name)}`,
         html: adminEmailHtml,
         reply_to: to
       })
@@ -2119,7 +2084,7 @@ app.post("/make-server-feacf0d8/send-booking-confirmation", async (c) => {
 });
 
 // Send contact form notification email (admin only)
-app.post("/make-server-feacf0d8/send-contact-notification", async (c) => {
+app.post("/make-server-feacf0d8/send-contact-notification", rateLimit(5, 60000), requireAdmin, async (c) => {
   try {
     const body = await c.req.json();
     const contactData: ContactEmailData = body;
@@ -2142,7 +2107,7 @@ app.post("/make-server-feacf0d8/send-contact-notification", async (c) => {
       body: JSON.stringify({
         from: 'CREOVA <support@creova.one>',
         to: ['support@creova.one'],
-        subject: `📧 New Contact: ${contactData.service || 'General Inquiry'} - ${contactData.name}`,
+        subject: `📧 New Contact: ${oneLine(contactData.service || 'General Inquiry')} - ${oneLine(contactData.name)}`,
         html: adminEmailHtml,
         reply_to: contactData.email
       })
@@ -2173,7 +2138,7 @@ app.post("/make-server-feacf0d8/send-contact-notification", async (c) => {
 });
 
 // Send collaboration form notification email (admin only)
-app.post("/make-server-feacf0d8/send-collaboration-notification", async (c) => {
+app.post("/make-server-feacf0d8/send-collaboration-notification", rateLimit(5, 60000), requireAdmin, async (c) => {
   try {
     const body = await c.req.json();
     const collaborationData: CollaborationEmailData = body;
@@ -2196,7 +2161,7 @@ app.post("/make-server-feacf0d8/send-collaboration-notification", async (c) => {
       body: JSON.stringify({
         from: 'CREOVA <support@creova.one>',
         to: ['support@creova.one'],
-        subject: `🤝 New Collaboration Request: ${collaborationData.organization || collaborationData.name}`,
+        subject: `🤝 New Collaboration Request: ${oneLine(collaborationData.organization || collaborationData.name)}`,
         html: adminEmailHtml,
         reply_to: collaborationData.email
       })

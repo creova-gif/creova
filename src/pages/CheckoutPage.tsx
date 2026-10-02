@@ -18,7 +18,8 @@ import { projectId, publicAnonKey } from '../utils/supabase/info';
 import { PageSEO } from '../components/PageSEO';
 import { useLanguage } from '../context/LanguageContext';
 
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY ?? '');
+const stripePublishableKey = (import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY ?? '').trim();
+const stripePromise = stripePublishableKey ? loadStripe(stripePublishableKey) : null;
 
 interface CheckoutFormProps {
   clientSecret: string;
@@ -189,6 +190,15 @@ export function CheckoutPage() {
       return;
     }
 
+    if (!stripePublishableKey) {
+      toast.error(
+        fr
+          ? "Le paiement par carte est indisponible : la clé publique Stripe n'est pas configurée."
+          : 'Card payment is unavailable because the Stripe publishable key is not configured.'
+      );
+      return;
+    }
+
     setIsLoading(true);
 
     try {
@@ -319,7 +329,18 @@ export function CheckoutPage() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.2 }}
             >
-              {!clientSecret ? (
+              {!stripePublishableKey ? (
+                <div role="alert" className="p-6 rounded-2xl border" style={{ backgroundColor: '#FEF2F2', borderColor: '#FCA5A5' }}>
+                  <h2 className="text-xl mb-2" style={{ color: '#991B1B' }}>
+                    {fr ? 'Paiement indisponible' : 'Payment unavailable'}
+                  </h2>
+                  <p className="text-sm" style={{ color: '#991B1B' }}>
+                    {fr
+                      ? "Le paiement par carte est indisponible : la clé publique Stripe n'est pas configurée. Réessayez après le prochain déploiement, ou écrivez à support@creova.one."
+                      : 'Card payment is unavailable because the Stripe publishable key is not configured. Try again after the next deploy, or email support@creova.one.'}
+                  </p>
+                </div>
+              ) : !clientSecret ? (
                 <form onSubmit={handleCreatePaymentIntent} className="space-y-6">
                   {/* Customer Information */}
                   <div className="bg-white rounded-2xl p-8">

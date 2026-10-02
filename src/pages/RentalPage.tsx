@@ -252,7 +252,8 @@ export function RentalPage() {
             purpose: formData.purpose,
             specialRequests: formData.specialRequests,
             hasInsurance: formData.hasInsurance,
-            submittedAt: new Date().toISOString()
+            submittedAt: new Date().toISOString(),
+            captchaToken
           })
         }
       );

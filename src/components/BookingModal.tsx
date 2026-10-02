@@ -12,6 +12,7 @@ import { Label } from './ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { Textarea } from './ui/textarea';
 import { Calendar, User, ArrowRight } from 'lucide-react';
+import { Captcha } from './Captcha';
 
 interface BookingModalProps {
   isOpen: boolean;
@@ -22,7 +23,7 @@ interface BookingModalProps {
 }
 
 export function BookingModal({ isOpen, onClose, service, package: packageName, price }: BookingModalProps) {
-  const { language, t } = useLanguage();
+  const { t } = useLanguage();
   const navigate = useNavigate();
   
   const [formData, setFormData] = useState({
@@ -35,6 +36,8 @@ export function BookingModal({ isOpen, onClose, service, package: packageName, p
     package: packageName || '',
     message: ''
   });
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -54,13 +57,15 @@ export function BookingModal({ isOpen, onClose, service, package: packageName, p
       return;
     }
 
-    // Show success and proceed to payment
-    toast.success(t('booking.success.received'));
+    if (!captchaToken) {
+      toast.error(t('contact.toast.captcha.missing'));
+      return;
+    }
 
-    // Send real booking confirmation email
+    setIsSubmitting(true);
     try {
-      const emailResponse = await fetch(
-        `https://${projectId}.supabase.co/functions/v1/make-server-feacf0d8/send-booking-confirmation`,
+      const response = await fetch(
+        `https://${projectId}.supabase.co/functions/v1/make-server-feacf0d8/submit-booking`,
         {
           method: 'POST',
           headers: {
@@ -68,42 +73,38 @@ export function BookingModal({ isOpen, onClose, service, package: packageName, p
             'Authorization': `Bearer ${publicAnonKey}`
           },
           body: JSON.stringify({
-            to: formData.email,
-            bookingDetails: formData,
-            amount: price || 0,
-            language: language,
-            checkoutUrl: window.location.origin + '/checkout'
+            service: formData.service,
+            package: formData.package,
+            name: formData.name,
+            email: formData.email,
+            phone: formData.phone,
+            preferredDate: formData.date,
+            preferredTime: formData.time,
+            specialRequests: formData.message,
+            captchaToken
           })
         }
       );
 
-      if (emailResponse.ok) {
-        const emailResult = await emailResponse.json();
-        logger.log('Booking confirmation email sent:', emailResult);
-        
-        setTimeout(() => {
-          toast.success(t('booking.success.sent'));
-        }, 1500);
-      } else {
-        setTimeout(() => {
-          toast.info(t('booking.success.confirmed'));
-        }, 1500);
+      if (!response.ok) {
+        toast.error(t('booking.error.fields'));
+        return;
       }
-    } catch {
-      // Don't block checkout if email fails
-    }
 
-    // Close modal and navigate to checkout after 2 seconds
-    setTimeout(() => {
+      toast.success(t('booking.success.received'));
+      logger.log('Booking request stored');
       onClose();
-      navigate('/checkout', { 
-        state: { 
+      navigate('/checkout', {
+        state: {
           bookingDetails: formData,
-          amount: price || 0,
           type: 'service'
         }
       });
-    }, 2000);
+    } catch {
+      toast.error(t('booking.error.fields'));
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const services = [
@@ -285,6 +286,12 @@ export function BookingModal({ isOpen, onClose, service, package: packageName, p
             )}
           </motion.div>
 
+          <Captcha
+            onVerify={(token) => setCaptchaToken(token)}
+            onExpire={() => setCaptchaToken(null)}
+            onError={() => setCaptchaToken(null)}
+          />
+
           {/* Action Buttons */}
           <div className="flex gap-3 pt-4">
             <Button
@@ -297,6 +304,7 @@ export function BookingModal({ isOpen, onClose, service, package: packageName, p
             </Button>
             <Button
               type="submit"
+              disabled={isSubmitting}
               className="flex-1 rounded-xl py-6 group"
               style={{ backgroundColor: '#121212', color: '#F8F9FA' }}
             >
