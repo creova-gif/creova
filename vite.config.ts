@@ -38,7 +38,10 @@
     },
     build: {
       target: 'esnext',
-      outDir: 'build',
+      // Client output is what GitHub Pages publishes. The SSR bundle is only
+      // an input to prerender and must not land inside build/.
+      outDir: isSsrBuild ? '.ssr' : 'build',
+      copyPublicDir: !isSsrBuild,
       sourcemap: false,
       minify: 'esbuild',
       chunkSizeWarningLimit: 1000,
