@@ -5,7 +5,7 @@ import { Input } from './ui/input';
 import { motion, AnimatePresence } from 'motion/react';
 import { toast } from 'sonner';
 import { useLanguage } from '../context/LanguageContext';
-import { projectId, publicAnonKey } from '../utils/supabase/info';
+import { apiUrl } from '../utils/api';
 
 const SERVICES = [
   { icon: Camera, label: 'Photography', price: 'from $450' },
@@ -67,23 +67,21 @@ export function ExitIntentModal() {
         return;
       }
 
-      await fetch(
-        `https://${projectId}.supabase.co/functions/v1/make-server-feacf0d8/subscribe-lead-magnet`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${publicAnonKey}`,
-          },
-          body: JSON.stringify({
-            email,
-            name: '',
-            leadMagnetId: 'exit_intent',
-            leadMagnetTitle: 'Exit Intent Offer',
-            subscribedAt: new Date().toISOString(),
-          }),
-        }
-      );
+      const url = apiUrl('/subscribe-lead-magnet');
+      if (!url) throw new Error('API is not configured');
+      await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+          name: '',
+          leadMagnetId: 'exit_intent',
+          leadMagnetTitle: 'Exit Intent Offer',
+          subscribedAt: new Date().toISOString(),
+        }),
+      });
 
       try {
         const existing = JSON.parse(localStorage.getItem('exitIntentEmails') || '[]');

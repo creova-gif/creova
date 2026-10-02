@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router';
-import { projectId, publicAnonKey } from '../utils/supabase/info';
+import { apiUrl } from '../utils/api';
 
 const GA_MEASUREMENT_ID = import.meta.env.VITE_GA_MEASUREMENT_ID ?? '';
 
@@ -93,18 +93,16 @@ export function AnalyticsTracker() {
           utmCampaign
         };
 
-        // Send to backend
-        await fetch(
-          `https://${projectId}.supabase.co/functions/v1/make-server-feacf0d8/track-pageview`,
-          {
+        const pageviewUrl = apiUrl('/track-pageview');
+        if (pageviewUrl) {
+          await fetch(pageviewUrl, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': `Bearer ${publicAnonKey}`
             },
             body: JSON.stringify(analyticsData)
-          }
-        );
+          });
+        }
 
         // Track page view in Google Analytics
         if (typeof (window as any).gtag === 'function') {
@@ -138,23 +136,21 @@ export function AnalyticsTracker() {
   // Function to track custom events
   const trackEvent = async (eventName: string, eventData?: any) => {
     try {
-      await fetch(
-        `https://${projectId}.supabase.co/functions/v1/make-server-feacf0d8/track-event`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${publicAnonKey}`
-          },
-          body: JSON.stringify({
-            visitorId: visitorIdRef.current,
-            sessionId: sessionIdRef.current,
-            eventName,
-            eventData,
-            page: location.pathname
-          })
-        }
-      );
+      const eventUrl = apiUrl('/track-event');
+      if (!eventUrl) return;
+      await fetch(eventUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          visitorId: visitorIdRef.current,
+          sessionId: sessionIdRef.current,
+          eventName,
+          eventData,
+          page: location.pathname
+        })
+      });
     } catch {
       // Silently fail
     }

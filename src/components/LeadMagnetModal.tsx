@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { useLanguage } from '../context/LanguageContext';
 import { toast } from 'sonner';
-import { projectId, publicAnonKey } from '../utils/supabase/info';
+import { apiUrl } from '../utils/api';
 
 interface LeadMagnet {
   id: string;
@@ -42,13 +42,14 @@ export function LeadMagnetModal({ isOpen, onClose, leadMagnet }: LeadMagnetModal
     setIsSubmitting(true);
 
     try {
+      const url = apiUrl('/subscribe-lead-magnet');
+      if (!url) throw new Error('API is not configured');
       const response = await fetch(
-        `https://${projectId}.supabase.co/functions/v1/make-server-feacf0d8/subscribe-lead-magnet`,
+        url,
         {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${publicAnonKey}`
           },
           body: JSON.stringify({
             email,
