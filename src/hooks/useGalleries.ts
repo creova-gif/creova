@@ -56,12 +56,15 @@ export function useGalleries() {
       try {
         const res = await fetch(url);
         const data = await res.json();
-        if (!cancelled && res.ok) {
-          setGalleries((data.galleries || []).sort((a: Gallery, b: Gallery) => a.order - b.order));
-          setError(false);
+        if (cancelled) return;
+        if (!res.ok) {
+          setError(true);
+          return;
         }
+        setGalleries((data.galleries || []).sort((a: Gallery, b: Gallery) => a.order - b.order));
+        setError(false);
       } catch {
-        // Keep the prerendered or empty list. Work still renders its empty state.
+        if (!cancelled) setError(true);
       } finally {
         if (!cancelled) setLoading(false);
       }

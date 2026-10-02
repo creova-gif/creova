@@ -122,7 +122,7 @@ async function loadGalleries() {
     return;
   }
   try {
-    const res = await fetch(`${base}/galleries`);
+    const res = await fetch(`${base}/galleries`, { signal: AbortSignal.timeout(10_000) });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
     const galleries = (data.galleries || []).sort((a, b) => a.order - b.order);
