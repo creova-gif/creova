@@ -14,12 +14,15 @@ import {
   contactReceivedHtml,
   escapeHtml,
   escapeHtmlMultiline,
+  isLoopbackHost,
   isUsableTurnstileSecret,
   oneLine,
   optionalText,
   parseAllowedOrigins,
   parseEmailAddress,
+  passwordsMatch,
   rateLimitClientIp,
+  safeKeyPart,
   resolveChargeCents,
   safeCreovaUrl,
   turnstileGate,
@@ -135,8 +138,26 @@ test("turnstile fails closed when the secret is missing outside local dev", () =
     { action: "reject", status: 503, error: "Security verification is not configured" },
   );
   assert.equal(
-    turnstileGate({ secretConfigured: false, creovaEnv: "development", token: null }).action,
+    turnstileGate({
+      secretConfigured: false,
+      creovaEnv: "development",
+      requestHost: "localhost",
+      token: null,
+    }).action,
     "skip",
+  );
+  assert.equal(
+    turnstileGate({
+      secretConfigured: false,
+      creovaEnv: "development",
+      requestHost: "creova.example.workers.dev",
+      token: null,
+    }).action,
+    "reject",
+  );
+  assert.equal(
+    turnstileGate({ secretConfigured: false, creovaEnv: "development", token: null }).action,
+    "reject",
   );
 });
 
@@ -196,21 +217,33 @@ test("CORS allowlist defaults to the production origins and refuses a wildcard",
   );
 });
 
-test("rate limit key uses the appended hop, not a spoofed XFF prefix", () => {
-  const suffix = "203.0.113.10";
-  const first = rateLimitClientIp({ forwardedFor: `1.1.1.1, ${suffix}` });
-  const rotated = rateLimitClientIp({ forwardedFor: `8.8.8.8, ${suffix}` });
-  assert.equal(first, suffix);
-  assert.equal(rotated, suffix);
+test("rate limit key is cf-connecting-ip only", () => {
+  assert.equal(rateLimitClientIp({ forwardedFor: "1.1.1.1, 203.0.113.10" }), "unknown");
+  assert.equal(rateLimitClientIp({ forwardedFor: "203.0.113.10" }), "unknown");
   assert.equal(rateLimitClientIp({ forwardedFor: null }), "unknown");
+  assert.equal(rateLimitClientIp({ connectingIp: "198.51.100.20" }), "198.51.100.20");
   assert.equal(
-    rateLimitClientIp({ forwardedFor: `9.9.9.9, ${suffix}`, connectingIp: "198.51.100.20" }),
+    rateLimitClientIp({ forwardedFor: "9.9.9.9, 203.0.113.10", connectingIp: "198.51.100.20" }),
     "198.51.100.20",
   );
   assert.equal(
-    rateLimitClientIp({ forwardedFor: suffix, connectingIp: "not-an-ip, 1.2.3.4" }),
-    suffix,
+    rateLimitClientIp({ forwardedFor: "203.0.113.10", connectingIp: "not-an-ip, 1.2.3.4" }),
+    "unknown",
   );
+  assert.equal(isLoopbackHost("localhost"), true);
+  assert.equal(isLoopbackHost("127.0.0.1"), true);
+  assert.equal(isLoopbackHost("::1"), true);
+  assert.equal(isLoopbackHost("[::1]"), true);
+  assert.equal(isLoopbackHost("creova.example.workers.dev"), false);
+  assert.equal(safeKeyPart("fw2026_waitlist", 64), "fw2026_waitlist");
+  assert.equal(safeKeyPart("../secret", 64), null);
+  assert.equal(safeKeyPart("x".repeat(65), 64), null);
+});
+
+test("password compare does not treat a different length as a short-circuit miss only", async () => {
+  assert.equal(await passwordsMatch("test-admin-password", "test-admin-password"), true);
+  assert.equal(await passwordsMatch("nope", "test-admin-password"), false);
+  assert.equal(await passwordsMatch("test-admin-password-longer", "test-admin-password"), false);
 });
 
 test("rateLimit counts inside one isolate and then rejects", () => {

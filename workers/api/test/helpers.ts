@@ -7,18 +7,25 @@ const IncomingRequest = Request<unknown, IncomingRequestCfProperties>;
 export async function call(
   path: string,
   init: RequestInit = {},
-  ip = "203.0.113.10",
+  ip: string | null = "203.0.113.10",
+  origin = "https://creova.test",
 ): Promise<Response> {
   const headers = new Headers(init.headers);
-  if (!headers.has("cf-connecting-ip")) headers.set("cf-connecting-ip", ip);
-  const request = new IncomingRequest(`https://creova.test${path}`, { ...init, headers });
+  if (ip && !headers.has("cf-connecting-ip")) headers.set("cf-connecting-ip", ip);
+  const request = new IncomingRequest(`${origin}${path}`, { ...init, headers });
   const ctx = createExecutionContext();
   const response = await worker.fetch(request, env, ctx);
   await waitOnExecutionContext(ctx);
   return response;
 }
 
-export function postJson(path: string, body: unknown, ip?: string, extraHeaders?: HeadersInit) {
+export function postJson(
+  path: string,
+  body: unknown,
+  ip?: string | null,
+  extraHeaders?: HeadersInit,
+  origin?: string,
+) {
   return call(
     path,
     {
@@ -27,5 +34,6 @@ export function postJson(path: string, body: unknown, ip?: string, extraHeaders?
       body: JSON.stringify(body),
     },
     ip,
+    origin,
   );
 }

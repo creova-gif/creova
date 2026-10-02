@@ -1,6 +1,19 @@
 import { Hono, type Context } from "hono";
 import { cors } from "hono/cors";
-import { logger } from "hono/logger";
+import {
+  SIGNUP_BODY_MAX,
+  SIGNUP_WRITES_PER_IP_PER_DAY,
+  TRACK_BODY_MAX,
+  TRACK_PER_MINUTE,
+  TRACK_WRITES_PER_IP_PER_DAY,
+  clampAnalyticsDays,
+  consumeDailyWrite,
+  emptyAnalytics,
+  eventPoint,
+  pageviewPoint,
+  queryAnalyticsEngine,
+  type AnalyticsPoint,
+} from "./analytics";
 import { createKv, type KvStore } from "./kv";
 import {
   bookingReceivedHtml,
@@ -11,13 +24,16 @@ import {
   collaborationAdminSubject,
   contactAdminSubject,
   contactReceivedHtml,
+  escapeHtml,
   isUsableTurnstileSecret,
   oneLine,
   optionalText,
   parseAllowedOrigins,
   parseEmailAddress,
+  passwordsMatch,
   rateLimitClientIp,
   requiredText,
+  safeKeyPart,
   TEXT_LIMITS,
   turnstileGate,
   turnstileVerificationOk,
@@ -34,6 +50,8 @@ import {
 
 export interface Env {
   DB: D1Database;
+  /** Workers Analytics Engine. Free on the Workers Free plan. Optional in tests. */
+  ANALYTICS?: AnalyticsEngineDataset;
   TURNSTILE_SECRET_KEY?: string;
   ADMIN_PASSWORD?: string;
   ADMIN_SESSION_SECRET?: string;
@@ -42,11 +60,18 @@ export interface Env {
   ALLOWED_ORIGINS?: string;
   /** Exact local values only (development, dev, local, test). Leave unset when deployed. */
   CREOVA_ENV?: string;
-  /** If this contains .supabase.co the captcha skip stays off, same as PR #64. */
-  SUPABASE_URL?: string;
+  /** Account id for the Analytics Engine SQL API. Not a substitute for the write binding. */
+  CLOUDFLARE_ACCOUNT_ID?: string;
+  /** Account Analytics Read token. Dashboard stays empty until this is set. */
+  ANALYTICS_API_TOKEN?: string;
 }
 
 type AppContext = Context<{ Bindings: Env }>;
+
+/** Outbound HTTP. Tests replace this; production calls the Worker fetch. */
+export const outbound = {
+  fetch: (...args: Parameters<typeof fetch>) => globalThis.fetch(...args),
+};
 
 const app = new Hono<{ Bindings: Env }>();
 
@@ -54,51 +79,75 @@ function store(c: { env: Env }): KvStore {
   return createKv(c.env.DB);
 }
 
-// Session and visitor rows are coalesced per isolate. The pageview (or event)
-// row is always written. Counter rows flush at most once a minute so a browse
-// session does not spend three D1 writes on every page. See README.
-const ANALYTICS_FLUSH_MS = 60_000;
-type CounterSlot = {
-  dirty: number;
-  snapshot: Record<string, unknown> | undefined;
-  known: boolean;
-  lastFlush: number;
-};
-const counterSlots = new Map<string, CounterSlot>();
+const dailyWriteSlots = new Map<string, { day: string; count: number }>();
 
-async function noteThrottledUpsert(
-  kv: KvStore,
-  key: string,
-  now: number,
-  build: (prev: Record<string, unknown> | undefined, delta: number) => Record<string, unknown>,
-): Promise<void> {
-  let slot = counterSlots.get(key);
-  if (!slot) {
-    slot = { dirty: 0, snapshot: undefined, known: false, lastFlush: 0 };
-    counterSlots.set(key, slot);
+function allowDailyWrite(ip: string, kind: string, max: number): boolean {
+  return consumeDailyWrite(dailyWriteSlots, `${kind}:${ip}`, Date.now(), max);
+}
+
+/** D1 is best-effort. A quota error must not skip email or Airtable. */
+async function persistLead(c: AppContext, key: string, value: unknown): Promise<boolean> {
+  try {
+    await store(c).set(key, value);
+    return true;
+  } catch (error) {
+    console.error("Lead store failed", key, error instanceof Error ? error.name : "error");
+    return false;
   }
-  slot.dirty += 1;
-  if (slot.lastFlush !== 0 && now - slot.lastFlush < ANALYTICS_FLUSH_MS) return;
-  if (!slot.known) {
-    const existing = await kv.get(key);
-    slot.snapshot =
-      existing && typeof existing === "object" ? (existing as Record<string, unknown>) : undefined;
-    slot.known = true;
+}
+
+function leadStatus(stored: boolean): 200 | 202 {
+  return stored ? 200 : 202;
+}
+
+const FORM_BODY_MAX = 32_768;
+
+function errorLabel(error: unknown): string {
+  return error instanceof Error ? error.name : "error";
+}
+
+function finiteNumber(value: unknown): number | undefined {
+  return typeof value === "number" && Number.isFinite(value) ? value : undefined;
+}
+
+async function readBoundedJson(
+  c: AppContext,
+  maxBytes: number,
+): Promise<{ ok: true; body: Record<string, unknown> } | { ok: false; status: 400 | 413 }> {
+  const declared = Number(c.req.header("content-length"));
+  if (Number.isFinite(declared) && declared > maxBytes) return { ok: false, status: 413 };
+  let raw: string;
+  try {
+    raw = await c.req.text();
+  } catch {
+    return { ok: false, status: 400 };
   }
-  const next = build(slot.snapshot, slot.dirty);
-  await kv.set(key, next);
-  slot.snapshot = next;
-  slot.dirty = 0;
-  slot.lastFlush = now;
-  if (counterSlots.size > 5000) {
-    for (const [k, v] of counterSlots) {
-      if (now - v.lastFlush > ANALYTICS_FLUSH_MS) counterSlots.delete(k);
-    }
+  if (raw.length > maxBytes) return { ok: false, status: 413 };
+  try {
+    const parsed = raw ? JSON.parse(raw) : {};
+    if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) return { ok: false, status: 400 };
+    return { ok: true, body: parsed as Record<string, unknown> };
+  } catch {
+    return { ok: false, status: 400 };
+  }
+}
+
+function writeAnalyticsPoint(c: AppContext, point: AnalyticsPoint): void {
+  try {
+    c.env.ANALYTICS?.writeDataPoint({
+      indexes: point.indexes,
+      blobs: point.blobs,
+      doubles: point.doubles,
+    });
+  } catch (error) {
+    console.error("Analytics write failed", error instanceof Error ? error.name : "error");
   }
 }
 
 function defer(c: AppContext, work: Promise<unknown>) {
-  const run = work.catch((error) => console.error(error));
+  const run = work.catch((error) => {
+    console.error("background task failed", error instanceof Error ? error.name : "error");
+  });
   c.executionCtx.waitUntil(run);
 }
 
@@ -110,7 +159,7 @@ function defer(c: AppContext, work: Promise<unknown>) {
 const AIRTABLE_BASE_ID = "appHQkjX7B97NQPbi";
 function syncToAirtable(apiKey: string | undefined, tableId: string, fields: Record<string, unknown>) {
   if (!apiKey) return Promise.resolve();
-  return fetch(`https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${tableId}`, {
+  return outbound.fetch(`https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${tableId}`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${apiKey}`,
@@ -120,7 +169,9 @@ function syncToAirtable(apiKey: string | undefined, tableId: string, fields: Rec
   }).then((res) => {
     if (!res.ok) console.error(`Airtable sync failed for ${tableId}: HTTP ${res.status}`);
     return res.body?.cancel();
-  }).catch((e) => console.error(`Airtable sync failed for ${tableId}:`, e));
+  }).catch((error) => {
+    console.error(`Airtable sync failed for ${tableId}:`, error instanceof Error ? error.name : "error");
+  });
 }
 
 // Best-effort limiter for this isolate only. Worker isolates do not share
@@ -132,7 +183,6 @@ const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
 
 function clientIp(c: { req: { header: (name: string) => string | undefined } }): string {
   return rateLimitClientIp({
-    forwardedFor: c.req.header("x-forwarded-for"),
     connectingIp: c.req.header("cf-connecting-ip"),
   });
 }
@@ -164,8 +214,17 @@ function commerceUnavailable(c: { json: (body: unknown, status?: number) => Resp
 
 const TURNSTILE_TIMEOUT_MS = 5000;
 
+function requestHost(c: AppContext): string {
+  try {
+    return new URL(c.req.url).hostname;
+  } catch {
+    return "";
+  }
+}
+
 // Turnstile. Missing secret fails closed unless CREOVA_ENV is exactly a local
-// value and SUPABASE_URL is not a hosted project. ENVIRONMENT is ignored.
+// value AND the request host is loopback. A deployed hostname never skips.
+// ENVIRONMENT is ignored. There is no SUPABASE_URL backstop on this Worker.
 async function requireTurnstile(
   c: AppContext,
   token: unknown,
@@ -175,7 +234,7 @@ async function requireTurnstile(
   const gate = turnstileGate({
     secretConfigured: isUsableTurnstileSecret(rawSecret),
     creovaEnv: c.env.CREOVA_ENV,
-    supabaseUrl: c.env.SUPABASE_URL,
+    requestHost: requestHost(c),
     token,
   });
   if (gate.action === "reject") {
@@ -194,7 +253,7 @@ async function requireTurnstile(
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), TURNSTILE_TIMEOUT_MS);
   try {
-    const verifyResponse = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+    const verifyResponse = await outbound.fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: params,
@@ -211,7 +270,7 @@ async function requireTurnstile(
     }
     return { ok: true };
   } catch (error) {
-    console.error("Turnstile siteverify request failed:", error);
+    console.error("Turnstile siteverify request failed:", errorLabel(error));
     return { ok: false, status: 503, error: "Security verification is unavailable" };
   } finally {
     clearTimeout(timer);
@@ -315,23 +374,12 @@ app.use('*', async (c, next) => {
   // Strict-Transport-Security (HSTS) - Force HTTPS for 1 year
   c.header('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
   
-  // Content Security Policy (CSP)
+  // JSON API. No third-party script, connect, or frame origins.
   c.header(
-    'Content-Security-Policy',
-    "default-src 'self'; " +
-    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.stripe.com https://*.supabase.co https://www.google.com https://www.gstatic.com; " +
-    "style-src 'self' 'unsafe-inline'; " +
-    "img-src 'self' data: https: blob:; " +
-    "font-src 'self' data:; " +
-    "connect-src 'self' https://*.stripe.com https://*.supabase.co https://www.google.com; " +
-    "frame-src https://js.stripe.com https://hooks.stripe.com https://www.google.com; " +
-    "base-uri 'self'; " +
-    "form-action 'self' https://checkout.stripe.com;"
+    "Content-Security-Policy",
+    "default-src 'none'; frame-ancestors 'none'; base-uri 'none'",
   );
 });
-
-// Enable logger
-app.use('*', logger(console.log));
 
 // Browser callers are limited to the production site. Override with
 // ALLOWED_ORIGINS (comma-separated) on the function. A wildcard is ignored.
@@ -364,18 +412,23 @@ for (const path of COMMERCE_ROUTES) {
 app.post("/make-server-feacf0d8/admin-login", rateLimit(5, 60000), async (c) => {
   try {
     const adminPassword = c.env.ADMIN_PASSWORD;
-    if (!adminPassword) {
-      console.error("ADMIN_PASSWORD not configured");
+    const sessionSecret = c.env.ADMIN_SESSION_SECRET;
+    // Fail closed before the password compare. A missing session secret must
+    // not answer 401 for the right password and 401 for the wrong one in a
+    // way that confirms the password, and it must not issue a token. #64
+    // treats missing admin config as "not configured" (500), not as a bad password.
+    if (!adminPassword || !sessionSecret) {
+      console.error("Admin login is not configured");
       return c.json({ error: "Admin login is not configured" }, 500);
     }
     const { password } = await c.req.json();
-    if (typeof password !== "string" || !timingSafeEqual(password, adminPassword)) {
+    if (typeof password !== "string" || !(await passwordsMatch(password, adminPassword))) {
       return c.json({ error: "Incorrect password" }, 401);
     }
-    const token = await issueAdminToken(c.env.ADMIN_SESSION_SECRET);
+    const token = await issueAdminToken(sessionSecret);
     return c.json({ status: "success", token, expiresIn: ADMIN_SESSION_TTL_MS });
   } catch (error) {
-    console.error("Admin login error:", error);
+    console.error("Admin login error:", error instanceof Error ? error.name : "error");
     return c.json({ error: "Login failed" }, 500);
   }
 });
@@ -405,17 +458,12 @@ app.post("/make-server-feacf0d8/audit-log", requireAdmin, async (c) => {
 
     // Log critical events to console immediately
     if (severity === 'critical' || severity === 'high') {
-      console.warn(`🚨 [${severity.toUpperCase()}] ${eventType}:`, {
-        timestamp,
-        userId,
-        email,
-        details
-      });
+      console.warn(`Audit ${severity} ${eventType} ${logId}`);
     }
 
     return c.json({ status: 'success', logId });
   } catch (error) {
-    console.error("Error storing audit log:", error);
+    console.error("Error storing audit log:", errorLabel(error));
     return c.json({ error: "Failed to store audit log" }, 500);
   }
 });
@@ -426,15 +474,9 @@ app.post("/make-server-feacf0d8/security-alert", requireAdmin, async (c) => {
     const body = await c.req.json();
     const { alert, log } = body;
 
-    console.error(`🚨🚨🚨 CRITICAL SECURITY ALERT: ${alert}`, {
-      eventType: log.eventType,
-      timestamp: log.timestamp,
-      ip: log.ip,
-      details: log.details
-    });
-
     // Store alert
     const alertId = `alert_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    console.error(`Security alert ${alertId}`);
     await store(c).set(alertId, {
       alert,
       log,
@@ -450,7 +492,7 @@ app.post("/make-server-feacf0d8/security-alert", requireAdmin, async (c) => {
 
     return c.json({ status: 'alert_received', alertId });
   } catch (error) {
-    console.error("Error handling security alert:", error);
+    console.error("Error handling security alert:", errorLabel(error));
     return c.json({ error: "Failed to process security alert" }, 500);
   }
 });
@@ -482,145 +524,195 @@ app.get("/make-server-feacf0d8/audit-logs/export", requireAdmin, async (c) => {
       count: filtered.length
     });
   } catch (error) {
-    console.error("Error exporting audit logs:", error);
+    console.error("Error exporting audit logs:", errorLabel(error));
     return c.json({ error: "Failed to export audit logs" }, 500);
   }
 });
 
+function deferAdminNotice(c: AppContext, subject: string, html: string) {
+  const emailApiKey = c.env.EMAIL_SERVICE_API_KEY;
+  if (!emailApiKey) return;
+  defer(c, (async () => {
+    const response = await outbound.fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${emailApiKey}`, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        from: "CREOVA <support@creova.one>",
+        to: ["support@creova.one"],
+        subject,
+        html,
+      }),
+    });
+    if (!response.ok) console.error("Admin notice failed", response.status);
+  })());
+}
+
 // Email notification signup (for product launches, memberships, etc.)
 app.post("/make-server-feacf0d8/notify-me", rateLimit(10, 60000), async (c) => {
   try {
-    const body = await c.req.json();
-    const { email, type, item_id, captchaToken } = body; // type: 'membership', 'product', 'event', etc.
-
-    const parsedEmail = parseEmailAddress(email);
-    const parsedType = requiredText(type, TEXT_LIMITS.short);
-    if (!parsedEmail || !parsedType) {
+    const parsedBody = await readBoundedJson(c, SIGNUP_BODY_MAX);
+    if (!parsedBody.ok) return c.json({ error: "Email and type are required" }, parsedBody.status === 413 ? 413 : 400);
+    const body = parsedBody.body;
+    const parsedEmail = parseEmailAddress(body.email);
+    const parsedType = requiredText(body.type, TEXT_LIMITS.short);
+    const itemId = optionalText(body.item_id, TEXT_LIMITS.short);
+    if (!parsedEmail || !parsedType || !itemId.ok) {
       return c.json({ error: "Email and type are required" }, 400);
     }
 
     // No storefront caller. Turnstile fail-closes the anonymous write.
-    const captcha = await requireTurnstile(c, captchaToken, "notify");
+    const captcha = await requireTurnstile(c, body.captchaToken, "notify");
     if (!captcha.ok) {
       return c.json({ error: captcha.error }, captcha.status);
     }
+    if (!allowDailyWrite(clientIp(c), "signup", SIGNUP_WRITES_PER_IP_PER_DAY)) {
+      return c.json({ error: "Too many requests. Please try again later." }, 429);
+    }
 
     const notificationId = `notification_${parsedType}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
-    await store(c).set(notificationId, {
+    const stored = await persistLead(c, notificationId, {
       email: parsedEmail,
       type: parsedType,
-      item_id,
-      status: 'subscribed',
-      created_at: new Date().toISOString()
+      item_id: itemId.value,
+      status: "subscribed",
+      created_at: new Date().toISOString(),
     });
 
-    console.log(`Email notification signup: ${parsedEmail} for ${parsedType}`);
+    console.log(`Email notification signup: ${notificationId}`);
+    deferAdminNotice(
+      c,
+      `Notification signup: ${oneLine(parsedType)}`,
+      `<p>Notification signup ${escapeHtml(notificationId)}</p><p>${escapeHtml(parsedEmail)} · ${escapeHtml(parsedType)}</p>`,
+    );
 
     return c.json({
-      status: 'success',
-      message: 'Successfully subscribed to notifications'
-    });
+      status: "success",
+      message: "Successfully subscribed to notifications",
+      stored,
+    }, leadStatus(stored));
   } catch (error) {
-    console.error("Error saving notification signup:", error);
+    console.error("Error saving notification signup:", error instanceof Error ? error.name : "error");
     return c.json({ error: "Failed to subscribe" }, 500);
   }
 });
 
 
-// Subscribe to lead magnet
+// Subscribe to lead magnet. Turnstile matches the other public forms.
+// Name is optional: the exit-intent and drop waitlist send an email only.
 app.post("/make-server-feacf0d8/subscribe-lead-magnet", rateLimit(3, 60000), async (c) => {
   try {
-    const body = await c.req.json();
-    const { email, name, leadMagnetId, leadMagnetTitle, subscribedAt } = body;
-
-    if (!email || !name || !leadMagnetId) {
-      return c.json({ error: "Email, name, and lead magnet ID are required" }, 400);
+    const parsedBody = await readBoundedJson(c, SIGNUP_BODY_MAX);
+    if (!parsedBody.ok) {
+      return c.json({ error: "Email and lead magnet ID are required" }, parsedBody.status === 413 ? 413 : 400);
+    }
+    const body = parsedBody.body;
+    const email = parseEmailAddress(body.email);
+    const name = optionalText(body.name, TEXT_LIMITS.name);
+    const leadMagnetId = safeKeyPart(body.leadMagnetId, 64);
+    const title = optionalText(body.leadMagnetTitle, TEXT_LIMITS.short);
+    const subscribedAt = optionalText(body.subscribedAt, TEXT_LIMITS.short);
+    if (!email || !name.ok || !leadMagnetId || !title.ok || !subscribedAt.ok) {
+      return c.json({ error: "Email and lead magnet ID are required" }, 400);
     }
 
-    // Validate email format
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      return c.json({ error: "Invalid email format" }, 400);
+    const captcha = await requireTurnstile(c, body.captchaToken, "lead-magnet");
+    if (!captcha.ok) {
+      return c.json({ error: captcha.error }, captcha.status);
+    }
+    if (!allowDailyWrite(clientIp(c), "signup", SIGNUP_WRITES_PER_IP_PER_DAY)) {
+      return c.json({ error: "Too many requests. Please try again later." }, 429);
     }
 
     const subscriptionId = `lead_magnet_${leadMagnetId}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
-    await store(c).set(subscriptionId, {
+    const when = subscribedAt.value || new Date().toISOString();
+    const stored = await persistLead(c, subscriptionId, {
       email,
-      name,
+      name: name.value,
       leadMagnetId,
-      leadMagnetTitle,
-      subscribedAt: subscribedAt || new Date().toISOString(),
-      status: 'subscribed'
+      leadMagnetTitle: title.value,
+      subscribedAt: when,
+      status: "subscribed",
     });
 
-    console.log(`Lead magnet subscription: ${email} for ${leadMagnetTitle}`);
+    console.log(`Lead magnet subscription: ${subscriptionId}`);
 
     defer(c, syncToAirtable(c.env.AIRTABLE_API_KEY, "tblfiwUQFIQMo89Ya", {
-      Email: email, Name: name, "Lead Magnet": leadMagnetTitle || leadMagnetId,
-      "Subscribed At": subscribedAt || new Date().toISOString(),
+      Email: email, Name: name.value, "Lead Magnet": title.value || leadMagnetId,
+      "Subscribed At": when,
       "Supabase Record ID": subscriptionId,
     }));
-
-    // TODO: Send email with download link using your email service
-    // Example: await sendLeadMagnetEmail(email, name, leadMagnetTitle);
+    deferAdminNotice(
+      c,
+      `Lead magnet: ${oneLine(title.value || leadMagnetId)}`,
+      `<p>Lead magnet ${escapeHtml(subscriptionId)}</p><p>${escapeHtml(email)}</p><p>${escapeHtml(title.value || leadMagnetId)}</p>`,
+    );
 
     return c.json({
-      status: 'success',
-      message: 'Successfully subscribed! Check your email for the download link.',
-      subscriptionId
-    });
+      status: "success",
+      message: "Successfully subscribed! Check your email for the download link.",
+      subscriptionId,
+      stored,
+    }, leadStatus(stored));
   } catch (error) {
-    console.error("Error subscribing to lead magnet:", error);
+    console.error("Error subscribing to lead magnet:", error instanceof Error ? error.name : "error");
     return c.json({ error: "Failed to subscribe" }, 500);
   }
 });
 
-// Subscribe to event interest (teaser events page — /experience). Full
-// event details are gated behind this signup instead of being sold, since
-// upcoming events aren't confirmed yet.
+// Subscribe to event interest (teaser events page — /experience). Twelve
+// cards share this route, so it uses length caps and a per-IP daily cap
+// instead of a Turnstile widget on every card.
 app.post("/make-server-feacf0d8/subscribe-event-interest", rateLimit(5, 60000), async (c) => {
   try {
-    const body = await c.req.json();
-    const { email, eventId, eventName } = body;
-    const name = typeof body.name === "string" && body.name.trim() ? body.name.trim() : email?.split("@")[0];
-
-    if (!email) {
+    const parsedBody = await readBoundedJson(c, SIGNUP_BODY_MAX);
+    if (!parsedBody.ok) return c.json({ error: "Email is required" }, parsedBody.status === 413 ? 413 : 400);
+    const body = parsedBody.body;
+    const email = parseEmailAddress(body.email);
+    const name = optionalText(body.name, TEXT_LIMITS.name);
+    const eventId = optionalText(body.eventId, 64);
+    const eventName = optionalText(body.eventName, TEXT_LIMITS.short);
+    if (!email || !name.ok || !eventId.ok || !eventName.ok) {
       return c.json({ error: "Email is required" }, 400);
     }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      return c.json({ error: "Invalid email format" }, 400);
+    if (eventId.value && !safeKeyPart(eventId.value, 64)) {
+      return c.json({ error: "Invalid event" }, 400);
+    }
+    if (!allowDailyWrite(clientIp(c), "signup", SIGNUP_WRITES_PER_IP_PER_DAY)) {
+      return c.json({ error: "Too many requests. Please try again later." }, 429);
     }
 
+    const displayName = name.value || email.split("@")[0];
     const interestId = `event_interest_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-
-    await store(c).set(interestId, {
+    const stored = await persistLead(c, interestId, {
       email,
-      name,
-      eventId,
-      eventName,
-      status: 'subscribed',
-      created_at: new Date().toISOString()
+      name: displayName,
+      eventId: eventId.value,
+      eventName: eventName.value,
+      status: "subscribed",
+      created_at: new Date().toISOString(),
     });
 
-    console.log(`Event interest signup: ${email} for ${eventName || eventId || 'general'}`);
+    console.log(`Event interest signup: ${interestId}`);
 
     defer(c, syncToAirtable(c.env.AIRTABLE_API_KEY, "tblEotZPSIfKErLHO", {
-      Email: email, Name: name, Event: eventName || eventId || "General",
+      Email: email, Name: displayName, Event: eventName.value || eventId.value || "General",
       "Submitted At": new Date().toISOString(), Source: "experience-page",
       "Supabase Record ID": interestId,
     }));
+    deferAdminNotice(
+      c,
+      `Event interest: ${oneLine(eventName.value || eventId.value || "general")}`,
+      `<p>Event interest ${escapeHtml(interestId)}</p><p>${escapeHtml(email)}</p>`,
+    );
 
     return c.json({
-      status: 'success',
+      status: "success",
       message: "You're on the list! We'll email you the full details as soon as they're confirmed.",
-      interestId
-    });
+      interestId,
+      stored,
+    }, leadStatus(stored));
   } catch (error) {
-    console.error("Error subscribing to event interest:", error);
+    console.error("Error subscribing to event interest:", error instanceof Error ? error.name : "error");
     return c.json({ error: "Failed to subscribe" }, 500);
   }
 });
@@ -629,7 +721,9 @@ app.post("/make-server-feacf0d8/subscribe-event-interest", rateLimit(5, 60000), 
 // Submit contact form
 app.post("/make-server-feacf0d8/submit-contact", rateLimit(5, 60000), async (c) => {
   try {
-    const body = await c.req.json();
+    const parsedBody = await readBoundedJson(c, FORM_BODY_MAX);
+    if (!parsedBody.ok) return c.json({ error: "Name, email, and message are required" }, 400);
+    const body = parsedBody.body;
     const name = requiredText(body.name, TEXT_LIMITS.name);
     const email = parseEmailAddress(body.email);
     const message = requiredText(body.message, TEXT_LIMITS.message);
@@ -649,7 +743,7 @@ app.post("/make-server-feacf0d8/submit-contact", rateLimit(5, 60000), async (c) 
 
     const contactId = `contact_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
-    await store(c).set(contactId, {
+    const stored = await persistLead(c, contactId, {
       name,
       email,
       phone: phone.value,
@@ -662,7 +756,7 @@ app.post("/make-server-feacf0d8/submit-contact", rateLimit(5, 60000), async (c) 
       created_at: new Date().toISOString()
     });
 
-    console.log(`Contact form submitted: ${contactId} from ${email}`);
+    console.log(`Contact form submitted: ${contactId}`);
 
     defer(c, syncToAirtable(c.env.AIRTABLE_API_KEY, "tblgMShO3Sa6ynJyb", {
       Name: name, Email: email, Phone: phone.value, Message: message,
@@ -686,7 +780,7 @@ app.post("/make-server-feacf0d8/submit-contact", rateLimit(5, 60000), async (c) 
       defer(c, (async () => {
         try {
           await Promise.all([
-            fetch('https://api.resend.com/emails', {
+            outbound.fetch('https://api.resend.com/emails', {
               method: 'POST',
               headers: { 'Authorization': `Bearer ${emailApiKey}`, 'Content-Type': 'application/json' },
               body: JSON.stringify({
@@ -696,7 +790,7 @@ app.post("/make-server-feacf0d8/submit-contact", rateLimit(5, 60000), async (c) 
                 html: contactReceivedHtml(),
               })
             }),
-            fetch('https://api.resend.com/emails', {
+            outbound.fetch('https://api.resend.com/emails', {
               method: 'POST',
               headers: { 'Authorization': `Bearer ${emailApiKey}`, 'Content-Type': 'application/json' },
               body: JSON.stringify({
@@ -708,8 +802,8 @@ app.post("/make-server-feacf0d8/submit-contact", rateLimit(5, 60000), async (c) 
               })
             })
           ]);
-        } catch (e) {
-          console.error('Failed to send contact emails:', e);
+        } catch (error) {
+          console.error('Failed to send contact emails:', error instanceof Error ? error.name : "error");
         }
       })());
     }
@@ -717,10 +811,11 @@ app.post("/make-server-feacf0d8/submit-contact", rateLimit(5, 60000), async (c) 
     return c.json({
       contactId,
       status: 'success',
-      message: 'Contact form submitted successfully'
-    });
+      message: 'Contact form submitted successfully',
+      stored,
+    }, leadStatus(stored));
   } catch (error) {
-    console.error("Error submitting contact form:", error);
+    console.error("Error submitting contact form:", errorLabel(error));
     return c.json({ error: "Failed to submit contact form" }, 500);
   }
 });
@@ -728,7 +823,9 @@ app.post("/make-server-feacf0d8/submit-contact", rateLimit(5, 60000), async (c) 
 // Submit collaboration form
 app.post("/make-server-feacf0d8/submit-collaboration", rateLimit(5, 60000), async (c) => {
   try {
-    const body = await c.req.json();
+    const parsedBody = await readBoundedJson(c, FORM_BODY_MAX);
+    if (!parsedBody.ok) return c.json({ error: "Name, email, and project description are required" }, 400);
+    const body = parsedBody.body;
     const name = requiredText(body.name, TEXT_LIMITS.name);
     const email = parseEmailAddress(body.email);
     const projectDescription = requiredText(body.projectDescription, TEXT_LIMITS.message);
@@ -748,7 +845,7 @@ app.post("/make-server-feacf0d8/submit-collaboration", rateLimit(5, 60000), asyn
 
     const collaborationId = `collaboration_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     
-    await store(c).set(collaborationId, {
+    const stored = await persistLead(c, collaborationId, {
       name,
       email,
       organization: organization.value,
@@ -761,7 +858,7 @@ app.post("/make-server-feacf0d8/submit-collaboration", rateLimit(5, 60000), asyn
       created_at: new Date().toISOString()
     });
 
-    console.log(`Collaboration form submitted: ${collaborationId} from ${email}`);
+    console.log(`Collaboration form submitted: ${collaborationId}`);
 
     defer(c, syncToAirtable(c.env.AIRTABLE_API_KEY, "tblgMShO3Sa6ynJyb", {
       Name: name, Email: email, Message: projectDescription,
@@ -783,7 +880,7 @@ app.post("/make-server-feacf0d8/submit-collaboration", rateLimit(5, 60000), asyn
       };
       defer(c, (async () => {
         try {
-          await fetch('https://api.resend.com/emails', {
+          await outbound.fetch('https://api.resend.com/emails', {
             method: 'POST',
             headers: { 'Authorization': `Bearer ${emailApiKey}`, 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -794,8 +891,8 @@ app.post("/make-server-feacf0d8/submit-collaboration", rateLimit(5, 60000), asyn
               reply_to: oneLine(email),
             }),
           });
-        } catch (e) {
-          console.error('Failed to send collaboration email:', e);
+        } catch (error) {
+          console.error('Failed to send collaboration email:', error instanceof Error ? error.name : "error");
         }
       })());
     }
@@ -803,10 +900,11 @@ app.post("/make-server-feacf0d8/submit-collaboration", rateLimit(5, 60000), asyn
     return c.json({
       collaborationId,
       status: 'success',
-      message: 'Collaboration request submitted successfully'
-    });
+      message: 'Collaboration request submitted successfully',
+      stored,
+    }, leadStatus(stored));
   } catch (error) {
-    console.error("Error submitting collaboration form:", error);
+    console.error("Error submitting collaboration form:", errorLabel(error));
     return c.json({ error: "Failed to submit collaboration form" }, 500);
   }
 });
@@ -814,7 +912,9 @@ app.post("/make-server-feacf0d8/submit-collaboration", rateLimit(5, 60000), asyn
 // Submit booking form
 app.post("/make-server-feacf0d8/submit-booking", rateLimit(5, 60000), async (c) => {
   try {
-    const body = await c.req.json();
+    const parsedBody = await readBoundedJson(c, FORM_BODY_MAX);
+    if (!parsedBody.ok) return c.json({ error: "Service, name, email, and phone are required" }, 400);
+    const body = parsedBody.body;
     const service = requiredText(body.service, TEXT_LIMITS.service);
     const packageName = optionalText(body.package, TEXT_LIMITS.service);
     const name = requiredText(body.name, TEXT_LIMITS.name);
@@ -844,7 +944,7 @@ app.post("/make-server-feacf0d8/submit-booking", rateLimit(5, 60000), async (c) 
 
     const bookingId = `booking_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     
-    await store(c).set(bookingId, {
+    const stored = await persistLead(c, bookingId, {
       service,
       package: packageName.value,
       name,
@@ -862,7 +962,7 @@ app.post("/make-server-feacf0d8/submit-booking", rateLimit(5, 60000), async (c) 
       created_at: new Date().toISOString()
     });
 
-    console.log(`Booking submitted: ${bookingId} by ${name} (${email}) for ${service}`);
+    console.log(`Booking submitted: ${bookingId}`);
 
     // Customer copy is a fixed receipt. The admin copy keeps the booking fields.
     const emailApiKey = c.env.EMAIL_SERVICE_API_KEY;
@@ -883,7 +983,7 @@ app.post("/make-server-feacf0d8/submit-booking", rateLimit(5, 60000), async (c) 
       defer(c, (async () => {
         try {
           await Promise.all([
-            fetch('https://api.resend.com/emails', {
+            outbound.fetch('https://api.resend.com/emails', {
               method: 'POST',
               headers: { 'Authorization': `Bearer ${emailApiKey}`, 'Content-Type': 'application/json' },
               body: JSON.stringify({
@@ -893,7 +993,7 @@ app.post("/make-server-feacf0d8/submit-booking", rateLimit(5, 60000), async (c) 
                 html: bookingReceivedHtml(),
               })
             }),
-            fetch('https://api.resend.com/emails', {
+            outbound.fetch('https://api.resend.com/emails', {
               method: 'POST',
               headers: { 'Authorization': `Bearer ${emailApiKey}`, 'Content-Type': 'application/json' },
               body: JSON.stringify({
@@ -905,8 +1005,8 @@ app.post("/make-server-feacf0d8/submit-booking", rateLimit(5, 60000), async (c) 
               })
             })
           ]);
-        } catch (e) {
-          console.error('Failed to send booking emails:', e);
+        } catch (error) {
+          console.error('Failed to send booking emails:', error instanceof Error ? error.name : "error");
         }
       })());
     }
@@ -914,10 +1014,11 @@ app.post("/make-server-feacf0d8/submit-booking", rateLimit(5, 60000), async (c) 
     return c.json({
       bookingId,
       status: 'success',
-      message: 'Booking request submitted successfully'
-    });
+      message: 'Booking request submitted successfully',
+      stored,
+    }, leadStatus(stored));
   } catch (error) {
-    console.error("Error submitting booking:", error);
+    console.error("Error submitting booking:", errorLabel(error));
     return c.json({ error: "Failed to submit booking" }, 500);
   }
 });
@@ -925,7 +1026,9 @@ app.post("/make-server-feacf0d8/submit-booking", rateLimit(5, 60000), async (c) 
 // Submit rental form
 app.post("/make-server-feacf0d8/submit-rental", rateLimit(5, 60000), async (c) => {
   try {
-    const body = await c.req.json();
+    const parsedBody = await readBoundedJson(c, FORM_BODY_MAX);
+    if (!parsedBody.ok) return c.json({ error: "Equipment, name, email, phone, and rental dates are required" }, 400);
+    const body = parsedBody.body;
     const name = requiredText(body.name, TEXT_LIMITS.name);
     const email = parseEmailAddress(body.email);
     const phone = requiredText(body.phone, TEXT_LIMITS.phone);
@@ -952,17 +1055,17 @@ app.post("/make-server-feacf0d8/submit-rental", rateLimit(5, 60000), async (c) =
     const rentalId = `rental_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const equipmentNames = equipment.filter((item: string | null): item is string => item !== null);
     
-    await store(c).set(rentalId, {
+    const stored = await persistLead(c, rentalId, {
       equipment: equipmentNames,
       name,
       email,
       phone,
       startDate,
       endDate,
-      rentalDays: body.rentalDays,
-      dailyRate: body.dailyRate,
-      totalCost: body.totalCost,
-      depositAmount: body.depositAmount,
+      rentalDays: finiteNumber(body.rentalDays),
+      dailyRate: finiteNumber(body.dailyRate),
+      totalCost: finiteNumber(body.totalCost),
+      depositAmount: finiteNumber(body.depositAmount),
       pickupLocation: pickupLocation.value,
       purpose: purpose.value,
       specialRequests: specialRequests.value,
@@ -972,15 +1075,21 @@ app.post("/make-server-feacf0d8/submit-rental", rateLimit(5, 60000), async (c) =
       created_at: new Date().toISOString()
     });
 
-    console.log(`Rental submitted: ${rentalId} by ${name} (${email})`);
+    console.log(`Rental submitted: ${rentalId}`);
+    deferAdminNotice(
+      c,
+      `New rental: ${oneLine(name)}`,
+      `<p>Rental ${escapeHtml(rentalId)}</p><p>${escapeHtml(name)} · ${escapeHtml(email)} · ${escapeHtml(phone)}</p><p>${escapeHtml(startDate)} – ${escapeHtml(endDate)}</p><p>${escapeHtml(equipmentNames.join(", "))}</p>`,
+    );
 
     return c.json({
       rentalId,
       status: 'success',
-      message: 'Rental request submitted successfully'
-    });
+      message: 'Rental request submitted successfully',
+      stored,
+    }, leadStatus(stored));
   } catch (error) {
-    console.error("Error submitting rental:", error);
+    console.error("Error submitting rental:", errorLabel(error));
     return c.json({ error: "Failed to submit rental" }, 500);
   }
 });
@@ -1004,7 +1113,7 @@ app.get("/make-server-feacf0d8/submissions", requireAdmin, async (c) => {
       submissions: allSubmissions
     });
   } catch (error) {
-    console.error("Error retrieving submissions:", error);
+    console.error("Error retrieving submissions:", errorLabel(error));
     return c.json({ error: "Failed to retrieve submissions" }, 500);
   }
 });
@@ -1038,266 +1147,66 @@ app.post("/make-server-feacf0d8/update-submission-status", requireAdmin, async (
       message: 'Submission status updated successfully'
     });
   } catch (error) {
-    console.error("Error updating submission status:", error);
+    console.error("Error updating submission status:", errorLabel(error));
     return c.json({ error: "Failed to update submission status" }, 500);
   }
 });
 
-// Track page view
-app.post("/make-server-feacf0d8/track-pageview", rateLimit(120, 60000), async (c) => {
+// Track page view. Writes one Analytics Engine point. Never writes D1.
+// Invalid input is 400. Over the per-IP daily cap, or a write error, is 204.
+app.post("/make-server-feacf0d8/track-pageview", rateLimit(TRACK_PER_MINUTE, 60000), async (c) => {
   try {
-    const body = await c.req.json();
-    const { 
-      visitorId, 
-      sessionId, 
-      page, 
-      referrer, 
-      userAgent, 
-      screenWidth, 
-      screenHeight,
-      language,
-      timezone,
-      utmSource,
-      utmMedium,
-      utmCampaign
-    } = body;
-
-    const pageviewId = `pageview_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
-    await store(c).set(pageviewId, {
-      visitorId,
-      sessionId,
-      page,
-      referrer,
-      userAgent,
-      screenWidth,
-      screenHeight,
-      language,
-      timezone,
-      utmSource,
-      utmMedium,
-      utmCampaign,
-      timestamp: new Date().toISOString()
-    });
-
-    // Session and visitor counters flush at most once a minute per isolate.
-    // The pageview row above is the durable event. delta is the unflushed hits.
-    const kv = store(c);
-    const nowMs = Date.now();
-    const sessionKey = `session_${sessionId}`;
-    await noteThrottledUpsert(kv, sessionKey, nowMs, (prev, delta) => {
-      if (prev) {
-        return {
-          ...prev,
-          lastActivity: new Date().toISOString(),
-          pageCount: (typeof prev.pageCount === "number" ? prev.pageCount : 1) + delta,
-        };
-      }
-      return {
-        visitorId,
-        sessionId,
-        startTime: new Date().toISOString(),
-        lastActivity: new Date().toISOString(),
-        pageCount: delta,
-        referrer,
-        userAgent,
-        language,
-        timezone,
-      };
-    });
-
-    const visitorKey = `visitor_${visitorId}`;
-    await noteThrottledUpsert(kv, visitorKey, nowMs, (prev, delta) => {
-      if (prev) {
-        return {
-          ...prev,
-          lastVisit: new Date().toISOString(),
-          visitCount: (typeof prev.visitCount === "number" ? prev.visitCount : 1) + delta,
-        };
-      }
-      return {
-        visitorId,
-        firstVisit: new Date().toISOString(),
-        lastVisit: new Date().toISOString(),
-        visitCount: delta,
-        userAgent,
-        language,
-        timezone,
-      };
-    });
-
-    return c.json({ status: 'success' });
+    const parsed = await readBoundedJson(c, TRACK_BODY_MAX);
+    if (!parsed.ok) return c.body(null, parsed.status === 413 ? 204 : 400);
+    const point = pageviewPoint(parsed.body);
+    if (!point) return c.body(null, 400);
+    if (!allowDailyWrite(clientIp(c), "track", TRACK_WRITES_PER_IP_PER_DAY)) {
+      return c.body(null, 204);
+    }
+    writeAnalyticsPoint(c, point);
+    return c.body(null, 204);
   } catch (error) {
-    console.error("Error tracking pageview:", error);
-    return c.json({ error: "Failed to track pageview" }, 500);
+    console.error("Error tracking pageview:", error instanceof Error ? error.name : "error");
+    return c.body(null, 204);
   }
 });
 
-// Track event (button clicks, form submissions, etc.)
-app.post("/make-server-feacf0d8/track-event", rateLimit(120, 60000), async (c) => {
+// Track event. page_exit is accepted and not stored (one extra request per SPA hop).
+app.post("/make-server-feacf0d8/track-event", rateLimit(TRACK_PER_MINUTE, 60000), async (c) => {
   try {
-    const body = await c.req.json();
-    const { visitorId, sessionId, eventName, eventData, page } = body;
-
-    const eventId = `event_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
-    await store(c).set(eventId, {
-      visitorId,
-      sessionId,
-      eventName,
-      eventData,
-      page,
-      timestamp: new Date().toISOString()
-    });
-
-    console.log(`Event tracked: ${eventName} on ${page}`);
-
-    return c.json({ status: 'success' });
+    const parsed = await readBoundedJson(c, TRACK_BODY_MAX);
+    if (!parsed.ok) return c.body(null, parsed.status === 413 ? 204 : 400);
+    const event = eventPoint(parsed.body);
+    if (event.drop) return c.body(null, 204);
+    if (!event.point) return c.body(null, 400);
+    if (!allowDailyWrite(clientIp(c), "track", TRACK_WRITES_PER_IP_PER_DAY)) {
+      return c.body(null, 204);
+    }
+    writeAnalyticsPoint(c, event.point);
+    return c.body(null, 204);
   } catch (error) {
-    console.error("Error tracking event:", error);
-    return c.json({ error: "Failed to track event" }, 500);
+    console.error("Error tracking event:", error instanceof Error ? error.name : "error");
+    return c.body(null, 204);
   }
 });
 
-// Get analytics data (admin endpoint)
+// Admin analytics. Reads Workers Analytics Engine (a few aggregated SQL queries),
+// not D1. A bad referrer cannot throw: hosts are stored at write time, and the
+// read path only copies strings. Unconfigured or failed queries return an empty
+// success payload so the dashboard does not 500.
 app.get("/make-server-feacf0d8/analytics", requireAdmin, async (c) => {
   try {
-    const { searchParams } = new URL(c.req.url);
-    const days = parseInt(searchParams.get('days') || '30');
-    
-    // Calculate date range
-    const now = new Date();
-    const startDate = new Date(now.getTime() - (days * 24 * 60 * 60 * 1000));
-
-    // Fetch all data
-    const [pageviews, sessions, , events] = await Promise.all([
-      store(c).getByPrefix("pageview_"),
-      store(c).getByPrefix("session_"),
-      store(c).getByPrefix("visitor_"),
-      store(c).getByPrefix("event_")
-    ]);
-
-    // Filter by date range
-    const filteredPageviews = pageviews.filter(pv => 
-      new Date(pv.timestamp) >= startDate
-    );
-
-    const filteredSessions = sessions.filter(s => 
-      new Date(s.startTime) >= startDate
-    );
-
-    const filteredEvents = events.filter(e => 
-      new Date(e.timestamp) >= startDate
-    );
-
-    // Calculate statistics
-    const uniqueVisitors = new Set(filteredPageviews.map(pv => pv.visitorId)).size;
-    const totalPageviews = filteredPageviews.length;
-    const totalSessions = filteredSessions.length;
-    const avgPageviewsPerSession = totalSessions > 0 ? (totalPageviews / totalSessions).toFixed(2) : 0;
-
-    // Page popularity
-    const pageCount: Record<string, number> = {};
-    filteredPageviews.forEach(pv => {
-      pageCount[pv.page] = (pageCount[pv.page] || 0) + 1;
+    const days = clampAnalyticsDays(c.req.query("days"));
+    const payload = await queryAnalyticsEngine({
+      accountId: c.env.CLOUDFLARE_ACCOUNT_ID,
+      token: c.env.ANALYTICS_API_TOKEN,
+      days,
     });
-    const topPages = Object.entries(pageCount)
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 10)
-      .map(([page, count]) => ({ page, count }));
-
-    // Referrer sources
-    const referrerCount: Record<string, number> = {};
-    filteredPageviews.forEach(pv => {
-      if (pv.referrer && pv.referrer !== '') {
-        const referrerDomain = new URL(pv.referrer).hostname || 'direct';
-        referrerCount[referrerDomain] = (referrerCount[referrerDomain] || 0) + 1;
-      } else {
-        referrerCount['direct'] = (referrerCount['direct'] || 0) + 1;
-      }
-    });
-    const topReferrers = Object.entries(referrerCount)
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 10)
-      .map(([referrer, count]) => ({ referrer, count }));
-
-    // Device types (based on user agent)
-    const deviceCount = { mobile: 0, tablet: 0, desktop: 0 };
-    filteredPageviews.forEach(pv => {
-      const ua = (pv.userAgent || '').toLowerCase();
-      if (/mobile|android|iphone/.test(ua)) {
-        deviceCount.mobile++;
-      } else if (/tablet|ipad/.test(ua)) {
-        deviceCount.tablet++;
-      } else {
-        deviceCount.desktop++;
-      }
-    });
-
-    // Browser distribution
-    const browserCount: Record<string, number> = {};
-    filteredPageviews.forEach(pv => {
-      const ua = (pv.userAgent || '').toLowerCase();
-      let browser = 'Other';
-      if (ua.includes('chrome') && !ua.includes('edg')) browser = 'Chrome';
-      else if (ua.includes('safari') && !ua.includes('chrome')) browser = 'Safari';
-      else if (ua.includes('firefox')) browser = 'Firefox';
-      else if (ua.includes('edg')) browser = 'Edge';
-      browserCount[browser] = (browserCount[browser] || 0) + 1;
-    });
-
-    // Daily pageviews for chart
-    const dailyViews: Record<string, number> = {};
-    filteredPageviews.forEach(pv => {
-      const date = new Date(pv.timestamp).toISOString().split('T')[0];
-      dailyViews[date] = (dailyViews[date] || 0) + 1;
-    });
-    const dailyViewsArray = Object.entries(dailyViews)
-      .sort((a, b) => a[0].localeCompare(b[0]))
-      .map(([date, count]) => ({ date, views: count }));
-
-    // Event statistics
-    const eventStats: Record<string, number> = {};
-    filteredEvents.forEach(e => {
-      eventStats[e.eventName] = (eventStats[e.eventName] || 0) + 1;
-    });
-    const topEvents = Object.entries(eventStats)
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 10)
-      .map(([event, count]) => ({ event, count }));
-
-    console.log(`Analytics retrieved: ${totalPageviews} pageviews, ${uniqueVisitors} unique visitors`);
-
-    return c.json({
-      status: 'success',
-      period: {
-        days,
-        startDate: startDate.toISOString(),
-        endDate: now.toISOString()
-      },
-      summary: {
-        totalPageviews,
-        uniqueVisitors,
-        totalSessions,
-        avgPageviewsPerSession,
-        totalEvents: filteredEvents.length
-      },
-      topPages,
-      topReferrers,
-      devices: Object.entries(deviceCount).map(([device, count]) => ({ device, count })),
-      browsers: Object.entries(browserCount).map(([browser, count]) => ({ browser, count })),
-      dailyViews: dailyViewsArray,
-      topEvents,
-      recentPageviews: filteredPageviews.slice(0, 50).map(pv => ({
-        page: pv.page,
-        referrer: pv.referrer,
-        timestamp: pv.timestamp,
-        userAgent: pv.userAgent
-      }))
-    });
+    console.log(`Analytics retrieved: ${payload.summary.totalPageviews} pageviews`);
+    return c.json(payload);
   } catch (error) {
-    console.error("Error retrieving analytics:", error);
-    return c.json({ error: "Failed to retrieve analytics" }, 500);
+    console.error("Error retrieving analytics:", errorLabel(error));
+    return c.json(emptyAnalytics(clampAnalyticsDays(c.req.query("days"))));
   }
 });
 
@@ -1320,7 +1229,7 @@ app.get("/make-server-feacf0d8/galleries", async (c) => {
     const sorted = galleries.sort((a: any, b: any) => (a.order ?? 0) - (b.order ?? 0));
     return c.json({ status: "success", galleries: sorted });
   } catch (error) {
-    console.error("Error retrieving galleries:", error);
+    console.error("Error retrieving galleries:", errorLabel(error));
     return c.json({ error: "Failed to retrieve galleries" }, 500);
   }
 });
@@ -1362,7 +1271,7 @@ app.post("/make-server-feacf0d8/admin/galleries", requireAdmin, async (c) => {
     console.log(`Created gallery: ${id}`);
     return c.json({ status: "success", gallery });
   } catch (error) {
-    console.error("Error creating gallery:", error);
+    console.error("Error creating gallery:", errorLabel(error));
     return c.json({ error: "Failed to create gallery" }, 500);
   }
 });
@@ -1385,7 +1294,7 @@ app.post("/make-server-feacf0d8/admin/galleries/update", requireAdmin, async (c)
     console.log(`Updated gallery: ${id}`);
     return c.json({ status: "success", gallery: updated });
   } catch (error) {
-    console.error("Error updating gallery:", error);
+    console.error("Error updating gallery:", errorLabel(error));
     return c.json({ error: "Failed to update gallery" }, 500);
   }
 });
@@ -1400,7 +1309,7 @@ app.post("/make-server-feacf0d8/admin/galleries/delete", requireAdmin, async (c)
     console.log(`Deleted gallery: ${id}`);
     return c.json({ status: "success" });
   } catch (error) {
-    console.error("Error deleting gallery:", error);
+    console.error("Error deleting gallery:", errorLabel(error));
     return c.json({ error: "Failed to delete gallery" }, 500);
   }
 });
@@ -1448,7 +1357,7 @@ app.post("/make-server-feacf0d8/send-booking-confirmation", requireAdmin, rateLi
       : 'Booking Confirmation - CREOVA';
 
     // Send confirmation to customer
-    const customerEmailResponse = await fetch('https://api.resend.com/emails', {
+    const customerEmailResponse = await outbound.fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${emailServiceApiKey}`,
@@ -1463,18 +1372,18 @@ app.post("/make-server-feacf0d8/send-booking-confirmation", requireAdmin, rateLi
     });
 
     if (!customerEmailResponse.ok) {
-      const errorText = await customerEmailResponse.text();
-      console.error('Failed to send customer confirmation email:', errorText);
-      throw new Error('Customer email failed');
+      console.error("Failed to send customer confirmation email", customerEmailResponse.status);
+      await customerEmailResponse.body?.cancel();
+      throw new Error("Customer email failed");
     }
 
     const customerResult = (await customerEmailResponse.json()) as { id?: string };
-    console.log(`Booking confirmation sent to ${to}: ${customerResult.id}`);
+    console.log(`Booking confirmation sent: ${customerResult.id ?? "ok"}`);
 
     // Send notification to admin
     const adminEmailHtml = adminBookingNotification(emailData);
     
-    const adminEmailResponse = await fetch('https://api.resend.com/emails', {
+    const adminEmailResponse = await outbound.fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${emailServiceApiKey}`,
@@ -1490,9 +1399,8 @@ app.post("/make-server-feacf0d8/send-booking-confirmation", requireAdmin, rateLi
     });
 
     if (!adminEmailResponse.ok) {
-      const errorText = await adminEmailResponse.text();
-      console.error('Failed to send admin notification email:', errorText);
-      // Don't throw - customer email succeeded
+      console.error("Failed to send admin notification email", adminEmailResponse.status);
+      await adminEmailResponse.body?.cancel();
     } else {
       const adminResult = (await adminEmailResponse.json()) as { id?: string };
       console.log(`Admin notification sent: ${adminResult.id}`);
@@ -1505,7 +1413,7 @@ app.post("/make-server-feacf0d8/send-booking-confirmation", requireAdmin, rateLi
     });
 
   } catch (error) {
-    console.error('Error sending booking confirmation emails:', error);
+    console.error("Error sending booking confirmation emails:", errorLabel(error));
     return c.json({ 
       error: 'Failed to send confirmation email',
     }, 500);
@@ -1527,7 +1435,7 @@ app.post("/make-server-feacf0d8/send-contact-notification", requireAdmin, rateLi
 
     const adminEmailHtml = adminContactNotification(contactData);
     
-    const emailResponse = await fetch('https://api.resend.com/emails', {
+    const emailResponse = await outbound.fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${emailServiceApiKey}`,
@@ -1543,9 +1451,9 @@ app.post("/make-server-feacf0d8/send-contact-notification", requireAdmin, rateLi
     });
 
     if (!emailResponse.ok) {
-      const errorText = await emailResponse.text();
-      console.error('Failed to send contact notification:', errorText);
-      throw new Error('Email send failed');
+      console.error("Failed to send contact notification", emailResponse.status);
+      await emailResponse.body?.cancel();
+      throw new Error("Email send failed");
     }
 
     const result = (await emailResponse.json()) as { id?: string };
@@ -1558,7 +1466,7 @@ app.post("/make-server-feacf0d8/send-contact-notification", requireAdmin, rateLi
     });
 
   } catch (error) {
-    console.error('Error sending contact notification:', error);
+    console.error("Error sending contact notification:", errorLabel(error));
     return c.json({ 
       error: 'Failed to send notification',
     }, 500);
@@ -1580,7 +1488,7 @@ app.post("/make-server-feacf0d8/send-collaboration-notification", requireAdmin, 
 
     const adminEmailHtml = adminCollaborationNotification(collaborationData);
     
-    const emailResponse = await fetch('https://api.resend.com/emails', {
+    const emailResponse = await outbound.fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${emailServiceApiKey}`,
@@ -1596,9 +1504,9 @@ app.post("/make-server-feacf0d8/send-collaboration-notification", requireAdmin, 
     });
 
     if (!emailResponse.ok) {
-      const errorText = await emailResponse.text();
-      console.error('Failed to send collaboration notification:', errorText);
-      throw new Error('Email send failed');
+      console.error("Failed to send collaboration notification", emailResponse.status);
+      await emailResponse.body?.cancel();
+      throw new Error("Email send failed");
     }
 
     const result = (await emailResponse.json()) as { id?: string };
@@ -1611,7 +1519,7 @@ app.post("/make-server-feacf0d8/send-collaboration-notification", requireAdmin, 
     });
 
   } catch (error) {
-    console.error('Error sending collaboration notification:', error);
+    console.error("Error sending collaboration notification:", errorLabel(error));
     return c.json({ 
       error: 'Failed to send notification',
     }, 500);

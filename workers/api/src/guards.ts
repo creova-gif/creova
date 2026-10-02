@@ -199,8 +199,9 @@ export function isUsableTurnstileSecret(secret: string | undefined): boolean {
 
 /**
  * Skip captcha only for an explicit local CREOVA_ENV.
- * ENVIRONMENT is not consulted. Hosted *.supabase.co never skips, so setting
- * CREOVA_ENV on the deployed function does not turn verification off.
+ * ENVIRONMENT is not consulted. Hosted *.supabase.co never skips.
+ * On the Worker, turnstileGate also requires a loopback hostname, so a deployed
+ * workers.dev host cannot skip even if CREOVA_ENV is set and SUPABASE_URL is absent.
  */
 export function captchaDevSkip(
   creovaEnv: string | undefined,
@@ -211,18 +212,29 @@ export function captchaDevSkip(
   return true;
 }
 
+/** wrangler dev only. A deployed Worker hostname is never these values. */
+export function isLoopbackHost(hostname: string | undefined): boolean {
+  if (!hostname) return false;
+  const host = hostname.toLowerCase();
+  return host === "localhost" || host === "127.0.0.1" || host === "::1" || host === "[::1]";
+}
+
 /**
  * Fail closed when the secret is missing or is Cloudflare's dummy secret,
- * unless captchaDevSkip allows a local skip.
+ * unless the request is loopback and captchaDevSkip allows a local skip.
+ * `requestHost` omitted is not loopback.
  */
 export function turnstileGate(input: {
   secretConfigured: boolean;
   creovaEnv: string | undefined;
   supabaseUrl?: string | undefined;
+  requestHost?: string | undefined;
   token: unknown;
 }): TurnstileGate {
   if (!input.secretConfigured) {
-    if (captchaDevSkip(input.creovaEnv, input.supabaseUrl)) return { action: "skip" };
+    if (isLoopbackHost(input.requestHost) && captchaDevSkip(input.creovaEnv, input.supabaseUrl)) {
+      return { action: "skip" };
+    }
     return {
       action: "reject",
       status: 503,
@@ -279,34 +291,50 @@ function singleIp(value: string | null | undefined): string | null {
 }
 
 /**
- * Address to rate-limit on.
+ * Address to rate-limit on for this Worker.
  *
- * Cloudflare, in front of *.supabase.co, appends the connecting IP to
- * X-Forwarded-For and overwrites CF-Connecting-IP. Supabase's own function
- * examples read the leftmost XFF hop, which is the attacker-controlled prefix
- * when a proxy appends. The rightmost valid hop is the nearest proxy's
- * observation. CF-Connecting-IP is preferred when it is a single IP because
- * that is the visitor address Cloudflare sets. A raw header string is never
- * the key.
- *
- * Without those platform headers (local `deno serve`), the only hop is
- * whoever wrote the header. Missing addresses share `unknown`.
+ * Cloudflare sets cf-connecting-ip on every request to a Worker and overwrites
+ * any client-supplied value. X-Forwarded-For is not consulted: the client can
+ * spoof it, and on a Worker it is not the visitor address. The Supabase
+ * function keeps its own copy of this helper. Missing or invalid
+ * cf-connecting-ip shares `unknown`.
  */
 export function rateLimitClientIp(input: {
   forwardedFor?: string | null;
   connectingIp?: string | null;
 }): string {
-  const connecting = singleIp(input.connectingIp);
-  if (connecting) return connecting;
-  const hops = String(input.forwardedFor ?? "")
-    .split(",")
-    .map((hop) => hop.trim())
-    .filter(Boolean);
-  for (let i = hops.length - 1; i >= 0; i--) {
-    const ip = singleIp(hops[i]);
-    if (ip) return ip;
-  }
-  return "unknown";
+  return singleIp(input.connectingIp) ?? "unknown";
+}
+
+/** Key fragment safe to interpolate into a D1 key. Rejects anything else. */
+export function safeKeyPart(value: unknown, max = 64): string | null {
+  const text = requiredText(value, max);
+  if (!text || !/^[A-Za-z0-9_-]+$/.test(text)) return null;
+  return text;
+}
+
+/**
+ * Password compare that does not return early on length. Both sides are hashed
+ * to a fixed 32-byte digest, then compared byte by byte.
+ */
+export async function passwordsMatch(provided: string, expected: string): Promise<boolean> {
+  const encoded = new TextEncoder();
+  const key = await crypto.subtle.importKey(
+    "raw",
+    encoded.encode("creova-admin-password-compare"),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"],
+  );
+  const [left, right] = await Promise.all([
+    crypto.subtle.sign("HMAC", key, encoded.encode(provided)),
+    crypto.subtle.sign("HMAC", key, encoded.encode(expected)),
+  ]);
+  const a = new Uint8Array(left);
+  const b = new Uint8Array(right);
+  let diff = a.length ^ b.length;
+  for (let i = 0; i < a.length; i++) diff |= a[i] ^ b[i];
+  return diff === 0;
 }
 
 export function requiredText(value: unknown, max: number): string | null {
