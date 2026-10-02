@@ -39,7 +39,6 @@ export function AnalyticsTracker() {
   const location = useLocation();
   const sessionIdRef = useRef<string>('');
   const visitorIdRef = useRef<string>('');
-  const pageLoadTimeRef = useRef<number>(Date.now());
 
   // Load Google Analytics on mount
   useEffect(() => {
@@ -65,10 +64,9 @@ export function AnalyticsTracker() {
     sessionIdRef.current = sessionId;
   }, []);
 
-  // Track page view on every route change
+  // Track page view on every route change. page_exit is not sent:
+  // the Worker accepts it and drops it, so the POST only spends a request.
   useEffect(() => {
-    pageLoadTimeRef.current = Date.now();
-
     const trackPageView = async () => {
       try {
         // Extract UTM parameters from URL
@@ -118,43 +116,7 @@ export function AnalyticsTracker() {
     };
 
     trackPageView();
-
-    // Track time on page when user leaves
-    return () => {
-      const timeSpent = Math.floor((Date.now() - pageLoadTimeRef.current) / 1000);
-      
-      // Track page exit event
-      if (timeSpent > 2) { // Only track if spent more than 2 seconds
-        trackEvent('page_exit', {
-          page: location.pathname,
-          timeSpent: timeSpent
-        });
-      }
-    };
   }, [location]);
-
-  // Function to track custom events
-  const trackEvent = async (eventName: string, eventData?: any) => {
-    try {
-      const eventUrl = apiUrl('/track-event');
-      if (!eventUrl) return;
-      await fetch(eventUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          visitorId: visitorIdRef.current,
-          sessionId: sessionIdRef.current,
-          eventName,
-          eventData,
-          page: location.pathname
-        })
-      });
-    } catch {
-      // Silently fail
-    }
-  };
 
   return null; // This component doesn't render anything
 }
