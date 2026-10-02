@@ -3,13 +3,22 @@ import { cors } from "npm:hono/cors";
 import { logger } from "npm:hono/logger";
 import * as kv from "./kv_store.tsx";
 import {
-  catalogUnitCents,
-  escapeHtml,
+  bookingReceivedHtml,
+  COMMERCE_GONE_BODY,
+  COMMERCE_GONE_STATUS,
+  COMMERCE_ROUTES,
+  consumeRateLimit,
+  contactReceivedHtml,
   isUsableTurnstileSecret,
   oneLine,
+  optionalText,
   parseAllowedOrigins,
-  resolveChargeCents,
+  parseEmailAddress,
+  rateLimitClientIp,
+  requiredText,
+  TEXT_LIMITS,
   turnstileGate,
+  turnstileVerificationOk,
 } from "./guards.ts";
 
 const app = new Hono();
@@ -33,47 +42,58 @@ function syncToAirtable(tableId: string, fields: Record<string, unknown>) {
   }).catch((e) => console.error(`Airtable sync failed for ${tableId}:`, e));
 }
 
-// Security: Rate limiting map (in-memory, simple implementation)
+// Best-effort limiter for this isolate only. Supabase Edge isolates do not
+// share memory, so a fresh isolate starts with an empty map. kv_store upsert
+// is a read-then-write, not an atomic counter, and is not a rate-limit
+// control. Clients with no platform-supplied address share one "unknown" bucket.
 const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
 
-// Security: Rate limiting middleware
+function clientIp(c: { req: { header: (name: string) => string | undefined } }): string {
+  return rateLimitClientIp({
+    forwardedFor: c.req.header("x-forwarded-for"),
+    connectingIp: c.req.header("cf-connecting-ip"),
+  });
+}
+
 const rateLimit = (maxRequests: number, windowMs: number) => {
   return async (c: any, next: any) => {
-    const ip = c.req.header('x-forwarded-for') || c.req.header('x-real-ip') || 'unknown';
+    const ip = clientIp(c);
     const now = Date.now();
     const key = `${ip}:${c.req.path}`;
-    
-    const record = rateLimitMap.get(key);
-    
-    if (record && now < record.resetTime) {
-      if (record.count >= maxRequests) {
-        console.log(`Rate limit exceeded for ${ip} on ${c.req.path}`);
-        return c.json({ error: 'Too many requests. Please try again later.' }, 429);
-      }
-      record.count++;
-    } else {
-      rateLimitMap.set(key, { count: 1, resetTime: now + windowMs });
+    const allowed = consumeRateLimit(rateLimitMap, key, now, maxRequests, windowMs);
+    if (!allowed) {
+      console.log(`Rate limit exceeded for ${ip} on ${c.req.path}`);
+      return c.json({ error: "Too many requests. Please try again later." }, 429);
     }
-    
-    // Clean up old entries
+
     if (rateLimitMap.size > 10000) {
       for (const [k, v] of rateLimitMap.entries()) {
         if (now > v.resetTime) rateLimitMap.delete(k);
       }
     }
-    
+
     await next();
   };
 };
 
-// Turnstile: verify the token with the secret. Missing secret fails closed
-// unless CREOVA_ENV / ENVIRONMENT is an explicit local/dev value.
-async function requireTurnstile(token: unknown): Promise<{ ok: true } | { ok: false; status: number; error: string }> {
+function commerceUnavailable(c: { json: (body: unknown, status?: number) => Response }) {
+  return c.json(COMMERCE_GONE_BODY, COMMERCE_GONE_STATUS);
+}
+
+const TURNSTILE_TIMEOUT_MS = 5000;
+
+// Turnstile. Missing secret fails closed unless CREOVA_ENV is exactly a local
+// value and SUPABASE_URL is not a hosted project. ENVIRONMENT is ignored.
+async function requireTurnstile(
+  c: { req: { header: (name: string) => string | undefined } },
+  token: unknown,
+  action: string,
+): Promise<{ ok: true } | { ok: false; status: 400 | 503; error: string }> {
   const rawSecret = Deno.env.get("TURNSTILE_SECRET_KEY") ?? "";
-  const environment = Deno.env.get("CREOVA_ENV") || Deno.env.get("ENVIRONMENT") || "";
   const gate = turnstileGate({
     secretConfigured: isUsableTurnstileSecret(rawSecret),
-    environment,
+    creovaEnv: Deno.env.get("CREOVA_ENV"),
+    supabaseUrl: Deno.env.get("SUPABASE_URL"),
     token,
   });
   if (gate.action === "reject") {
@@ -82,20 +102,38 @@ async function requireTurnstile(token: unknown): Promise<{ ok: true } | { ok: fa
   }
   if (gate.action === "skip") return { ok: true };
 
-  const verifyResponse = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
-    method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: new URLSearchParams({
-      secret: rawSecret.trim(),
-      response: String(token),
-    }),
+  const ip = clientIp(c);
+  const params = new URLSearchParams({
+    secret: rawSecret.trim(),
+    response: String(token),
   });
-  const verifyData = await verifyResponse.json().catch(() => ({ success: false }));
-  if (!verifyData.success) {
-    console.log("Turnstile verification failed:", verifyData);
-    return { ok: false, status: 400, error: "Security verification failed. Please try again." };
+  if (ip !== "unknown") params.set("remoteip", ip);
+
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), TURNSTILE_TIMEOUT_MS);
+  try {
+    const verifyResponse = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: params,
+      signal: controller.signal,
+    });
+    if (!verifyResponse.ok) {
+      console.error("Turnstile siteverify HTTP", verifyResponse.status);
+      return { ok: false, status: 503, error: "Security verification is unavailable" };
+    }
+    const verifyData = await verifyResponse.json().catch(() => null);
+    if (!turnstileVerificationOk(verifyData, action)) {
+      console.log("Turnstile verification failed");
+      return { ok: false, status: 400, error: "Security verification failed. Please try again." };
+    }
+    return { ok: true };
+  } catch (error) {
+    console.error("Turnstile siteverify request failed:", error);
+    return { ok: false, status: 503, error: "Security verification is unavailable" };
+  } finally {
+    clearTimeout(timer);
   }
-  return { ok: true };
 }
 
 // ---------------------------------------------------------------------------
@@ -130,18 +168,6 @@ function fromBase64Url(value: string): string {
   const padded = value.replace(/-/g, "+").replace(/_/g, "/");
   const pad = padded.length % 4 === 0 ? "" : "=".repeat(4 - (padded.length % 4));
   return atob(padded + pad);
-}
-
-async function hmacSha256Hex(data: string, secret: string): Promise<string> {
-  const key = await crypto.subtle.importKey(
-    "raw",
-    new TextEncoder().encode(secret),
-    { name: "HMAC", hash: "SHA-256" },
-    false,
-    ["sign"]
-  );
-  const sig = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(data));
-  return Array.from(new Uint8Array(sig)).map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 
 async function hmacSha256B64Url(data: string, secret: string): Promise<string> {
@@ -194,92 +220,6 @@ const requireAdmin = async (c: any, next: any) => {
   await next();
 };
 
-// ---------------------------------------------------------------------------
-// Security: Stripe webhook signature verification
-//
-// The handler used to JSON.parse the request body directly with a comment
-// admitting the signature was never checked. That meant anyone who knew (or
-// guessed) a real payment_intent_id — trivially obtainable by calling
-// create-payment-intent themselves — could POST a forged
-// "payment_intent.succeeded" event and flip any order to completed with no
-// money ever moving. This implements Stripe's documented signature scheme
-// (https://stripe.com/docs/webhooks#verify-manually) by hand, using Web
-// Crypto, so it works in Deno without pulling in the full Stripe SDK.
-// ---------------------------------------------------------------------------
-async function verifyStripeWebhookSignature(
-  rawBody: string,
-  signatureHeader: string | undefined | null,
-  secret: string,
-  toleranceSeconds = 300
-): Promise<boolean> {
-  if (!signatureHeader) return false;
-  const parts = signatureHeader.split(",").reduce((acc: Record<string, string>, part) => {
-    const [k, v] = part.split("=");
-    if (k && v) acc[k] = v;
-    return acc;
-  }, {});
-  const timestamp = parts["t"];
-  const expectedSigHex = parts["v1"];
-  if (!timestamp || !expectedSigHex) return false;
-
-  const ageSeconds = Math.abs(Date.now() / 1000 - Number(timestamp));
-  if (!Number.isFinite(ageSeconds) || ageSeconds > toleranceSeconds) return false;
-
-  const actualSigHex = await hmacSha256Hex(`${timestamp}.${rawBody}`, secret);
-  return timingSafeEqual(actualSigHex, expectedSigHex);
-}
-
-// ---------------------------------------------------------------------------
-// Security: server-side payment confirmation
-//
-// purchase-digital-product, create-membership, and purchase-event-ticket used
-// to take a client-asserted payment_intent_id and unconditionally issue a
-// real download token / member number / ticket code — no check that any
-// money had actually moved. This confirms the Payment Intent actually
-// succeeded (and, where a trusted price is known, that the right amount was
-// charged) before any of those routes grant anything.
-// ---------------------------------------------------------------------------
-async function verifyStripePaymentSucceeded(
-  paymentIntentId: unknown,
-  expectedAmountCents?: number
-): Promise<{ ok: true } | { ok: false; error: string }> {
-  if (!paymentIntentId || typeof paymentIntentId !== "string") {
-    return { ok: false, error: "Missing payment_intent_id" };
-  }
-  const stripeSecretKey = Deno.env.get("STRIPE_SECRET_KEY");
-  if (!stripeSecretKey) {
-    console.error("STRIPE_SECRET_KEY not configured");
-    return { ok: false, error: "Payment configuration error" };
-  }
-  const resp = await fetch(
-    `https://api.stripe.com/v1/payment_intents/${encodeURIComponent(paymentIntentId)}`,
-    { headers: { Authorization: `Bearer ${stripeSecretKey}` } }
-  );
-  if (!resp.ok) {
-    return { ok: false, error: "Unable to verify payment with Stripe" };
-  }
-  const intent = await resp.json();
-  if (intent.status !== "succeeded") {
-    return { ok: false, error: `Payment has not succeeded (status: ${intent.status})` };
-  }
-  if (typeof expectedAmountCents === "number" && intent.amount !== expectedAmountCents) {
-    return { ok: false, error: "Payment amount does not match the expected price" };
-  }
-  return { ok: true };
-}
-
-// Single source of truth for membership pricing — both create-membership and
-// create-subscription-checkout key off this instead of each hardcoding their
-// own copy (they used to disagree in structure, which is exactly how price
-// drift between two "sources of truth" happens).
-const MEMBERSHIP_PRICING: Record<string, { price: number; name: string }> = {
-  creator: { price: 19900, name: "CREOVA Creator Membership" }, // $199 CAD in cents
-  legacy: { price: 49900, name: "CREOVA Legacy Membership" }, // $499 CAD in cents
-};
-
-// Cart prices live in ./guards.ts (PRODUCT_CATALOG). create-payment-intent
-// charges that total only. Unrecognized items are rejected — client `amount`
-// and client `price` are never forwarded to Stripe.
 
 // Security: Add security headers middleware
 app.use('*', async (c, next) => {
@@ -333,6 +273,11 @@ app.use(
 app.get("/make-server-feacf0d8/health", (c) => {
   return c.json({ status: "ok" });
 });
+
+// Commerce is off. One handler, no Stripe calls and no store writes.
+for (const path of COMMERCE_ROUTES) {
+  app.all(path, commerceUnavailable);
+}
 
 // Admin login - the ONLY place the admin password is ever checked, and it
 // only ever happens server-side. Rate-limited to slow down brute force.
@@ -463,7 +408,7 @@ app.get("/make-server-feacf0d8/audit-logs/export", requireAdmin, async (c) => {
 });
 
 // Create booking for services
-app.post("/make-server-feacf0d8/create-booking", async (c) => {
+app.post("/make-server-feacf0d8/create-booking", rateLimit(10, 60000), async (c) => {
   try {
     const body = await c.req.json();
     const { service, customer_info, booking_details, amount, currency = 'cad' } = body;
@@ -489,12 +434,12 @@ app.post("/make-server-feacf0d8/create-booking", async (c) => {
     });
   } catch (error) {
     console.error("Error creating booking:", error);
-    return c.json({ error: "Failed to create booking: " + error.message }, 500);
+    return c.json({ error: "Failed to create booking" }, 500);
   }
 });
 
 // Create equipment rental
-app.post("/make-server-feacf0d8/create-rental", async (c) => {
+app.post("/make-server-feacf0d8/create-rental", rateLimit(10, 60000), async (c) => {
   try {
     const body = await c.req.json();
     const { equipment, customer_info, rental_details, amount, currency = 'cad' } = body;
@@ -520,211 +465,40 @@ app.post("/make-server-feacf0d8/create-rental", async (c) => {
     });
   } catch (error) {
     console.error("Error creating rental:", error);
-    return c.json({ error: "Failed to create rental: " + error.message }, 500);
+    return c.json({ error: "Failed to create rental" }, 500);
   }
 });
 
-// Create event ticket purchase
-app.post("/make-server-feacf0d8/create-ticket", async (c) => {
-  try {
-    const body = await c.req.json();
-    const { event_id, customer_info, ticket_details, amount, currency = 'cad' } = body;
-
-    const ticketId = `ticket_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
-    await kv.set(ticketId, {
-      event_id,
-      customer_info,
-      ticket_details,
-      amount,
-      currency,
-      status: 'pending',
-      created_at: new Date().toISOString()
-    });
-
-    console.log(`Created ticket: ${ticketId}`);
-
-    return c.json({
-      ticketId,
-      status: 'success',
-      message: 'Ticket purchased successfully'
-    });
-  } catch (error) {
-    console.error("Error creating ticket:", error);
-    return c.json({ error: "Failed to create ticket: " + error.message }, 500);
-  }
-});
-
-// Create Payment Intent endpoint
-app.post("/make-server-feacf0d8/create-payment-intent", rateLimit(10, 60000), async (c) => {
-  try {
-    const body = await c.req.json();
-    const { amount, customer_info, items } = body;
-
-    // Charge the catalog total. Client `amount` and per-item `price` are not
-    // used. Anything the catalog cannot price is rejected.
-    const priced = resolveChargeCents(amount, items);
-    if (!priced.ok) {
-      console.warn(`Rejected payment intent: ${priced.error}`);
-      return c.json({ error: priced.error }, 400);
-    }
-    const chargeCents = priced.totalCents;
-    const customer = customer_info && typeof customer_info === "object" ? customer_info : {};
-    const customerName = typeof customer.name === "string" ? oneLine(customer.name) : "";
-    const customerEmail = typeof customer.email === "string" ? oneLine(customer.email) : "";
-    if (!customerName || !customerEmail) {
-      return c.json({ error: "Customer name and email are required" }, 400);
-    }
-
-    // Get Stripe secret key from environment
-    const stripeSecretKey = Deno.env.get("STRIPE_SECRET_KEY");
-
-    if (!stripeSecretKey) {
-      console.error("STRIPE_SECRET_KEY not found in environment variables");
-      return c.json({ error: "Payment configuration error" }, 500);
-    }
-
-    // Create payment intent with Stripe
-    const response = await fetch("https://api.stripe.com/v1/payment_intents", {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${stripeSecretKey}`,
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: new URLSearchParams({
-        amount: String(chargeCents),
-        currency: "cad",
-        "automatic_payment_methods[enabled]": "true",
-        "metadata[customer_name]": customerName,
-        "metadata[customer_email]": customerEmail,
-        "metadata[order_items]": JSON.stringify(
-          Array.isArray(items)
-            ? items.map((item: { id?: unknown; quantity?: unknown }) => ({
-                id: typeof item?.id === "string" ? item.id : "",
-                quantity: typeof item?.quantity === "number" ? item.quantity : 1,
-              }))
-            : []
-        ),
-      }),
-    });
-
-    const paymentIntent = await response.json();
-
-    if (!response.ok) {
-      console.error("Stripe API error:", paymentIntent);
-      return c.json({ error: "Failed to create payment intent" }, 500);
-    }
-
-    // Store order in key-value store
-    const orderId = `order_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    await kv.set(orderId, {
-      payment_intent_id: paymentIntent.id,
-      amount: chargeCents,
-      currency: "cad",
-      customer_info,
-      items: Array.isArray(items)
-        ? items.map((item: { id?: unknown; quantity?: unknown }) => ({
-            id: typeof item?.id === "string" ? item.id : "",
-            quantity: typeof item?.quantity === "number" ? item.quantity : 1,
-            unitPriceCents: typeof item?.id === "string" ? catalogUnitCents(item.id) : null,
-          }))
-        : [],
-      status: 'pending',
-      created_at: new Date().toISOString()
-    });
-
-    console.log(`Created payment intent: ${paymentIntent.id} for order: ${orderId}`);
-
-    return c.json({
-      clientSecret: paymentIntent.client_secret,
-      orderId: orderId
-    });
-  } catch (error) {
-    console.error("Error creating payment intent:", error);
-    return c.json({ error: "Internal server error: " + error.message }, 500);
-  }
-});
-
-// Webhook endpoint for Stripe events (optional but recommended)
-app.post("/make-server-feacf0d8/stripe-webhook", async (c) => {
-  try {
-    const signature = c.req.header("stripe-signature");
-    const body = await c.req.text();
-    
-    const webhookSecret = Deno.env.get("STRIPE_WEBHOOK_SECRET");
-    
-    if (!webhookSecret) {
-      console.error("STRIPE_WEBHOOK_SECRET not configured");
-      return c.json({ error: "Webhook not configured" }, 500);
-    }
-
-    // Verify webhook signature — reject anything that isn't genuinely from Stripe.
-    const signatureValid = await verifyStripeWebhookSignature(body, signature, webhookSecret);
-    if (!signatureValid) {
-      console.error("Rejected webhook: invalid or missing Stripe signature");
-      return c.json({ error: "Invalid signature" }, 400);
-    }
-    const event = JSON.parse(body);
-
-    console.log("Received Stripe webhook:", event.type);
-
-    // Handle different event types
-    switch (event.type) {
-      case "payment_intent.succeeded":
-        const paymentIntent = event.data.object;
-        console.log(`Payment succeeded: ${paymentIntent.id}`);
-        
-        // Update order status
-        const orders = await kv.getByPrefix("order_");
-        for (const order of orders) {
-          if (order.payment_intent_id === paymentIntent.id) {
-            await kv.set(order.key, {
-              ...order,
-              status: 'completed',
-              completed_at: new Date().toISOString()
-            });
-            console.log(`Updated order ${order.key} to completed`);
-          }
-        }
-        break;
-
-      case "payment_intent.payment_failed":
-        const failedPayment = event.data.object;
-        console.log(`Payment failed: ${failedPayment.id}`);
-        break;
-
-      default:
-        console.log(`Unhandled event type: ${event.type}`);
-    }
-
-    return c.json({ received: true });
-  } catch (error) {
-    console.error("Webhook error:", error);
-    return c.json({ error: "Webhook processing error" }, 400);
-  }
-});
 
 // Email notification signup (for product launches, memberships, etc.)
-app.post("/make-server-feacf0d8/notify-me", async (c) => {
+app.post("/make-server-feacf0d8/notify-me", rateLimit(10, 60000), async (c) => {
   try {
     const body = await c.req.json();
-    const { email, type, item_id } = body; // type: 'membership', 'product', 'event', etc.
+    const { email, type, item_id, captchaToken } = body; // type: 'membership', 'product', 'event', etc.
 
-    if (!email || !type) {
+    const parsedEmail = parseEmailAddress(email);
+    const parsedType = requiredText(type, TEXT_LIMITS.short);
+    if (!parsedEmail || !parsedType) {
       return c.json({ error: "Email and type are required" }, 400);
     }
 
-    const notificationId = `notification_${type}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    // No storefront caller. Turnstile fail-closes the anonymous write.
+    const captcha = await requireTurnstile(c, captchaToken, "notify");
+    if (!captcha.ok) {
+      return c.json({ error: captcha.error }, captcha.status);
+    }
+
+    const notificationId = `notification_${parsedType}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     
     await kv.set(notificationId, {
-      email,
-      type,
+      email: parsedEmail,
+      type: parsedType,
       item_id,
       status: 'subscribed',
       created_at: new Date().toISOString()
     });
 
-    console.log(`Email notification signup: ${email} for ${type}`);
+    console.log(`Email notification signup: ${parsedEmail} for ${parsedType}`);
 
     return c.json({
       status: 'success',
@@ -732,84 +506,10 @@ app.post("/make-server-feacf0d8/notify-me", async (c) => {
     });
   } catch (error) {
     console.error("Error saving notification signup:", error);
-    return c.json({ error: "Failed to subscribe: " + error.message }, 500);
+    return c.json({ error: "Failed to subscribe" }, 500);
   }
 });
 
-// Create pre-order
-app.post("/make-server-feacf0d8/create-preorder", async (c) => {
-  try {
-    const body = await c.req.json();
-    const { product_id, customer_info, quantity, total_amount } = body;
-
-    const preorderId = `preorder_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
-    await kv.set(preorderId, {
-      product_id,
-      customer_info,
-      quantity,
-      total_amount,
-      status: 'pending_payment',
-      created_at: new Date().toISOString()
-    });
-
-    console.log(`Created pre-order: ${preorderId}`);
-
-    return c.json({
-      preorderId,
-      status: 'success',
-      message: 'Pre-order created successfully'
-    });
-  } catch (error) {
-    console.error("Error creating pre-order:", error);
-    return c.json({ error: "Failed to create pre-order: " + error.message }, 500);
-  }
-});
-
-// Purchase digital product
-app.post("/make-server-feacf0d8/purchase-digital-product", async (c) => {
-  try {
-    const body = await c.req.json();
-    const { product_id, customer_info, amount, payment_intent_id } = body;
-
-    // The download token requires a succeeded PaymentIntent for this SKU's
-    // catalog unit price in cents. Checkout charges tax and shipping on top,
-    // so a cart PaymentIntent will not satisfy this route — that is intentional.
-    const expectedCents = catalogUnitCents(product_id);
-    if (expectedCents === null) {
-      return c.json({ error: "Unknown product" }, 400);
-    }
-    const paymentCheck = await verifyStripePaymentSucceeded(payment_intent_id, expectedCents);
-    if (!paymentCheck.ok) {
-      return c.json({ error: paymentCheck.error }, 402);
-    }
-
-    const purchaseId = `digital_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    const downloadToken = `token_${Math.random().toString(36).substr(2, 16)}`;
-
-    await kv.set(purchaseId, {
-      product_id,
-      customer_info,
-      amount,
-      payment_intent_id,
-      status: 'completed',
-      download_token: downloadToken,
-      created_at: new Date().toISOString()
-    });
-
-    console.log(`Digital product purchased: ${purchaseId}`);
-
-    return c.json({
-      purchaseId,
-      download_token: downloadToken,
-      status: 'success',
-      message: 'Digital product purchased successfully'
-    });
-  } catch (error) {
-    console.error("Error purchasing digital product:", error);
-    return c.json({ error: "Failed to purchase digital product: " + error.message }, 500);
-  }
-});
 
 // Subscribe to lead magnet
 app.post("/make-server-feacf0d8/subscribe-lead-magnet", rateLimit(3, 60000), async (c) => {
@@ -856,7 +556,7 @@ app.post("/make-server-feacf0d8/subscribe-lead-magnet", rateLimit(3, 60000), asy
     });
   } catch (error) {
     console.error("Error subscribing to lead magnet:", error);
-    return c.json({ error: "Failed to subscribe: " + error.message }, 500);
+    return c.json({ error: "Failed to subscribe" }, 500);
   }
 });
 
@@ -904,187 +604,28 @@ app.post("/make-server-feacf0d8/subscribe-event-interest", rateLimit(5, 60000), 
     });
   } catch (error) {
     console.error("Error subscribing to event interest:", error);
-    return c.json({ error: "Failed to subscribe: " + error.message }, 500);
+    return c.json({ error: "Failed to subscribe" }, 500);
   }
 });
 
-// Purchase event ticket with payment
-app.post("/make-server-feacf0d8/purchase-event-ticket", async (c) => {
-  try {
-    const body = await c.req.json();
-    const { event_id, customer_info, quantity, total_amount, payment_intent_id } = body;
-
-    // No trusted per-event price catalog exists yet, so — same as digital
-    // products — we can confirm the payment succeeded but not that the
-    // amount was correct for this event/quantity.
-    const paymentCheck = await verifyStripePaymentSucceeded(payment_intent_id);
-    if (!paymentCheck.ok) {
-      return c.json({ error: paymentCheck.error }, 402);
-    }
-
-    const ticketId = `ticket_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    const ticketCode = `CREOVA-${Math.random().toString(36).substr(2, 8).toUpperCase()}`;
-
-    await kv.set(ticketId, {
-      event_id,
-      customer_info,
-      quantity,
-      total_amount,
-      payment_intent_id,
-      status: 'confirmed',
-      ticket_code: ticketCode,
-      created_at: new Date().toISOString()
-    });
-
-    console.log(`Event ticket purchased: ${ticketId}`);
-
-    return c.json({
-      ticketId,
-      ticket_code: ticketCode,
-      status: 'success',
-      message: 'Event ticket purchased successfully'
-    });
-  } catch (error) {
-    console.error("Error purchasing event ticket:", error);
-    return c.json({ error: "Failed to purchase event ticket: " + error.message }, 500);
-  }
-});
-
-// Create membership subscription
-app.post("/make-server-feacf0d8/create-membership", async (c) => {
-  try {
-    const body = await c.req.json();
-    const { membership_type, customer_info, payment_intent_id } = body; // 'creator' or 'legacy'
-
-    const tier = MEMBERSHIP_PRICING[membership_type];
-    if (!tier) {
-      return c.json({ error: "Invalid membership type" }, 400);
-    }
-
-    // Confirm the payment actually succeeded AND paid the real price for
-    // this tier — unlike digital products/tickets, membership pricing is
-    // a known, trusted catalog, so we can check the amount too.
-    const paymentCheck = await verifyStripePaymentSucceeded(payment_intent_id, tier.price);
-    if (!paymentCheck.ok) {
-      return c.json({ error: paymentCheck.error }, 402);
-    }
-
-    const membershipId = `membership_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    const memberNumber = `CM-${Math.random().toString(36).substr(2, 6).toUpperCase()}`;
-
-    await kv.set(membershipId, {
-      membership_type,
-      customer_info,
-      payment_intent_id,
-      status: 'active',
-      member_number: memberNumber,
-      created_at: new Date().toISOString(),
-      expires_at: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString() // 1 year
-    });
-
-    console.log(`Membership created: ${membershipId}`);
-
-    return c.json({
-      membershipId,
-      member_number: memberNumber,
-      status: 'success',
-      message: 'Membership created successfully'
-    });
-  } catch (error) {
-    console.error("Error creating membership:", error);
-    return c.json({ error: "Failed to create membership: " + error.message }, 500);
-  }
-});
-
-// Create Stripe Subscription Checkout Session for Memberships
-app.post("/make-server-feacf0d8/create-subscription-checkout", rateLimit(5, 60000), async (c) => {
-  try {
-    const body = await c.req.json();
-    const { membership_type, customer_email, customer_name } = body; // 'creator' or 'legacy'
-
-    const stripeSecretKey = Deno.env.get("STRIPE_SECRET_KEY");
-    
-    if (!stripeSecretKey) {
-      console.error("STRIPE_SECRET_KEY not found in environment variables");
-      return c.json({ error: "Payment configuration error" }, 500);
-    }
-
-    const membership = MEMBERSHIP_PRICING[membership_type];
-
-    if (!membership) {
-      return c.json({ error: "Invalid membership type" }, 400);
-    }
-
-    // Create Stripe Checkout Session
-    const params = new URLSearchParams({
-      'payment_method_types[0]': 'card',
-      'mode': 'subscription',
-      'customer_email': customer_email,
-      'success_url': `${c.req.header('origin')}/payment-success?session_id={CHECKOUT_SESSION_ID}&membership=${membership_type}`,
-      'cancel_url': `${c.req.header('origin')}/memberships`,
-      'line_items[0][price_data][currency]': 'cad',
-      'line_items[0][price_data][product_data][name]': membership.name,
-      'line_items[0][price_data][product_data][description]': `Annual ${membership_type === 'creator' ? 'Creator' : 'Legacy'} membership with exclusive benefits`,
-      'line_items[0][price_data][unit_amount]': membership.price.toString(),
-      'line_items[0][price_data][recurring][interval]': 'year',
-      'line_items[0][quantity]': '1',
-      'metadata[membership_type]': membership_type,
-      'metadata[customer_name]': customer_name,
-      'subscription_data[metadata][membership_type]': membership_type,
-      'subscription_data[metadata][customer_name]': customer_name
-    });
-
-    const response = await fetch("https://api.stripe.com/v1/checkout/sessions", {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${stripeSecretKey}`,
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: params.toString()
-    });
-
-    const session = await response.json();
-
-    if (!response.ok) {
-      console.error("Stripe API error:", session);
-      return c.json({ error: "Failed to create checkout session", details: session }, 500);
-    }
-
-    // Store pending membership signup
-    const signupId = `membership_signup_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    await kv.set(signupId, {
-      membership_type,
-      customer_email,
-      customer_name,
-      session_id: session.id,
-      status: 'pending',
-      created_at: new Date().toISOString()
-    });
-
-    console.log(`Created subscription checkout session: ${session.id} for ${membership_type} membership`);
-
-    return c.json({
-      sessionId: session.id,
-      url: session.url,
-      status: 'success'
-    });
-  } catch (error) {
-    console.error("Error creating subscription checkout:", error);
-    return c.json({ error: "Internal server error: " + error.message }, 500);
-  }
-});
 
 // Submit contact form
 app.post("/make-server-feacf0d8/submit-contact", rateLimit(5, 60000), async (c) => {
   try {
     const body = await c.req.json();
-    const { name, email, phone, service, message, budget, timeline, captchaToken } = body;
+    const name = requiredText(body.name, TEXT_LIMITS.name);
+    const email = parseEmailAddress(body.email);
+    const message = requiredText(body.message, TEXT_LIMITS.message);
+    const phone = optionalText(body.phone, TEXT_LIMITS.phone);
+    const service = optionalText(body.service, TEXT_LIMITS.service);
+    const budget = optionalText(body.budget, TEXT_LIMITS.short);
+    const timeline = optionalText(body.timeline, TEXT_LIMITS.short);
 
-    if (!name || !email || !message) {
+    if (!name || !email || !message || !phone.ok || !service.ok || !budget.ok || !timeline.ok) {
       return c.json({ error: "Name, email, and message are required" }, 400);
     }
 
-    const captcha = await requireTurnstile(captchaToken);
+    const captcha = await requireTurnstile(c, body.captchaToken, "contact");
     if (!captcha.ok) {
       return c.json({ error: captcha.error }, captcha.status);
     }
@@ -1094,11 +635,11 @@ app.post("/make-server-feacf0d8/submit-contact", rateLimit(5, 60000), async (c) 
     await kv.set(contactId, {
       name,
       email,
-      phone,
-      service,
+      phone: phone.value,
+      service: service.value,
       message,
-      budget,
-      timeline,
+      budget: budget.value,
+      timeline: timeline.value,
       status: 'new',
       type: 'contact',
       created_at: new Date().toISOString()
@@ -1107,16 +648,24 @@ app.post("/make-server-feacf0d8/submit-contact", rateLimit(5, 60000), async (c) 
     console.log(`Contact form submitted: ${contactId} from ${email}`);
 
     syncToAirtable("tblgMShO3Sa6ynJyb", {
-      Name: name, Email: email, Phone: phone, Message: message,
-      Service: service, Budget: budget, Timeline: timeline,
+      Name: name, Email: email, Phone: phone.value, Message: message,
+      Service: service.value, Budget: budget.value, Timeline: timeline.value,
       Type: "contact", "Submitted At": new Date().toISOString(),
       "Supabase Record ID": contactId,
     });
 
-    // Fire-and-forget confirmation emails
+    // Customer copy is a fixed receipt. The admin copy keeps the submission.
     const emailApiKey = Deno.env.get('EMAIL_SERVICE_API_KEY');
     if (emailApiKey) {
-      const contactEmailData: ContactEmailData = { name, email, phone, service, message, budget, timeline };
+      const contactEmailData: ContactEmailData = {
+        name,
+        email,
+        phone: phone.value,
+        service: service.value,
+        message,
+        budget: budget.value,
+        timeline: timeline.value,
+      };
       (async () => {
         try {
           await Promise.all([
@@ -1127,7 +676,7 @@ app.post("/make-server-feacf0d8/submit-contact", rateLimit(5, 60000), async (c) 
                 from: 'CREOVA <support@creova.one>',
                 to: [oneLine(email)],
                 subject: "We've received your message — CREOVA",
-                html: `<div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#121212"><h2 style="color:#D4A843">Thanks for reaching out, ${escapeHtml(name)}!</h2><p>We've received your message and will get back to you within 1–2 business days.</p><p style="color:#777777;font-size:14px">In the meantime, follow us on Instagram <a href="https://www.instagram.com/creativeinnovation__" style="color:#D4A843">@creativeinnovation__</a></p><p>— The CREOVA Team</p></div>`
+                html: contactReceivedHtml(),
               })
             }),
             fetch('https://api.resend.com/emails', {
@@ -1155,7 +704,7 @@ app.post("/make-server-feacf0d8/submit-contact", rateLimit(5, 60000), async (c) 
     });
   } catch (error) {
     console.error("Error submitting contact form:", error);
-    return c.json({ error: "Failed to submit contact form: " + error.message }, 500);
+    return c.json({ error: "Failed to submit contact form" }, 500);
   }
 });
 
@@ -1163,13 +712,19 @@ app.post("/make-server-feacf0d8/submit-contact", rateLimit(5, 60000), async (c) 
 app.post("/make-server-feacf0d8/submit-collaboration", rateLimit(5, 60000), async (c) => {
   try {
     const body = await c.req.json();
-    const { name, email, organization, collaborationType, projectDescription, timeline, budget, captchaToken } = body;
+    const name = requiredText(body.name, TEXT_LIMITS.name);
+    const email = parseEmailAddress(body.email);
+    const projectDescription = requiredText(body.projectDescription, TEXT_LIMITS.message);
+    const organization = optionalText(body.organization, TEXT_LIMITS.service);
+    const collaborationType = optionalText(body.collaborationType, TEXT_LIMITS.service);
+    const timeline = optionalText(body.timeline, TEXT_LIMITS.short);
+    const budget = optionalText(body.budget, TEXT_LIMITS.short);
 
-    if (!name || !email || !projectDescription) {
+    if (!name || !email || !projectDescription || !organization.ok || !collaborationType.ok || !timeline.ok || !budget.ok) {
       return c.json({ error: "Name, email, and project description are required" }, 400);
     }
 
-    const captcha = await requireTurnstile(captchaToken);
+    const captcha = await requireTurnstile(c, body.captchaToken, "collaboration");
     if (!captcha.ok) {
       return c.json({ error: captcha.error }, captcha.status);
     }
@@ -1179,11 +734,11 @@ app.post("/make-server-feacf0d8/submit-collaboration", rateLimit(5, 60000), asyn
     await kv.set(collaborationId, {
       name,
       email,
-      organization,
-      collaborationType,
+      organization: organization.value,
+      collaborationType: collaborationType.value,
       projectDescription,
-      timeline,
-      budget,
+      timeline: timeline.value,
+      budget: budget.value,
       status: 'new',
       type: 'collaboration',
       created_at: new Date().toISOString()
@@ -1193,7 +748,7 @@ app.post("/make-server-feacf0d8/submit-collaboration", rateLimit(5, 60000), asyn
 
     syncToAirtable("tblgMShO3Sa6ynJyb", {
       Name: name, Email: email, Message: projectDescription,
-      Service: collaborationType, Budget: budget, Timeline: timeline,
+      Service: collaborationType.value, Budget: budget.value, Timeline: timeline.value,
       Type: "collaboration", "Submitted At": new Date().toISOString(),
       "Supabase Record ID": collaborationId,
     });
@@ -1201,7 +756,13 @@ app.post("/make-server-feacf0d8/submit-collaboration", rateLimit(5, 60000), asyn
     const emailApiKey = Deno.env.get('EMAIL_SERVICE_API_KEY');
     if (emailApiKey) {
       const collaborationEmailData: CollaborationEmailData = {
-        name, email, organization, collaborationType, projectDescription, timeline, budget,
+        name,
+        email,
+        organization: organization.value,
+        collaborationType: collaborationType.value,
+        projectDescription,
+        timeline: timeline.value,
+        budget: budget.value,
       };
       (async () => {
         try {
@@ -1229,7 +790,7 @@ app.post("/make-server-feacf0d8/submit-collaboration", rateLimit(5, 60000), asyn
     });
   } catch (error) {
     console.error("Error submitting collaboration form:", error);
-    return c.json({ error: "Failed to submit collaboration form: " + error.message }, 500);
+    return c.json({ error: "Failed to submit collaboration form" }, 500);
   }
 });
 
@@ -1237,28 +798,29 @@ app.post("/make-server-feacf0d8/submit-collaboration", rateLimit(5, 60000), asyn
 app.post("/make-server-feacf0d8/submit-booking", rateLimit(5, 60000), async (c) => {
   try {
     const body = await c.req.json();
-    const { 
-      service, 
-      package: packageName, 
-      name, 
-      email, 
-      phone, 
-      preferredDate, 
-      preferredTime, 
-      location,
-      numberOfPeople,
-      specialRequests,
-      budget,
-      hearAboutUs,
-      submittedAt,
-      captchaToken
-    } = body;
+    const service = requiredText(body.service, TEXT_LIMITS.service);
+    const packageName = optionalText(body.package, TEXT_LIMITS.service);
+    const name = requiredText(body.name, TEXT_LIMITS.name);
+    const email = parseEmailAddress(body.email);
+    const phone = requiredText(body.phone, TEXT_LIMITS.phone);
+    const preferredDate = optionalText(body.preferredDate, TEXT_LIMITS.short);
+    const preferredTime = optionalText(body.preferredTime, TEXT_LIMITS.short);
+    const location = optionalText(body.location, TEXT_LIMITS.short);
+    const numberOfPeople = optionalText(body.numberOfPeople, TEXT_LIMITS.short);
+    const specialRequests = optionalText(body.specialRequests, TEXT_LIMITS.message);
+    const budget = optionalText(body.budget, TEXT_LIMITS.short);
+    const hearAboutUs = optionalText(body.hearAboutUs, TEXT_LIMITS.short);
+    const submittedAt = optionalText(body.submittedAt, TEXT_LIMITS.short);
 
-    if (!service || !name || !email || !phone) {
+    if (
+      !service || !name || !email || !phone ||
+      !packageName.ok || !preferredDate.ok || !preferredTime.ok || !location.ok ||
+      !numberOfPeople.ok || !specialRequests.ok || !budget.ok || !hearAboutUs.ok || !submittedAt.ok
+    ) {
       return c.json({ error: "Service, name, email, and phone are required" }, 400);
     }
 
-    const captcha = await requireTurnstile(captchaToken);
+    const captcha = await requireTurnstile(c, body.captchaToken, "booking");
     if (!captcha.ok) {
       return c.json({ error: captcha.error }, captcha.status);
     }
@@ -1267,25 +829,25 @@ app.post("/make-server-feacf0d8/submit-booking", rateLimit(5, 60000), async (c) 
     
     await kv.set(bookingId, {
       service,
-      package: packageName,
+      package: packageName.value,
       name,
       email,
       phone,
-      preferredDate,
-      preferredTime,
-      location,
-      numberOfPeople,
-      specialRequests,
-      budget,
-      hearAboutUs,
+      preferredDate: preferredDate.value,
+      preferredTime: preferredTime.value,
+      location: location.value,
+      numberOfPeople: numberOfPeople.value,
+      specialRequests: specialRequests.value,
+      budget: budget.value,
+      hearAboutUs: hearAboutUs.value,
       status: 'pending',
-      submitted_at: submittedAt || new Date().toISOString(),
+      submitted_at: submittedAt.value || new Date().toISOString(),
       created_at: new Date().toISOString()
     });
 
     console.log(`Booking submitted: ${bookingId} by ${name} (${email}) for ${service}`);
 
-    // Fire-and-forget confirmation emails
+    // Customer copy is a fixed receipt. The admin copy keeps the booking fields.
     const emailApiKey = Deno.env.get('EMAIL_SERVICE_API_KEY');
     if (emailApiKey) {
       const emailData: BookingEmailData = {
@@ -1293,12 +855,12 @@ app.post("/make-server-feacf0d8/submit-booking", rateLimit(5, 60000), async (c) 
         customerEmail: email,
         customerPhone: phone,
         service,
-        package: packageName || 'Standard',
-        preferredDate: preferredDate || '',
-        preferredTime: preferredTime || '',
-        location: location || '',
-        numberOfPeople,
-        specialRequests,
+        package: packageName.value || 'Standard',
+        preferredDate: preferredDate.value || '',
+        preferredTime: preferredTime.value || '',
+        location: location.value || '',
+        numberOfPeople: numberOfPeople.value,
+        specialRequests: specialRequests.value,
         amount: 0
       };
       (async () => {
@@ -1311,7 +873,7 @@ app.post("/make-server-feacf0d8/submit-booking", rateLimit(5, 60000), async (c) 
                 from: 'CREOVA Bookings <bookings@creova.one>',
                 to: [oneLine(email)],
                 subject: 'Booking Request Received — CREOVA',
-                html: getBookingConfirmationTemplate('en', emailData)
+                html: bookingReceivedHtml(),
               })
             }),
             fetch('https://api.resend.com/emails', {
@@ -1339,7 +901,7 @@ app.post("/make-server-feacf0d8/submit-booking", rateLimit(5, 60000), async (c) 
     });
   } catch (error) {
     console.error("Error submitting booking:", error);
-    return c.json({ error: "Failed to submit booking: " + error.message }, 500);
+    return c.json({ error: "Failed to submit booking" }, 500);
   }
 });
 
@@ -1347,57 +909,53 @@ app.post("/make-server-feacf0d8/submit-booking", rateLimit(5, 60000), async (c) 
 app.post("/make-server-feacf0d8/submit-rental", rateLimit(5, 60000), async (c) => {
   try {
     const body = await c.req.json();
-    const { 
-      equipment,
-      name, 
-      email, 
-      phone, 
-      startDate,
-      endDate,
-      rentalDays,
-      dailyRate,
-      totalCost,
-      depositAmount,
-      pickupLocation,
-      purpose,
-      specialRequests,
-      hasInsurance,
-      submittedAt,
-      captchaToken
-    } = body;
+    const name = requiredText(body.name, TEXT_LIMITS.name);
+    const email = parseEmailAddress(body.email);
+    const phone = requiredText(body.phone, TEXT_LIMITS.phone);
+    const startDate = requiredText(body.startDate, TEXT_LIMITS.short);
+    const endDate = requiredText(body.endDate, TEXT_LIMITS.short);
+    const pickupLocation = optionalText(body.pickupLocation, TEXT_LIMITS.short);
+    const purpose = optionalText(body.purpose, TEXT_LIMITS.message);
+    const specialRequests = optionalText(body.specialRequests, TEXT_LIMITS.message);
+    const submittedAt = optionalText(body.submittedAt, TEXT_LIMITS.short);
+    const equipment: Array<string | null> | null = Array.isArray(body.equipment)
+      ? body.equipment.map((item: unknown) => requiredText(item, TEXT_LIMITS.service))
+      : null;
+    const equipmentOk = !!equipment && equipment.length > 0 && equipment.length <= 20 && equipment.every((item: string | null) => item !== null);
 
-    if (!equipment || equipment.length === 0 || !name || !email || !phone || !startDate || !endDate) {
+    if (!equipment || !equipmentOk || !name || !email || !phone || !startDate || !endDate || !pickupLocation.ok || !purpose.ok || !specialRequests.ok || !submittedAt.ok) {
       return c.json({ error: "Equipment, name, email, phone, and rental dates are required" }, 400);
     }
 
-    const captcha = await requireTurnstile(captchaToken);
+    const captcha = await requireTurnstile(c, body.captchaToken, "rental");
     if (!captcha.ok) {
       return c.json({ error: captcha.error }, captcha.status);
     }
 
     const rentalId = `rental_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const equipmentNames = equipment.filter((item: string | null): item is string => item !== null);
     
     await kv.set(rentalId, {
-      equipment,
+      equipment: equipmentNames,
       name,
       email,
       phone,
       startDate,
       endDate,
-      rentalDays,
-      dailyRate,
-      totalCost,
-      depositAmount,
-      pickupLocation,
-      purpose,
-      specialRequests,
-      hasInsurance,
+      rentalDays: body.rentalDays,
+      dailyRate: body.dailyRate,
+      totalCost: body.totalCost,
+      depositAmount: body.depositAmount,
+      pickupLocation: pickupLocation.value,
+      purpose: purpose.value,
+      specialRequests: specialRequests.value,
+      hasInsurance: body.hasInsurance === true,
       status: 'pending',
-      submitted_at: submittedAt || new Date().toISOString(),
+      submitted_at: submittedAt.value || new Date().toISOString(),
       created_at: new Date().toISOString()
     });
 
-    console.log(`Rental submitted: ${rentalId} by ${name} (${email}) for equipment: ${equipment.join(', ')}`);
+    console.log(`Rental submitted: ${rentalId} by ${name} (${email})`);
 
     return c.json({
       rentalId,
@@ -1406,7 +964,7 @@ app.post("/make-server-feacf0d8/submit-rental", rateLimit(5, 60000), async (c) =
     });
   } catch (error) {
     console.error("Error submitting rental:", error);
-    return c.json({ error: "Failed to submit rental: " + error.message }, 500);
+    return c.json({ error: "Failed to submit rental" }, 500);
   }
 });
 
@@ -1430,7 +988,7 @@ app.get("/make-server-feacf0d8/submissions", requireAdmin, async (c) => {
     });
   } catch (error) {
     console.error("Error retrieving submissions:", error);
-    return c.json({ error: "Failed to retrieve submissions: " + error.message }, 500);
+    return c.json({ error: "Failed to retrieve submissions" }, 500);
   }
 });
 
@@ -1464,12 +1022,12 @@ app.post("/make-server-feacf0d8/update-submission-status", requireAdmin, async (
     });
   } catch (error) {
     console.error("Error updating submission status:", error);
-    return c.json({ error: "Failed to update submission status: " + error.message }, 500);
+    return c.json({ error: "Failed to update submission status" }, 500);
   }
 });
 
 // Track page view
-app.post("/make-server-feacf0d8/track-pageview", async (c) => {
+app.post("/make-server-feacf0d8/track-pageview", rateLimit(120, 60000), async (c) => {
   try {
     const body = await c.req.json();
     const { 
@@ -1554,12 +1112,12 @@ app.post("/make-server-feacf0d8/track-pageview", async (c) => {
     return c.json({ status: 'success' });
   } catch (error) {
     console.error("Error tracking pageview:", error);
-    return c.json({ error: "Failed to track pageview: " + error.message }, 500);
+    return c.json({ error: "Failed to track pageview" }, 500);
   }
 });
 
 // Track event (button clicks, form submissions, etc.)
-app.post("/make-server-feacf0d8/track-event", async (c) => {
+app.post("/make-server-feacf0d8/track-event", rateLimit(120, 60000), async (c) => {
   try {
     const body = await c.req.json();
     const { visitorId, sessionId, eventName, eventData, page } = body;
@@ -1580,7 +1138,7 @@ app.post("/make-server-feacf0d8/track-event", async (c) => {
     return c.json({ status: 'success' });
   } catch (error) {
     console.error("Error tracking event:", error);
-    return c.json({ error: "Failed to track event: " + error.message }, 500);
+    return c.json({ error: "Failed to track event" }, 500);
   }
 });
 
@@ -1722,145 +1280,10 @@ app.get("/make-server-feacf0d8/analytics", requireAdmin, async (c) => {
     });
   } catch (error) {
     console.error("Error retrieving analytics:", error);
-    return c.json({ error: "Failed to retrieve analytics: " + error.message }, 500);
+    return c.json({ error: "Failed to retrieve analytics" }, 500);
   }
 });
 
-// Get all payments for refund management
-app.get("/make-server-feacf0d8/payments", requireAdmin, async (c) => {
-  try {
-    const payments = await kv.getByPrefix("payment_");
-    
-    // Sort by date (newest first)
-    const sortedPayments = payments.sort((a, b) => 
-      new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-    );
-
-    console.log(`Retrieved ${payments.length} payments`);
-
-    return c.json({
-      status: 'success',
-      payments: sortedPayments
-    });
-  } catch (error) {
-    console.error("Error retrieving payments:", error);
-    return c.json({ error: "Failed to retrieve payments: " + error.message }, 500);
-  }
-});
-
-// Create refund
-app.post("/make-server-feacf0d8/create-refund", requireAdmin, async (c) => {
-  try {
-    const body = await c.req.json();
-    const { paymentIntentId, amount, reason } = body;
-
-    if (!paymentIntentId) {
-      return c.json({ error: "Payment Intent ID is required" }, 400);
-    }
-
-    const stripeSecretKey = Deno.env.get('STRIPE_SECRET_KEY');
-    if (!stripeSecretKey) {
-      console.error("STRIPE_SECRET_KEY not found");
-      return c.json({ error: "Stripe not configured" }, 500);
-    }
-
-    // Create refund with Stripe
-    const refundData: any = {
-      payment_intent: paymentIntentId,
-      reason: reason || 'requested_by_customer'
-    };
-
-    // If partial refund, add amount
-    if (amount) {
-      refundData.amount = Math.round(amount * 100); // Convert to cents
-    }
-
-    const refundResponse = await fetch('https://api.stripe.com/v1/refunds', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${stripeSecretKey}`,
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: new URLSearchParams(refundData).toString()
-    });
-
-    const refund = await refundResponse.json();
-
-    if (!refundResponse.ok) {
-      console.error("Stripe refund error:", refund);
-      return c.json({ 
-        error: refund.error?.message || "Failed to create refund",
-        details: refund 
-      }, 400);
-    }
-
-    // Store refund record
-    const refundId = `refund_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    await kv.set(refundId, {
-      refundId,
-      stripeRefundId: refund.id,
-      paymentIntentId,
-      amount: refund.amount / 100, // Convert from cents
-      currency: refund.currency,
-      reason: reason || 'requested_by_customer',
-      status: refund.status,
-      created_at: new Date().toISOString(),
-      stripe_data: refund
-    });
-
-    // Update payment record with refund status
-    const payments = await kv.getByPrefix("payment_");
-    const payment = payments.find(p => p.stripe_payment_intent_id === paymentIntentId);
-    
-    if (payment) {
-      await kv.set(payment.paymentId, {
-        ...payment,
-        refund_status: refund.status,
-        refund_id: refund.id,
-        refund_amount: refund.amount / 100,
-        refunded_at: new Date().toISOString()
-      });
-    }
-
-    console.log(`Refund created: ${refund.id} for payment ${paymentIntentId}`);
-
-    return c.json({
-      status: 'success',
-      message: 'Refund created successfully',
-      refund: {
-        id: refund.id,
-        amount: refund.amount / 100,
-        currency: refund.currency,
-        status: refund.status
-      }
-    });
-  } catch (error) {
-    console.error("Error creating refund:", error);
-    return c.json({ error: "Failed to create refund: " + error.message }, 500);
-  }
-});
-
-// Get refund history
-app.get("/make-server-feacf0d8/refunds", requireAdmin, async (c) => {
-  try {
-    const refunds = await kv.getByPrefix("refund_");
-    
-    // Sort by date (newest first)
-    const sortedRefunds = refunds.sort((a, b) => 
-      new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-    );
-
-    console.log(`Retrieved ${refunds.length} refunds`);
-
-    return c.json({
-      status: 'success',
-      refunds: sortedRefunds
-    });
-  } catch (error) {
-    console.error("Error retrieving refunds:", error);
-    return c.json({ error: "Failed to retrieve refunds: " + error.message }, 500);
-  }
-});
 
 // ============================================================================
 // GALLERY MANAGEMENT (Work portfolio — public read, admin-managed writes)
@@ -1881,7 +1304,7 @@ app.get("/make-server-feacf0d8/galleries", async (c) => {
     return c.json({ status: "success", galleries: sorted });
   } catch (error) {
     console.error("Error retrieving galleries:", error);
-    return c.json({ error: "Failed to retrieve galleries: " + error.message }, 500);
+    return c.json({ error: "Failed to retrieve galleries" }, 500);
   }
 });
 
@@ -1923,7 +1346,7 @@ app.post("/make-server-feacf0d8/admin/galleries", requireAdmin, async (c) => {
     return c.json({ status: "success", gallery });
   } catch (error) {
     console.error("Error creating gallery:", error);
-    return c.json({ error: "Failed to create gallery: " + error.message }, 500);
+    return c.json({ error: "Failed to create gallery" }, 500);
   }
 });
 
@@ -1946,7 +1369,7 @@ app.post("/make-server-feacf0d8/admin/galleries/update", requireAdmin, async (c)
     return c.json({ status: "success", gallery: updated });
   } catch (error) {
     console.error("Error updating gallery:", error);
-    return c.json({ error: "Failed to update gallery: " + error.message }, 500);
+    return c.json({ error: "Failed to update gallery" }, 500);
   }
 });
 
@@ -1961,7 +1384,7 @@ app.post("/make-server-feacf0d8/admin/galleries/delete", requireAdmin, async (c)
     return c.json({ status: "success" });
   } catch (error) {
     console.error("Error deleting gallery:", error);
-    return c.json({ error: "Failed to delete gallery: " + error.message }, 500);
+    return c.json({ error: "Failed to delete gallery" }, 500);
   }
 });
 
@@ -1980,7 +1403,7 @@ import {
 } from "./email-templates.tsx";
 
 // Send booking confirmation email
-app.post("/make-server-feacf0d8/send-booking-confirmation", rateLimit(5, 60000), requireAdmin, async (c) => {
+app.post("/make-server-feacf0d8/send-booking-confirmation", requireAdmin, rateLimit(5, 60000), async (c) => {
   try {
     const body = await c.req.json();
     const { to, bookingDetails, amount, language, checkoutUrl } = body;
@@ -2026,7 +1449,7 @@ app.post("/make-server-feacf0d8/send-booking-confirmation", rateLimit(5, 60000),
       },
       body: JSON.stringify({
         from: 'CREOVA Bookings <bookings@creova.one>',
-        to: [to],
+        to: [oneLine(to)],
         subject: customerSubject,
         html: customerEmailHtml
       })
@@ -2055,7 +1478,7 @@ app.post("/make-server-feacf0d8/send-booking-confirmation", rateLimit(5, 60000),
         to: ['support@creova.one'],
         subject: `🎬 New Booking: ${oneLine(bookingDetails.service)} - ${oneLine(bookingDetails.name)}`,
         html: adminEmailHtml,
-        reply_to: to
+        reply_to: oneLine(to)
       })
     });
 
@@ -2078,13 +1501,12 @@ app.post("/make-server-feacf0d8/send-booking-confirmation", rateLimit(5, 60000),
     console.error('Error sending booking confirmation emails:', error);
     return c.json({ 
       error: 'Failed to send confirmation email',
-      details: error.message 
     }, 500);
   }
 });
 
 // Send contact form notification email (admin only)
-app.post("/make-server-feacf0d8/send-contact-notification", rateLimit(5, 60000), requireAdmin, async (c) => {
+app.post("/make-server-feacf0d8/send-contact-notification", requireAdmin, rateLimit(5, 60000), async (c) => {
   try {
     const body = await c.req.json();
     const contactData: ContactEmailData = body;
@@ -2109,7 +1531,7 @@ app.post("/make-server-feacf0d8/send-contact-notification", rateLimit(5, 60000),
         to: ['support@creova.one'],
         subject: `📧 New Contact: ${oneLine(contactData.service || 'General Inquiry')} - ${oneLine(contactData.name)}`,
         html: adminEmailHtml,
-        reply_to: contactData.email
+        reply_to: oneLine(contactData.email)
       })
     });
 
@@ -2132,13 +1554,12 @@ app.post("/make-server-feacf0d8/send-contact-notification", rateLimit(5, 60000),
     console.error('Error sending contact notification:', error);
     return c.json({ 
       error: 'Failed to send notification',
-      details: error.message 
     }, 500);
   }
 });
 
 // Send collaboration form notification email (admin only)
-app.post("/make-server-feacf0d8/send-collaboration-notification", rateLimit(5, 60000), requireAdmin, async (c) => {
+app.post("/make-server-feacf0d8/send-collaboration-notification", requireAdmin, rateLimit(5, 60000), async (c) => {
   try {
     const body = await c.req.json();
     const collaborationData: CollaborationEmailData = body;
@@ -2163,7 +1584,7 @@ app.post("/make-server-feacf0d8/send-collaboration-notification", rateLimit(5, 6
         to: ['support@creova.one'],
         subject: `🤝 New Collaboration Request: ${oneLine(collaborationData.organization || collaborationData.name)}`,
         html: adminEmailHtml,
-        reply_to: collaborationData.email
+        reply_to: oneLine(collaborationData.email)
       })
     });
 
@@ -2186,11 +1607,15 @@ app.post("/make-server-feacf0d8/send-collaboration-notification", rateLimit(5, 6
     console.error('Error sending collaboration notification:', error);
     return c.json({ 
       error: 'Failed to send notification',
-      details: error.message 
     }, 500);
   }
 });
 
 // ============================================================================
 
-Deno.serve(app.fetch);
+const port = Number(Deno.env.get("PORT"));
+if (Number.isInteger(port) && port > 0 && port < 65536) {
+  Deno.serve({ port }, app.fetch);
+} else {
+  Deno.serve(app.fetch);
+}

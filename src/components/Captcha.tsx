@@ -10,6 +10,8 @@ interface CaptchaProps {
   siteKey?: string;
   theme?: 'light' | 'dark' | 'auto';
   size?: 'normal' | 'compact' | 'invisible';
+  action: string;
+  resetNonce?: number;
 }
 
 // Production builds use only VITE_TURNSTILE_SITE_KEY. The Cloudflare always-pass
@@ -30,11 +32,14 @@ export function Captcha({
   onError,
   siteKey = DEFAULT_SITE_KEY,
   theme = 'light',
+  action,
+  resetNonce = 0,
 }: CaptchaProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const widgetIdRef = useRef<string | null>(null);
   const isMountedRef = useRef(true);
   const [scriptReady, setScriptReady] = useState(isScriptLoaded);
+  const seenResetNonce = useRef(resetNonce);
 
   // Load the Turnstile script once
   useEffect(() => {
@@ -106,6 +111,7 @@ export function Captcha({
       widgetIdRef.current = window.turnstile.render(containerRef.current, {
         sitekey: siteKey,
         theme,
+        action,
         callback: (token: string) => {
           onVerify(token);
         },
@@ -129,7 +135,15 @@ export function Captcha({
         widgetIdRef.current = null;
       }
     };
-  }, [scriptReady, siteKey, theme, onVerify, onExpire, onError]);
+  }, [scriptReady, siteKey, theme, action, onVerify, onExpire, onError]);
+
+  useEffect(() => {
+    if (seenResetNonce.current === resetNonce) return;
+    seenResetNonce.current = resetNonce;
+    if (widgetIdRef.current && window.turnstile) {
+      window.turnstile.reset(widgetIdRef.current);
+    }
+  }, [resetNonce]);
 
   if (!siteKey) {
     return (

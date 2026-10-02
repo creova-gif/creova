@@ -36,6 +36,7 @@ export function EventsCollaboratePage() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [captchaReset, setCaptchaReset] = useState(0);
 
   const handleCaptchaVerify = (token: string) => {
     setCaptchaToken(token);
@@ -336,10 +337,16 @@ export function EventsCollaboratePage() {
           description: fr ? 'Nous examinerons ta proposition et te reviendrons dans les 2 à 3 jours ouvrables.' : 'We\'ll review your proposal and get back to you within 2-3 business days.'
         });
         setFormData({ name: '', email: '', organization: '', collaborationType: '', projectDescription: '', timeline: '', budget: '' });
+        setCaptchaToken(null);
+        setCaptchaReset((n) => n + 1);
       } else {
+        setCaptchaToken(null);
+        setCaptchaReset((n) => n + 1);
         throw new Error(data.error || 'Failed to submit collaboration request');
       }
     } catch {
+      setCaptchaToken(null);
+      setCaptchaReset((n) => n + 1);
       toast.error(fr ? "Échec de l'envoi de la demande" : 'Failed to submit request', { description: fr ? 'Veuillez réessayer ou nous écrire directement.' : 'Please try again or email us directly.' });
     } finally {
       setIsSubmitting(false);
@@ -1201,7 +1208,7 @@ export function EventsCollaboratePage() {
 
               <div className="border-t pt-8" style={{ borderColor: '#E0E0E0' }}>
                 <p className="text-xs tracking-widest uppercase mb-4" style={{ color: '#777777' }}>{fr ? 'Vérification de sécurité' : 'Security Verification'}</p>
-                <Captcha onVerify={handleCaptchaVerify} onExpire={handleCaptchaExpire} onError={handleCaptchaError} />
+                <Captcha action="collaboration" resetNonce={captchaReset} onVerify={handleCaptchaVerify} onExpire={handleCaptchaExpire} onError={handleCaptchaError} />
               </div>
 
               <Button

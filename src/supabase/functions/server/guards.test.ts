@@ -1,16 +1,26 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import {
+  COMMERCE_GONE_BODY,
+  COMMERCE_GONE_STATUS,
+  COMMERCE_ROUTES,
   PRODUCT_CATALOG,
+  bookingReceivedHtml,
+  captchaDevSkip,
   computeTrustedCartTotalCents,
+  consumeRateLimit,
+  contactReceivedHtml,
   escapeHtml,
   escapeHtmlMultiline,
   isUsableTurnstileSecret,
   oneLine,
   parseAllowedOrigins,
+  parseEmailAddress,
+  rateLimitClientIp,
   resolveChargeCents,
   safeCreovaUrl,
   turnstileGate,
+  turnstileVerificationOk,
 } from "./guards.ts";
 
 test("escapeHtml encodes characters that break HTML text and attributes", () => {
@@ -114,26 +124,48 @@ test("social media template price matches the storefront", () => {
 
 test("turnstile fails closed when the secret is missing outside local dev", () => {
   assert.deepEqual(
-    turnstileGate({ secretConfigured: false, environment: "", token: "token" }),
+    turnstileGate({ secretConfigured: false, creovaEnv: "", token: "token" }),
     { action: "reject", status: 503, error: "Security verification is not configured" },
   );
   assert.deepEqual(
-    turnstileGate({ secretConfigured: false, environment: "production", token: "token" }),
+    turnstileGate({ secretConfigured: false, creovaEnv: "production", token: "token" }),
     { action: "reject", status: 503, error: "Security verification is not configured" },
   );
   assert.equal(
-    turnstileGate({ secretConfigured: false, environment: "development", token: null }).action,
+    turnstileGate({ secretConfigured: false, creovaEnv: "development", token: null }).action,
     "skip",
+  );
+});
+
+test("captcha skip is exact CREOVA_ENV only and never on a hosted project", () => {
+  assert.equal(captchaDevSkip("development", undefined), true);
+  assert.equal(captchaDevSkip("test", "http://127.0.0.1:54321"), true);
+  assert.equal(captchaDevSkip(" Dev ", undefined), false);
+  assert.equal(captchaDevSkip("development ", undefined), false);
+  assert.equal(captchaDevSkip("DEVELOPMENT", undefined), false);
+  assert.equal(captchaDevSkip("dev ", undefined), false);
+  assert.equal(
+    captchaDevSkip("development", "https://vwestumjbrpwlbsewupz.supabase.co"),
+    false,
+  );
+  assert.equal(
+    turnstileGate({
+      secretConfigured: false,
+      creovaEnv: "development",
+      supabaseUrl: "https://vwestumjbrpwlbsewupz.supabase.co",
+      token: null,
+    }).action,
+    "reject",
   );
 });
 
 test("turnstile requires a token when the secret is configured, and dummy secrets do not count", () => {
   assert.deepEqual(
-    turnstileGate({ secretConfigured: true, environment: "production", token: "  " }),
+    turnstileGate({ secretConfigured: true, creovaEnv: "production", token: "  " }),
     { action: "reject", status: 400, error: "Security verification required" },
   );
   assert.equal(
-    turnstileGate({ secretConfigured: true, environment: "", token: "real-token" }).action,
+    turnstileGate({ secretConfigured: true, creovaEnv: "", token: "real-token" }).action,
     "verify",
   );
   assert.equal(isUsableTurnstileSecret(undefined), false);
@@ -155,4 +187,103 @@ test("CORS allowlist defaults to the production origins and refuses a wildcard",
     parseAllowedOrigins("https://www.creova.one, http://localhost:5173"),
     ["https://www.creova.one", "http://localhost:5173"],
   );
+  assert.deepEqual(
+    parseAllowedOrigins("HTTPS://WWW.CREOVA.ONE/, http://LocalHost:5173/"),
+    ["https://www.creova.one", "http://localhost:5173"],
+  );
+});
+
+test("rate limit key uses the appended hop, not a spoofed XFF prefix", () => {
+  const suffix = "203.0.113.10";
+  const first = rateLimitClientIp({ forwardedFor: `1.1.1.1, ${suffix}` });
+  const rotated = rateLimitClientIp({ forwardedFor: `8.8.8.8, ${suffix}` });
+  assert.equal(first, suffix);
+  assert.equal(rotated, suffix);
+  assert.equal(rateLimitClientIp({ forwardedFor: null }), "unknown");
+  assert.equal(
+    rateLimitClientIp({ forwardedFor: `9.9.9.9, ${suffix}`, connectingIp: "198.51.100.20" }),
+    "198.51.100.20",
+  );
+  assert.equal(
+    rateLimitClientIp({ forwardedFor: suffix, connectingIp: "not-an-ip, 1.2.3.4" }),
+    suffix,
+  );
+});
+
+test("rateLimit counts inside one isolate and then rejects", () => {
+  const buckets = new Map();
+  const key = "203.0.113.10:/submit-contact";
+  for (let i = 0; i < 5; i++) {
+    assert.equal(consumeRateLimit(buckets, key, 1_000, 5, 60_000), true);
+  }
+  assert.equal(consumeRateLimit(buckets, key, 1_000, 5, 60_000), false);
+  assert.equal(consumeRateLimit(buckets, key, 61_000, 5, 60_000), true);
+  assert.equal(consumeRateLimit(buckets, "unknown:/submit-contact", 1_000, 5, 60_000), true);
+});
+
+test("commerce routes share one gone response", () => {
+  assert.equal(COMMERCE_GONE_STATUS, 410);
+  assert.deepEqual(COMMERCE_GONE_BODY, { error: "This service is no longer available" });
+  assert.equal(new Set(COMMERCE_ROUTES).size, COMMERCE_ROUTES.length);
+  for (const path of [
+    "/make-server-feacf0d8/create-payment-intent",
+    "/make-server-feacf0d8/stripe-webhook",
+    "/make-server-feacf0d8/purchase-digital-product",
+    "/make-server-feacf0d8/purchase-event-ticket",
+    "/make-server-feacf0d8/create-membership",
+    "/make-server-feacf0d8/create-subscription-checkout",
+    "/make-server-feacf0d8/create-ticket",
+    "/make-server-feacf0d8/create-preorder",
+    "/make-server-feacf0d8/payments",
+    "/make-server-feacf0d8/create-refund",
+    "/make-server-feacf0d8/refunds",
+  ]) {
+    assert.equal(COMMERCE_ROUTES.includes(path as (typeof COMMERCE_ROUTES)[number]), true);
+  }
+});
+
+test("CORS allowlist rejects an origin that is not listed", () => {
+  const allowed = parseAllowedOrigins(undefined);
+  assert.equal(allowed.includes("https://evil.example"), false);
+  assert.equal(allowed.includes("https://creova.one.evil.example"), false);
+});
+
+test("turnstile siteverify checks hostname and action", () => {
+  assert.equal(
+    turnstileVerificationOk(
+      { success: true, hostname: "creova.one", action: "contact" },
+      "contact",
+    ),
+    true,
+  );
+  assert.equal(
+    turnstileVerificationOk(
+      { success: true, hostname: "WWW.CREOVA.ONE", action: "booking" },
+      "booking",
+    ),
+    true,
+  );
+  assert.equal(
+    turnstileVerificationOk({ success: true, hostname: "evil.example", action: "contact" }, "contact"),
+    false,
+  );
+  assert.equal(
+    turnstileVerificationOk({ success: true, hostname: "creova.one", action: "contact" }, "booking"),
+    false,
+  );
+  assert.equal(turnstileVerificationOk({ success: true }, "contact"), false);
+});
+
+test("customer mail is a fixed receipt and addresses are checked", () => {
+  const contact = contactReceivedHtml();
+  const booking = bookingReceivedHtml();
+  assert.equal(contact.includes("${"), false);
+  assert.equal(booking.includes("${"), false);
+  assert.equal(contact.includes("Thanks for reaching out, "), false);
+  assert.match(contact, /We've received your message/);
+  assert.match(booking, /We received your booking request/);
+  assert.equal(parseEmailAddress("person@creova.one"), "person@creova.one");
+  assert.equal(parseEmailAddress("not an email"), null);
+  assert.equal(parseEmailAddress("a\r\nb@creova.one"), null);
+  assert.equal(parseEmailAddress(`${"a".repeat(250)}@creova.one`), null);
 });

@@ -6,6 +6,38 @@ export const FREE_SHIPPING_THRESHOLD = 100;
 export const FLAT_SHIPPING = 15;
 export const MAX_ITEM_QUANTITY = 99;
 
+export const TEXT_LIMITS = {
+  name: 120,
+  email: 254,
+  phone: 40,
+  service: 160,
+  message: 5000,
+  short: 200,
+} as const;
+
+export const TURNSTILE_HOSTS = new Set(["creova.one", "www.creova.one"]);
+
+export const COMMERCE_GONE_STATUS = 410;
+
+export const COMMERCE_GONE_BODY = {
+  error: "This service is no longer available",
+} as const;
+
+/** Shop, checkout, tickets, memberships, subscriptions, and refunds. */
+export const COMMERCE_ROUTES = [
+  "/make-server-feacf0d8/create-ticket",
+  "/make-server-feacf0d8/create-payment-intent",
+  "/make-server-feacf0d8/stripe-webhook",
+  "/make-server-feacf0d8/create-preorder",
+  "/make-server-feacf0d8/purchase-digital-product",
+  "/make-server-feacf0d8/purchase-event-ticket",
+  "/make-server-feacf0d8/create-membership",
+  "/make-server-feacf0d8/create-subscription-checkout",
+  "/make-server-feacf0d8/payments",
+  "/make-server-feacf0d8/create-refund",
+  "/make-server-feacf0d8/refunds",
+] as const;
+
 export const DEFAULT_ALLOWED_ORIGINS = [
   "https://www.creova.one",
   "https://creova.one",
@@ -64,6 +96,8 @@ const DUMMY_TURNSTILE_SECRETS = new Set([
   "2x0000000000000000000000000000000AA",
 ]);
 
+// Exact CREOVA_ENV values only. Not trimmed and not case-folded, so
+// " Dev " and "DEVELOPMENT" do not match.
 const DEV_ENVIRONMENTS = new Set(["development", "dev", "local", "test"]);
 
 export type ChargeResult =
@@ -122,12 +156,27 @@ export function safeCreovaUrl(value: unknown): string {
   return escapeHtml(url.toString());
 }
 
+function normalizeOrigin(part: string): string | null {
+  const stripped = part.trim().replace(/\/+$/, "");
+  if (!stripped || stripped === "*") return null;
+  if (!/^https?:\/\/[^\s/]+$/i.test(stripped)) return null;
+  let url: URL;
+  try {
+    url = new URL(stripped);
+  } catch {
+    return null;
+  }
+  if (url.username || url.password || url.search || url.hash) return null;
+  if (url.pathname !== "/" && url.pathname !== "") return null;
+  return `${url.protocol}//${url.host}`.toLowerCase();
+}
+
 export function parseAllowedOrigins(raw: string | undefined): string[] {
   if (!raw || !raw.trim()) return [...DEFAULT_ALLOWED_ORIGINS];
   const parsed = raw
     .split(",")
-    .map((part) => part.trim())
-    .filter((part) => part !== "*" && /^https?:\/\/[^\s/]+$/i.test(part));
+    .map((part) => normalizeOrigin(part))
+    .filter((part): part is string => part !== null);
   return parsed.length > 0 ? parsed : [...DEFAULT_ALLOWED_ORIGINS];
 }
 
@@ -137,17 +186,31 @@ export function isUsableTurnstileSecret(secret: string | undefined): boolean {
 }
 
 /**
+ * Skip captcha only for an explicit local CREOVA_ENV.
+ * ENVIRONMENT is not consulted. Hosted *.supabase.co never skips, so setting
+ * CREOVA_ENV on the deployed function does not turn verification off.
+ */
+export function captchaDevSkip(
+  creovaEnv: string | undefined,
+  supabaseUrl: string | undefined,
+): boolean {
+  if (!creovaEnv || !DEV_ENVIRONMENTS.has(creovaEnv)) return false;
+  if ((supabaseUrl ?? "").toLowerCase().includes(".supabase.co")) return false;
+  return true;
+}
+
+/**
  * Fail closed when the secret is missing or is Cloudflare's dummy secret,
- * unless the process is explicitly marked as a local/dev environment.
+ * unless captchaDevSkip allows a local skip.
  */
 export function turnstileGate(input: {
   secretConfigured: boolean;
-  environment: string | undefined;
+  creovaEnv: string | undefined;
+  supabaseUrl?: string | undefined;
   token: unknown;
 }): TurnstileGate {
-  const environment = (input.environment || "").trim().toLowerCase();
   if (!input.secretConfigured) {
-    if (DEV_ENVIRONMENTS.has(environment)) return { action: "skip" };
+    if (captchaDevSkip(input.creovaEnv, input.supabaseUrl)) return { action: "skip" };
     return {
       action: "reject",
       status: 503,
@@ -158,6 +221,139 @@ export function turnstileGate(input: {
     return { action: "reject", status: 400, error: "Security verification required" };
   }
   return { action: "verify" };
+}
+
+/**
+ * siteverify must succeed for this widget action on creova.one.
+ * A bare `{ success: true }` (dummy secret, or a token minted elsewhere) is not enough.
+ */
+export function turnstileVerificationOk(data: unknown, expectedAction: string): boolean {
+  if (!data || typeof data !== "object") return false;
+  const body = data as { success?: unknown; hostname?: unknown; action?: unknown };
+  if (body.success !== true) return false;
+  if (typeof body.hostname !== "string") return false;
+  if (!TURNSTILE_HOSTS.has(body.hostname.toLowerCase())) return false;
+  if (typeof expectedAction !== "string" || expectedAction.length === 0) return false;
+  if (body.action !== expectedAction) return false;
+  return true;
+}
+
+function isIpv4(value: string): boolean {
+  const parts = value.split(".");
+  if (parts.length !== 4) return false;
+  return parts.every((part) => {
+    if (!/^\d{1,3}$/.test(part)) return false;
+    if (part.length > 1 && part.startsWith("0")) return false;
+    const n = Number(part);
+    return n >= 0 && n <= 255;
+  });
+}
+
+function isIpv6(value: string): boolean {
+  if (!value.includes(":") || value.length > 45) return false;
+  if (!/^[0-9a-f:]+$/i.test(value)) return false;
+  return value.split("::").length <= 2;
+}
+
+function singleIp(value: string | null | undefined): string | null {
+  if (!value) return null;
+  const trimmed = value.trim();
+  if (!trimmed || trimmed.includes(",")) return null;
+  const withPort = trimmed.match(/^(\d{1,3}(?:\.\d{1,3}){3}):\d+$/);
+  const candidate = withPort ? withPort[1] : trimmed;
+  if (isIpv4(candidate)) return candidate;
+  if (isIpv6(candidate)) return candidate.toLowerCase();
+  return null;
+}
+
+/**
+ * Address to rate-limit on.
+ *
+ * Cloudflare, in front of *.supabase.co, appends the connecting IP to
+ * X-Forwarded-For and overwrites CF-Connecting-IP. Supabase's own function
+ * examples read the leftmost XFF hop, which is the attacker-controlled prefix
+ * when a proxy appends. The rightmost valid hop is the nearest proxy's
+ * observation. CF-Connecting-IP is preferred when it is a single IP because
+ * that is the visitor address Cloudflare sets. A raw header string is never
+ * the key.
+ *
+ * Without those platform headers (local `deno serve`), the only hop is
+ * whoever wrote the header. Missing addresses share `unknown`.
+ */
+export function rateLimitClientIp(input: {
+  forwardedFor?: string | null;
+  connectingIp?: string | null;
+}): string {
+  const connecting = singleIp(input.connectingIp);
+  if (connecting) return connecting;
+  const hops = String(input.forwardedFor ?? "")
+    .split(",")
+    .map((hop) => hop.trim())
+    .filter(Boolean);
+  for (let i = hops.length - 1; i >= 0; i--) {
+    const ip = singleIp(hops[i]);
+    if (ip) return ip;
+  }
+  return "unknown";
+}
+
+export function requiredText(value: unknown, max: number): string | null {
+  if (typeof value !== "string") return null;
+  const trimmed = value.trim();
+  if (!trimmed || trimmed.length > max) return null;
+  return trimmed;
+}
+
+export function optionalText(
+  value: unknown,
+  max: number,
+): { ok: true; value?: string } | { ok: false } {
+  if (value === undefined || value === null || value === "") return { ok: true };
+  if (typeof value !== "string") return { ok: false };
+  const trimmed = value.trim();
+  if (!trimmed) return { ok: true };
+  if (trimmed.length > max) return { ok: false };
+  return { ok: true, value: trimmed };
+}
+
+/** Customer receipts. No submitter text: the address is chosen by the sender. */
+export function contactReceivedHtml(): string {
+  return `<div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#121212"><h2 style="color:#D4A843">Thanks for reaching out</h2><p>We've received your message and will get back to you within 1–2 business days.</p><p style="color:#777777;font-size:14px">In the meantime, follow us on Instagram <a href="https://www.instagram.com/creativeinnovation__" style="color:#D4A843">@creativeinnovation__</a></p><p>— The CREOVA Team</p></div>`;
+}
+
+export function bookingReceivedHtml(): string {
+  return `<div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#121212"><h2 style="color:#D4A843">We received your booking request</h2><p>Thanks for contacting CREOVA. We'll reply to this email address within 1–2 business days.</p><p>— The CREOVA Team</p></div>`;
+}
+
+export function parseEmailAddress(value: unknown): string | null {
+  const email = requiredText(value, TEXT_LIMITS.email);
+  if (!email) return null;
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return null;
+  if (/[<>"'(),;:\\]/.test(email)) return null;
+  return email;
+}
+
+export type RateBucket = { count: number; resetTime: number };
+
+/**
+ * In-memory bucket step. Not an atomic store and not shared across isolates.
+ * The edge function keeps one Map per isolate and calls this.
+ */
+export function consumeRateLimit(
+  buckets: Map<string, RateBucket>,
+  key: string,
+  now: number,
+  maxRequests: number,
+  windowMs: number,
+): boolean {
+  const record = buckets.get(key);
+  if (record && now < record.resetTime) {
+    if (record.count >= maxRequests) return false;
+    record.count += 1;
+    return true;
+  }
+  buckets.set(key, { count: 1, resetTime: now + windowMs });
+  return true;
 }
 
 export function catalogUnitCents(

@@ -28,6 +28,7 @@ export function ContactPage() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [captchaReset, setCaptchaReset] = useState(0);
 
   const handleCaptchaVerify = (token: string) => {
     setCaptchaToken(token);
@@ -92,10 +93,16 @@ export function ContactPage() {
           budget: '',
           timeline: ''
         });
+        setCaptchaToken(null);
+        setCaptchaReset((n) => n + 1);
       } else {
+        setCaptchaToken(null);
+        setCaptchaReset((n) => n + 1);
         throw new Error(data.error || 'Failed to send message');
       }
-    } catch (error) {
+    } catch {
+      setCaptchaToken(null);
+      setCaptchaReset((n) => n + 1);
       toast.error(t('contact.form.error.title'), {
         description: t('contact.form.error.description')
       });
@@ -387,6 +394,8 @@ export function ContactPage() {
                     {t('contact.captcha.security')}
                   </p>
                   <Captcha 
+                    action="contact"
+                    resetNonce={captchaReset}
                     onVerify={handleCaptchaVerify} 
                     onExpire={handleCaptchaExpire} 
                     onError={handleCaptchaError} 

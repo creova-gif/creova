@@ -25,6 +25,7 @@ export function RentalPage() {
   const [endDate, setEndDate] = useState<Date>();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [captchaReset, setCaptchaReset] = useState(0);
   const [formData, setFormData] = useState({
     equipment: [] as string[],
     name: '',
@@ -285,9 +286,13 @@ export function RentalPage() {
           navigate('/');
         }, 2000);
       } else {
+        setCaptchaToken(null);
+        setCaptchaReset((n) => n + 1);
         throw new Error(data.error || 'Failed to submit rental request');
       }
     } catch {
+      setCaptchaToken(null);
+      setCaptchaReset((n) => n + 1);
       toast.error(fr ? "Échec de l'envoi de la demande de location" : 'Failed to submit rental request', {
         description: fr ? 'Veuillez réessayer ou nous joindre directement.' : 'Please try again or contact us directly.'
       });
@@ -733,6 +738,8 @@ export function RentalPage() {
                   {/* Captcha */}
                   <div className="flex items-center gap-4">
                     <Captcha
+                      action="rental"
+                      resetNonce={captchaReset}
                       onVerify={handleCaptchaVerify}
                       onExpire={handleCaptchaExpire}
                       onError={handleCaptchaError}

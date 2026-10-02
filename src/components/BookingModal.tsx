@@ -37,6 +37,7 @@ export function BookingModal({ isOpen, onClose, service, package: packageName, p
     message: ''
   });
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [captchaReset, setCaptchaReset] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (field: string, value: string) => {
@@ -87,6 +88,8 @@ export function BookingModal({ isOpen, onClose, service, package: packageName, p
       );
 
       if (!response.ok) {
+        setCaptchaToken(null);
+        setCaptchaReset((n) => n + 1);
         toast.error(t('booking.error.fields'));
         return;
       }
@@ -101,6 +104,8 @@ export function BookingModal({ isOpen, onClose, service, package: packageName, p
         }
       });
     } catch {
+      setCaptchaToken(null);
+      setCaptchaReset((n) => n + 1);
       toast.error(t('booking.error.fields'));
     } finally {
       setIsSubmitting(false);
@@ -287,6 +292,8 @@ export function BookingModal({ isOpen, onClose, service, package: packageName, p
           </motion.div>
 
           <Captcha
+            action="booking"
+            resetNonce={captchaReset}
             onVerify={(token) => setCaptchaToken(token)}
             onExpire={() => setCaptchaToken(null)}
             onError={() => setCaptchaToken(null)}
