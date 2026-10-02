@@ -42,6 +42,18 @@ export function BookingModal({ isOpen, onClose, service, package: packageName, p
 
   const closeModal = () => {
     setIsSubmitted(false);
+    setFormData({
+      name: '',
+      email: '',
+      phone: '',
+      date: '',
+      time: '',
+      service: service || '',
+      package: packageName || '',
+      message: ''
+    });
+    setCaptchaToken(null);
+    setCaptchaReset((n) => n + 1);
     onClose();
   };
 
@@ -96,16 +108,22 @@ export function BookingModal({ isOpen, onClose, service, package: packageName, p
         setCaptchaToken(null);
         setCaptchaReset((n) => n + 1);
         const statusMessage = publicFormStatusMessage(response.status, language === 'fr');
-        toast.error(statusMessage ?? t('booking.error.fields'));
+        toast.error(statusMessage ?? t('booking.error.submit'), statusMessage ? undefined : {
+          description: t('booking.error.submit.desc')
+        });
         return;
       }
 
       logger.log('Booking request stored');
+      setCaptchaToken(null);
+      setCaptchaReset((n) => n + 1);
       setIsSubmitted(true);
     } catch {
       setCaptchaToken(null);
       setCaptchaReset((n) => n + 1);
-      toast.error(t('booking.error.fields'));
+      toast.error(t('booking.error.submit'), {
+        description: t('booking.error.submit.desc')
+      });
     } finally {
       setIsSubmitting(false);
     }

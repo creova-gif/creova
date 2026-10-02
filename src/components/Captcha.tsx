@@ -40,6 +40,11 @@ export function Captcha({
   const isMountedRef = useRef(true);
   const [scriptReady, setScriptReady] = useState(isScriptLoaded);
   const seenResetNonce = useRef(resetNonce);
+  const callbacksRef = useRef({ onVerify, onExpire, onError });
+
+  useEffect(() => {
+    callbacksRef.current = { onVerify, onExpire, onError };
+  });
 
   // Load the Turnstile script once
   useEffect(() => {
@@ -113,20 +118,18 @@ export function Captcha({
         theme,
         action,
         callback: (token: string) => {
-          onVerify(token);
+          callbacksRef.current.onVerify(token);
         },
         'expired-callback': () => {
-          widgetIdRef.current = null;
-          if (onExpire) onExpire();
+          callbacksRef.current.onExpire?.();
         },
         'error-callback': () => {
-          widgetIdRef.current = null;
-          if (onError) onError('Verification failed. Please try again.');
+          callbacksRef.current.onError?.('Verification failed. Please try again.');
         },
       });
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'Failed to load verification widget.';
-      if (onError) onError(msg);
+      callbacksRef.current.onError?.(msg);
     }
 
     return () => {
@@ -135,7 +138,7 @@ export function Captcha({
         widgetIdRef.current = null;
       }
     };
-  }, [scriptReady, siteKey, theme, action, onVerify, onExpire, onError]);
+  }, [scriptReady, siteKey, theme, action]);
 
   useEffect(() => {
     if (seenResetNonce.current === resetNonce) return;
