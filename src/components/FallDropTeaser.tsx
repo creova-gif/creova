@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Lock, ArrowRight, Mail, CheckCircle2 } from 'lucide-react';
 import { Input } from './ui/input';
 import { toast } from 'sonner';
-import { projectId, publicAnonKey } from '../utils/supabase/info';
+import { apiUrl } from '../utils/api';
 import { Captcha } from './Captcha';
 
 const warmGradient = 'linear-gradient(135deg, #D4A843 0%, #B1643B 100%)';
@@ -126,11 +126,13 @@ export function FallDropTeaser() {
     }
     setSubmitting(true);
     try {
+      const url = apiUrl('/subscribe-lead-magnet');
+      if (!url) throw new Error('API is not configured');
       await fetch(
-        `https://${projectId}.supabase.co/functions/v1/make-server-feacf0d8/subscribe-lead-magnet`,
+        url,
         {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${publicAnonKey}` },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             email,
             name: '',
