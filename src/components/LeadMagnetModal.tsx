@@ -7,7 +7,8 @@ import { motion, AnimatePresence } from 'motion/react';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { useLanguage } from '../context/LanguageContext';
 import { toast } from 'sonner';
-import { projectId, publicAnonKey } from '../utils/supabase/info';
+import { apiUrl } from '../utils/api';
+import { Captcha } from './Captcha';
 
 interface LeadMagnet {
   id: string;
@@ -30,6 +31,8 @@ export function LeadMagnetModal({ isOpen, onClose, leadMagnet }: LeadMagnetModal
   const [name, setName] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [captchaReset, setCaptchaReset] = useState(0);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,24 +41,30 @@ export function LeadMagnetModal({ isOpen, onClose, leadMagnet }: LeadMagnetModal
       toast.error(t('leadmagnet.error.fields'));
       return;
     }
+    if (!captchaToken) {
+      toast.error(t('contact.toast.captcha.missing'));
+      return;
+    }
 
     setIsSubmitting(true);
 
     try {
+      const url = apiUrl('/subscribe-lead-magnet');
+      if (!url) throw new Error('API is not configured');
       const response = await fetch(
-        `https://${projectId}.supabase.co/functions/v1/make-server-feacf0d8/subscribe-lead-magnet`,
+        url,
         {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${publicAnonKey}`
           },
           body: JSON.stringify({
             email,
             name,
             leadMagnetId: leadMagnet.id,
             leadMagnetTitle: leadMagnet.title,
-            subscribedAt: new Date().toISOString()
+            subscribedAt: new Date().toISOString(),
+            captchaToken,
           })
         }
       );
@@ -64,6 +73,8 @@ export function LeadMagnetModal({ isOpen, onClose, leadMagnet }: LeadMagnetModal
 
       if (response.ok) {
         setIsSuccess(true);
+        setCaptchaToken(null);
+        setCaptchaReset((n) => n + 1);
         
         // Track conversion
         if (typeof (window as any).gtag === 'function') {
@@ -215,6 +226,14 @@ export function LeadMagnetModal({ isOpen, onClose, leadMagnet }: LeadMagnetModal
                         className="h-12"
                       />
                     </div>
+
+                    <Captcha
+                      action="lead-magnet"
+                      resetNonce={captchaReset}
+                      onVerify={setCaptchaToken}
+                      onExpire={() => setCaptchaToken(null)}
+                      onError={() => setCaptchaToken(null)}
+                    />
 
                     <Button
                       type="submit"

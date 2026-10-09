@@ -11,7 +11,7 @@ import { Captcha } from '../components/Captcha';
 import { motion } from 'motion/react';
 import { Camera, Video, Lightbulb, Mic, Package, Calendar as CalendarIcon, Clock, CheckCircle2, ArrowLeft, Star, AlertCircle, ShieldCheck, Zap } from 'lucide-react';
 import { toast } from 'sonner';
-import { projectId, publicAnonKey } from '../utils/supabase/info';
+import { apiUrl } from '../utils/api';
 import { format, differenceInDays } from 'date-fns';
 import { logger } from '../utils/logger';
 import { PageSEO } from '../components/PageSEO';
@@ -231,13 +231,14 @@ export function RentalPage() {
         equipmentOptions.find(e => e.id === id)?.name || id
       );
 
+      const url = apiUrl('/submit-rental');
+      if (!url) throw new Error('API is not configured');
       const response = await fetch(
-        `https://${projectId}.supabase.co/functions/v1/make-server-feacf0d8/submit-rental`,
+        url,
         {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${publicAnonKey}`
           },
           body: JSON.stringify({
             equipment: selectedEquipment,

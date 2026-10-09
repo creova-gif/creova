@@ -1,0 +1,30 @@
+# creova.one API. Free-tier Worker + D1. No custom domain and no route:
+# the owner deploys to the workers.dev URL and points VITE_API_BASE_URL at it.
+# Replace database_id after `wrangler d1 create creova`. Do not commit a real id
+# from another account; the placeholder is intentional.
+
+name = "creova"
+main = "src/index.ts"
+compatibility_date = "2026-10-01"
+workers_dev = true
+
+# Secrets (set with `wrangler secret put`, never in this file):
+#   TURNSTILE_SECRET_KEY, ADMIN_PASSWORD, ADMIN_SESSION_SECRET,
+#   EMAIL_SERVICE_API_KEY, AIRTABLE_API_KEY
+# Optional: ALLOWED_ORIGINS, CLOUDFLARE_ACCOUNT_ID, ANALYTICS_API_TOKEN
+# Do not set CREOVA_ENV on the deployed worker. Leave it unset in production.
+# The placeholder database_id is not a secret. Replace it with the id from
+# `wrangler d1 create creova` and commit that id before the manual deploy.
+# The deploy workflow refuses this placeholder.
+
+[[d1_databases]]
+binding = "DB"
+database_name = "creova"
+database_id = "00000000-0000-0000-0000-000000000000"
+migrations_dir = "migrations"
+
+# Workers Analytics Engine is included on the Workers Free plan
+# (100,000 data points/day). https://developers.cloudflare.com/analytics/analytics-engine/pricing/
+[[analytics_engine_datasets]]
+binding = "ANALYTICS"
+dataset = "creova_analytics"

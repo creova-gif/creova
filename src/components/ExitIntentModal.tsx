@@ -5,7 +5,8 @@ import { Input } from './ui/input';
 import { motion, AnimatePresence } from 'motion/react';
 import { toast } from 'sonner';
 import { useLanguage } from '../context/LanguageContext';
-import { projectId, publicAnonKey } from '../utils/supabase/info';
+import { apiUrl } from '../utils/api';
+import { Captcha } from './Captcha';
 
 const SERVICES = [
   { icon: Camera, label: 'Photography', price: 'from $450' },
@@ -21,6 +22,8 @@ export function ExitIntentModal() {
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [captchaReset, setCaptchaReset] = useState(0);
   const hasShownRef = useRef(false);
 
   const triggerModal = () => {
@@ -66,24 +69,28 @@ export function ExitIntentModal() {
         setIsSubmitting(false);
         return;
       }
+      if (!captchaToken) {
+        toast.error(t('contact.toast.captcha.missing'));
+        setIsSubmitting(false);
+        return;
+      }
 
-      await fetch(
-        `https://${projectId}.supabase.co/functions/v1/make-server-feacf0d8/subscribe-lead-magnet`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${publicAnonKey}`,
-          },
-          body: JSON.stringify({
-            email,
-            name: '',
-            leadMagnetId: 'exit_intent',
-            leadMagnetTitle: 'Exit Intent Offer',
-            subscribedAt: new Date().toISOString(),
-          }),
-        }
-      );
+      const url = apiUrl('/subscribe-lead-magnet');
+      if (!url) throw new Error('API is not configured');
+      await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+          name: '',
+          leadMagnetId: 'exit_intent',
+          leadMagnetTitle: 'Exit Intent Offer',
+          subscribedAt: new Date().toISOString(),
+          captchaToken,
+        }),
+      });
 
       try {
         const existing = JSON.parse(localStorage.getItem('exitIntentEmails') || '[]');
@@ -93,6 +100,8 @@ export function ExitIntentModal() {
 
       setSubmitted(true);
       setEmail('');
+      setCaptchaToken(null);
+      setCaptchaReset((n) => n + 1);
     } catch {
       toast.error(t('exit.toast.error'));
     } finally {
@@ -293,6 +302,15 @@ export function ExitIntentModal() {
                               }}
                             />
                           </div>
+
+                          <Captcha
+                            action="lead-magnet"
+                            theme="dark"
+                            resetNonce={captchaReset}
+                            onVerify={setCaptchaToken}
+                            onExpire={() => setCaptchaToken(null)}
+                            onError={() => setCaptchaToken(null)}
+                          />
 
                           <Button
                             type="submit"
