@@ -16,6 +16,7 @@ import { format, differenceInDays } from 'date-fns';
 import { logger } from '../utils/logger';
 import { PageSEO } from '../components/PageSEO';
 import { useLanguage } from '../context/LanguageContext';
+import { publicFormStatusMessage } from '../utils/publicFormStatus';
 
 export function RentalPage() {
   const navigate = useNavigate();
@@ -25,6 +26,7 @@ export function RentalPage() {
   const [endDate, setEndDate] = useState<Date>();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [captchaReset, setCaptchaReset] = useState(0);
   const [formData, setFormData] = useState({
     equipment: [] as string[],
     name: '',
@@ -252,12 +254,11 @@ export function RentalPage() {
             purpose: formData.purpose,
             specialRequests: formData.specialRequests,
             hasInsurance: formData.hasInsurance,
-            submittedAt: new Date().toISOString()
+            submittedAt: new Date().toISOString(),
+            captchaToken
           })
         }
       );
-
-      const data = await response.json();
 
       if (response.ok) {
         toast.success(fr ? 'Demande de location envoyée !' : 'Rental request submitted!', {
@@ -284,9 +285,21 @@ export function RentalPage() {
           navigate('/');
         }, 2000);
       } else {
-        throw new Error(data.error || 'Failed to submit rental request');
+        setCaptchaToken(null);
+        setCaptchaReset((n) => n + 1);
+        const statusMessage = publicFormStatusMessage(response.status, fr);
+        if (statusMessage) {
+          toast.error(statusMessage);
+          return;
+        }
+        toast.error(fr ? "Échec de l'envoi de la demande de location" : 'Failed to submit rental request', {
+          description: fr ? 'Veuillez réessayer ou nous joindre directement.' : 'Please try again or contact us directly.'
+        });
+        return;
       }
     } catch {
+      setCaptchaToken(null);
+      setCaptchaReset((n) => n + 1);
       toast.error(fr ? "Échec de l'envoi de la demande de location" : 'Failed to submit rental request', {
         description: fr ? 'Veuillez réessayer ou nous joindre directement.' : 'Please try again or contact us directly.'
       });
@@ -732,6 +745,8 @@ export function RentalPage() {
                   {/* Captcha */}
                   <div className="flex items-center gap-4">
                     <Captcha
+                      action="rental"
+                      resetNonce={captchaReset}
                       onVerify={handleCaptchaVerify}
                       onExpire={handleCaptchaExpire}
                       onError={handleCaptchaError}

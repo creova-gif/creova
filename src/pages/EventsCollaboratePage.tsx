@@ -12,6 +12,7 @@ import { ImageWithFallback } from '../components/figma/ImageWithFallback';
 import { projectId, publicAnonKey } from '../utils/supabase/info';
 import { logger } from '../utils/logger';
 import { useLanguage } from '../context/LanguageContext';
+import { publicFormStatusMessage } from '../utils/publicFormStatus';
 const bsscImage = '/card-bssc.jpg';
 const blsaImage = '/card-blsa.jpg';
 const busuClubsImage = '/card-busu.jpg';
@@ -36,6 +37,7 @@ export function EventsCollaboratePage() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [captchaReset, setCaptchaReset] = useState(0);
 
   const handleCaptchaVerify = (token: string) => {
     setCaptchaToken(token);
@@ -296,8 +298,15 @@ export function EventsCollaboratePage() {
         }
       );
       if (!response.ok) {
-        const data = await response.json().catch(() => ({}));
-        throw new Error(data.error || 'Failed to subscribe');
+        const statusMessage = publicFormStatusMessage(response.status, fr);
+        if (statusMessage) {
+          toast.error(statusMessage);
+          return;
+        }
+        toast.error(fr ? "Échec de l'inscription" : 'Signup failed', {
+          description: fr ? 'Veuillez réessayer plus tard.' : 'Please try again later.'
+        });
+        return;
       }
       setSubmittedEvents(prev => new Set(prev).add(event.id));
       toast.success(fr ? 'Tu es sur la liste !' : "You're on the list!", {
@@ -330,16 +339,27 @@ export function EventsCollaboratePage() {
           body: JSON.stringify({ ...formData, captchaToken })
         }
       );
-      const data = await response.json();
       if (response.ok) {
         toast.success(fr ? 'Demande de collaboration envoyée !' : 'Collaboration request submitted!', {
           description: fr ? 'Nous examinerons ta proposition et te reviendrons dans les 2 à 3 jours ouvrables.' : 'We\'ll review your proposal and get back to you within 2-3 business days.'
         });
         setFormData({ name: '', email: '', organization: '', collaborationType: '', projectDescription: '', timeline: '', budget: '' });
+        setCaptchaToken(null);
+        setCaptchaReset((n) => n + 1);
       } else {
-        throw new Error(data.error || 'Failed to submit collaboration request');
+        setCaptchaToken(null);
+        setCaptchaReset((n) => n + 1);
+        const statusMessage = publicFormStatusMessage(response.status, fr);
+        if (statusMessage) {
+          toast.error(statusMessage);
+          return;
+        }
+        toast.error(fr ? "Échec de l'envoi de la demande" : 'Failed to submit request', { description: fr ? 'Veuillez réessayer ou nous écrire directement.' : 'Please try again or email us directly.' });
+        return;
       }
     } catch {
+      setCaptchaToken(null);
+      setCaptchaReset((n) => n + 1);
       toast.error(fr ? "Échec de l'envoi de la demande" : 'Failed to submit request', { description: fr ? 'Veuillez réessayer ou nous écrire directement.' : 'Please try again or email us directly.' });
     } finally {
       setIsSubmitting(false);
@@ -1201,7 +1221,7 @@ export function EventsCollaboratePage() {
 
               <div className="border-t pt-8" style={{ borderColor: '#E0E0E0' }}>
                 <p className="text-xs tracking-widest uppercase mb-4" style={{ color: '#777777' }}>{fr ? 'Vérification de sécurité' : 'Security Verification'}</p>
-                <Captcha onVerify={handleCaptchaVerify} onExpire={handleCaptchaExpire} onError={handleCaptchaError} />
+                <Captcha action="collaboration" resetNonce={captchaReset} onVerify={handleCaptchaVerify} onExpire={handleCaptchaExpire} onError={handleCaptchaError} />
               </div>
 
               <Button

@@ -1,8 +1,8 @@
 import { loadStripe } from '@stripe/stripe-js';
 import { projectId, publicAnonKey } from './supabase/info';
 
-const stripePublishableKey = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || '';
-const stripePromise = loadStripe(stripePublishableKey);
+const stripePublishableKey = (import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || '').trim();
+const stripePromise = stripePublishableKey ? loadStripe(stripePublishableKey) : null;
 
 const API_URL = `https://${projectId}.supabase.co/functions/v1/make-server-feacf0d8`;
 

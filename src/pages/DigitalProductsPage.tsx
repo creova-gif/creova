@@ -1,7 +1,5 @@
 import { useLanguage } from '../context/LanguageContext';
 import { PageSEO } from '../components/PageSEO';
-import { useCart } from '../context/CartContext';
-import { toast } from 'sonner';
 import { Download, Heart, ChevronDown, Gift, Star, FileText, Camera, Palette, Package, Sliders, Wrench } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useState } from 'react';
@@ -19,7 +17,6 @@ interface DigitalProductsPageProps {
 }
 
 export function DigitalProductsPage({ embedded = false }: DigitalProductsPageProps = {}) {
-  const { addItem } = useCart();
   const { t } = useLanguage();
   const [hoveredProduct, setHoveredProduct] = useState<string | null>(null);
   const [filter, setFilter] = useState('all');
@@ -48,11 +45,6 @@ export function DigitalProductsPage({ embedded = false }: DigitalProductsPagePro
   ];
 
   const filteredProducts = filter === 'all' ? digitalProducts : digitalProducts.filter(p => p.category === filter);
-
-  const handlePurchase = (product: typeof digitalProducts[0]) => {
-    addItem({ id: product.id, name: product.name, price: product.price, type: 'digital', image: product.image });
-    toast.success('Added to waitlist!', { description: `${product.name} — You'll be notified at launch this November 2026` });
-  };
 
   const filterTabs = [
     { label: t('digital.filter.all').toUpperCase(), value: 'all' },
@@ -292,14 +284,13 @@ export function DigitalProductsPage({ embedded = false }: DigitalProductsPagePro
                       background: 'linear-gradient(to top, rgba(10,10,10,0.85) 0%, transparent 100%)'
                     }}
                   >
-                    <button
-                      className="flex-1 flex items-center justify-center gap-1.5 py-2 text-[10px] tracking-widest transition-all"
-                      style={{ background: warmGradient, color: '#FFFFFF' }}
-                      onClick={() => handlePurchase(product)}
+                    <div
+                      role="status"
+                      className="flex-1 flex items-center justify-center py-2 text-[10px] tracking-widest"
+                      style={{ backgroundColor: 'rgba(255,255,255,0.12)', color: '#F8F9FA' }}
                     >
-                      <Download className="w-3 h-3" />
-                      PRE-ORDER
-                    </button>
+                      {t('digital.closed')}
+                    </div>
                     <button
                       className="w-9 flex items-center justify-center transition-colors"
                       style={{ backgroundColor: 'rgba(255,255,255,0.15)', color: '#F8F9FA' }}

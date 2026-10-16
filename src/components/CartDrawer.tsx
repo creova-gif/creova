@@ -186,13 +186,9 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                   <span className="text-xs tracking-[0.35em] uppercase" style={{ color: '#777777' }}>{t('cart.total')}</span>
                   <span className="text-xl font-light" style={{ color: '#F8F9FA' }}>${totalPrice.toFixed(2)} <span className="text-sm" style={{ color: '#777777' }}>{t('cart.cad')}</span></span>
                 </div>
-                <button
-                  className="w-full py-3.5 rounded-xl text-sm font-medium text-white"
-                  style={{ background: warmGradient }}
-                  onClick={() => { onClose(); navigate('/checkout'); }}
-                >
-                  {t('cart.checkout')}
-                </button>
+                <p role="status" className="text-sm text-center leading-relaxed" style={{ color: '#EFEFEF' }}>
+                  {t('cart.closed')}
+                </p>
                 <button
                   className="w-full py-3 rounded-xl text-sm border transition-colors"
                   style={{ borderColor: 'rgba(212,168,67,0.25)', color: '#EFEFEF', backgroundColor: 'transparent' }}

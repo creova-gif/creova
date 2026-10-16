@@ -13,6 +13,8 @@ id_rsa
 # Build output
 build/
 dist/
+# SSR bundle consumed by scripts/prerender.mjs. Not part of the Pages artifact.
+.ssr
 
 # Node.js
 node_modules/
@@ -43,3 +45,4 @@ Thumbs.db
 # Note: history rewrite (BFG / git-filter-repo) is needed to purge pre-existing
 # large blobs from git history and reduce clone/fetch size for new contributors.
 attached_assets/
+.claude/skills/gstack/

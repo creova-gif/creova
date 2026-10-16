@@ -201,7 +201,7 @@ function AppContent() {
           "@type": "ProfessionalService",
           "name": "CREOVA Creative Agency",
           "description": t('seo.schema.desc'),
-          "url": "https://creova.one",
+          "url": "https://www.creova.one/",
           "telephone": "+1-437-260-8925",
           "email": "support@creova.one",
           "address": {

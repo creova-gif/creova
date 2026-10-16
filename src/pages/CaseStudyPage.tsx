@@ -5,8 +5,9 @@ import { Link } from '../i18n/LocaleLink';
 import { PageSEO } from '../components/PageSEO';
 import { useLanguage } from '../context/LanguageContext';
 import { getCaseStudy } from '../data/caseStudies';
+import { absoluteUrl } from '../i18n/locale';
 
-const SITE_URL = 'https://creova.one';
+const SITE_URL = 'https://www.creova.one';
 
 export function CaseStudyPage({ slug }: { slug: string }) {
   const fr = useLanguage().language === 'fr';
@@ -23,9 +24,9 @@ export function CaseStudyPage({ slug }: { slug: string }) {
     description: c.metaDescription,
     image: `${SITE_URL}${cs.cover}`,
     author: { '@type': 'Organization', name: 'CREOVA' },
-    publisher: { '@type': 'Organization', name: 'CREOVA', url: SITE_URL },
+    publisher: { '@type': 'Organization', name: 'CREOVA', url: `${SITE_URL}/` },
     about: { '@type': 'Organization', name: `${cs.partner}, ${cs.org}` },
-    mainEntityOfPage: `${SITE_URL}/work/${cs.slug}`,
+    mainEntityOfPage: absoluteUrl(`/work/${cs.slug}`, fr ? 'fr' : 'en'),
   };
 
   return (

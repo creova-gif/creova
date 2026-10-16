@@ -10,17 +10,17 @@ interface CaptchaProps {
   siteKey?: string;
   theme?: 'light' | 'dark' | 'auto';
   size?: 'normal' | 'compact' | 'invisible';
+  action: string;
+  resetNonce?: number;
 }
 
-// Cloudflare test keys work on any domain
-// Replace PROD_SITE_KEY with your key from dash.cloudflare.com/turnstile
-const PROD_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY || '1x00000000000000000000AA';
-const LIVE_HOSTNAMES = ['creova.one', 'www.creova.one', 'creova.one', 'www.creova.one'];
-
-const DEFAULT_SITE_KEY =
-  typeof window !== 'undefined' && LIVE_HOSTNAMES.includes(window.location.hostname)
-    ? PROD_SITE_KEY
-    : '1x00000000000000000000AA'; // Cloudflare test key — always passes visually
+// Production builds use only VITE_TURNSTILE_SITE_KEY. The Cloudflare always-pass
+// test key is confined to the non-production branch so Vite can drop it from
+// the production bundle. Do not move that literal into the production branch.
+const configuredSiteKey = (import.meta.env.VITE_TURNSTILE_SITE_KEY || '').trim();
+const DEFAULT_SITE_KEY = import.meta.env.PROD
+  ? configuredSiteKey
+  : (configuredSiteKey || '1x00000000000000000000AA');
 
 let isScriptLoaded = false;
 let isScriptLoading = false;
@@ -32,14 +32,18 @@ export function Captcha({
   onError,
   siteKey = DEFAULT_SITE_KEY,
   theme = 'light',
+  action,
+  resetNonce = 0,
 }: CaptchaProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const widgetIdRef = useRef<string | null>(null);
   const isMountedRef = useRef(true);
   const [scriptReady, setScriptReady] = useState(isScriptLoaded);
+  const seenResetNonce = useRef(resetNonce);
 
   // Load the Turnstile script once
   useEffect(() => {
+    if (!siteKey) return;
     isMountedRef.current = true;
 
     if (isScriptLoaded) {
@@ -97,7 +101,7 @@ export function Captcha({
     document.body.appendChild(script);
 
     return () => { isMountedRef.current = false; };
-  }, []);
+  }, [siteKey]);
 
   // Render the widget once script is ready
   useEffect(() => {
@@ -107,6 +111,7 @@ export function Captcha({
       widgetIdRef.current = window.turnstile.render(containerRef.current, {
         sitekey: siteKey,
         theme,
+        action,
         callback: (token: string) => {
           onVerify(token);
         },
@@ -130,7 +135,23 @@ export function Captcha({
         widgetIdRef.current = null;
       }
     };
-  }, [scriptReady, siteKey, theme, onVerify, onExpire, onError]);
+  }, [scriptReady, siteKey, theme, action, onVerify, onExpire, onError]);
+
+  useEffect(() => {
+    if (seenResetNonce.current === resetNonce) return;
+    seenResetNonce.current = resetNonce;
+    if (widgetIdRef.current && window.turnstile) {
+      window.turnstile.reset(widgetIdRef.current);
+    }
+  }, [resetNonce]);
+
+  if (!siteKey) {
+    return (
+      <p role="alert" className="text-sm text-center" style={{ color: '#991B1B' }}>
+        Security verification is unavailable because the Turnstile site key is not configured.
+      </p>
+    );
+  }
 
   return (
     <div className="flex justify-center">

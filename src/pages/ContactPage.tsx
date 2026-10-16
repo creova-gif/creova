@@ -14,9 +14,10 @@ import { toast } from 'sonner';
 import { projectId, publicAnonKey } from '../utils/supabase/info';
 import { useLanguage } from '../context/LanguageContext';
 import { logger } from '../utils/logger';
+import { publicFormStatusMessage } from '../utils/publicFormStatus';
 
 export function ContactPage() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -28,6 +29,7 @@ export function ContactPage() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [captchaReset, setCaptchaReset] = useState(0);
 
   const handleCaptchaVerify = (token: string) => {
     setCaptchaToken(token);
@@ -73,25 +75,10 @@ export function ContactPage() {
         }
       );
 
-      const data = await response.json();
-
       if (response.ok) {
-        // Send admin notification email
-        try {
-          await fetch(
-            `https://${projectId}.supabase.co/functions/v1/make-server-feacf0d8/send-contact-notification`,
-            {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${publicAnonKey}`
-              },
-              body: JSON.stringify(formData)
-            }
-          );
-        } catch {
-          // Don't block success message if email notification fails
-        }
+        // The submission handler sends the notification after it verifies
+        // the captcha token. A second public email call would reuse a
+        // single-use token and was an unauthenticated mail route.
 
         toast.success(t('contact.form.success.title'), {
           description: t('contact.form.success.description')
@@ -105,10 +92,24 @@ export function ContactPage() {
           budget: '',
           timeline: ''
         });
+        setCaptchaToken(null);
+        setCaptchaReset((n) => n + 1);
       } else {
-        throw new Error(data.error || 'Failed to send message');
+        setCaptchaToken(null);
+        setCaptchaReset((n) => n + 1);
+        const statusMessage = publicFormStatusMessage(response.status, language === 'fr');
+        if (statusMessage) {
+          toast.error(statusMessage);
+          return;
+        }
+        toast.error(t('contact.form.error.title'), {
+          description: t('contact.form.error.description')
+        });
+        return;
       }
-    } catch (error) {
+    } catch {
+      setCaptchaToken(null);
+      setCaptchaReset((n) => n + 1);
       toast.error(t('contact.form.error.title'), {
         description: t('contact.form.error.description')
       });
@@ -400,6 +401,8 @@ export function ContactPage() {
                     {t('contact.captcha.security')}
                   </p>
                   <Captcha 
+                    action="contact"
+                    resetNonce={captchaReset}
                     onVerify={handleCaptchaVerify} 
                     onExpire={handleCaptchaExpire} 
                     onError={handleCaptchaError} 

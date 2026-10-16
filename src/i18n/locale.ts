@@ -39,8 +39,21 @@ export function withLocale(path: string, locale: Locale): string {
   return `${bare === '/' ? '/fr' : `/fr${bare}`}${suffix}`;
 }
 
-/** Absolute https URL for a path in a given locale — used for canonical/hreflang. */
-export function absoluteUrl(path: string, locale: Locale, siteUrl = 'https://creova.one'): string {
+/**
+ * Absolute https URL for a path in a given locale — canonical, hreflang, og:url.
+ *
+ * GitHub Pages serves each prerendered route from `<route>/index.html`.
+ * `/services` is a 301 to `/services/`, and `/services/` is the 200. The
+ * homepage is `https://www.creova.one/` (apex `creova.one` 301s there).
+ */
+export function absoluteUrl(path: string, locale: Locale, siteUrl = 'https://www.creova.one'): string {
   const localized = withLocale(path, locale);
-  return `${siteUrl}${localized === '/' ? '' : localized}`;
+  if (/^([a-z]+:|\/\/)/i.test(localized)) return localized;
+
+  const [rawPath, ...rest] = localized.split(/(?=[?#])/);
+  const suffix = rest.join('');
+  const pathname = rawPath === '/' || rawPath === ''
+    ? '/'
+    : (rawPath.endsWith('/') ? rawPath : `${rawPath}/`);
+  return `${siteUrl}${pathname}${suffix}`;
 }

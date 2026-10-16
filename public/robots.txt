@@ -7,4 +7,4 @@ Disallow: /checkout
 Disallow: /order-confirmation
 Disallow: /payment-success
 
-Sitemap: https://creova.one/sitemap.xml
+Sitemap: https://www.creova.one/sitemap.xml

@@ -3,7 +3,7 @@ import { useLocation } from 'react-router';
 import { localeFromPath, stripLocale, absoluteUrl } from '../i18n/locale';
 import { SEO_FR, FR_TITLE_SUFFIX } from '../i18n/seoCopy';
 
-const SITE_URL = 'https://creova.one';
+const SITE_URL = 'https://www.creova.one';
 const DEFAULT_OG_IMAGE = `${SITE_URL}/card-blackprint.jpg`;
 
 interface PageSEOProps {

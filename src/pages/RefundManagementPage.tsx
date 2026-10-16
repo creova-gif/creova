@@ -49,6 +49,7 @@ export function RefundManagementPage() {
   const [payments, setPayments] = useState<Payment[]>([]);
   const [refunds, setRefunds] = useState<Refund[]>([]);
   const [loading, setLoading] = useState(true);
+  const [unavailable, setUnavailable] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState<'all' | 'refunded' | 'not_refunded'>('all');
   
@@ -68,6 +69,13 @@ export function RefundManagementPage() {
 
       const paymentsData = await paymentsRes.json();
       const refundsData = await refundsRes.json();
+
+      if (paymentsRes.status === 410 || refundsRes.status === 410) {
+        setUnavailable(true);
+        setPayments([]);
+        setRefunds([]);
+        return;
+      }
 
       if (paymentsRes.ok) {
         setPayments(paymentsData.payments || []);
@@ -138,6 +146,17 @@ export function RefundManagementPage() {
   const totalRefunds = refunds.length;
   const totalRefundedAmount = refunds.reduce((sum, r) => sum + r.amount, 0);
   const totalRevenue = payments.reduce((sum, p) => sum + p.amount, 0);
+
+  if (unavailable) {
+    return (
+      <div className="min-h-screen flex items-center justify-center px-4" style={{ backgroundColor: '#F8F9FA' }}>
+        <div className="text-center max-w-md">
+          <h1 className="text-3xl mb-3" style={{ color: '#121212' }}>This service is no longer available</h1>
+          <p style={{ color: '#777777' }}>Refunds and payment records are closed. Nothing is sent to Stripe.</p>
+        </div>
+      </div>
+    );
+  }
 
   if (loading) {
     return (
