@@ -13,7 +13,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '../components/ui/popove
 import { motion } from 'motion/react';
 import { Camera, Video, Users, Package, PartyPopper, Wind, Palette, TrendingUp, Calendar as CalendarIcon, Clock, CheckCircle2, ArrowLeft, Star, Award } from 'lucide-react';
 import { toast } from 'sonner';
-import { projectId, publicAnonKey } from '../utils/supabase/info';
+import { apiUrl } from '../utils/api';
 import { format } from 'date-fns';
 import { logger } from '../utils/logger';
 import { useLanguage } from '../context/LanguageContext';
@@ -192,13 +192,14 @@ export function BookingPage() {
     setIsSubmitting(true);
 
     try {
+      const url = apiUrl('/submit-booking');
+      if (!url) throw new Error('API is not configured');
       const response = await fetch(
-        `https://${projectId}.supabase.co/functions/v1/make-server-feacf0d8/submit-booking`,
+        url,
         {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${publicAnonKey}`
           },
           body: JSON.stringify({
             ...formData,

@@ -1,7 +1,6 @@
-import { projectId, publicAnonKey } from './info';
+import { apiUrl } from '../api';
 
 const TOKEN_KEY = 'creova_admin_session_token';
-const API_BASE = `https://${projectId}.supabase.co/functions/v1/make-server-feacf0d8`;
 
 export function getAdminToken(): string | null {
   return sessionStorage.getItem(TOKEN_KEY);
@@ -16,12 +15,13 @@ export function clearAdminToken(): void {
 }
 
 export async function adminLogin(password: string): Promise<{ ok: boolean; error?: string }> {
+  const url = apiUrl('/admin-login');
+  if (!url) return { ok: false, error: 'API is not configured' };
   try {
-    const res = await fetch(`${API_BASE}/admin-login`, {
+    const res = await fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${publicAnonKey}`,
       },
       body: JSON.stringify({ password }),
     });
@@ -43,12 +43,18 @@ export async function adminLogin(password: string): Promise<{ ok: boolean; error
  * boundary.
  */
 export async function adminFetch(path: string, options: RequestInit = {}): Promise<Response> {
+  const url = apiUrl(path);
+  if (!url) {
+    return new Response(JSON.stringify({ error: 'API is not configured' }), {
+      status: 503,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
   const token = getAdminToken();
   const headers = new Headers(options.headers || {});
-  headers.set('Authorization', `Bearer ${publicAnonKey}`);
   if (token) headers.set('X-Admin-Session', token);
 
-  const res = await fetch(`${API_BASE}${path}`, { ...options, headers });
+  const res = await fetch(url, { ...options, headers });
   if (res.status === 401) {
     // Stale/expired/invalid token — drop it so the next page load re-prompts login.
     clearAdminToken();

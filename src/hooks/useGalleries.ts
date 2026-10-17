@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { projectId, publicAnonKey } from '../utils/supabase/info';
+import { apiUrl } from '../utils/api';
 
 export type GalleryCategory = 'events' | 'sports' | 'brand' | 'conference';
 
@@ -24,8 +24,6 @@ export interface Gallery {
   order: number;
 }
 
-const API_BASE = `https://${projectId}.supabase.co/functions/v1/make-server-feacf0d8`;
-
 /**
  * Shared source for the Work portfolio, used by both WorkPage and the
  * HomePage preview grid. Backed by the admin-managed /galleries endpoint
@@ -43,27 +41,28 @@ export function useGalleries() {
       : undefined;
 
   const [galleries, setGalleries] = useState<Gallery[]>(prerendered ?? []);
-  const [loading, setLoading] = useState(!prerendered);
+  // An unset API is a quiet empty list. Loading starts only when a fetch
+  // will actually run, so the prerendered empty state stays put.
+  const [loading, setLoading] = useState(!prerendered && apiUrl('/galleries') !== null);
   const [error, setError] = useState(false);
   const [refetchIndex, setRefetchIndex] = useState(0);
 
   useEffect(() => {
+    const url = apiUrl('/galleries');
+    if (!url) return;
     let cancelled = false;
     (async () => {
       setLoading(true);
       try {
-        const res = await fetch(`${API_BASE}/galleries`, {
-          headers: { Authorization: `Bearer ${publicAnonKey}` },
-        });
+        const res = await fetch(url);
         const data = await res.json();
-        if (!cancelled) {
-          if (res.ok) {
-            setGalleries((data.galleries || []).sort((a: Gallery, b: Gallery) => a.order - b.order));
-            setError(false);
-          } else {
-            setError(true);
-          }
+        if (cancelled) return;
+        if (!res.ok) {
+          setError(true);
+          return;
         }
+        setGalleries((data.galleries || []).sort((a: Gallery, b: Gallery) => a.order - b.order));
+        setError(false);
       } catch {
         if (!cancelled) setError(true);
       } finally {

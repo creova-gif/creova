@@ -18,6 +18,12 @@ dist/
 
 # Node.js
 node_modules/
+
+# Cloudflare local state and dev secrets
+.wrangler/
+.dev.vars
+workers/api/.secrets.json
+workers/api/worker-configuration.d.ts
 npm-debug.log
 
 # Python
