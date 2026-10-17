@@ -128,7 +128,7 @@ export function FallDropTeaser() {
     try {
       const url = apiUrl('/subscribe-lead-magnet');
       if (!url) throw new Error('API is not configured');
-      await fetch(
+      const response = await fetch(
         url,
         {
           method: 'POST',
@@ -143,6 +143,12 @@ export function FallDropTeaser() {
           }),
         }
       );
+      if (!response.ok) {
+        // Turnstile tokens are single-use, so a rejected request needs a fresh one.
+        setCaptchaToken(null);
+        setCaptchaReset((n) => n + 1);
+        throw new Error(`Signup failed: ${response.status}`);
+      }
       setSubmitted(true);
       setEmail('');
       setCaptchaToken(null);

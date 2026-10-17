@@ -77,7 +77,7 @@ export function ExitIntentModal() {
 
       const url = apiUrl('/subscribe-lead-magnet');
       if (!url) throw new Error('API is not configured');
-      await fetch(url, {
+      const response = await fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -91,6 +91,12 @@ export function ExitIntentModal() {
           captchaToken,
         }),
       });
+      if (!response.ok) {
+        // Turnstile tokens are single-use, so a rejected request needs a fresh one.
+        setCaptchaToken(null);
+        setCaptchaReset((n) => n + 1);
+        throw new Error(`Signup failed: ${response.status}`);
+      }
 
       try {
         const existing = JSON.parse(localStorage.getItem('exitIntentEmails') || '[]');

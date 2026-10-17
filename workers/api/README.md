@@ -29,18 +29,22 @@ The first `npx wrangler deploy` on a new account asks you to register a `*.worke
 openssl rand -base64 32
 ```
 
-Use that output as `ADMIN_SESSION_SECRET`. Then:
+Use that output as `ADMIN_SESSION_SECRET`. Then apply the migrations:
 
 ```bash
 npx wrangler d1 migrations apply creova --remote
-npx wrangler secret put TURNSTILE_SECRET_KEY
-npx wrangler secret put ADMIN_PASSWORD
-npx wrangler secret put ADMIN_SESSION_SECRET
-npx wrangler secret put EMAIL_SERVICE_API_KEY
-npx wrangler secret put AIRTABLE_API_KEY
 ```
 
-`wrangler secret put` on a Worker that does not exist yet creates the Worker (Wrangler prompts). Each `secret put` publishes a new version. Set the secrets, then deploy, and expect a new version per secret. Confirm the Turnstile widget hostnames are `creova.one` and `www.creova.one`, and that `VITE_TURNSTILE_SITE_KEY` belongs to the same widget as `TURNSTILE_SECRET_KEY`. Those hostnames are hard-coded. `ALLOWED_ORIGINS` does not extend them.
+**First deploy: upload code and secrets together.** `wrangler secret put` is not a staging step: on a Worker that does not exist yet it creates the Worker (Wrangler prompts), and every `secret put` immediately deploys a new version. To avoid publishing a half-configured Worker, put the five secrets in a local file that is never committed (for example `workers/api/.secrets.json`, `{"TURNSTILE_SECRET_KEY":"…","ADMIN_PASSWORD":"…","ADMIN_SESSION_SECRET":"…","EMAIL_SERVICE_API_KEY":"…","AIRTABLE_API_KEY":"…"}`) and ship them with the first version:
+
+```bash
+npx wrangler deploy --secrets-file .secrets.json
+rm .secrets.json
+```
+
+Later changes to one secret (rotation) can use `npx wrangler secret put <NAME>`; expect each one to publish a new version right away. Even if a secret is missing, the Worker fails closed (forms return 503 without `TURNSTILE_SECRET_KEY`, admin login returns 500 without the admin secrets).
+
+Confirm the Turnstile widget hostnames are `creova.one` and `www.creova.one`, and that `VITE_TURNSTILE_SITE_KEY` belongs to the same widget as `TURNSTILE_SECRET_KEY`. Those hostnames are hard-coded. `ALLOWED_ORIGINS` does not extend them.
 
 `ALLOWED_ORIGINS` is optional. If you set it, comma-separate full origins (`https://www.creova.one,https://creova.one`). A `*` entry is ignored. If the variable is unset, the allowlist is `https://www.creova.one` and `https://creova.one`.
 
@@ -54,7 +58,7 @@ npx wrangler secret list
 
 `EMAIL_SERVICE_API_KEY` is the existing Resend key. `AIRTABLE_API_KEY` is the existing Airtable key. Neither provider changed.
 
-Optional, for the admin analytics page (reads only; tracking writes do not need them):
+Optional, for the admin analytics page (reads only; tracking writes do not need them). Add them to the same secrets file before the first deploy, or set them later (each `secret put` publishes a version):
 
 ```bash
 npx wrangler secret put CLOUDFLARE_ACCOUNT_ID

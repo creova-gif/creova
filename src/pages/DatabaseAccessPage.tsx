@@ -147,7 +147,7 @@ export function DatabaseAccessPage() {
                       <div className="mb-1" style={{ color: '#121212' }}>How to Access:</div>
                       <ol className="text-sm space-y-1 list-decimal list-inside" style={{ color: '#777777' }}>
                         <li>From workers/api, run npx wrangler login</li>
-                        <li>Run npx wrangler d1 execute creova --remote</li>
+                        <li>Run npx wrangler d1 execute creova --remote --command "SELECT key FROM kv LIMIT 5;" (or use the copied command above)</li>
                         <li>Or open the Cloudflare dashboard, D1, database creova, Console</li>
                         <li>Query the kv table with a primary-key range, not LIKE</li>
                         <li>Shop, ticket, and membership rows are not written. Those routes return 410</li>
