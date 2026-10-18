@@ -92,7 +92,7 @@ export function JournalPostPage({ slug }: { slug: string }) {
           {/* CTA */}
           <div className="mt-14 pt-10 border-t text-center" style={{ borderColor: 'rgba(212,168,67,0.15)' }}>
             <p className="mb-6" style={{ color: '#8C7B75' }}>{fr ? 'Un projet en tête ?' : 'Have a project in mind?'}</p>
-            <Link to="/contact" className="group inline-flex items-center gap-3 px-7 py-3.5 rounded-xl text-sm font-semibold tracking-wide transition-all duration-300 hover:-translate-y-px hover:shadow-lg" style={{ backgroundColor: '#B1643B', color: '#F8F9FA' }}>
+            <Link to="/start-a-project" className="group inline-flex items-center gap-3 px-7 py-3.5 rounded-xl text-sm font-semibold tracking-wide transition-all duration-300 hover:-translate-y-px hover:shadow-lg" style={{ backgroundColor: '#B1643B', color: '#F8F9FA' }}>
               {fr ? 'Réserver un appel' : 'Book a call'}
               <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
             </Link>

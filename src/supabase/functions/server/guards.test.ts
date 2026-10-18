@@ -11,6 +11,7 @@ import {
   computeTrustedCartTotalCents,
   consumeRateLimit,
   contactAdminSubject,
+  contactResponseDueAt,
   contactReceivedHtml,
   escapeHtml,
   escapeHtmlMultiline,
@@ -242,6 +243,17 @@ test("admin email subjects use the text value, not the optionalText object", () 
   );
   assert.equal(collaborationAdminSubject(undefined, "Ada"), "🤝 New Collaboration Request: Ada");
   assert.equal(collaborationAdminSubject(organization.value, "Ada").includes("[object Object]"), false);
+});
+
+test("contact response due date skips weekends and uses Toronto local time", () => {
+  assert.equal(
+    contactResponseDueAt(new Date("2026-10-16T14:00:00.000Z")),
+    "2026-10-20T21:00:00.000Z",
+  );
+  assert.equal(
+    contactResponseDueAt(new Date("2026-10-14T14:00:00.000Z")),
+    "2026-10-16T21:00:00.000Z",
+  );
 });
 
 test("commerce routes share one gone response", () => {

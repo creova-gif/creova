@@ -72,7 +72,7 @@
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.5",
     "globals": "^17.11.0",
-    "sharp": "^0.35.4",
+    "sharp": "^0.35.5",
     "tailwindcss": "^4.3.3",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.67.0",
@@ -84,11 +84,13 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "vite build && cp build/index.html build/404.html && npm run build:ssr && npm run prerender",
+    "build": "npm run validate:content && vite build && cp build/index.html build/404.html && npm run build:ssr && npm run prerender",
     "build:ssr": "vite build --ssr src/entry-server.tsx --outDir .ssr",
     "prerender": "node scripts/prerender.mjs",
     "build:client-only": "vite build && cp build/index.html build/404.html",
-    "typecheck": "tsc --noEmit",
-    "lint": "eslint ."
+    "typecheck": "tsc --noEmit && npm --prefix workers/api run typecheck",
+    "test": "node --experimental-strip-types --test src/supabase/functions/server/guards.test.ts && npm --prefix workers/api test",
+    "lint": "eslint .",
+    "validate:content": "node scripts/validate-public-content.mjs"
   }
 }

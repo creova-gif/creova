@@ -2,7 +2,7 @@ import { useState, useRef, useCallback, useEffect } from 'react';
 import { Link } from '../i18n/LocaleLink';
 import { motion, useMotionValue, useSpring, useTransform } from 'motion/react';
 import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion';
-import { ArrowRight, Play, Globe, Shield, Mic, BookOpen, Heart, Star, ChevronDown, Lock, Layers, Award } from 'lucide-react';
+import { ArrowRight, Play, Globe, Shield, Mic, BookOpen, Heart, ChevronDown, Lock, Layers, Award } from 'lucide-react';
 import seenForyou from '../assets/seen-foryou.jpg';
 import seenOnboard from '../assets/seen-onboard.jpg';
 import seenRoles from '../assets/seen-roles.jpg';
@@ -13,23 +13,23 @@ import { useLanguage } from '../context/LanguageContext';
 const storyWorlds = (fr: boolean) => [
   {
     title: fr ? "Canada atlantique noir" : "Black Atlantic Canada",
-    description: fr ? "Histoires orales, musique et résistance des plus anciennes communautés noires d'Amérique du Nord." : "Oral histories, music, and resistance from the oldest Black communities in North America.",
+    description: fr ? "Concept éditorial explorant des histoires orales, de la musique et des récits de résistance." : "Editorial concept exploring oral histories, music, and stories of resistance.",
     lang: "EN / FR",
   },
   {
     title: fr ? "La scène jazz de Montréal" : "Montreal's Jazz Scene",
-    description: fr ? "Les sons underground et les histoires cachées d'une ville qui a façonné à jamais la musique canadienne." : "The underground sounds and hidden stories of a city that shaped Canadian music forever.",
+    description: fr ? "Concept éditorial explorant les sons et les histoires moins connues de la scène montréalaise." : "Editorial concept exploring sounds and lesser-known stories from Montreal's scene.",
     lang: "EN / FR",
   },
   {
     title: "Langues Autochtones",
-    description: fr ? "Revitalisation des langues autochtones par le récit — cri, ojibwé, michif et plus encore." : "Indigenous language revitalization through story — Cree, Ojibwe, Michif, and more.",
-    lang: fr ? "FR / Autochtone" : "FR / Indigenous",
+    description: fr ? "Direction de recherche pour soutenir le récit dans des langues autochtones, avec des partenaires appropriés." : "Research direction for supporting storytelling in Indigenous languages with appropriate partners.",
+    lang: fr ? "CONCEPT" : "CONCEPT",
   },
   {
     title: fr ? "Première génération" : "First Generation",
-    description: fr ? "Histoires d'immigrants sur l'arrivée, l'appartenance et le devenir canadien — dans toutes les langues." : "Immigrant stories of arrival, belonging, and becoming Canadian — in every language.",
-    lang: "EN / FR / ES",
+    description: fr ? "Concept éditorial sur l'arrivée, l'appartenance et la construction d'une vie au Canada." : "Editorial concept about arrival, belonging, and building a life in Canada.",
+    lang: "CONCEPT",
   }
 ];
 
@@ -37,27 +37,27 @@ const pillars = (fr: boolean) => [
   {
     icon: BookOpen,
     title: fr ? "Mondes narratifs" : "Story Worlds",
-    description: fr ? "Pas seulement du contenu — des expériences immersives combinant narration, audio d'ambiance et texte qui te transportent dans un moment culturel." : "Not just content — immersive experiences combining narration, ambient audio, and text that transport you into a cultural moment.",
+    description: fr ? "La conception explore des expériences combinant narration, audio d'ambiance et texte. La portée de la bêta est encore à l'étude." : "The product design explores experiences combining narration, ambient audio, and text. Beta scope is still being tested.",
   },
   {
     icon: Lock,
     title: fr ? "Propriété du créateur" : "Creator Ownership",
-    description: fr ? "Tu conserves tous tes droits de propriété intellectuelle. Toujours. SEEN ne revendique rien sur ton œuvre. Publie, gagne et possède ton récit." : "You keep full IP rights. Always. SEEN makes no claims on your work. Publish, earn, and own your narrative.",
+    description: fr ? "Le modèle prévu vise à laisser les droits aux créateurs. Les modalités finales seront publiées avant toute bêta publique." : "The intended model is creator-retained rights. Final terms will be published before any public beta.",
   },
   {
     icon: Shield,
     title: fr ? "Modération culturelle" : "Cultural Moderation",
-    description: fr ? "Un signalement de contenu qui inclut « l'appropriation culturelle » comme catégorie, avec escalade vers des conseillers culturels — pas seulement des bannissements automatisés." : "Content flagging that includes \"cultural appropriation\" as a category, with escalation to cultural advisors — not just automated bans.",
+    description: fr ? "La conception explore des outils de signalement culturellement informés. Les politiques, partenaires et opérations ne sont pas encore finalisés." : "The design explores culturally informed reporting tools. Policies, partners, and operations are not yet finalized.",
   },
   {
     icon: Mic,
     title: fr ? "Multilingue d'abord" : "Multilingual First",
-    description: fr ? "Anglais, français, espagnol et langues autochtones. Personnalisation de l'accessibilité intégrée à l'intégration dès le premier jour." : "English, French, Spanish, and Indigenous languages. Accessibility customization built into onboarding from day one.",
+    description: fr ? "L'anglais et le français orientent la conception initiale; d'autres langues et options d'accessibilité sont en recherche." : "English and French guide the initial design; additional languages and accessibility options are being researched.",
   },
   {
     icon: Layers,
     title: fr ? "Conception audio d'abord" : "Audio-First Design",
-    description: fr ? "Des paysages sonores cinématographiques et une narration portent l'histoire. SEEN est conçu autant pour l'écoute que pour la lecture." : "Cinematic soundscapes and narration carry the story. SEEN is built for listening as much as reading.",
+    description: fr ? "Les prototypes actuels privilégient l'écoute et la lecture. Le format final dépendra des tests de la bêta." : "Current prototypes prioritize listening and reading. The final format will depend on beta testing.",
   }
 ];
 
@@ -129,7 +129,7 @@ function AppPreview3D() {
     >
       <PageSEO
         title="SEEN — Multilingual Storytelling Platform"
-        description="SEEN is CREOVA's upcoming multilingual audio storytelling platform celebrating BIPOC voices and cultural narratives across Canada."
+        description="SEEN is a CREOVA product in development. Its current design explores multilingual audio and text storytelling, with a beta targeted for December 2026."
         path="/seen"
       />
       {/* Floating particles */}
@@ -385,29 +385,29 @@ export function SEENPage() {
   // Brand/culture page → tu register (see mixed-register decision).
   const fr = useLanguage().language === 'fr';
   const [email, setEmail] = useState('');
-  const [submitted, setSubmitted] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (email) {
-      setSubmitted(true);
-      setEmail('');
+      const subject = encodeURIComponent(fr ? 'Intérêt pour la bêta SEEN' : 'SEEN beta interest');
+      const body = encodeURIComponent(`${fr ? 'Mon courriel' : 'My email'}: ${email}`);
+      window.location.href = `mailto:support@creova.one?subject=${subject}&body=${body}`;
     }
   };
 
   const faqs = fr ? [
     {
       q: "Quand SEEN sera-t-il lancé ?",
-      a: "SEEN est présentement en développement. Nous visons une version bêta avec des créateurs sélectionnés d'ici la fin de 2026, suivie d'un lancement canadien plus large. Inscris-toi à la liste d'attente pour être parmi les premiers."
+      a: "SEEN est présentement en développement. Nous visons une version bêta en décembre 2026. Cette cible peut évoluer à mesure que le produit est testé."
     },
     {
       q: "Puis-je publier mes propres histoires sur SEEN ?",
-      a: "Oui — SEEN est conçu d'abord pour les créateurs. Tu conserves tous tes droits de propriété intellectuelle. Pendant notre phase d'accès anticipé, nous intégrons une cohorte sélectionnée de conteurs canadiens."
+      a: "C'est l'intention du produit, mais la publication n'est pas encore ouverte. Le modèle prévu vise à laisser les droits aux créateurs; les modalités finales seront publiées avant la bêta publique."
     },
     {
       q: "Quelles langues SEEN prend-il en charge ?",
-      a: "Nous bâtissons le multilinguisme dès la base : anglais, français, espagnol et certaines langues autochtones. La personnalisation de l'accessibilité est au cœur de l'expérience d'intégration."
+      a: "L'anglais et le français orientent la conception initiale. L'espagnol, certaines langues autochtones et des options d'accessibilité sont des pistes de recherche, pas des fonctions bêta confirmées."
     },
     {
       q: "SEEN est-il gratuit pour les auditeurs ?",
@@ -415,20 +415,20 @@ export function SEENPage() {
     },
     {
       q: "En quoi SEEN se distingue-t-il de Spotify ou Netflix ?",
-      a: "Ces plateformes sont optimisées pour l'engagement de masse. SEEN est optimisé pour la profondeur culturelle, la propriété communautaire et une représentation canadienne authentique."
+      a: "L'objectif de conception est de donner plus de place au contexte culturel et au contrôle des créateurs. Cette orientation doit encore être validée par des tests utilisateurs."
     }
   ] : [
     {
       q: "When does SEEN launch?",
-      a: "SEEN is currently in development. We're aiming for a beta with select creators by end of 2026, followed by a broader Canadian launch. Join the waitlist to be first."
+      a: "SEEN is currently in development. We are targeting a beta in December 2026. That target may change as the product is tested."
     },
     {
       q: "Can I publish my own stories on SEEN?",
-      a: "Yes — SEEN is built for creators first. You retain full IP rights. During our early access phase, we're onboarding a curated cohort of Canadian storytellers."
+      a: "That is the product intention, but publishing is not open yet. The intended model is creator-retained rights; final terms will be published before a public beta."
     },
     {
       q: "What languages does SEEN support?",
-      a: "We're building multilingual from the ground up: English, French, Spanish, and select Indigenous languages. Accessibility customization is core to the onboarding experience."
+      a: "English and French guide the initial design. Spanish, select Indigenous languages, and accessibility options are research directions, not confirmed beta features."
     },
     {
       q: "Is SEEN free for listeners?",
@@ -436,7 +436,7 @@ export function SEENPage() {
     },
     {
       q: "How is SEEN different from Spotify or Netflix?",
-      a: "Those platforms optimize for mass engagement. SEEN is optimized for cultural depth, community ownership, and authentic Canadian representation."
+      a: "The design goal is to give more room to cultural context and creator control. That direction still needs validation through user testing."
     }
   ];
 
@@ -636,7 +636,7 @@ export function SEENPage() {
             className="text-xl md:text-2xl mb-4 tracking-wide italic"
             style={{ color: '#CCFFEE', fontFamily: 'var(--font-display)' }}
           >
-            {fr ? 'La plateforme canadienne de récits culturels' : "Canada's Cultural Storytelling Platform"}
+            {fr ? 'Un produit de récits culturels en développement' : 'A Cultural Storytelling Product in Development'}
           </motion.p>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -645,7 +645,7 @@ export function SEENPage() {
             className="text-sm md:text-base max-w-2xl mx-auto mb-12 leading-relaxed"
             style={{ color: 'rgba(204,255,238,0.6)', fontFamily: 'var(--font-body)' }}
           >
-            {fr ? "Là où les voix autochtones, noires canadiennes, francophones et immigrantes possèdent leurs histoires — et où le public découvre le Canada authentique que les plateformes grand public ignorent." : 'Where Indigenous, Black Canadian, francophone, and immigrant voices own their stories — and audiences find the authentic Canada that mainstream platforms miss.'}
+            {fr ? "La conception explore comment mieux soutenir le contexte culturel, le multilinguisme et le contrôle des créateurs au Canada. Ces objectifs doivent encore être validés par les tests." : 'The design explores how to better support cultural context, multilingual storytelling, and creator control in Canada. Those goals still need validation through testing.'}
           </motion.p>
 
           <motion.div
@@ -662,7 +662,7 @@ export function SEENPage() {
               {fr ? 'En développement' : 'In Development'}
             </span>
             <span className="text-xs" style={{ color: 'rgba(204,255,238,0.45)' }}>
-              {fr ? 'Bêta lancée à la fin de 2026 · lancement pancanadien à suivre' : 'Beta launching end of 2026 · Canada-wide launch to follow'}
+              {fr ? 'Cible actuelle : bêta en décembre 2026' : 'Current target: beta in December 2026'}
             </span>
           </motion.div>
 
@@ -672,16 +672,7 @@ export function SEENPage() {
             transition={{ delay: 0.9, duration: 0.8 }}
             className="max-w-md mx-auto"
           >
-            {submitted ? (
-              <div
-                className="py-4 px-6 rounded-2xl text-center"
-                style={{ backgroundColor: 'rgba(20,143,119,0.12)', border: '1px solid rgba(20,143,119,0.35)' }}
-              >
-                <Star className="w-6 h-6 mx-auto mb-2" style={{ color: '#148F77' }} />
-                <p className="text-sm" style={{ color: '#CCFFEE' }}>{fr ? "Tu es sur la liste. On te contactera en premier." : "You're on the list. We'll reach out first."}</p>
-              </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="flex gap-2">
+            <form onSubmit={handleSubmit} className="flex gap-2">
                 <input
                   type="email"
                   value={email}
@@ -701,13 +692,12 @@ export function SEENPage() {
                   className="px-5 py-3 rounded-xl text-sm font-medium tracking-wide transition-all duration-300 hover:opacity-90 flex items-center gap-2"
                   style={{ backgroundColor: '#148F77', color: '#FFFFFF' }}
                 >
-                  {fr ? "S'inscrire" : 'Join Waitlist'}
+                  {fr ? 'Écrire à propos de la bêta' : 'Email About the Beta'}
                   <ArrowRight className="w-4 h-4" />
                 </button>
-              </form>
-            )}
+            </form>
             <p className="text-xs mt-3" style={{ color: 'rgba(204,255,238,0.4)' }}>
-              {fr ? 'Pas de pourriel. Accès anticipé pour les créateurs et les communautés culturelles.' : 'No spam. Early access for creators & cultural communities.'}
+              {fr ? 'Ouvre votre application courriel; aucune inscription automatique.' : 'Opens your email app; no automatic signup.'}
             </p>
           </motion.div>
         </div>
@@ -735,18 +725,18 @@ export function SEENPage() {
             transition={{ duration: 1 }}
             viewport={{ once: true }}
           >
-            <p className="text-xs tracking-[0.4em] uppercase mb-6" style={{ color: '#B1643B' }}>{fr ? "L'écart" : 'The Gap'}</p>
+            <p className="text-xs tracking-[0.4em] uppercase mb-6" style={{ color: '#B1643B' }}>{fr ? "Thèse de conception" : 'Design Thesis'}</p>
             <h2 className="text-3xl md:text-5xl mb-8 leading-tight" style={{ color: '#F8F9FA' }}>
-              {fr ? "Le Canada est l'un des pays les plus multiculturels au monde." : "Canada is one of the world's most multicultural countries."}{' '}
+              {fr ? "Le Canada abrite de nombreuses communautés culturelles et linguistiques." : 'Canada is home to many cultural and language communities.'}{' '}
               <span style={{ color: '#777777' }}>
-                {fr ? "Pourtant, ses plateformes de diffusion ne racontent qu'une seule histoire." : 'Yet its streaming platforms tell one story.'}
+                {fr ? "SEEN explore comment leurs récits pourraient recevoir plus de contexte et de place." : 'SEEN explores how their stories could receive more context and room.'}
               </span>
             </h2>
             <p className="text-base md:text-lg leading-relaxed mb-6" style={{ color: '#777777' }}>
-              {fr ? "Les communautés autochtones, noires canadiennes, francophones, immigrantes et d'autres méritant l'équité sont chroniquement sous-représentées dans les histoires auxquelles les Canadiens ont accès. Le savoir culturel — histoires orales, récits communautaires, histoires multilingues — se perd dans des plateformes régies par des algorithmes optimisés pour l'engagement de masse." : 'Indigenous, Black Canadian, francophone, immigrant, and other equity-deserving communities are chronically underrepresented in the stories Canadians can access. Cultural knowledge — oral histories, community narratives, multilingual stories — gets lost in algorithm-driven platforms optimized for mass engagement.'}
+              {fr ? "L'hypothèse du produit est que les histoires orales, les récits communautaires et les œuvres multilingues bénéficieraient d'une expérience conçue autour du contexte culturel plutôt que de la seule portée." : 'The product hypothesis is that oral histories, community narratives, and multilingual work would benefit from an experience designed around cultural context rather than reach alone.'}
             </p>
             <p className="text-base md:text-lg leading-relaxed" style={{ color: '#777777' }}>
-              {fr ? "Les créateurs canadiens de ces communautés n'ont aucun espace dédié et sécuritaire pour publier et posséder leur travail. Plusieurs perdent leurs droits de propriété intellectuelle au profit de plus grandes plateformes." : 'Canadian creators from these communities have no dedicated, safe space to publish and own their work. Many lose IP rights to larger platforms.'}
+              {fr ? "Le contrôle des créateurs, la sécurité et la propriété des droits sont des principes de conception. Les modalités, politiques et opérations restent à définir et à tester avant la bêta." : 'Creator control, safety, and rights ownership are design principles. Terms, policies, and operations still need to be defined and tested before beta.'}
             </p>
           </motion.div>
         </div>
@@ -766,6 +756,11 @@ export function SEENPage() {
             <h2 className="text-3xl md:text-5xl" style={{ color: '#F8F9FA' }}>
               {fr ? 'Entre dans le récit.' : 'Enter the narrative.'}
             </h2>
+            <p className="text-sm mt-5 max-w-2xl mx-auto leading-relaxed" style={{ color: '#777777' }}>
+              {fr
+                ? "Les exemples ci-dessous sont des directions éditoriales en développement, et non un catalogue publié."
+                : 'The examples below are editorial directions in development, not a published catalogue.'}
+            </p>
           </motion.div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -814,7 +809,7 @@ export function SEENPage() {
             viewport={{ once: true }}
             className="text-center mb-20"
           >
-            <p className="text-xs tracking-[0.4em] uppercase mb-4" style={{ color: '#B1643B' }}>{fr ? 'Ce que SEEN offre' : 'What SEEN Provides'}</p>
+            <p className="text-xs tracking-[0.4em] uppercase mb-4" style={{ color: '#B1643B' }}>{fr ? 'Direction du produit' : 'Product Direction'}</p>
             <h2 className="text-3xl md:text-5xl" style={{ color: '#F8F9FA' }}>
               {fr ? 'Conçu différemment. Par choix.' : 'Built different. By design.'}
             </h2>
@@ -851,8 +846,8 @@ export function SEENPage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             {[
               { stat: 'CA', label: fr ? 'Conçu au Canada pour les voix canadiennes' : 'Canadian-Built for Canadian Voices' },
-              { stat: '3+', label: fr ? 'Langues au lancement' : 'Languages at Launch' },
-              { stat: '100%', label: fr ? 'Propriété intellectuelle au créateur' : 'Creator IP Ownership' },
+              { stat: '2', label: fr ? 'Langues orientant la conception initiale' : 'Languages guiding initial design' },
+              { stat: 'IP', label: fr ? 'Modèle de droits en conception' : 'Rights model in development' },
               { stat: 'BIPOC', label: fr ? 'Dirigé et axé sur la communauté' : 'Led & Community-First' }
             ].map((item, i) => (
               <motion.div
@@ -927,20 +922,20 @@ export function SEENPage() {
             viewport={{ once: true }}
           >
             <p className="text-xs tracking-[0.3em] uppercase mb-4" style={{ color: '#D4A843' }}>
-              {fr ? 'Deux marques sœurs, une vision' : 'Two Sibling Brands, One Vision'}
+              {fr ? 'Deux projets, des étapes différentes' : 'Two Ventures, Different Stages'}
             </p>
             <h2 className="text-3xl md:text-5xl mb-6" style={{ color: '#F8F9FA' }}>
-              {fr ? 'SEEN raconte l’histoire. VERSE la fait porter.' : 'SEEN tells the story. VERSE lets you wear it.'}
+              {fr ? 'SEEN est en développement. VERSE est en incubation.' : 'SEEN is in development. VERSE is incubating.'}
             </h2>
             <p className="text-base max-w-xl mx-auto mb-10" style={{ color: '#777777' }}>
-              {fr ? "Aux côtés de l'application de récits SEEN, CREOVA lance VERSE — une capsule vestimentaire AH2026 conçue par la même équipe créative, lancée en novembre. Deux marques sœurs, la même histoire, portée à même la peau." : 'Alongside the SEEN storytelling app, CREOVA is launching VERSE — a wearable FW2026 capsule built by the same creative team, dropping this November. Two sibling brands, one story, worn on your sleeve.'}
+              {fr ? "Le dossier technique de VERSE est prêt, mais aucun lancement, magasin ou précommande n'est annoncé. CREOVA se concentre d'abord sur SEEN et ses services." : 'The VERSE tech pack is ready, but no launch, shop, or preorder is being announced. CREOVA is focusing first on SEEN and its services.'}
             </p>
             <Link
-              to="/shop"
+              to="/ventures#verse"
               className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-medium tracking-wide transition-all duration-300 hover:opacity-90"
               style={{ backgroundColor: 'rgba(212, 168, 67, 0.1)', border: '1px solid rgba(212, 168, 67, 0.3)', color: '#D4A843' }}
             >
-              {fr ? 'Explorer la capsule VERSE' : 'Explore the VERSE Capsule'}
+              {fr ? 'Voir l’état de VERSE' : 'See the VERSE Status'}
               <ArrowRight className="w-4 h-4" />
             </Link>
           </motion.div>
@@ -971,13 +966,13 @@ export function SEENPage() {
               {fr ? "Ton histoire mérite d'être vue." : 'Your story deserves to be seen.'}
             </h2>
             <p className="text-base mb-10" style={{ color: '#777777' }}>
-              {fr ? "Rejoins des milliers de Canadiens qui attendent une plateforme conçue pour eux." : 'Join thousands of Canadians waiting for a platform built for them.'}
+              {fr ? "Suis le développement d'une plateforme conçue pour les récits culturels." : 'Follow the development of a platform designed for cultural stories.'}
             </p>
 
             <div className="flex flex-wrap items-center justify-center gap-6 mb-12">
               {[
                 { icon: Award, text: fr ? 'Bêta fin 2026' : 'Beta Late 2026' },
-                { icon: Globe, text: fr ? 'Pancanadien 2026' : 'Canada-Wide 2026' },
+                { icon: Globe, text: fr ? 'Produit en développement' : 'Product in Development' },
                 { icon: Shield, text: fr ? 'Dirigé par des BIPOC' : 'BIPOC Led' }
               ].map((badge, i) => (
                 <div key={i} className="flex items-center gap-2">
@@ -987,16 +982,7 @@ export function SEENPage() {
               ))}
             </div>
 
-            {submitted ? (
-              <div
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl"
-                style={{ backgroundColor: 'rgba(212, 168, 67, 0.1)', border: '1px solid rgba(212, 168, 67, 0.3)', color: '#D4A843' }}
-              >
-                <Star className="w-4 h-4" />
-                {fr ? 'Tu es sur la liste' : "You're on the list"}
-              </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-sm mx-auto">
+            <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-sm mx-auto">
                 <input
                   type="email"
                   value={email}
@@ -1015,10 +1001,9 @@ export function SEENPage() {
                   className="px-6 py-3 rounded-xl text-sm font-medium tracking-wide transition-all duration-300 hover:opacity-90"
                   style={{ backgroundColor: '#F8F9FA', color: '#121212' }}
                 >
-                  {fr ? "Obtenir l'accès anticipé" : 'Get Early Access'}
+                  {fr ? 'Écrire à propos de la bêta' : 'Email About the Beta'}
                 </button>
-              </form>
-            )}
+            </form>
 
             <div className="mt-12 pt-8" style={{ borderTop: '1px solid rgba(212, 168, 67, 0.15)' }}>
               <p className="text-xs mb-3" style={{ color: '#777777' }}>A platform by</p>

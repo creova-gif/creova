@@ -11,6 +11,7 @@ import {
   collaborationAdminSubject,
   contactAdminSubject,
   contactReceivedHtml,
+  contactResponseDueAt,
   isUsableTurnstileSecret,
   oneLine,
   optionalText,
@@ -570,6 +571,8 @@ app.post("/make-server-feacf0d8/submit-contact", rateLimit(5, 60000), async (c) 
     }
 
     const contactId = `contact_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const receivedAt = new Date().toISOString();
+    const responseDueAt = contactResponseDueAt(new Date(receivedAt));
 
     await kv.set(contactId, {
       name,
@@ -581,7 +584,7 @@ app.post("/make-server-feacf0d8/submit-contact", rateLimit(5, 60000), async (c) 
       timeline: timeline.value,
       status: 'new',
       type: 'contact',
-      created_at: new Date().toISOString()
+      created_at: receivedAt
     });
 
     console.log(`Contact form submitted: ${contactId} from ${email}`);
@@ -589,7 +592,7 @@ app.post("/make-server-feacf0d8/submit-contact", rateLimit(5, 60000), async (c) 
     syncToAirtable("tblgMShO3Sa6ynJyb", {
       Name: name, Email: email, Phone: phone.value, Message: message,
       Service: service.value, Budget: budget.value, Timeline: timeline.value,
-      Type: "contact", "Submitted At": new Date().toISOString(),
+      Type: "contact", "Submitted At": receivedAt,
       "Supabase Record ID": contactId,
     });
 
@@ -638,7 +641,10 @@ app.post("/make-server-feacf0d8/submit-contact", rateLimit(5, 60000), async (c) 
 
     return c.json({
       contactId,
-      status: 'success',
+      requestId: contactId,
+      status: 'received',
+      receivedAt,
+      responseDueAt,
       message: 'Contact form submitted successfully'
     });
   } catch (error) {

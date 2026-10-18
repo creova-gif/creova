@@ -250,7 +250,7 @@ export function AboutPage() {
           <div className="grid sm:grid-cols-3 gap-4">
             {[
               { name: 'CREOVA', tag: fr ? 'L’agence créative' : 'The creative agency', to: '/services' },
-              { name: 'VERSE', tag: fr ? 'La marque lifestyle' : 'The lifestyle label', to: '/shop' },
+              { name: 'VERSE', tag: fr ? 'La marque lifestyle en incubation' : 'The lifestyle brand in incubation', to: '/ventures#verse' },
               { name: 'SEEN', tag: fr ? 'Le produit numérique' : 'The digital product', to: '/seen' },
             ].map((b) => (
               <Link key={b.name} to={b.to} className="group block rounded-xl p-5 transition-all duration-300 hover:-translate-y-1" style={{ backgroundColor: '#151515', border: '1px solid rgba(212,168,67,0.15)' }}>
@@ -268,7 +268,7 @@ export function AboutPage() {
           <h2 className="tracking-tight mb-6" style={{ color: '#F8F9FA', fontFamily: 'var(--font-display)', fontSize: 'clamp(2rem, 5vw, 3.2rem)', lineHeight: 1.06 }}>
             {fr ? 'Une bonne idée à partager ?' : 'Have a story worth telling?'}
           </h2>
-          <Link to="/contact" className="group inline-flex items-center gap-3 px-8 py-4 rounded-xl text-base font-semibold tracking-wide transition-all duration-300 hover:-translate-y-px hover:shadow-xl" style={{ backgroundColor: '#B1643B', color: '#F8F9FA' }}>
+          <Link to="/start-a-project" className="group inline-flex items-center gap-3 px-8 py-4 rounded-xl text-base font-semibold tracking-wide transition-all duration-300 hover:-translate-y-px hover:shadow-xl" style={{ backgroundColor: '#B1643B', color: '#F8F9FA' }}>
             {fr ? 'Travaillons ensemble' : 'Let’s work together'}
             <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
           </Link>

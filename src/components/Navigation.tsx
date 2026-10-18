@@ -1,12 +1,9 @@
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { Link } from '../i18n/LocaleLink';
-import { X, ShoppingCart, ArrowUpRight, LayoutGrid } from 'lucide-react';
+import { X, ArrowUpRight, LayoutGrid } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Button } from './ui/button';
-import { useCart } from '../context/CartContext';
 import { useLanguage } from '../context/LanguageContext';
 import { useExploreMenu } from '../context/ExploreMenuContext';
-import { CartDrawer } from './CartDrawer';
 import { LanguageSwitcher } from './LanguageSwitcher';
 import { Magnetic } from './Magnetic';
 import { useFocusTrap } from '../hooks/useFocusTrap';
@@ -15,8 +12,6 @@ import { Logo } from './Logo';
 import logoWatermark from '../assets/logo-mark-white-faint.png';
 
 export function Navigation() {
-  const [cartOpen, setCartOpen] = useState(false);
-  const { totalItems } = useCart();
   const { t } = useLanguage();
   const { isOpen: menuOpen, open: openMenu, close } = useExploreMenu();
   const menuRef = useRef<HTMLDivElement>(null);
@@ -29,9 +24,8 @@ export function Navigation() {
 
   useFocusTrap(menuRef, menuOpen, () => close());
 
-  // The nine destinations collapse into four "worlds". SEEN (the app) and
-  // VERSE (the clothing label) are brand groups; Studio is the agency; the
-  // fourth gathers community + events + contact.
+  // Public navigation follows the current company architecture: active studio
+  // services, owned ventures at their real stage, and community work.
   const groups = [
     {
       key: 'studio',
@@ -41,25 +35,18 @@ export function Navigation() {
       items: [
         { name: t('nav.work'), path: '/work' },
         { name: t('nav.services'), path: '/services' },
-        { name: t('nav.pricing'), path: '/pricing' },
         { name: t('nav.about'), path: '/about' },
       ],
     },
     {
-      key: 'seen',
-      label: 'SEEN',
-      tag: t('nav.seen.tag'),
-      brand: true,
-      items: [{ name: t('nav.seen.cta'), path: '/seen' }],
-    },
-    {
-      key: 'verse',
-      label: 'VERSE',
-      tag: t('nav.verse.tag'),
+      key: 'ventures',
+      label: t('nav.ventures'),
+      tag: t('nav.ventures.tag'),
       brand: true,
       items: [
-        { name: t('nav.verse.shop'), path: '/shop' },
-        { name: t('nav.verse.digital'), path: '/shop/digital' },
+        { name: 'SEEN — ' + t('nav.seen.status'), path: '/seen' },
+        { name: 'VERSE — ' + t('nav.verse.status'), path: '/ventures#verse' },
+        { name: t('nav.ventures.all'), path: '/ventures' },
       ],
     },
     {
@@ -70,8 +57,7 @@ export function Navigation() {
       items: [
         { name: t('nav.community'), path: '/community' },
         { name: t('nav.journal'), path: '/journal' },
-        { name: t('nav.experience'), path: '/experience' },
-        { name: t('nav.contact'), path: '/contact' },
+        { name: t('nav.start.project'), path: '/start-a-project' },
       ],
     },
   ];
@@ -86,14 +72,13 @@ export function Navigation() {
               <Logo variant="navy" animateIn className="h-10 w-auto" interactive />
             </Link>
 
-            {/* Primary destinations, surfaced directly on desktop so the pages
-                that close a client (work / services / pricing) aren't hidden a
-                click deep. Explore still holds the full four-world map. */}
+            {/* Primary destinations are visible on desktop; Explore holds the
+                full studio, venture, and community map. */}
             <div className="hidden lg:flex items-center gap-8">
               {[
                 { name: t('nav.work'), path: '/work' },
                 { name: t('nav.services'), path: '/services' },
-                { name: t('nav.pricing'), path: '/pricing' },
+                { name: t('nav.ventures'), path: '/ventures' },
               ].map((item) => (
                 <Link
                   key={item.path}
@@ -115,36 +100,17 @@ export function Navigation() {
                 <LanguageSwitcher />
               </div>
 
-              {/* Book a Call — primary conversion CTA */}
+              {/* Start a Project — primary conversion CTA */}
               <Magnetic strength={0.2} className="hidden md:inline-flex">
                 <Link
-                  to="/contact"
+                  to="/start-a-project"
                   className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold tracking-wide transition-all duration-300 hover:opacity-90 hover:shadow-lg hover:-translate-y-px"
                   style={{ backgroundColor: '#121212', color: '#F8F9FA', border: '1px solid rgba(212,168,67,0.25)' }}
                 >
                   <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: '#D4A843' }} />
-                  {t('nav.book.call')}
+                  {t('nav.start.project')}
                 </Link>
               </Magnetic>
-
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setCartOpen(true)}
-                className="relative hover:bg-transparent"
-                style={{ color: '#121212' }}
-                aria-label={t('nav.cart.aria')}
-              >
-                <ShoppingCart className="w-5 h-5" />
-                {totalItems > 0 && (
-                  <span
-                    className="absolute -top-1 -right-1 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center"
-                    style={{ backgroundColor: '#B1643B' }}
-                  >
-                    {totalItems}
-                  </span>
-                )}
-              </Button>
 
               {/* Explore — opens the full-screen menu (all breakpoints) */}
               <button
@@ -220,9 +186,9 @@ export function Navigation() {
                 </button>
               </div>
 
-              {/* Four worlds */}
+              {/* Current company architecture */}
               <div className="flex-1 max-w-7xl w-full mx-auto px-6 lg:px-12 py-10 lg:py-16">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-10 gap-y-12">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-x-10 gap-y-12">
                   {groups.map((group, gi) => (
                     <motion.div
                       key={group.key}
@@ -286,13 +252,13 @@ export function Navigation() {
               {/* Footer */}
               <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-6 lg:px-12 pb-10 pt-6 flex-shrink-0 border-t max-w-7xl w-full mx-auto" style={{ borderColor: 'rgba(212,168,67,0.12)' }}>
                 <Link
-                  to="/contact"
+                  to="/start-a-project"
                   onClick={close}
                   className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl text-sm font-semibold tracking-wide"
                   style={{ backgroundColor: '#B1643B', color: '#F8F9FA' }}
                 >
                   <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: '#F8F9FA' }} />
-                  {t('nav.book.call')}
+                  {t('nav.start.project')}
                 </Link>
                 <LanguageSwitcher />
               </div>
@@ -300,8 +266,6 @@ export function Navigation() {
           </motion.div>
         )}
       </AnimatePresence>
-
-      <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} />
     </>
   );
 }

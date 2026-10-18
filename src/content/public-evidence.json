@@ -1,0 +1,110 @@
+[
+  {
+    "id": "bssc-black-history-month-2026",
+    "slug": "black-student-success-centre",
+    "kind": "client-work",
+    "publicationStatus": "published",
+    "publicationBasis": "public-source-only",
+    "partner": "Black Student Success Centre, Brock University",
+    "occurredOn": "2026-02-01",
+    "expiresOn": "2027-12-31",
+    "approvals": {
+      "en": "approved-by-owner",
+      "fr": "approved-by-owner"
+    },
+    "copy": {
+      "en": {
+        "title": "Black student life at Brock",
+        "summary": "CREOVA photographed and documented Black History Month and community programming connected with Brock University's Black Student Success Centre. Selected work has continued to support social, promotional, and institutional storytelling."
+      },
+      "fr": {
+        "title": "La vie étudiante noire à Brock",
+        "summary": "CREOVA a photographié et documenté des activités du Mois de l'histoire des Noirs et des programmes communautaires liés au Black Student Success Centre de l'Université Brock. Une sélection du travail continue de soutenir les communications sociales, promotionnelles et institutionnelles."
+      }
+    },
+    "sources": [
+      {
+        "label": "Public Instagram post 1",
+        "url": "https://www.instagram.com/p/Dd4OAvtIEt-/",
+        "owner": "institution"
+      },
+      {
+        "label": "Public Instagram post 2",
+        "url": "https://www.instagram.com/p/Dcdx2MEqcCp/",
+        "owner": "institution"
+      },
+      {
+        "label": "Public Instagram post 3",
+        "url": "https://www.instagram.com/p/Ddg-faqxma9/",
+        "owner": "institution"
+      },
+      {
+        "label": "CREOVA portfolio",
+        "url": "https://creova.pixieset.com/",
+        "owner": "creova"
+      }
+    ]
+  },
+  {
+    "id": "seen-product-development",
+    "slug": "seen",
+    "kind": "product",
+    "publicationStatus": "published",
+    "publicationBasis": "creova-owned",
+    "expiresOn": "2027-01-31",
+    "approvals": {
+      "en": "approved-by-owner",
+      "fr": "approved-by-owner"
+    },
+    "copy": {
+      "en": {
+        "title": "SEEN",
+        "summary": "A CREOVA digital storytelling product with an existing product design and working codebase. It is in development toward a December 2026 beta target.",
+        "statusLabel": "In development"
+      },
+      "fr": {
+        "title": "SEEN",
+        "summary": "Un produit numérique de narration de CREOVA doté d'une conception de produit et d'une base de code fonctionnelle. Son développement vise une version bêta en décembre 2026.",
+        "statusLabel": "En développement"
+      }
+    },
+    "sources": [
+      {
+        "label": "CREOVA SEEN product page",
+        "url": "https://www.creova.one/seen/",
+        "owner": "creova"
+      }
+    ]
+  },
+  {
+    "id": "verse-incubation",
+    "slug": "verse",
+    "kind": "venture",
+    "publicationStatus": "published",
+    "publicationBasis": "creova-owned",
+    "expiresOn": "2027-12-31",
+    "approvals": {
+      "en": "approved-by-owner",
+      "fr": "approved-by-owner"
+    },
+    "copy": {
+      "en": {
+        "title": "VERSE",
+        "summary": "A CREOVA lifestyle brand in incubation. The tech pack is ready; product development and an organic launch will follow only after SEEN and CREOVA's services are stronger.",
+        "statusLabel": "Incubating"
+      },
+      "fr": {
+        "title": "VERSE",
+        "summary": "Une marque lifestyle de CREOVA en incubation. Le dossier technique est prêt; le développement du produit et un lancement organique suivront seulement lorsque SEEN et les services de CREOVA seront plus solides.",
+        "statusLabel": "En incubation"
+      }
+    },
+    "sources": [
+      {
+        "label": "CREOVA ventures page",
+        "url": "https://www.creova.one/ventures/",
+        "owner": "creova"
+      }
+    ]
+  }
+]

@@ -44,8 +44,8 @@ export function Magnetic({ children, strength = 0.28, className = '', style }: M
   return (
     <motion.div
       ref={ref}
-      style={{ x: springX, y: springY, display: 'inline-block', ...style }}
-      className={className}
+      style={{ x: springX, y: springY, ...style }}
+      className={className || 'inline-block'}
       onMouseMove={onMove}
       onMouseLeave={onLeave}
     >

@@ -10,8 +10,8 @@ function useLiveClock() {
   useEffect(() => {
     const update = () => {
       setTime(new Date().toLocaleTimeString('en-CA', {
-        hour: 'numeric', minute: '2-digit', hour12: true, timeZone: 'America/Toronto',
-      }).replace(' ', ' ') + ' EST');
+        hour: 'numeric', minute: '2-digit', hour12: true, timeZone: 'America/Toronto', timeZoneName: 'short',
+      }).replace(' ', ' '));
     };
     update();
     const id = setInterval(update, 30000);
@@ -21,7 +21,7 @@ function useLiveClock() {
 }
 
 export function ContactInfoBanner() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [hidden, setHidden] = useState(false);
   const lastY = useRef(0);
   const liveTime = useLiveClock();
@@ -40,7 +40,7 @@ export function ContactInfoBanner() {
     { icon: Phone, label: t('banner.call'), value: '+1 (437) 260-8925', href: 'tel:+14372608925' },
     { icon: Mail, label: t('banner.email'), value: 'support@creova.one', href: 'mailto:support@creova.one' },
     { icon: MapPin, label: t('banner.location'), value: t('banner.location.value'), href: 'https://maps.google.com/?q=Niagara+Region+Ontario+Canada' },
-    { icon: Clock, label: 'Local Time', value: liveTime || 'Niagara, ON · EST', href: null },
+    { icon: Clock, label: language === 'fr' ? 'Heure locale' : 'Local Time', value: liveTime || (language === 'fr' ? 'Heure de Toronto' : 'Toronto time'), href: null },
   ];
 
   return (
@@ -135,9 +135,11 @@ export function ContactInfoBanner() {
           <div className="flex items-center gap-3 px-5 py-3 flex-shrink-0">
             <span className="w-1.5 h-1.5 rounded-full animate-pulse flex-shrink-0" style={{ backgroundColor: '#D4A843' }} />
             <div>
-              <p className="text-[10px] tracking-[0.4em] uppercase leading-none mb-1" style={{ color: '#777777' }}>Availability</p>
+              <p className="text-[10px] tracking-[0.4em] uppercase leading-none mb-1" style={{ color: '#777777' }}>
+                {language === 'fr' ? 'Disponibilité' : 'Availability'}
+              </p>
               <p className="text-xs leading-none whitespace-nowrap" style={{ color: '#EFEFEF' }}>
-                Accepting projects · Q3 2026
+                {language === 'fr' ? 'Demandes de projet ouvertes' : 'Project inquiries open'}
               </p>
             </div>
           </div>

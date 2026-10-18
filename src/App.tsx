@@ -7,7 +7,6 @@ import { Navigation } from './components/Navigation';
 import { Footer } from './components/Footer';
 import { AdminAuth } from './components/AdminAuth';
 import { ErrorBoundary } from './components/ErrorBoundary';
-import { CartProvider } from './context/CartContext';
 import { ExploreMenuProvider } from './context/ExploreMenuContext';
 import { SERVICE_AREAS } from './data/serviceAreas';
 import { JOURNAL } from './data/journal';
@@ -27,19 +26,12 @@ import { IntroLoader } from './components/IntroLoader';
 
 const HomePage = lazy(() => import('./pages/HomePage').then(m => ({ default: m.HomePage })));
 const ServicesPage = lazy(() => import('./pages/ServicesPage').then(m => ({ default: m.ServicesPage })));
-const PricingPage = lazy(() => import('./pages/PricingPage').then(m => ({ default: m.PricingPage })));
-const ShopPage = lazy(() => import('./pages/ShopPage').then(m => ({ default: m.ShopPage })));
-const EventsCollaboratePage = lazy(() => import('./pages/EventsCollaboratePage').then(m => ({ default: m.EventsCollaboratePage })));
 const CommunityPage = lazy(() => import('./pages/CommunityPage').then(m => ({ default: m.CommunityPage })));
 const ContactPage = lazy(() => import('./pages/ContactPage').then(m => ({ default: m.ContactPage })));
-const BookingPage = lazy(() => import('./pages/BookingPage').then(m => ({ default: m.BookingPage })));
-const RentalPage = lazy(() => import('./pages/RentalPage').then(m => ({ default: m.RentalPage })));
 const TermsOfServicePage = lazy(() => import('./pages/TermsOfServicePage').then(m => ({ default: m.TermsOfServicePage })));
 const PrivacyPolicyPage = lazy(() => import('./pages/PrivacyPolicyPage').then(m => ({ default: m.PrivacyPolicyPage })));
-const CheckoutPage = lazy(() => import('./pages/CheckoutPage').then(m => ({ default: m.CheckoutPage })));
-const OrderConfirmationPage = lazy(() => import('./pages/OrderConfirmationPage').then(m => ({ default: m.OrderConfirmationPage })));
-const PaymentSuccessPage = lazy(() => import('./pages/PaymentSuccessPage').then(m => ({ default: m.PaymentSuccessPage })));
 const SEENPage = lazy(() => import('./pages/SEENPage').then(m => ({ default: m.SEENPage })));
+const VenturesPage = lazy(() => import('./pages/VenturesPage').then(m => ({ default: m.VenturesPage })));
 const AdminSubmissionsPage = lazy(() => import('./pages/AdminSubmissionsPage').then(m => ({ default: m.AdminSubmissionsPage })));
 const AnalyticsDashboardPage = lazy(() => import('./pages/AnalyticsDashboardPage').then(m => ({ default: m.AnalyticsDashboardPage })));
 const RefundManagementPage = lazy(() => import('./pages/RefundManagementPage').then(m => ({ default: m.RefundManagementPage })));
@@ -78,14 +70,9 @@ const LOCALIZED_ROUTES: Array<{ path: string; element: React.ReactNode }> = [
   { path: '', element: <HomePage /> },
   { path: 'work', element: <WorkPage /> },
   { path: 'services', element: <ServicesPage /> },
-  { path: 'pricing', element: <PricingPage /> },
-  { path: 'shop', element: <ShopPage /> },
-  { path: 'shop/digital', element: <ShopPage /> },
-  { path: 'experience', element: <EventsCollaboratePage /> },
   { path: 'community', element: <CommunityPage /> },
-  { path: 'contact', element: <ContactPage /> },
-  { path: 'booking', element: <BookingPage /> },
-  { path: 'rental', element: <RentalPage /> },
+  { path: 'start-a-project', element: <ContactPage /> },
+  { path: 'ventures', element: <VenturesPage /> },
   { path: 'seen', element: <SEENPage /> },
   { path: 'about', element: <AboutPage /> },
   { path: 'terms-of-service', element: <TermsOfServicePage /> },
@@ -101,9 +88,19 @@ const LOCALIZED_ROUTES: Array<{ path: string; element: React.ReactNode }> = [
 
 /** Legacy paths kept alive as redirects. English only — they were never localized. */
 const LEGACY_REDIRECTS: Array<{ from: string; to: string }> = [
-  { from: '/digital-products', to: '/shop/digital' },
-  { from: '/events', to: '/experience' },
-  { from: '/collaborate', to: '/experience' },
+  { from: '/contact', to: '/start-a-project' },
+  { from: '/pricing', to: '/services#event-story' },
+  { from: '/shop', to: '/ventures#verse' },
+  { from: '/shop/digital', to: '/ventures' },
+  { from: '/digital-products', to: '/ventures' },
+  { from: '/events', to: '/services#event-story' },
+  { from: '/experience', to: '/services#event-story' },
+  { from: '/collaborate', to: '/services#event-story' },
+  { from: '/booking', to: '/start-a-project' },
+  { from: '/rental', to: '/services' },
+  { from: '/checkout', to: '/start-a-project' },
+  { from: '/order-confirmation', to: '/start-a-project' },
+  { from: '/payment-success', to: '/start-a-project' },
 ];
 
 function AnimatedRoutes() {
@@ -124,20 +121,13 @@ function AnimatedRoutes() {
             {LEGACY_REDIRECTS.map(({ from, to }) => (
               <Route key={from} path={from} element={<Navigate to={to} replace />} />
             ))}
-
-            {/*
-              Transactional: noindex, so intentionally NOT in LOCALIZED_ROUTES
-              (kept out of the prerender/hreflang set). But they still need a
-              /fr/* route so a French shopper — whose locale-aware navigate()
-              sends them to /fr/checkout — stays in French through the flow
-              instead of hitting the 404 catch-all.
-            */}
-            <Route path="/checkout" element={<CheckoutPage />} />
-            <Route path="/fr/checkout" element={<CheckoutPage />} />
-            <Route path="/order-confirmation" element={<OrderConfirmationPage />} />
-            <Route path="/fr/order-confirmation" element={<OrderConfirmationPage />} />
-            <Route path="/payment-success" element={<PaymentSuccessPage />} />
-            <Route path="/fr/payment-success" element={<PaymentSuccessPage />} />
+            {LEGACY_REDIRECTS.map(({ from, to }) => (
+              <Route
+                key={`fr-${from}`}
+                path={`/fr${from}`}
+                element={<Navigate to={`/fr${to}`} replace />}
+              />
+            ))}
             <Route path="/admin/submissions" element={<AdminAuth><AdminSubmissionsPage /></AdminAuth>} />
             <Route path="/analytics/dashboard" element={<AdminAuth><AnalyticsDashboardPage /></AdminAuth>} />
             <Route path="/admin/refunds" element={<AdminAuth><RefundManagementPage /></AdminAuth>} />
@@ -312,14 +302,12 @@ function AppContent() {
 export function AppShell() {
   return (
     <LanguageProvider>
-      <CartProvider>
-        <ExploreMenuProvider>
-          <ScrollToTop />
-          <ErrorBoundary>
-            <AppContent />
-          </ErrorBoundary>
-        </ExploreMenuProvider>
-      </CartProvider>
+      <ExploreMenuProvider>
+        <ScrollToTop />
+        <ErrorBoundary>
+          <AppContent />
+        </ErrorBoundary>
+      </ExploreMenuProvider>
     </LanguageProvider>
   );
 }

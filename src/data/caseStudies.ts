@@ -45,9 +45,9 @@ export const CASE_STUDIES: CaseStudy[] = [
       title: 'Documenting Black student life at Brock',
       kicker: 'Case Study · BSSC × CREOVA',
       metaDescription:
-        'How CREOVA became the go-to creative partner for the Black Student Success Centre at Brock University — event photography, videography and design for Black student life and culture.',
+        'CREOVA photography and documentation for Black student life and cultural programming connected with Brock University’s Black Student Success Centre.',
       overview:
-        'The Black Student Success Centre (BSSC) at Brock University is a home for Black student life, culture and belonging. CREOVA is its go-to creative partner — the team the BSSC and student clubs reach for when a moment needs to be captured, a campaign needs to look the part, and a story needs to be told well.',
+        'CREOVA has photographed and documented Black student life and cultural programming connected with Brock University’s Black Student Success Centre. The work was created for immediate event storytelling and for continued use across social, promotional, community and institutional communications.',
       scope: [
         { label: 'Event photography', detail: 'Cultural nights, showcases, and closing sessions, captured as they happen.' },
         { label: 'Videography', detail: 'Recaps and promotional video that carry the energy of the room.' },
@@ -55,26 +55,21 @@ export const CASE_STUDIES: CaseStudy[] = [
         { label: 'Portraits & content', detail: 'A steady library of images for social, recaps and reporting.' },
       ],
       body: [
-        'What started as a single shoot became a standing relationship. Cultural nights, wellness programming, student showcases, closing sessions — when the BSSC and student clubs plan something, CREOVA is often already on the calendar.',
-        'The value is not just the photos. It is trust. Students light up when the camera comes out because they know the people behind it, and they know the work will honour them rather than just document them. That comfort is the difference between a posed crowd and a real photo — and it is exactly why the BSSC keeps calling.',
-        'Across photography, videography and design, CREOVA gives Black student life at Brock the same craft the biggest institutions take for granted — and makes it look like it belongs.',
+        'The work spans cultural gatherings and Black History Month programming, with an emphasis on the people, energy and details that make each event distinct.',
+        'Selected images have appeared in public social content and can support longer-lived documentation, reporting and promotional needs. That reuse is part of the value of building an intentional visual record rather than treating each event as a one-off post.',
+        'This case study is limited to source-linked public evidence. It does not publish private project details, performance claims or a testimonial without separate permission.',
       ],
       resultLabel: 'The result',
       result:
-        'A trusted, recurring partnership. The BSSC and student clubs keep reaching out — for photography, videography and design — and students are always happy to see CREOVA behind the camera.',
-      quote: {
-        text: 'CREOVA’s work with the Black Student Success Centre (BSSC) at Brock was exceptional. They understood our vision and delivered photography that truly captured the spirit of our community.',
-        name: 'Monique Beauregard',
-        role: 'Black Student Success Centre, Brock University',
-      },
+        'A reusable visual record of Black student and community programming, with selected work continuing into social, promotional and institutional storytelling.',
     },
     fr: {
       title: 'Documenter la vie étudiante noire à Brock',
       kicker: 'Étude de cas · BSSC × CREOVA',
       metaDescription:
-        'Comment CREOVA est devenue le partenaire créatif de référence du Black Student Success Centre de l’Université Brock — photographie, vidéo et design pour la vie et la culture étudiantes noires.',
+        'Photographie et documentation par CREOVA de la vie étudiante noire et de programmes culturels liés au Black Student Success Centre de l’Université Brock.',
       overview:
-        'Le Black Student Success Centre (BSSC) de l’Université Brock est un foyer pour la vie, la culture et l’appartenance étudiantes noires. CREOVA en est le partenaire créatif de référence — l’équipe que le BSSC et les clubs étudiants appellent quand un moment doit être capté, une campagne doit avoir de l’allure, et une histoire doit être bien racontée.',
+        'CREOVA a photographié et documenté la vie étudiante noire et des programmes culturels liés au Black Student Success Centre de l’Université Brock. Le travail a été conçu pour le récit immédiat des événements et pour une utilisation continue dans les communications sociales, promotionnelles, communautaires et institutionnelles.',
       scope: [
         { label: 'Photographie d’événement', detail: 'Soirées culturelles, vitrines et séances de clôture, captées sur le vif.' },
         { label: 'Vidéographie', detail: 'Récapitulatifs et vidéos promotionnelles qui portent l’énergie de la salle.' },
@@ -82,18 +77,13 @@ export const CASE_STUDIES: CaseStudy[] = [
         { label: 'Portraits et contenu', detail: 'Une bibliothèque d’images pour les réseaux, les bilans et les rapports.' },
       ],
       body: [
-        'Ce qui a commencé par une seule séance est devenu une relation durable. Soirées culturelles, programmation bien-être, vitrines étudiantes, séances de clôture — quand le BSSC et les clubs planifient quelque chose, CREOVA est souvent déjà à l’agenda.',
-        'La valeur ne tient pas qu’aux photos. Elle tient à la confiance. Les étudiants s’illuminent quand la caméra sort, parce qu’ils connaissent les gens derrière — et savent que le travail les honorera. Ce confort fait toute la différence, et c’est exactement pourquoi le BSSC continue d’appeler.',
-        'En photographie, vidéo et design, CREOVA offre à la vie étudiante noire de Brock le même soin que les plus grandes institutions tiennent pour acquis.',
+        'Le travail couvre des rassemblements culturels et des activités du Mois de l’histoire des Noirs, en mettant l’accent sur les personnes, l’énergie et les détails propres à chaque événement.',
+        'Certaines images ont paru dans du contenu social public et peuvent soutenir des besoins de documentation, de rapport et de promotion à plus long terme. Cette réutilisation fait partie de la valeur d’une archive visuelle intentionnelle.',
+        'Cette étude de cas se limite aux preuves publiques liées à des sources. Elle ne publie ni détails privés, ni résultats non vérifiés, ni témoignage sans autorisation distincte.',
       ],
       resultLabel: 'Le résultat',
       result:
-        'Un partenariat de confiance et récurrent. Le BSSC et les clubs continuent de faire appel à nous — photo, vidéo, design — et les étudiants sont toujours heureux de voir CREOVA derrière la caméra.',
-      quote: {
-        text: 'Le travail de CREOVA avec le Black Student Success Centre (BSSC) à Brock a été exceptionnel. Ils ont compris notre vision et livré des photos qui capturaient véritablement l’esprit de notre communauté.',
-        name: 'Monique Beauregard',
-        role: 'Centre de Réussite des Étudiants Noirs, Université Brock',
-      },
+        'Une archive visuelle réutilisable de programmes étudiants noirs et communautaires, dont une sélection continue de soutenir des communications sociales, promotionnelles et institutionnelles.',
     },
   },
 ];

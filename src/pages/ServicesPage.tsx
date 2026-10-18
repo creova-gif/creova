@@ -7,6 +7,7 @@ import { Camera, Users, Package, PartyPopper, Plane, TrendingUp, Palette, Video,
 import { useGalleries } from '../hooks/useGalleries';
 import { useLanguage } from '../context/LanguageContext';
 import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion';
+import { getPublishedEvidenceBySlug } from '../content/publicEvidence';
 
 type ServiceCategory = 'photography' | 'video' | 'brand' | 'social' | 'events' | 'rental' | 'all';
 
@@ -27,6 +28,7 @@ export function ServicesPage() {
   const showPreviewVideo = hasMounted && !prefersReduced;
   // Services is a commercial page → vous register (see mixed-register decision).
   const fr = language === 'fr';
+  const institutionalProof = getPublishedEvidenceBySlug('black-student-success-centre');
 
   const recentGalleries = useMemo(() => {
     // Locked collections don't preview well as a teaser — prefer public ones, unlocked first
@@ -112,7 +114,7 @@ export function ServicesPage() {
       ]
     },
     {
-      id: 'event-coverage',
+      id: 'event-story',
       category: 'events' as ServiceCategory,
       icon: PartyPopper,
       title: fr ? "Couverture d'événements" : 'Event Coverage',
@@ -458,7 +460,7 @@ export function ServicesPage() {
                           <Button
                             className="text-sm px-6 py-4 rounded-xl transition-all duration-300"
                             style={{ backgroundColor: 'rgba(212,168,67,0.12)', color: '#D4A843', border: '1px solid rgba(212,168,67,0.3)' }}
-                            onClick={() => navigate(service.category === 'rental' ? '/rental' : `/booking${'id' in service && service.id ? `?service=${service.id}` : ''}`)}
+                            onClick={() => navigate(`/start-a-project${'id' in service && service.id ? `?project=${service.id}` : ''}`)}
                             onMouseEnter={(e) => {
                               e.currentTarget.style.backgroundColor = '#D4A843';
                               e.currentTarget.style.color = '#121212';
@@ -477,7 +479,7 @@ export function ServicesPage() {
                             aria-label={fr ? `Voir les forfaits pour ${service.title}` : `See packages for ${service.title}`}
                             className="text-sm px-6 py-4 rounded-xl tracking-wide transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D4A843]"
                             style={{ color: 'rgba(248,249,250,0.4)', border: '1px solid rgba(248,249,250,0.1)' }}
-                            onClick={() => navigate('/pricing')}
+                            onClick={() => navigate('/services#event-story')}
                             onMouseEnter={(e) => {
                               (e.currentTarget as HTMLElement).style.color = '#F8F9FA';
                               (e.currentTarget as HTMLElement).style.borderColor = 'rgba(248,249,250,0.25)';
@@ -560,7 +562,7 @@ export function ServicesPage() {
               size="lg"
               className="px-10 py-6 rounded-xl text-sm tracking-wide transition-all duration-300"
               style={{ backgroundColor: '#D4A843', color: '#121212' }}
-              onClick={() => navigate('/contact')}
+              onClick={() => navigate('/start-a-project')}
               onMouseEnter={(e) => {
                 e.currentTarget.style.backgroundColor = '#F8F9FA';
                 e.currentTarget.style.transform = 'translateY(-2px)';
@@ -667,35 +669,21 @@ export function ServicesPage() {
           >
             <div className="flex items-center justify-center gap-4 mb-4">
               <div className="w-10 h-px" style={{ backgroundColor: 'rgba(212,168,67,0.5)' }} />
-              <span className="text-[10px] tracking-[0.5em] uppercase" style={{ color: '#D4A843' }}>{fr ? 'Témoignages clients' : 'Client Stories'}</span>
+              <span className="text-[10px] tracking-[0.5em] uppercase" style={{ color: '#D4A843' }}>{fr ? 'Preuves publiées' : 'Published Evidence'}</span>
               <div className="w-10 h-px" style={{ backgroundColor: 'rgba(212,168,67,0.5)' }} />
             </div>
             <h2 className="text-4xl font-light tracking-tight" style={{ color: '#F8F9FA' }}>
-              {fr ? 'Les résultats parlent.' : 'The results speak.'}
+              {fr ? 'Un travail conçu pour durer.' : 'Work designed for continued use.'}
             </h2>
           </motion.div>
 
           <div className="grid md:grid-cols-3 gap-6">
-            {[
-              {
-                quote: fr ? "CREOVA a transformé l'image et le ressenti de notre marque en ligne. La photographie a tout rehaussé — les clients remarquent la différence immédiatement." : "CREOVA transformed how our brand looks and feels online. The photography elevated everything — clients notice the difference immediately.",
-                author: "Amara N.",
-                role: fr ? "Fondatrice, Nairobi Kitchen Co." : "Founder, Nairobi Kitchen Co.",
-                accent: '#D4A843',
-              },
-              {
-                quote: fr ? "De la séance de marque à la stratégie sur les médias sociaux, CREOVA a compris notre culture et notre vision. Ils n'ont pas seulement exécuté — ils ont élevé." : "From the brand shoot to the social media strategy, CREOVA understood our culture and our vision. They didn't just execute — they elevated.",
-                author: "Marcus T.",
-                role: fr ? "Directeur créatif, BLOK Studios" : "Creative Director, BLOK Studios",
-                accent: '#B1643B',
-              },
-              {
-                quote: fr ? "La couverture de l'événement était à couper le souffle. Nos invités nous écrivent encore au sujet des photos. CREOVA a capté une énergie qu'on ne se savait même pas en train de créer." : "The event coverage was breathtaking. Our guests still message us about the photos. CREOVA captured energy we didn't even know we were creating.",
-                author: "Priya K.",
-                role: fr ? "Responsable des événements, AfroFutures Conference" : "Events Lead, AfroFutures Conference",
-                accent: '#D4A843',
-              },
-            ].map((item, i) => (
+            {(institutionalProof ? [{
+              quote: institutionalProof.copy[fr ? 'fr' : 'en'].summary,
+              author: institutionalProof.partner ?? 'CREOVA',
+              role: fr ? 'Travail documenté par des sources publiques liées' : 'Work documented by linked public sources',
+              accent: '#D4A843',
+            }] : []).map((item, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 20 }}
@@ -715,7 +703,7 @@ export function ServicesPage() {
               >
                 <div style={{ width: '32px', height: '2px', backgroundColor: item.accent }} />
                 <p className="text-base leading-relaxed flex-1" style={{ color: '#E0E0E0' }}>
-                  "{item.quote}"
+                  {item.quote}
                 </p>
                 <div>
                   <p className="text-sm font-medium" style={{ color: '#F8F9FA' }}>{item.author}</p>
@@ -1048,7 +1036,7 @@ export function ServicesPage() {
               size="lg"
               className="px-10 py-6 rounded-xl text-sm tracking-wide transition-all duration-300"
               style={{ backgroundColor: '#D4A843', color: '#121212' }}
-              onClick={() => navigate('/booking')}
+              onClick={() => navigate('/start-a-project')}
               onMouseEnter={(e) => {
                 e.currentTarget.style.backgroundColor = '#F8F9FA';
                 e.currentTarget.style.transform = 'translateY(-2px)';
@@ -1065,7 +1053,7 @@ export function ServicesPage() {
               variant="outline"
               className="px-10 py-6 rounded-xl text-sm tracking-wide transition-all duration-300 border"
               style={{ backgroundColor: 'transparent', borderColor: 'rgba(212,168,67,0.4)', color: '#D4A843' }}
-              onClick={() => navigate('/pricing')}
+              onClick={() => navigate('/services#event-story')}
               onMouseEnter={(e) => {
                 e.currentTarget.style.borderColor = '#D4A843';
                 e.currentTarget.style.transform = 'translateY(-2px)';

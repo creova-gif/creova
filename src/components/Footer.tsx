@@ -97,7 +97,8 @@ export function Footer() {
         { labelKey: 'footer.link.brand',         href: '/services#brand' },
         { labelKey: 'footer.link.aerial',        href: '/services#aerial' },
         { labelKey: 'footer.link.social',        href: '/services#social' },
-        { labelKey: 'footer.link.graphic',       href: '/pricing#design' },
+        { labelKey: 'footer.link.graphic',       href: '/services#brand-design' },
+        { labelKey: 'footer.link.events',        href: '/services#event-story' },
       ],
     },
     {
@@ -105,20 +106,18 @@ export function Footer() {
       links: [
         { labelKey: 'footer.link.story',      href: '/about' },
         { labelKey: 'footer.link.journal',    href: '/journal' },
-        { labelKey: 'footer.link.pricing',    href: '/pricing' },
-        { labelKey: 'footer.link.book',       href: '/contact' },
+        { labelKey: 'footer.link.book',       href: '/start-a-project' },
         { labelKey: 'footer.link.community',  href: '/community' },
         { labelKey: 'footer.link.terms',      href: '/terms-of-service' },
         { labelKey: 'footer.link.privacy',    href: '/privacy-policy' },
       ],
     },
     {
-      titleKey: 'footer.col.platform',
+      titleKey: 'footer.col.ventures',
       links: [
         { labelKey: 'footer.link.seen',        href: '/seen' },
-        { labelKey: 'footer.link.shop',        href: '/shop' },
-        { labelKey: 'footer.link.digital',     href: '/shop/digital' },
-        { labelKey: 'footer.link.events',      href: '/experience' },
+        { labelKey: 'footer.link.verse',       href: '/ventures#verse' },
+        { labelKey: 'footer.link.ventures',    href: '/ventures' },
       ],
     },
     {
@@ -185,7 +184,7 @@ export function Footer() {
             </p>
           </div>
           <Link
-            to="/contact"
+            to="/start-a-project"
             className="flex-shrink-0 inline-flex items-center gap-1.5 text-xs tracking-[0.12em] uppercase transition-all duration-300 hover:opacity-60"
             style={{ color: '#D4A843' }}
           >
@@ -295,7 +294,7 @@ export function Footer() {
               transition={{ delay: 0.95, duration: 0.7 }}
             >
               <Link
-                to="/contact"
+                to="/start-a-project"
                 className="group inline-flex items-center gap-2.5 px-7 py-4 rounded-xl text-sm font-semibold tracking-wide transition-all duration-400 hover:shadow-[0_8px_32px_rgba(212,168,67,0.2)] hover:-translate-y-0.5"
                 style={{ backgroundColor: '#F8F9FA', color: '#121212' }}
               >
@@ -303,7 +302,7 @@ export function Footer() {
                 <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
               </Link>
               <Link
-                to="/pricing"
+                to="/services#event-story"
                 className="inline-flex items-center gap-2.5 px-7 py-4 rounded-xl text-sm font-semibold tracking-wide transition-all duration-400 hover:-translate-y-0.5"
                 style={{
                   backgroundColor: 'transparent',
@@ -499,7 +498,7 @@ export function Footer() {
                 {[
                   { labelKey: 'footer.legal.terms', href: '/terms-of-service' },
                   { labelKey: 'footer.legal.privacy', href: '/privacy-policy' },
-                  { labelKey: 'footer.legal.contact', href: '/contact' },
+                  { labelKey: 'footer.legal.contact', href: '/start-a-project' },
                 ].map(({ labelKey, href }) => (
                   <Link
                     key={href}

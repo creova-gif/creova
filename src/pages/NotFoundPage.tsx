@@ -89,7 +89,7 @@ export function NotFoundPage() {
             {fr ? "Accueil" : 'Go Home'}
           </Link>
           <Link
-            to="/contact"
+            to="/start-a-project"
             className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm tracking-wide transition-all duration-300 hover:opacity-70"
             style={{ border: '1px solid rgba(212,168,67,0.3)', color: '#D4A843' }}
           >

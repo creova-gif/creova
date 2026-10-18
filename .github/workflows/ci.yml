@@ -14,8 +14,8 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - run: npm --prefix workers/api ci
       - run: npm run lint
       - run: npm run typecheck
+      - run: npm test
       - run: npm run build
-      - name: Run guard tests
-        run: node --experimental-strip-types --test src/supabase/functions/server/guards.test.ts

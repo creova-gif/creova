@@ -1,0 +1,33 @@
+name = "creova-intake-api"
+main = "src/index.ts"
+compatibility_date = "2026-10-15"
+
+[vars]
+CREOVA_ENV = "production"
+ALLOWED_ORIGINS = "https://www.creova.one,https://creova.one"
+AIRTABLE_BASE_ID = "appHQkjX7B97NQPbi"
+AIRTABLE_TABLE_ID = "tblgMShO3Sa6ynJyb"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "creova-intake-production"
+database_id = "REPLACE_WITH_PRODUCTION_D1_ID"
+migrations_dir = "migrations"
+
+[triggers]
+crons = ["*/10 * * * *"]
+
+[env.staging]
+name = "creova-intake-api-staging"
+
+[env.staging.vars]
+CREOVA_ENV = "staging"
+ALLOWED_ORIGINS = "https://staging.creova.one,http://localhost:5173"
+AIRTABLE_BASE_ID = "appHQkjX7B97NQPbi"
+AIRTABLE_TABLE_ID = "tblgMShO3Sa6ynJyb"
+
+[[env.staging.d1_databases]]
+binding = "DB"
+database_name = "creova-intake-staging"
+database_id = "REPLACE_WITH_STAGING_D1_ID"
+migrations_dir = "migrations"
