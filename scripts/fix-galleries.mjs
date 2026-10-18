@@ -12,7 +12,7 @@
  *
  * SAFETY:
  *   - Dry-run by default: prints the exact plan matched against live data and
- *     writes nothing. Run `node scripts/fix-galleries.mjs` to preview.
+ *     writes nothing. Set VITE_API_BASE_URL, then run `node scripts/fix-galleries.mjs`.
  *   - To apply:  ADMIN_PASSWORD='your-password' node scripts/fix-galleries.mjs --apply
  *     The password is read from the env var YOU set — it is never stored here
  *     and never printed.
@@ -21,15 +21,11 @@
  * page-1 galleries; the page-2 covers were added in a later pass and are
  * applied on the next run.
  */
-import { readFileSync } from 'node:fs';
-import { join, dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
-
-const root = join(dirname(fileURLToPath(import.meta.url)), '..');
-const info = readFileSync(join(root, 'src/utils/supabase/info.tsx'), 'utf8');
-const projectId = info.match(/projectId\s*=\s*"([^"]+)"/)[1];
-const anon = info.match(/publicAnonKey\s*=\s*"([^"]+)"/)[1];
-const BASE = `https://${projectId}.supabase.co/functions/v1/make-server-feacf0d8`;
+const BASE = (process.env.VITE_API_BASE_URL || '').trim().replace(/\/+$/, '');
+if (!BASE) {
+  console.error('Set VITE_API_BASE_URL to the Worker base URL (…/make-server-feacf0d8).');
+  process.exit(1);
+}
 
 const P = 'https://creova.pixieset.com';
 const IMG = 'https://images.pixieset.com';
@@ -90,7 +86,7 @@ const DELETES = [
 const APPLY = process.argv.includes('--apply');
 
 async function main() {
-  const res = await fetch(`${BASE}/galleries`, { headers: { Authorization: `Bearer ${anon}` } });
+  const res = await fetch(`${BASE}/galleries`);
   const { galleries } = await res.json();
   console.log(`Fetched ${galleries.length} live galleries.\n`);
 
@@ -128,12 +124,12 @@ async function main() {
   if (!password) { console.error('\nADMIN_PASSWORD env var is required with --apply.'); process.exit(1); }
 
   const login = await fetch(`${BASE}/admin-login`, {
-    method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${anon}` },
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ password }),
   });
   if (!login.ok) { console.error(`\nLogin failed (${login.status}). Check ADMIN_PASSWORD.`); process.exit(1); }
   const { token } = await login.json();
-  const authHeaders = { 'Content-Type': 'application/json', Authorization: `Bearer ${anon}`, 'x-admin-session': token };
+  const authHeaders = { 'Content-Type': 'application/json', 'x-admin-session': token };
 
   console.log('\nApplying...');
   for (const { g, updates } of plan.updates) {

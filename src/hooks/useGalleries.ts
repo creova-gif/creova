@@ -2,12 +2,17 @@ import { useState, useEffect } from 'react';
 import { publicAnonKey } from '../utils/supabase/info';
 import { GALLERY_FALLBACK } from '../data/galleryFallback';
 import type { Gallery } from '../types/gallery';
+import { apiUrl } from '../utils/api';
 
 export type { Gallery, GalleryCategory } from '../types/gallery';
 
 const API_BASE = (import.meta.env.VITE_GALLERY_API_BASE_URL as string | undefined)?.trim().replace(/\/+$/, '');
 
 type GallerySource = 'remote' | 'fallback' | 'empty';
+
+function galleryUrl() {
+  return API_BASE ? `${API_BASE}/galleries` : apiUrl('/galleries');
+}
 
 /**
  * Shared source for the Work portfolio, used by both WorkPage and the
@@ -34,21 +39,20 @@ export function useGalleries({ useFallback = true }: { useFallback?: boolean } =
   const [source, setSource] = useState<GallerySource>(
     prerendered?.length ? 'remote' : useFallback ? 'fallback' : 'empty',
   );
-  const [loading, setLoading] = useState(Boolean(API_BASE) && initialGalleries.length === 0);
+  const [loading, setLoading] = useState(Boolean(galleryUrl()) && initialGalleries.length === 0);
   const [error, setError] = useState(false);
   const [refetchIndex, setRefetchIndex] = useState(0);
 
   useEffect(() => {
+    const url = galleryUrl();
+    if (!url) return;
     let cancelled = false;
-    if (!API_BASE) {
-      return () => {
-        cancelled = true;
-      };
-    }
     (async () => {
       try {
-        const res = await fetch(`${API_BASE}/galleries`, {
-          headers: { Authorization: `Bearer ${publicAnonKey}` },
+        const res = await fetch(url, {
+          headers: API_BASE && publicAnonKey
+            ? { Authorization: `Bearer ${publicAnonKey}` }
+            : undefined,
         });
         const data = await res.json();
         if (!cancelled) {

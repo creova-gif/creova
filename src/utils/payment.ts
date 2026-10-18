@@ -1,10 +1,27 @@
 import { loadStripe } from '@stripe/stripe-js';
-import { projectId, publicAnonKey } from './supabase/info';
+import { apiUrl } from './api';
 
 const stripePublishableKey = (import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || '').trim();
 const stripePromise = stripePublishableKey ? loadStripe(stripePublishableKey) : null;
 
-const API_URL = `https://${projectId}.supabase.co/functions/v1/make-server-feacf0d8`;
+async function postCommerce(path: string, body: unknown, fallback: string) {
+  const url = apiUrl(path);
+  if (!url) throw new Error('API is not configured');
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(body),
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || fallback);
+  }
+
+  return await response.json();
+}
 
 export interface CustomerInfo {
   name: string;
@@ -50,27 +67,13 @@ export async function createBooking(
   bookingDetails: BookingDetails,
   amount: number
 ) {
-  const response = await fetch(`${API_URL}/create-booking`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${publicAnonKey}`
-    },
-    body: JSON.stringify({
-      service,
-      customer_info: customerInfo,
-      booking_details: bookingDetails,
-      amount: Math.round(amount * 100),
-      currency: 'cad'
-    })
-  });
-
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.error || 'Failed to create booking');
-  }
-
-  return await response.json();
+  return postCommerce('/create-booking', {
+    service,
+    customer_info: customerInfo,
+    booking_details: bookingDetails,
+    amount: Math.round(amount * 100),
+    currency: 'cad'
+  }, 'Failed to create booking');
 }
 
 export async function createRental(
@@ -79,27 +82,13 @@ export async function createRental(
   rentalDetails: RentalDetails,
   amount: number
 ) {
-  const response = await fetch(`${API_URL}/create-rental`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${publicAnonKey}`
-    },
-    body: JSON.stringify({
-      equipment,
-      customer_info: customerInfo,
-      rental_details: rentalDetails,
-      amount: Math.round(amount * 100),
-      currency: 'cad'
-    })
-  });
-
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.error || 'Failed to create rental');
-  }
-
-  return await response.json();
+  return postCommerce('/create-rental', {
+    equipment,
+    customer_info: customerInfo,
+    rental_details: rentalDetails,
+    amount: Math.round(amount * 100),
+    currency: 'cad'
+  }, 'Failed to create rental');
 }
 
 export async function createTicket(
@@ -108,27 +97,13 @@ export async function createTicket(
   ticketDetails: TicketDetails,
   amount: number
 ) {
-  const response = await fetch(`${API_URL}/create-ticket`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${publicAnonKey}`
-    },
-    body: JSON.stringify({
-      event_id: eventId,
-      customer_info: customerInfo,
-      ticket_details: ticketDetails,
-      amount: Math.round(amount * 100),
-      currency: 'cad'
-    })
-  });
-
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.error || 'Failed to purchase ticket');
-  }
-
-  return await response.json();
+  return postCommerce('/create-ticket', {
+    event_id: eventId,
+    customer_info: customerInfo,
+    ticket_details: ticketDetails,
+    amount: Math.round(amount * 100),
+    currency: 'cad'
+  }, 'Failed to purchase ticket');
 }
 
 export async function createPaymentIntent(
@@ -136,26 +111,12 @@ export async function createPaymentIntent(
   customerInfo: CustomerInfo,
   items: PaymentItem[]
 ) {
-  const response = await fetch(`${API_URL}/create-payment-intent`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${publicAnonKey}`
-    },
-    body: JSON.stringify({
-      amount: Math.round(amount * 100),
-      currency: 'cad',
-      customer_info: customerInfo,
-      items
-    })
-  });
-
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.error || 'Failed to create payment');
-  }
-
-  return await response.json();
+  return postCommerce('/create-payment-intent', {
+    amount: Math.round(amount * 100),
+    currency: 'cad',
+    customer_info: customerInfo,
+    items
+  }, 'Failed to create payment');
 }
 
 export async function processPayment(

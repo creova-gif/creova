@@ -10,12 +10,11 @@ import { MapPin, Phone, Mail, Clock, Star } from 'lucide-react';
 import { GOOGLE_REVIEW_URL } from '../config';
 import { motion } from 'motion/react';
 import { toast } from 'sonner';
-import { publicAnonKey } from '../utils/supabase/info';
+import { apiUrl } from '../utils/api';
 import { useLanguage } from '../context/LanguageContext';
 import { logger } from '../utils/logger';
 import { publicFormStatusMessage } from '../utils/publicFormStatus';
 import { createRequestId, isIntakeReceipt, type IntakeReceipt } from '../contracts/intake';
-import { publicApiUrl, usesDurableIntakeApi } from '../utils/api';
 
 export function ContactPage() {
   const { t, language } = useLanguage();
@@ -73,21 +72,21 @@ export function ContactPage() {
     setIsSubmitting(true);
 
     try {
+      const url = apiUrl('/submit-contact');
+      if (!url) throw new Error('API is not configured');
       const response = await fetch(
-        publicApiUrl('/v1/intakes', '/submit-contact'),
+        url,
         {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            ...(usesDurableIntakeApi ? {} : { 'Authorization': `Bearer ${publicAnonKey}` }),
           },
           body: JSON.stringify({
             requestId,
             ...formData,
             eventDate: formData.dateNotSet ? null : formData.eventDate || null,
             captchaToken,
-            // Compatibility fields for the current edge handler while the
-            // durable Worker endpoint is rolled out.
+            // Compatibility fields used by the current Worker route.
             service: formData.projectType,
             message: formData.description,
             timeline: formData.dateNotSet ? 'Not set' : formData.eventDate,
@@ -109,7 +108,7 @@ export function ContactPage() {
             : null;
 
         if (!parsedReceipt) {
-          throw new Error('The server did not return a durable receipt');
+          throw new Error('The server did not return a valid receipt');
         }
 
         setReceipt(parsedReceipt);
@@ -162,7 +161,7 @@ export function ContactPage() {
     <div style={{ backgroundColor: '#F8F9FA' }}>
       <PageSEO
         title="Start a Project"
-        description="Tell CREOVA about your photography, videography, brand, digital, or event storytelling project. Submit an inquiry and receive a dated response receipt."
+        description="Tell CREOVA about your photography, videography, brand, digital, or event storytelling project. Submit an inquiry and receive a request reference."
         path="/start-a-project"
       />
       {/* Hero — full-width dark with large email CTA treatment */}
@@ -229,7 +228,7 @@ export function ContactPage() {
                   >
                     <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: '#D4A843' }} />
                     <span className="text-[9px] tracking-[0.4em] uppercase" style={{ color: 'rgba(248,249,250,0.25)' }}>
-                      {language === 'fr' ? 'Échéance confirmée après envoi' : 'Response due date confirmed on receipt'}
+                      {language === 'fr' ? 'Identifiant confirmé après envoi' : 'Request ID confirmed on receipt'}
                     </span>
                   </motion.div>
                 </span>
@@ -295,8 +294,8 @@ export function ContactPage() {
                   </h2>
                   <p className="text-sm mb-4" style={{ color: '#777777' }}>
                     {language === 'fr'
-                      ? 'Nous enregistrons d’abord votre demande, puis nous affichons son identifiant et l’échéance de réponse.'
-                      : 'We persist your request first, then show its request ID and response due date.'}
+                      ? 'Nous enregistrons d’abord votre demande, puis nous affichons son identifiant de suivi.'
+                      : 'We persist your request first, then show its tracking ID.'}
                   </p>
                   <p className="text-xs tracking-wide" style={{ color: '#D4A843' }}>
                     {language === 'fr' ? 'Du lundi au vendredi · heure de Toronto' : 'Monday–Friday · Toronto time'}

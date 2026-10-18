@@ -9,7 +9,7 @@ import { Textarea } from '../components/ui/textarea';
 import { Label } from '../components/ui/label';
 import { Captcha } from '../components/Captcha';
 import { ImageWithFallback } from '../components/figma/ImageWithFallback';
-import { projectId, publicAnonKey } from '../utils/supabase/info';
+import { apiUrl } from '../utils/api';
 import { logger } from '../utils/logger';
 import { useLanguage } from '../context/LanguageContext';
 import { publicFormStatusMessage } from '../utils/publicFormStatus';
@@ -289,11 +289,13 @@ export function EventsCollaboratePage() {
     }
     setSubmittingEventId(event.id);
     try {
+      const url = apiUrl('/subscribe-event-interest');
+      if (!url) throw new Error('API is not configured');
       const response = await fetch(
-        `https://${projectId}.supabase.co/functions/v1/make-server-feacf0d8/subscribe-event-interest`,
+        url,
         {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${publicAnonKey}` },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, eventId: event.id, eventName: event.name })
         }
       );
@@ -331,11 +333,13 @@ export function EventsCollaboratePage() {
     }
     setIsSubmitting(true);
     try {
+      const url = apiUrl('/submit-collaboration');
+      if (!url) throw new Error('API is not configured');
       const response = await fetch(
-        `https://${projectId}.supabase.co/functions/v1/make-server-feacf0d8/submit-collaboration`,
+        url,
         {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${publicAnonKey}` },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ ...formData, captchaToken })
         }
       );

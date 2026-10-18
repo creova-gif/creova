@@ -105,19 +105,25 @@ function writeSitemap() {
  * configured API use the curated repository fallback deterministically.
  */
 async function loadGalleries() {
-  const apiBase = process.env.VITE_GALLERY_API_BASE_URL?.trim().replace(/\/+$/, '');
+  const legacyGalleryBase = process.env.VITE_GALLERY_API_BASE_URL?.trim().replace(/\/+$/, '');
+  const apiBase = legacyGalleryBase || process.env.VITE_API_BASE_URL?.trim().replace(/\/+$/, '');
   if (!apiBase) {
     console.log('[prerender] gallery API not configured; using curated repository fallback');
     return;
   }
   try {
-    // Read as text rather than import() — Node can't load .tsx directly.
-    const info = readFileSync(join(root, 'src/utils/supabase/info.tsx'), 'utf8');
-    const publicAnonKey = info.match(/publicAnonKey\s*=\s*"([^"]+)"/)?.[1];
-    const res = await fetch(
-      `${apiBase}/galleries`,
-      { headers: publicAnonKey ? { Authorization: `Bearer ${publicAnonKey}` } : {} }
-    );
+    let headers = {};
+    if (legacyGalleryBase) {
+      // The legacy gallery endpoint expects the public Supabase token. The
+      // current Cloudflare Worker endpoint does not.
+      const info = readFileSync(join(root, 'src/utils/supabase/info.tsx'), 'utf8');
+      const publicAnonKey = info.match(/publicAnonKey\s*=\s*"([^"]+)"/)?.[1];
+      headers = publicAnonKey ? { Authorization: `Bearer ${publicAnonKey}` } : {};
+    }
+    const res = await fetch(`${apiBase}/galleries`, {
+      headers,
+      signal: AbortSignal.timeout(10_000),
+    });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
     const galleries = (data.galleries || []).sort((a, b) => a.order - b.order);

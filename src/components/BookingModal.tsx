@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
-import { projectId, publicAnonKey } from '../utils/supabase/info';
+import { apiUrl } from '../utils/api';
 import { toast } from 'sonner';
 import { logger } from '../utils/logger';
 import { motion } from 'motion/react';
@@ -70,13 +70,14 @@ export function BookingModal({ isOpen, onClose, service, package: packageName, p
 
     setIsSubmitting(true);
     try {
+      const url = apiUrl('/submit-booking');
+      if (!url) throw new Error('API is not configured');
       const response = await fetch(
-        `https://${projectId}.supabase.co/functions/v1/make-server-feacf0d8/submit-booking`,
+        url,
         {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${publicAnonKey}`
           },
           body: JSON.stringify({
             service: formData.service,

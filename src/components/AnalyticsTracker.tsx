@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router';
-import { projectId, publicAnonKey } from '../utils/supabase/info';
+import { apiUrl } from '../utils/api';
 
 const GA_MEASUREMENT_ID = import.meta.env.VITE_GA_MEASUREMENT_ID ?? '';
 
@@ -39,7 +39,6 @@ export function AnalyticsTracker() {
   const location = useLocation();
   const sessionIdRef = useRef<string>('');
   const visitorIdRef = useRef<string>('');
-  const pageLoadTimeRef = useRef<number>(Date.now());
 
   // Load Google Analytics on mount
   useEffect(() => {
@@ -65,10 +64,9 @@ export function AnalyticsTracker() {
     sessionIdRef.current = sessionId;
   }, []);
 
-  // Track page view on every route change
+  // Track page view on every route change. page_exit is not sent:
+  // the Worker accepts it and drops it, so the POST only spends a request.
   useEffect(() => {
-    pageLoadTimeRef.current = Date.now();
-
     const trackPageView = async () => {
       try {
         // Extract UTM parameters from URL
@@ -93,18 +91,16 @@ export function AnalyticsTracker() {
           utmCampaign
         };
 
-        // Send to backend
-        await fetch(
-          `https://${projectId}.supabase.co/functions/v1/make-server-feacf0d8/track-pageview`,
-          {
+        const pageviewUrl = apiUrl('/track-pageview');
+        if (pageviewUrl) {
+          await fetch(pageviewUrl, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': `Bearer ${publicAnonKey}`
             },
             body: JSON.stringify(analyticsData)
-          }
-        );
+          });
+        }
 
         // Track page view in Google Analytics
         if (typeof (window as any).gtag === 'function') {
@@ -120,45 +116,7 @@ export function AnalyticsTracker() {
     };
 
     trackPageView();
-
-    // Track time on page when user leaves
-    return () => {
-      const timeSpent = Math.floor((Date.now() - pageLoadTimeRef.current) / 1000);
-      
-      // Track page exit event
-      if (timeSpent > 2) { // Only track if spent more than 2 seconds
-        trackEvent('page_exit', {
-          page: location.pathname,
-          timeSpent: timeSpent
-        });
-      }
-    };
   }, [location]);
-
-  // Function to track custom events
-  const trackEvent = async (eventName: string, eventData?: any) => {
-    try {
-      await fetch(
-        `https://${projectId}.supabase.co/functions/v1/make-server-feacf0d8/track-event`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${publicAnonKey}`
-          },
-          body: JSON.stringify({
-            visitorId: visitorIdRef.current,
-            sessionId: sessionIdRef.current,
-            eventName,
-            eventData,
-            page: location.pathname
-          })
-        }
-      );
-    } catch {
-      // Silently fail
-    }
-  };
 
   return null; // This component doesn't render anything
 }

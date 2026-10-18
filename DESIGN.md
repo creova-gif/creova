@@ -57,6 +57,6 @@ architecture. They must not expose an active commerce or direct-booking flow.
 - The primary action is **Start a Project**.
 - The intake form acknowledges a durable request ID only after the server has
   persisted the request.
-- Response timing is expressed as a specific server-calculated due date, using
-  CREOVA business days in `America/Toronto`.
+- The public acknowledgement may state CREOVA's follow-up target, but it must
+  not claim a server-calculated due date unless the active API returns one.
 - SEEN and VERSE calls to action must reflect their actual stage.
