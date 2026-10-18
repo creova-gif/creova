@@ -150,6 +150,12 @@ export function RefundManagementPage() {
   if (unavailable) {
     return (
       <div className="min-h-screen flex items-center justify-center px-4" style={{ backgroundColor: '#F8F9FA' }}>
+        <PageSEO
+          title="Refund Management"
+          description="CREOVA staff admin dashboard."
+          path="/admin/refunds"
+          noIndex
+        />
         <div className="text-center max-w-md">
           <h1 className="text-3xl mb-3" style={{ color: '#121212' }}>This service is no longer available</h1>
           <p style={{ color: '#777777' }}>Refunds and payment records are closed. Nothing is sent to Stripe.</p>

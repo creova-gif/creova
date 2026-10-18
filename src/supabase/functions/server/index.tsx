@@ -11,6 +11,7 @@ import {
   collaborationAdminSubject,
   contactAdminSubject,
   contactReceivedHtml,
+  finiteNonNegative,
   isUsableTurnstileSecret,
   oneLine,
   optionalText,
@@ -420,6 +421,7 @@ app.post("/make-server-feacf0d8/notify-me", rateLimit(10, 60000), async (c) => {
     if (!parsedEmail || !parsedType) {
       return c.json({ error: "Email and type are required" }, 400);
     }
+    const itemId = optionalText(item_id, TEXT_LIMITS.short);
 
     // No storefront caller. Turnstile fail-closes the anonymous write.
     const captcha = await requireTurnstile(c, captchaToken, "notify");
@@ -432,7 +434,7 @@ app.post("/make-server-feacf0d8/notify-me", rateLimit(10, 60000), async (c) => {
     await kv.set(notificationId, {
       email: parsedEmail,
       type: parsedType,
-      item_id,
+      item_id: itemId.ok ? itemId.value : undefined,
       status: 'subscribed',
       created_at: new Date().toISOString()
     });
@@ -881,10 +883,10 @@ app.post("/make-server-feacf0d8/submit-rental", rateLimit(5, 60000), async (c) =
       phone,
       startDate,
       endDate,
-      rentalDays: body.rentalDays,
-      dailyRate: body.dailyRate,
-      totalCost: body.totalCost,
-      depositAmount: body.depositAmount,
+      rentalDays: finiteNonNegative(body.rentalDays),
+      dailyRate: finiteNonNegative(body.dailyRate),
+      totalCost: finiteNonNegative(body.totalCost),
+      depositAmount: finiteNonNegative(body.depositAmount),
       pickupLocation: pickupLocation.value,
       purpose: purpose.value,
       specialRequests: specialRequests.value,

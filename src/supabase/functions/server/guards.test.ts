@@ -14,6 +14,7 @@ import {
   contactReceivedHtml,
   escapeHtml,
   escapeHtmlMultiline,
+  finiteNonNegative,
   isUsableTurnstileSecret,
   oneLine,
   optionalText,
@@ -222,6 +223,16 @@ test("rateLimit counts inside one isolate and then rejects", () => {
   assert.equal(consumeRateLimit(buckets, key, 1_000, 5, 60_000), false);
   assert.equal(consumeRateLimit(buckets, key, 61_000, 5, 60_000), true);
   assert.equal(consumeRateLimit(buckets, "unknown:/submit-contact", 1_000, 5, 60_000), true);
+});
+
+test("stored amounts accept only finite non-negative numbers", () => {
+  assert.equal(finiteNonNegative(0), 0);
+  assert.equal(finiteNonNegative(12.5), 12.5);
+  assert.equal(finiteNonNegative(-1), undefined);
+  assert.equal(finiteNonNegative(Number.NaN), undefined);
+  assert.equal(finiteNonNegative(Number.POSITIVE_INFINITY), undefined);
+  assert.equal(finiteNonNegative("12"), undefined);
+  assert.equal(finiteNonNegative({ days: 2 }), undefined);
 });
 
 test("admin email subjects use the text value, not the optionalText object", () => {

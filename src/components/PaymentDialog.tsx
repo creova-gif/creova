@@ -1,5 +1,6 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from './ui/dialog';
 import { Button } from './ui/button';
+import { useLanguage } from '../context/LanguageContext';
 
 interface PaymentDialogProps {
   open: boolean;
@@ -26,17 +27,22 @@ export function PaymentDialog({
   title: _title,
   description: _description,
 }: PaymentDialogProps) {
+  const fr = useLanguage().language === 'fr';
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>This service is no longer available</DialogTitle>
+          <DialogTitle>
+            {fr ? "Ce service n'est plus disponible" : 'This service is no longer available'}
+          </DialogTitle>
           <DialogDescription>
-            Checkout is closed. No card form is shown and no payment is sent.
+            {fr
+              ? "Le paiement est fermé. Aucun formulaire de carte n'est affiché et aucun paiement n'est envoyé."
+              : 'Checkout is closed. No card form is shown and no payment is sent.'}
           </DialogDescription>
         </DialogHeader>
         <Button type="button" onClick={() => onOpenChange(false)} className="w-full">
-          Close
+          {fr ? 'Fermer' : 'Close'}
         </Button>
       </DialogContent>
     </Dialog>
