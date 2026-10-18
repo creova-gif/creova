@@ -15,9 +15,9 @@ export function CaseStudyPage({ slug }: { slug: string }) {
   const cs = getCaseStudy(slug);
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: '-12% 0px' });
-  if (!cs) return null;
-  const c = fr ? cs.fr : cs.en;
   const evidence = getPublishedEvidenceBySlug(slug);
+  if (!cs || !evidence) return null;
+  const c = fr ? cs.fr : cs.en;
 
   const jsonLd = {
     '@context': 'https://schema.org',

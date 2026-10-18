@@ -14,6 +14,7 @@ const allowedHosts = new Set([
   'creova.one',
 ]);
 const kinds = new Set(['client-work', 'product', 'venture']);
+const publicationStatuses = new Set(['published', 'draft', 'archived']);
 const publicationBases = new Set(['creova-owned', 'public-source-only', 'written-permission']);
 const approvals = new Set(['approved-by-owner', 'approved-by-partner']);
 const errors = [];
@@ -32,6 +33,7 @@ for (const [index, record] of (Array.isArray(records) ? records : []).entries())
   ids.add(record.id);
   slugs.add(record.slug);
   if (!kinds.has(record.kind)) errors.push(`${at}: invalid kind ${record.kind}`);
+  if (!publicationStatuses.has(record.publicationStatus)) errors.push(`${at}: invalid publicationStatus ${record.publicationStatus}`);
   if (!publicationBases.has(record.publicationBasis)) errors.push(`${at}: invalid publicationBasis`);
   if (!Array.isArray(record.sources) || record.sources.length === 0) errors.push(`${at}: at least one source is required`);
 

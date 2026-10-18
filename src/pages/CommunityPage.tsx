@@ -536,11 +536,16 @@ export function CommunityPage() {
                     }}
                   >
                     <span className="relative z-10 flex items-center justify-center gap-2">
-                      {language === 'fr' ? 'Rejoindre Gratuitement' : 'Join Free'}
+                      {language === 'fr' ? 'Préparer le courriel' : 'Draft the Email'}
                       <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                     </span>
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
                   </Button>
+                  <p className="text-xs leading-relaxed text-center" style={{ color: '#777777' }}>
+                    {language === 'fr'
+                      ? 'Votre application de courriel s’ouvrira avec un brouillon. Envoyez-le pour communiquer avec CREOVA.'
+                      : 'Your email app will open with a draft. Send it to contact CREOVA.'}
+                  </p>
                 </div>
               </div>
             </RevealOnScroll>

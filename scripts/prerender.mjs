@@ -57,7 +57,11 @@ function journalRoutes() {
 function caseStudyRoutes() {
   try {
     const src = readFileSync(join(root, 'src/data/caseStudies.ts'), 'utf8');
-    return [...src.matchAll(/slug:\s*'([^']+)'/g)].map((m) => `/work/${m[1]}`);
+    const caseStudySlugs = new Set([...src.matchAll(/slug:\s*'([^']+)'/g)].map((m) => m[1]));
+    const evidence = JSON.parse(readFileSync(join(root, 'src/content/public-evidence.json'), 'utf8'));
+    return evidence
+      .filter((record) => record.kind === 'client-work' && record.publicationStatus === 'published' && caseStudySlugs.has(record.slug))
+      .map((record) => `/work/${record.slug}`);
   } catch {
     return [];
   }

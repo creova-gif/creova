@@ -90,28 +90,30 @@ export function SupportChat() {
     const responses = language === 'fr' ? {
       // French responses
       greeting: "Bonjour! Comment puis-je vous aider avec les services CREOVA aujourd'hui?",
-      pricing: "Nos prix varient selon le service:\n\n• Photographie familiale: 450$ - 950$ CAD\n• Photographie de marque: 750$ - 1,600$ CAD\n• Photographie de produits: 600$ - 1,400$ CAD\n• Drone/Aérien: 500$ - 900$ CAD\n• Couverture d'événements: 750$ - 2,550$ CAD\n• Design graphique: 600$ - 3,000$+ CAD\n• Design d'événements/conférences: 600$ - 2,500$ CAD\n• Forfaits mensuels design: 450$ - 1,600$/mois\n• Location DJI Osmo: 175$/jour\n\nVoulez-vous des détails sur un service spécifique?",
+      pricing: "Les tarifs sont établis dans une proposition après compréhension de la portée, de l'utilisation, de l'échéancier et des livrables. Commencez à /start-a-project pour obtenir une portée et des conditions écrites.",
       services: "CREOVA offre la photographie, la vidéo, les systèmes de marque et visuels, les campagnes, les expériences numériques ainsi que le récit et la documentation d'événements. SEEN et VERSE sont des projets internes à différentes étapes. Consultez /services ou /start-a-project.",
       booking: "Pour démarrer, remplissez le formulaire à /start-a-project. CREOVA confirmera la réception, puis la portée, l'échéancier et les conditions par écrit.",
+      seen: "SEEN est la plateforme de narration numérique de CREOVA, actuellement en développement, avec une bêta visée pour décembre 2026. Consultez /ventures pour son état actuel.",
       shop: "VERSE est la marque lifestyle de CREOVA, actuellement en incubation. Le dossier technique est prêt, mais il n'y a ni boutique, ni précommande, ni date de lancement annoncée. Consultez /ventures pour voir son état actuel.",
       digital: "CREOVA développe ses propres produits numériques, dont SEEN. Consultez /ventures pour leur état actuel ou /start-a-project pour discuter d'un projet client.",
-      booth: "Notre cabine 360 est parfaite pour les événements!\n\n• Capture des vidéos dynamiques à 360°\n• 650$ CAD par événement\n• Idéal pour: mariages, fêtes corporatives, lancements\n• Engagement instantané sur les médias sociaux\n\nAjoutez-le à n'importe quel forfait événement!",
+      booth: "La vidéo 360 peut être intégrée à certains projets événementiels. Décrivez l'événement à /start-a-project pour confirmer la disponibilité, la portée et les conditions.",
       rental: "La location autonome n'est pas offerte dans le parcours public actuel. Décrivez vos besoins à /start-a-project pour vérifier si l'équipement peut faire partie d'un projet CREOVA.",
-      eventdesign: "Design d'événements & conférences:\n\nForfaits projets:\n• Event Essentials: 600$ CAD\n• Standard Event Branding: 1,200$ CAD\n• Full Event Identity Suite: 2,500$ CAD\n\nForfaits mensuels:\n• Starter: 450$/mois\n• Growth: 850$/mois\n• Premium: 1,600$/mois\n\nParfait pour universités, organisations et entreprises!",
+      eventdesign: "CREOVA offre des systèmes visuels pour événements et conférences, des visuels promotionnels aux identités complètes et au soutien continu. Commencez à /start-a-project pour définir la portée et les livrables.",
       location: "Basé en Ontario, Canada\n• Voyages partout au Canada\n• Déplacements internationaux disponibles\n\nPour les services hors ville, des frais de déplacement peuvent s'appliquer.",
       payment: "Les conditions de paiement sont confirmées dans une proposition après définition de la portée. Commencez à /start-a-project pour obtenir une portée et des conditions écrites.",
       default: "Je peux vous aider avec les services CREOVA, les réalisations, les projets communautaires, SEEN, VERSE et le démarrage d'un projet. Que souhaitez-vous savoir?"
     } : {
       // English responses
       greeting: "Hello! How can I help you with CREOVA services today?",
-      pricing: "Our pricing varies by service:\n\n• Family Photography: $450 - $950 CAD\n• Brand Photography: $750 - $1,600 CAD\n• Product Photography: $600 - $1,400 CAD\n• Drone/Aerial: $500 - $900 CAD\n• Event Coverage: $750 - $2,550 CAD\n• Graphic Design: $600 - $3,000+ CAD\n• Event/Conference Design: $600 - $2,500 CAD\n• Monthly Design Retainers: $450 - $1,600/mo\n• DJI Osmo Rental: $175/day\n\nWould you like details on a specific service?",
+      pricing: "Pricing is confirmed in a proposal after CREOVA understands the scope, intended use, timing, and deliverables. Start at /start-a-project for written scope and terms.",
       services: "CREOVA offers photography, videography, brand and visual systems, campaigns, digital experiences, and event story/documentation. SEEN and VERSE are owned ventures at different development stages. Visit /services or start at /start-a-project.",
       booking: "To get started, submit the form at /start-a-project. CREOVA will confirm receipt, then scope, timing, and terms in writing.",
+      seen: "SEEN is CREOVA's digital storytelling platform, currently in development, with a beta targeted for December 2026. Visit /ventures for its current status.",
       shop: "VERSE is CREOVA's lifestyle brand, currently incubating. The tech pack is ready, but there is no shop, preorder, or announced launch date. Visit /ventures for its current status.",
       digital: "CREOVA is developing owned digital products, including SEEN. Visit /ventures for their current status or /start-a-project to discuss client work.",
-      booth: "Our 360 Booth Camera is perfect for events!\n\n• Captures dynamic 360° videos\n• $650 CAD per event\n• Great for: weddings, corporate parties, launches\n• Instant social media engagement\n\nAdd it to any event package!",
+      booth: "360 video can be included in selected event projects. Describe the event at /start-a-project to confirm availability, scope, and terms.",
       rental: "Standalone rental is not offered in the current public journey. Describe your needs at /start-a-project to ask whether equipment can be included in a CREOVA project.",
-      eventdesign: "Event & Conference Design packages:\n\nProject-based:\n• Event Essentials Package: $600 CAD\n• Standard Event Branding: $1,200 CAD\n• Full Event Identity Suite: $2,500 CAD\n\nMonthly Retainers:\n• Starter: $450/month\n• Growth: $850/month\n• Premium: $1,600/month\n\nPerfect for universities, organizations & companies!",
+      eventdesign: "CREOVA offers visual systems for events and conferences, from promotional assets to full identities and ongoing support. Start at /start-a-project to define scope and deliverables.",
       location: "Based in Ontario, Canada\n• Travel across Canada\n• International bookings available\n\nTravel fees may apply for out-of-city services.",
       payment: "Payment terms are confirmed in a project proposal after scope is understood. Start at /start-a-project for a written scope and terms.",
       default: "I can help with CREOVA services, selected work, community projects, SEEN, VERSE, and starting a project. What would you like to know?"
@@ -130,7 +132,10 @@ export function SupportChat() {
     if (msg.match(/book|booking|réserver|rendez-vous|appointment/)) {
       return responses.booking;
     }
-    if (msg.match(/shop|store|fashion|seen|vêtement|boutique|clothes|merchandise|merch|apparel/)) {
+    if (msg.match(/seen/)) {
+      return responses.seen;
+    }
+    if (msg.match(/shop|store|fashion|vêtement|boutique|clothes|merchandise|merch|apparel/)) {
       return responses.shop;
     }
     if (msg.match(/digital|preset|template|lut|guide|télécharger|download|numérique|contract|moodboard|resource|ressource/)) {

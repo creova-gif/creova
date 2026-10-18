@@ -11,6 +11,7 @@ import { useGalleries, type Gallery } from '../hooks/useGalleries';
 import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion';
 import { galleryListSchema } from '../utils/structuredData';
 import { CASE_STUDIES } from '../data/caseStudies';
+import { getPublishedEvidenceBySlug } from '../content/publicEvidence';
 
 const MONTHS_SHORT = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -171,6 +172,7 @@ export function WorkPage() {
   const [query, setQuery] = useState('');
   const marqueeRef = useRef<HTMLDivElement>(null);
   const { galleries, loading, source } = useGalleries();
+  const featuredCaseStudy = CASE_STUDIES.find((caseStudy) => getPublishedEvidenceBySlug(caseStudy.slug));
 
   const sorted = useMemo(() => {
     // Newest first, using date if present, otherwise year
@@ -434,8 +436,8 @@ export function WorkPage() {
       </div>
 
       {/* ── FEATURED CASE STUDY ── */}
-      {CASE_STUDIES[0] && (() => {
-        const cs = CASE_STUDIES[0];
+      {featuredCaseStudy && (() => {
+        const cs = featuredCaseStudy;
         const c = fr ? cs.fr : cs.en;
         return (
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">

@@ -115,7 +115,7 @@ export function ContactPage() {
 
         toast.success(t('contact.form.success.title'), {
           description: parsedReceipt.responseDueAt
-            ? `${t('contact.form.success.description')} ${new Intl.DateTimeFormat(language === 'fr' ? 'fr-CA' : 'en-CA', { dateStyle: 'long', timeStyle: 'short', timeZone: 'America/Toronto' }).format(new Date(parsedReceipt.responseDueAt))}`
+            ? `${language === 'fr' ? 'Réponse prévue avant le' : 'Response due by'} ${new Intl.DateTimeFormat(language === 'fr' ? 'fr-CA' : 'en-CA', { dateStyle: 'long', timeStyle: 'short', timeZone: 'America/Toronto' }).format(new Date(parsedReceipt.responseDueAt))}`
             : t('contact.form.success.description')
         });
         setFormData({

@@ -65,7 +65,7 @@ export function HomePage() {
     { icon: Video, title: t('home.feature.2.title'), description: t('home.feature.2.desc'), link: '/services', image: photoServiceVideography, objectPosition: 'center top', accent: '#B1643B', badge: t('home.feature.badge.service') },
     { icon: Palette, title: t('home.feature.3.title'), description: t('home.feature.3.desc'), link: '/services', image: photoBrandDesign, objectPosition: 'center 15%', accent: '#D4A843', badge: t('home.feature.badge.strategy') },
     { icon: TrendingUp, title: t('home.feature.4.title'), description: t('home.feature.4.desc'), link: '/services', image: photoSocialLaptop, objectPosition: 'center top', accent: '#B1643B', badge: t('home.feature.badge.ongoing') },
-    { icon: Sparkles, title: t('home.feature.ventures.title'), description: t('home.feature.ventures.desc'), link: '/ventures', image: photoVentures, objectPosition: 'center 20%', accent: '#D4A843', badge: t('nav.verse.status') },
+    { icon: Sparkles, title: t('home.feature.ventures.title'), description: t('home.feature.ventures.desc'), link: '/ventures', image: photoVentures, objectPosition: 'center 20%', accent: '#D4A843', badge: t('home.feature.badge.venture') },
     { icon: Calendar, title: t('home.feature.6.title'), description: t('home.feature.6.desc'), link: '/services#event-story', image: photoServiceEvents, objectPosition: 'center 40%', accent: '#B1643B', badge: t('home.feature.badge.event') },
   ];
 
