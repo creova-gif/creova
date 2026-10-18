@@ -10,6 +10,7 @@ import { useFocusTrap } from '../hooks/useFocusTrap';
 import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion';
 import { Logo } from './Logo';
 import logoWatermark from '../assets/logo-mark-white-faint.png';
+import { VENTURE_URLS } from '../config';
 
 export function Navigation() {
   const { t } = useLanguage();
@@ -26,7 +27,13 @@ export function Navigation() {
 
   // Public navigation follows the current company architecture: active studio
   // services, owned ventures at their real stage, and community work.
-  const groups = [
+  const groups: Array<{
+    key: string;
+    label: string;
+    tag: string;
+    brand: boolean;
+    items: Array<{ name: string; path: string; external?: boolean }>;
+  }> = [
     {
       key: 'studio',
       label: t('nav.group.studio'),
@@ -44,8 +51,8 @@ export function Navigation() {
       tag: t('nav.ventures.tag'),
       brand: true,
       items: [
-        { name: 'SEEN — ' + t('nav.seen.status'), path: '/seen' },
-        { name: 'VERSE — ' + t('nav.verse.status'), path: '/ventures#verse' },
+        { name: 'SEEN — ' + t('nav.seen.status'), path: VENTURE_URLS.seen ?? '/ventures#seen', external: Boolean(VENTURE_URLS.seen) },
+        { name: 'VERSE — ' + t('nav.verse.status'), path: VENTURE_URLS.verse ?? '/ventures#verse', external: Boolean(VENTURE_URLS.verse) },
         { name: t('nav.ventures.all'), path: '/ventures' },
       ],
     },
@@ -220,27 +227,33 @@ export function Navigation() {
                       <ul className="space-y-1">
                         {group.items.map((item) => (
                           <li key={item.path}>
-                            <Link
-                              to={item.path}
-                              onClick={close}
-                              className="group flex items-center justify-between py-2.5 border-b"
-                              style={{ borderColor: 'rgba(212,168,67,0.08)' }}
-                            >
-                              <span
-                                className="tracking-tight transition-colors duration-200 group-hover:text-[#D4A843]"
-                                style={{
-                                  color: '#E0E0E0',
-                                  fontSize: group.brand ? '0.95rem' : 'clamp(20px, 3.5vw, 28px)',
-                                  fontWeight: group.brand ? 400 : 300,
-                                }}
+                            {item.external ? (
+                              <a
+                                href={item.path}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={close}
+                                className="group flex items-center justify-between py-2.5 border-b"
+                                style={{ borderColor: 'rgba(212,168,67,0.08)' }}
                               >
-                                {item.name}
-                              </span>
-                              <ArrowUpRight
-                                className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-all duration-200 -translate-x-1 group-hover:translate-x-0 flex-shrink-0"
-                                style={{ color: '#D4A843' }}
-                              />
-                            </Link>
+                                <span className="tracking-tight transition-colors duration-200 group-hover:text-[#D4A843]" style={{ color: '#E0E0E0', fontSize: group.brand ? '0.95rem' : 'clamp(20px, 3.5vw, 28px)', fontWeight: group.brand ? 400 : 300 }}>
+                                  {item.name}
+                                </span>
+                                <ArrowUpRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-all duration-200 -translate-x-1 group-hover:translate-x-0 flex-shrink-0" style={{ color: '#D4A843' }} />
+                              </a>
+                            ) : (
+                              <Link
+                                to={item.path}
+                                onClick={close}
+                                className="group flex items-center justify-between py-2.5 border-b"
+                                style={{ borderColor: 'rgba(212,168,67,0.08)' }}
+                              >
+                                <span className="tracking-tight transition-colors duration-200 group-hover:text-[#D4A843]" style={{ color: '#E0E0E0', fontSize: group.brand ? '0.95rem' : 'clamp(20px, 3.5vw, 28px)', fontWeight: group.brand ? 400 : 300 }}>
+                                  {item.name}
+                                </span>
+                                <ArrowUpRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-all duration-200 -translate-x-1 group-hover:translate-x-0 flex-shrink-0" style={{ color: '#D4A843' }} />
+                              </Link>
+                            )}
                           </li>
                         ))}
                       </ul>

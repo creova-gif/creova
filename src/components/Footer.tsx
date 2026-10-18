@@ -4,7 +4,7 @@ import { motion, useInView } from 'motion/react';
 import { ArrowUpRight, Mail, Star, MapPin } from 'lucide-react';
 import { Logo } from './Logo';
 import { SERVICE_AREAS } from '../data/serviceAreas';
-import { GOOGLE_REVIEW_URL } from '../config';
+import { GOOGLE_REVIEW_URL, VENTURE_URLS } from '../config';
 import photoInline from '../assets/photo-duo-portrait.jpg';
 import { useLanguage } from '../context/LanguageContext';
 
@@ -115,8 +115,8 @@ export function Footer() {
     {
       titleKey: 'footer.col.ventures',
       links: [
-        { labelKey: 'footer.link.seen',        href: '/seen' },
-        { labelKey: 'footer.link.verse',       href: '/ventures#verse' },
+        { labelKey: 'footer.link.seen',        href: VENTURE_URLS.seen ?? '/ventures#seen', external: Boolean(VENTURE_URLS.seen) },
+        { labelKey: 'footer.link.verse',       href: VENTURE_URLS.verse ?? '/ventures#verse', external: Boolean(VENTURE_URLS.verse) },
         { labelKey: 'footer.link.ventures',    href: '/ventures' },
       ],
     },

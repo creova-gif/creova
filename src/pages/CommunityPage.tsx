@@ -24,6 +24,7 @@ import { toast } from 'sonner';
 import { useState, useMemo } from 'react';
 import { Input } from '../components/ui/input';
 import { useGalleries } from '../hooks/useGalleries';
+import { VENTURE_URLS } from '../config';
 
 export function CommunityPage() {
   const { language } = useLanguage();
@@ -800,17 +801,21 @@ export function CommunityPage() {
                 {language === 'fr' ? 'Démarrer un projet' : 'Start a Project'}
                 <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>
-              <Button
-                onClick={() => navigate('/ventures#verse')}
-                className="px-10 py-6 rounded-xl text-base font-semibold border"
-                style={{
-                  backgroundColor: 'transparent',
-                  color: '#F8F9FA',
-                  borderColor: 'rgba(248,249,250,0.25)',
-                }}
-              >
-                {language === 'fr' ? 'Voir VERSE en incubation' : 'See VERSE in Incubation'}
-              </Button>
+              {VENTURE_URLS.verse ? (
+                <Button asChild className="px-10 py-6 rounded-xl text-base font-semibold border" style={{ backgroundColor: 'transparent', color: '#F8F9FA', borderColor: 'rgba(248,249,250,0.25)' }}>
+                  <a href={VENTURE_URLS.verse} target="_blank" rel="noopener noreferrer">
+                    {language === 'fr' ? 'Visiter le site VERSE' : 'Visit the VERSE website'}
+                  </a>
+                </Button>
+              ) : (
+                <Button
+                  onClick={() => navigate('/ventures#verse')}
+                  className="px-10 py-6 rounded-xl text-base font-semibold border"
+                  style={{ backgroundColor: 'transparent', color: '#F8F9FA', borderColor: 'rgba(248,249,250,0.25)' }}
+                >
+                  {language === 'fr' ? 'Voir VERSE en incubation' : 'See VERSE in Incubation'}
+                </Button>
+              )}
             </div>
 
             <p className="mt-8 text-xs tracking-widest uppercase" style={{ color: 'rgba(248,249,250,0.3)', fontFamily: 'var(--font-display)' }}>

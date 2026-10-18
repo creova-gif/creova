@@ -34,11 +34,12 @@ import { TiltCard } from '../components/TiltCard';
 import { organizationSchema } from '../utils/structuredData';
 import { useGalleries } from '../hooks/useGalleries';
 import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion';
-import { GOOGLE_REVIEW_URL } from '../config';
+import { GOOGLE_REVIEW_URL, VENTURE_URLS } from '../config';
 
 
 export function HomePage() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  const fr = language === 'fr';
   const { open: openExplore } = useExploreMenu();
   const heroRef = useRef<HTMLElement>(null);
   const prefersReduced = usePrefersReducedMotion();
@@ -300,12 +301,25 @@ export function HomePage() {
                 {t('home.seen.features')}
               </p>
               <Magnetic strength={0.22}>
-                <Link to="/seen"
-                  className="inline-flex items-center gap-3 px-8 py-4 rounded-xl text-base font-medium tracking-wide transition-all duration-500 hover:shadow-2xl group"
-                  style={{ backgroundColor: '#F8F9FA', color: '#121212' }}>
-                  {t('home.seen.cta')}
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </Link>
+                {VENTURE_URLS.seen ? (
+                  <a
+                    href={VENTURE_URLS.seen}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-3 px-8 py-4 rounded-xl text-base font-medium tracking-wide transition-all duration-500 hover:shadow-2xl group"
+                    style={{ backgroundColor: '#F8F9FA', color: '#121212' }}
+                  >
+                    {fr ? 'Visiter le site SEEN' : 'Visit the SEEN website'}
+                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </a>
+                ) : (
+                  <Link to="/ventures#seen"
+                    className="inline-flex items-center gap-3 px-8 py-4 rounded-xl text-base font-medium tracking-wide transition-all duration-500 hover:shadow-2xl group"
+                    style={{ backgroundColor: '#F8F9FA', color: '#121212' }}>
+                    {t('home.seen.cta')}
+                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                )}
               </Magnetic>
             </motion.div>
             <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }}

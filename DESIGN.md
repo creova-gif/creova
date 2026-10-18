@@ -11,6 +11,9 @@ before it asks anyone to inquire.
   evidence of direction, not proof of a released platform.
 - **VERSE** is incubating. A tech pack exists; there is no public shop,
   preorder, product inventory, or launch date.
+- CREOVA is the portfolio and venture-status hub. SEEN and VERSE use separate
+  websites when their confirmed HTTPS destinations are ready; their domains
+  are deployment configuration and must never be guessed from the brand name.
 - **Community** holds cultural work and participation without presenting
   community relationships as commercial endorsements.
 

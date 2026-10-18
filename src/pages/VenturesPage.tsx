@@ -1,9 +1,9 @@
 import { ArrowRight, Code2, PackageCheck, Sparkles } from 'lucide-react';
 import { motion } from 'motion/react';
-import { Link } from '../i18n/LocaleLink';
 import { PageSEO } from '../components/PageSEO';
 import { getPublishedEvidence } from '../content/publicEvidence';
 import { useLanguage } from '../context/LanguageContext';
+import { VENTURE_URLS } from '../config';
 
 export function VenturesPage() {
   const { language } = useLanguage();
@@ -45,6 +45,7 @@ export function VenturesPage() {
             const copy = record.copy[fr ? 'fr' : 'en'];
             const isSeen = record.slug === 'seen';
             const Icon = isSeen ? Code2 : PackageCheck;
+            const website = isSeen ? VENTURE_URLS.seen : VENTURE_URLS.verse;
             return (
               <motion.article
                 key={record.id}
@@ -64,15 +65,23 @@ export function VenturesPage() {
                 </div>
                 <h2 className="text-5xl md:text-6xl font-light tracking-tight mb-5" style={{ color: isSeen ? '#121212' : '#F8F9FA' }}>{copy.title}</h2>
                 <p className="leading-relaxed mb-8 flex-1" style={{ color: isSeen ? '#555' : '#9B9B9B' }}>{copy.summary}</p>
-                {isSeen ? (
-                  <Link to="/seen" className="inline-flex items-center gap-2 text-sm font-medium" style={{ color: '#B1643B' }}>
-                    {fr ? 'Voir le travail en cours' : 'See the work in progress'}
+                {website ? (
+                  <a
+                    href={website}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-sm font-medium"
+                    style={{ color: isSeen ? '#B1643B' : '#D4A843' }}
+                  >
+                    {fr ? `Visiter le site ${copy.title}` : `Visit the ${copy.title} website`}
                     <ArrowRight className="w-4 h-4" />
-                  </Link>
+                  </a>
                 ) : (
                   <div className="inline-flex items-center gap-2 text-sm" style={{ color: '#777' }}>
                     <Sparkles className="w-4 h-4" />
-                    {fr ? 'Aucune boutique ni précommande pour le moment' : 'No shop or preorder at this stage'}
+                    {isSeen
+                      ? (fr ? 'Le site dédié sera ajouté lorsqu’il sera prêt' : 'The dedicated website will be linked when ready')
+                      : (fr ? 'Aucune boutique ni précommande pour le moment' : 'No shop or preorder at this stage')}
                   </div>
                 )}
               </motion.article>

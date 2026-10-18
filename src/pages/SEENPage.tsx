@@ -9,6 +9,7 @@ import seenRoles from '../assets/seen-roles.jpg';
 import seenSplash from '../assets/seen-splash.jpg';
 import { PageSEO } from '../components/PageSEO';
 import { useLanguage } from '../context/LanguageContext';
+import { VENTURE_URLS } from '../config';
 
 const storyWorlds = (fr: boolean) => [
   {
@@ -930,14 +931,27 @@ export function SEENPage() {
             <p className="text-base max-w-xl mx-auto mb-10" style={{ color: '#777777' }}>
               {fr ? "Le dossier technique de VERSE est prêt, mais aucun lancement, magasin ou précommande n'est annoncé. CREOVA se concentre d'abord sur SEEN et ses services." : 'The VERSE tech pack is ready, but no launch, shop, or preorder is being announced. CREOVA is focusing first on SEEN and its services.'}
             </p>
-            <Link
-              to="/ventures#verse"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-medium tracking-wide transition-all duration-300 hover:opacity-90"
-              style={{ backgroundColor: 'rgba(212, 168, 67, 0.1)', border: '1px solid rgba(212, 168, 67, 0.3)', color: '#D4A843' }}
-            >
-              {fr ? 'Voir l’état de VERSE' : 'See the VERSE Status'}
-              <ArrowRight className="w-4 h-4" />
-            </Link>
+            {VENTURE_URLS.verse ? (
+              <a
+                href={VENTURE_URLS.verse}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-medium tracking-wide transition-all duration-300 hover:opacity-90"
+                style={{ backgroundColor: 'rgba(212, 168, 67, 0.1)', border: '1px solid rgba(212, 168, 67, 0.3)', color: '#D4A843' }}
+              >
+                {fr ? 'Visiter le site VERSE' : 'Visit the VERSE website'}
+                <ArrowRight className="w-4 h-4" />
+              </a>
+            ) : (
+              <Link
+                to="/ventures#verse"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-medium tracking-wide transition-all duration-300 hover:opacity-90"
+                style={{ backgroundColor: 'rgba(212, 168, 67, 0.1)', border: '1px solid rgba(212, 168, 67, 0.3)', color: '#D4A843' }}
+              >
+                {fr ? 'Voir l’état de VERSE' : 'See the VERSE Status'}
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            )}
           </motion.div>
         </div>
       </section>
