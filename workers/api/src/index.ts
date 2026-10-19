@@ -842,6 +842,14 @@ app.post("/make-server-feacf0d8/submit-contact", rateLimit(5, 60000), async (c) 
       })());
     }
 
+    if (!stored) {
+      return c.json({
+        error: 'Failed to persist contact form',
+        requestId,
+        stored: false,
+      }, 503);
+    }
+
     return c.json({
       contactId,
       requestId,
@@ -849,8 +857,8 @@ app.post("/make-server-feacf0d8/submit-contact", rateLimit(5, 60000), async (c) 
       receivedAt,
       responseDueAt,
       message: 'Contact form submitted successfully',
-      stored,
-    }, leadStatus(stored));
+      stored: true,
+    });
   } catch (error) {
     console.error("Error submitting contact form:", errorLabel(error));
     return c.json({ error: "Failed to submit contact form" }, 500);

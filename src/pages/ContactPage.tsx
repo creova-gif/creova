@@ -96,6 +96,12 @@ export function ContactPage() {
 
       if (response.ok) {
         const body: unknown = await response.json().catch(() => null);
+        if (
+          body && typeof body === 'object' &&
+          'stored' in body && body.stored === false
+        ) {
+          throw new Error('The server could not persist the request');
+        }
         const parsedReceipt = isIntakeReceipt(body)
           ? body
           : body && typeof body === 'object' && 'contactId' in body && typeof body.contactId === 'string'

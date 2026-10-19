@@ -124,11 +124,17 @@ describe("local captcha skip", () => {
       undefined,
       LOOPBACK,
     );
-    expect(contact.status).toBe(202);
-    const body = (await contact.json()) as { status?: string; contactId?: string; stored?: boolean };
-    expect(body.status).toBe("received");
+    expect(contact.status).toBe(503);
+    const body = (await contact.json()) as {
+      status?: string;
+      requestId?: string;
+      receivedAt?: string;
+      stored?: boolean;
+    };
+    expect(body.status).toBeUndefined();
+    expect(body.receivedAt).toBeUndefined();
     expect(body.stored).toBe(false);
-    expect(body.contactId?.startsWith("contact_")).toBe(true);
+    expect(body.requestId).toBe(CONTACT.requestId);
     const sent = calls.slice(before);
     expect(sent.some((url) => url.startsWith("https://api.resend.com"))).toBe(true);
     expect(sent.some((url) => url.startsWith("https://api.airtable.com"))).toBe(true);
