@@ -23,6 +23,7 @@ import {
   consumeRateLimit,
   collaborationAdminSubject,
   contactAdminSubject,
+  contactResponseDueAt,
   contactReceivedHtml,
   escapeHtml,
   isUsableTurnstileSecret,
@@ -722,13 +723,36 @@ app.post("/make-server-feacf0d8/submit-contact", rateLimit(5, 60000), async (c) 
     const body = parsedBody.body;
     const name = requiredText(body.name, TEXT_LIMITS.name);
     const email = parseEmailAddress(body.email);
-    const message = requiredText(body.message, TEXT_LIMITS.message);
+    const message = requiredText(body.description ?? body.message, TEXT_LIMITS.message);
     const phone = optionalText(body.phone, TEXT_LIMITS.phone);
-    const service = optionalText(body.service, TEXT_LIMITS.service);
+    const organization = optionalText(body.organization, TEXT_LIMITS.short);
+    const service = optionalText(body.projectType ?? body.service, TEXT_LIMITS.service);
     const budget = optionalText(body.budget, TEXT_LIMITS.short);
-    const timeline = optionalText(body.timeline, TEXT_LIMITS.short);
+    const context = optionalText(body.context, TEXT_LIMITS.message);
+    const suppliedRequestId = body.requestId === undefined ? null : safeKeyPart(body.requestId, 80);
+    const eventDate = body.eventDate === null || body.eventDate === undefined
+      ? null
+      : requiredText(body.eventDate, 10);
+    const dateNotSet = body.dateNotSet === true;
+    const timeline = optionalText(
+      body.timeline ?? (dateNotSet ? "Not set" : eventDate),
+      TEXT_LIMITS.short,
+    );
+    const isProjectIntake =
+      body.requestId !== undefined || body.organization !== undefined ||
+      body.projectType !== undefined || body.description !== undefined ||
+      body.eventDate !== undefined || body.dateNotSet !== undefined;
 
-    if (!name || !email || !message || !phone.ok || !service.ok || !budget.ok || !timeline.ok) {
+    if (
+      !name || !email || !message || !phone.ok || !organization.ok || !service.ok ||
+      !budget.ok || !timeline.ok || !context.ok ||
+      (body.requestId !== undefined && !suppliedRequestId) ||
+      (eventDate !== null && !/^\d{4}-\d{2}-\d{2}$/.test(eventDate)) ||
+      (isProjectIntake && (
+        !suppliedRequestId || !organization.value || !service.value ||
+        dateNotSet === Boolean(eventDate)
+      ))
+    ) {
       return c.json({ error: "Name, email, and message are required" }, 400);
     }
 
@@ -737,19 +761,30 @@ app.post("/make-server-feacf0d8/submit-contact", rateLimit(5, 60000), async (c) 
       return c.json({ error: captcha.error }, captcha.status);
     }
 
-    const contactId = `contact_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const requestId = suppliedRequestId ?? `contact_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const contactId = suppliedRequestId ? `contact_${suppliedRequestId}` : requestId;
+    const receivedAt = new Date().toISOString();
+    const responseDueAt = contactResponseDueAt(new Date(receivedAt));
 
     const stored = await persistLead(c, contactId, {
+      requestId,
       name,
       email,
+      organization: organization.value,
       phone: phone.value,
       service: service.value,
+      projectType: service.value,
       message,
+      description: message,
       budget: budget.value,
       timeline: timeline.value,
+      eventDate,
+      dateNotSet,
+      context: context.value,
       status: 'new',
       type: 'contact',
-      created_at: new Date().toISOString()
+      created_at: receivedAt,
+      response_due_at: responseDueAt,
     });
 
     console.log(`Contact form submitted: ${contactId}`);
@@ -757,21 +792,24 @@ app.post("/make-server-feacf0d8/submit-contact", rateLimit(5, 60000), async (c) 
     defer(c, syncToAirtable(c.env.AIRTABLE_API_KEY, "tblgMShO3Sa6ynJyb", {
       Name: name, Email: email, Phone: phone.value, Message: message,
       Service: service.value, Budget: budget.value, Timeline: timeline.value,
-      Type: "contact", "Submitted At": new Date().toISOString(),
-      "Supabase Record ID": contactId,
+      Type: "contact", "Submitted At": receivedAt,
+      "Supabase Record ID": requestId,
     }));
 
     // Customer copy is a fixed receipt. The admin copy keeps the submission.
     const emailApiKey = c.env.EMAIL_SERVICE_API_KEY;
     if (emailApiKey) {
       const contactEmailData: ContactEmailData = {
+        requestId,
         name,
         email,
+        organization: organization.value,
         phone: phone.value,
         service: service.value,
         message,
         budget: budget.value,
         timeline: timeline.value,
+        context: context.value,
       };
       defer(c, (async () => {
         try {
@@ -806,7 +844,10 @@ app.post("/make-server-feacf0d8/submit-contact", rateLimit(5, 60000), async (c) 
 
     return c.json({
       contactId,
-      status: 'success',
+      requestId,
+      status: 'received',
+      receivedAt,
+      responseDueAt,
       message: 'Contact form submitted successfully',
       stored,
     }, leadStatus(stored));

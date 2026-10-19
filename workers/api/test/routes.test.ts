@@ -1,7 +1,7 @@
 import { env } from "cloudflare:workers";
 import { describe, expect, it } from "vitest";
 import { prefixBounds } from "../src/kv";
-import { COMMERCE_ROUTES } from "../src/guards";
+import { COMMERCE_ROUTES, contactResponseDueAt } from "../src/guards";
 import { call, postJson } from "./helpers";
 
 const VISITOR = "visitor_1710000000000_abcdefgh";
@@ -21,6 +21,13 @@ const BOOKING = {
 };
 
 describe("worker routes", () => {
+  it("sets the contact deadline to the second Toronto business day", () => {
+    expect(contactResponseDueAt(new Date("2026-10-16T14:00:00.000Z")))
+      .toBe("2026-10-20T21:00:00.000Z");
+    expect(contactResponseDueAt(new Date("2026-10-14T14:00:00.000Z")))
+      .toBe("2026-10-16T21:00:00.000Z");
+  });
+
   it("health is ok and the API CSP does not name Stripe or Supabase", async () => {
     const res = await call("/make-server-feacf0d8/health");
     expect(res.status).toBe(200);

@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { publicAnonKey } from '../utils/supabase/info';
 import { GALLERY_FALLBACK } from '../data/galleryFallback';
 import type { Gallery } from '../types/gallery';
 import { apiUrl } from '../utils/api';
@@ -49,11 +48,7 @@ export function useGalleries({ useFallback = true }: { useFallback?: boolean } =
     let cancelled = false;
     (async () => {
       try {
-        const res = await fetch(url, {
-          headers: API_BASE && publicAnonKey
-            ? { Authorization: `Bearer ${publicAnonKey}` }
-            : undefined,
-        });
+        const res = await fetch(url);
         const data = await res.json();
         if (!cancelled) {
           if (res.ok) {

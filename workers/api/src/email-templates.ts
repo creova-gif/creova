@@ -19,13 +19,16 @@ export interface BookingEmailData {
 }
 
 export interface ContactEmailData {
+  requestId?: string;
   name: string;
   email: string;
+  organization?: string;
   phone?: string;
   service?: string;
   message: string;
   budget?: string;
   timeline?: string;
+  context?: string;
 }
 
 export interface CollaborationEmailData {
@@ -610,11 +613,21 @@ export const adminContactNotification = (data: ContactEmailData): string => {
     <div class="content">
       <h2>Contact Information</h2>
       <div class="info-grid">
+        ${data.requestId ? `
+        <div class="info-label">Request ID:</div>
+        <div>${escapeHtml(data.requestId)}</div>
+        ` : ''}
+
         <div class="info-label">Name:</div>
         <div>${escapeHtml(data.name)}</div>
 
         <div class="info-label">Email:</div>
         <div><a href="mailto:${escapeHtmlAttr(data.email)}">${escapeHtml(data.email)}</a></div>
+
+        ${data.organization ? `
+        <div class="info-label">Organization:</div>
+        <div>${escapeHtml(data.organization)}</div>
+        ` : ''}
 
         ${data.phone ? `
         <div class="info-label">Phone:</div>
@@ -642,7 +655,14 @@ export const adminContactNotification = (data: ContactEmailData): string => {
         ${escapeHtmlMultiline(data.message)}
       </div>
 
-      <p style="margin-top: 30px;"><strong>⏰ Action Required:</strong> Respond within 24 hours</p>
+      ${data.context ? `
+      <h2>Helpful Context</h2>
+      <div class="message-box">
+        ${escapeHtmlMultiline(data.context)}
+      </div>
+      ` : ''}
+
+      <p style="margin-top: 30px;"><strong>⏰ Action Required:</strong> Respond within two business days</p>
     </div>
   </div>
 </body>

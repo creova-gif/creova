@@ -86,7 +86,7 @@ export function ContactPage() {
             ...formData,
             eventDate: formData.dateNotSet ? null : formData.eventDate || null,
             captchaToken,
-            // Compatibility fields used by the current Worker route.
+            // Rollout aliases keep submissions compatible until the Worker is deployed.
             service: formData.projectType,
             message: formData.description,
             timeline: formData.dateNotSet ? 'Not set' : formData.eventDate,

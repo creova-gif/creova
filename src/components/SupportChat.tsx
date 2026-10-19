@@ -132,11 +132,11 @@ export function SupportChat() {
     if (msg.match(/book|booking|réserver|rendez-vous|appointment/)) {
       return responses.booking;
     }
-    if (msg.match(/seen/)) {
-      return responses.seen;
-    }
-    if (msg.match(/shop|store|fashion|vêtement|boutique|clothes|merchandise|merch|apparel/)) {
+    if (msg.match(/\bverse\b|shop|store|fashion|vêtement|boutique|clothes|merchandise|merch|apparel/)) {
       return responses.shop;
+    }
+    if (msg.match(/\bseen\b/)) {
+      return responses.seen;
     }
     if (msg.match(/digital|preset|template|lut|guide|télécharger|download|numérique|contract|moodboard|resource|ressource/)) {
       return responses.digital;
