@@ -140,6 +140,47 @@ export function contactAdminSubject(service: string | undefined, name: string): 
   return `📧 New Contact: ${oneLine(service || "General Inquiry")} — ${oneLine(name)}`;
 }
 
+function torontoDateParts(now: Date): { year: number; month: number; day: number } {
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "America/Toronto",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(now);
+  const get = (type: Intl.DateTimeFormatPartTypes) =>
+    Number(parts.find((part) => part.type === type)?.value);
+  return { year: get("year"), month: get("month"), day: get("day") };
+}
+
+function torontoOffsetMinutes(year: number, month: number, day: number): number {
+  const sample = new Date(Date.UTC(year, month - 1, day, 17));
+  const name = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "America/Toronto",
+    timeZoneName: "longOffset",
+  }).formatToParts(sample).find((part) => part.type === "timeZoneName")?.value ?? "GMT-05:00";
+  const match = name.match(/GMT([+-])(\d{2}):(\d{2})/);
+  if (!match) throw new Error("Unable to resolve Toronto UTC offset");
+  const magnitude = Number(match[2]) * 60 + Number(match[3]);
+  return match[1] === "+" ? magnitude : -magnitude;
+}
+
+/** 5 p.m. America/Toronto on the second following Monday-Friday business day. */
+export function contactResponseDueAt(now: Date): string {
+  const local = torontoDateParts(now);
+  let cursor = new Date(Date.UTC(local.year, local.month - 1, local.day, 12));
+  let businessDays = 0;
+  while (businessDays < 2) {
+    cursor = new Date(cursor.getTime() + 86_400_000);
+    const weekday = cursor.getUTCDay();
+    if (weekday !== 0 && weekday !== 6) businessDays += 1;
+  }
+  const year = cursor.getUTCFullYear();
+  const month = cursor.getUTCMonth() + 1;
+  const day = cursor.getUTCDate();
+  const offset = torontoOffsetMinutes(year, month, day);
+  return new Date(Date.UTC(year, month - 1, day, 17) - offset * 60_000).toISOString();
+}
+
 /** Admin collaboration subject. Pass optionalText().value, not the result object. */
 export function collaborationAdminSubject(organization: string | undefined, name: string): string {
   return `🤝 New Collaboration Request: ${oneLine(organization || name)}`;

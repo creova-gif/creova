@@ -24,7 +24,7 @@ const EMPTY_FORM = {
 };
 
 export function AdminGalleriesPage() {
-  const { galleries, loading, refetch } = useGalleries();
+  const { galleries, loading, refetch } = useGalleries({ useFallback: false });
   const [editingId, setEditingId] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState(EMPTY_FORM);

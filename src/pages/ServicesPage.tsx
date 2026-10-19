@@ -7,6 +7,7 @@ import { Camera, Users, Package, PartyPopper, Plane, TrendingUp, Palette, Video,
 import { useGalleries } from '../hooks/useGalleries';
 import { useLanguage } from '../context/LanguageContext';
 import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion';
+import { getPublishedEvidenceBySlug } from '../content/publicEvidence';
 
 type ServiceCategory = 'photography' | 'video' | 'brand' | 'social' | 'events' | 'rental' | 'all';
 
@@ -27,6 +28,7 @@ export function ServicesPage() {
   const showPreviewVideo = hasMounted && !prefersReduced;
   // Services is a commercial page → vous register (see mixed-register decision).
   const fr = language === 'fr';
+  const institutionalProof = getPublishedEvidenceBySlug('black-student-success-centre');
 
   const recentGalleries = useMemo(() => {
     // Locked collections don't preview well as a teaser — prefer public ones, unlocked first
@@ -42,8 +44,7 @@ export function ServicesPage() {
     { id: 'video' as ServiceCategory, label: fr ? 'Vidéo et drone' : 'Video & Drone', icon: Video },
     { id: 'brand' as ServiceCategory, label: fr ? 'Image de marque' : 'Branding & Design', icon: Palette },
     { id: 'social' as ServiceCategory, label: fr ? 'Médias sociaux' : 'Social Media', icon: TrendingUp },
-    { id: 'events' as ServiceCategory, label: fr ? 'Événements' : 'Events', icon: PartyPopper },
-    { id: 'rental' as ServiceCategory, label: fr ? "Location d'équipement" : 'Equipment Rental', icon: Package }
+    { id: 'events' as ServiceCategory, label: fr ? 'Événements' : 'Events', icon: PartyPopper }
   ];
 
   const services = [
@@ -68,7 +69,7 @@ export function ServicesPage() {
       packages: [
         { name: fr ? 'Profil Pro' : 'Profile Pro', tagline: fr ? 'Une autorité nette pour votre équipe' : 'Clean authority for your team', features: fr ? ['Séance de 1 h à 1 h 30', "Jusqu'à 10 membres de l'équipe", '1 portrait retouché chacun', 'Arrière-plans neutres ou de marque'] : ['1-1.5 hour session', 'Up to 10 team members', '1 retouched headshot each', 'Neutral or branded backgrounds'] },
         { name: fr ? "Histoires d'équipe" : 'Workspace Stories', tagline: fr ? 'Votre culture, captée avec authenticité' : 'Culture captured authentically', features: fr ? ['Séance de 2 heures', "Jusqu'à 15 membres de l'équipe", '20+ images retouchées', 'Prises spontanées et posées'] : ['2-hour session', 'Up to 15 team members', '20+ edited images', 'Candid + posed shots'] },
-        { name: fr ? 'Suite Vision de marque' : 'Brand Vision Suite', tagline: fr ? "Tout l'univers de votre marque en une séance" : 'Full brand world in one session', features: fr ? ['Couverture de 3 à 4 heures', '50+ photos sélectionnées', "Photos d'équipe et de culture", 'Vidéo de 1 min en option (+300 $)'] : ['3-4 hours coverage', '50+ curated photos', 'Team + culture shots', 'Optional 1-min video (+$300)'] }
+        { name: fr ? 'Suite Vision de marque' : 'Brand Vision Suite', tagline: fr ? "Tout l'univers de votre marque en une séance" : 'Full brand world in one session', features: fr ? ['Couverture de 3 à 4 heures', '50+ photos sélectionnées', "Photos d'équipe et de culture", 'Vidéo de 1 min disponible sur devis'] : ['3-4 hours coverage', '50+ curated photos', 'Team + culture shots', 'Optional 1-minute video available by quote'] }
       ]
     },
     {
@@ -107,12 +108,12 @@ export function ServicesPage() {
         { name: fr ? 'Campagne' : 'Campaign', tagline: fr ? 'Production complète, de A à Z' : 'Full production, end-to-end', features: fr ? ['2+ jours de production', 'Campagne multi-vidéos', 'Scénarimage et scénarisation', 'Révisions illimitées'] : ['2+ days production', 'Multi-video campaign', 'Storyboarding & scripting', 'Unlimited revisions'] }
       ],
       addOns: [
-        { name: fr ? 'Lieu supplémentaire' : 'Extra location', price: '$150-$250' },
-        { name: fr ? 'Vidéos supplémentaires' : 'Extra videos', price: fr ? '100 $/vidéo' : '$100/video' }
+        { name: fr ? 'Lieu supplémentaire' : 'Extra location' },
+        { name: fr ? 'Vidéos supplémentaires' : 'Extra videos' }
       ]
     },
     {
-      id: 'event-coverage',
+      id: 'event-story',
       category: 'events' as ServiceCategory,
       icon: PartyPopper,
       title: fr ? "Couverture d'événements" : 'Event Coverage',
@@ -180,39 +181,39 @@ export function ServicesPage() {
         {
           name: fr ? 'Trousse Créateur DJI Osmo' : 'DJI Osmo Creator Kit',
           capacity: fr ? 'Contenu de créateur' : 'Creator content',
-          deposit: '$400',
+          deposit: fr ? 'Sur devis' : 'Quoted with scope',
           features: fr ? ['DJI Osmo Pocket 3 ou Action 5 Pro', 'Système de micro sans fil (2 émetteurs)', "Perche d'extension et trépied", 'Batteries et stockage supplémentaires', 'Étui de transport protecteur'] : ['DJI Osmo Pocket 3 or Action 5 Pro', 'Wireless Mic System (2x transmitters)', 'Extension Rod & Tripod', 'Extra Batteries & Storage', 'Protective Carry Case']
         },
         {
           name: fr ? 'Trousse Photographie' : 'Photography Kit',
           capacity: fr ? 'Projets de photographie' : 'Photography projects',
-          deposit: '$300',
+          deposit: fr ? 'Sur devis' : 'Quoted with scope',
           features: fr ? ['Caméra reflex ou sans miroir', '2 à 3 objectifs (24-70 mm, 50 mm)', 'Cartes SD et batteries', 'Sac de caméra'] : ['DSLR or Mirrorless Camera', '2-3 Lenses (24-70mm, 50mm)', 'SD Cards & Batteries', 'Camera Bag']
         },
         {
           name: fr ? 'Trousse Vidéographie' : 'Videography Kit',
           capacity: fr ? 'Productions vidéo' : 'Video productions',
-          deposit: '$500',
+          deposit: fr ? 'Sur devis' : 'Quoted with scope',
           features: fr ? ['Caméra cinéma ou reflex', 'Stabilisateur à cardan', 'Micro-canon', "Panneau d'éclairage DEL", 'Trépied et accessoires'] : ['Cinema Camera or DSLR', 'Gimbal Stabilizer', 'Shotgun Microphone', 'LED Light Panel', 'Tripod & Accessories']
         },
         {
           name: fr ? "Forfait Éclairage" : 'Lighting Package',
           capacity: fr ? 'Tournages en studio' : 'Studio shoots',
-          deposit: '$200',
+          deposit: fr ? 'Sur devis' : 'Quoted with scope',
           features: fr ? ['2 panneaux DEL ou flashs', "Pieds d'éclairage", 'Boîtes à lumière/modificateurs', "Câbles d'alimentation et accessoires"] : ['2x LED Panels or Strobes', 'Light Stands', 'Softboxes/Modifiers', 'Power cables & accessories']
         },
         {
           name: fr ? 'Forfait Audio' : 'Audio Package',
           capacity: fr ? 'Captation audio' : 'Audio capture',
-          deposit: '$150',
+          deposit: fr ? 'Sur devis' : 'Quoted with scope',
           features: fr ? ['Micro-cravate sans fil', 'Micro-canon', 'Enregistreur audio', 'Perche et accessoires'] : ['Wireless Lavalier Mic', 'Shotgun Microphone', 'Audio Recorder', 'Boom Pole & Accessories']
         }
       ]
     }
   ];
 
-  const filteredServices = activeTab === 'all' 
-    ? services 
+  const filteredServices = activeTab === 'all'
+    ? services.filter((service) => service.category !== 'rental')
     : services.filter(s => s.category === activeTab);
 
   return (
@@ -304,7 +305,6 @@ export function ServicesPage() {
                 { icon: Palette, label: fr ? 'Image de marque' : 'Brand Design', n: '3' },
                 { icon: TrendingUp, label: fr ? 'Médias sociaux' : 'Social Media', n: '3' },
                 { icon: PartyPopper, label: fr ? 'Événements' : 'Events', n: '3' },
-                { icon: Package, label: fr ? 'Location' : 'Rental', n: '5' },
               ].map(({ icon: Icon, label, n }) => (
                 <div
                   key={label}
@@ -421,8 +421,8 @@ export function ServicesPage() {
                       style={{ color: '#D4A843', opacity: hoveredService === index ? 1 : 0.35 }}
                     >
                       {fr
-                        ? ({ photography: 'Photographie', video: 'Vidéo', brand: 'Image de marque', social: 'Médias sociaux', events: 'Événements', rental: 'Équipement' } as Record<string, string>)[service.category]
-                        : (service.category === 'rental' ? 'Equipment' : service.category)}
+                        ? ({ photography: 'Photographie', video: 'Vidéo', brand: 'Image de marque', social: 'Médias sociaux', events: 'Événements' } as Record<string, string>)[service.category]
+                        : service.category}
                     </span>
                     <div
                       className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-300"
@@ -458,7 +458,7 @@ export function ServicesPage() {
                           <Button
                             className="text-sm px-6 py-4 rounded-xl transition-all duration-300"
                             style={{ backgroundColor: 'rgba(212,168,67,0.12)', color: '#D4A843', border: '1px solid rgba(212,168,67,0.3)' }}
-                            onClick={() => navigate(service.category === 'rental' ? '/rental' : `/booking${'id' in service && service.id ? `?service=${service.id}` : ''}`)}
+                            onClick={() => navigate(`/start-a-project${'id' in service && service.id ? `?project=${service.id}` : ''}`)}
                             onMouseEnter={(e) => {
                               e.currentTarget.style.backgroundColor = '#D4A843';
                               e.currentTarget.style.color = '#121212';
@@ -474,10 +474,10 @@ export function ServicesPage() {
                           </Button>
                           <button
                             type="button"
-                            aria-label={fr ? `Voir les forfaits pour ${service.title}` : `See packages for ${service.title}`}
+                            aria-label={fr ? `Voir la portée de ${service.title}` : `View scope for ${service.title}`}
                             className="text-sm px-6 py-4 rounded-xl tracking-wide transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D4A843]"
                             style={{ color: 'rgba(248,249,250,0.4)', border: '1px solid rgba(248,249,250,0.1)' }}
-                            onClick={() => navigate('/pricing')}
+                            onClick={() => navigate(`/services#${'id' in service && service.id ? service.id : 'services-list'}`)}
                             onMouseEnter={(e) => {
                               (e.currentTarget as HTMLElement).style.color = '#F8F9FA';
                               (e.currentTarget as HTMLElement).style.borderColor = 'rgba(248,249,250,0.25)';
@@ -487,7 +487,7 @@ export function ServicesPage() {
                               (e.currentTarget as HTMLElement).style.borderColor = 'rgba(248,249,250,0.1)';
                             }}
                           >
-                            {fr ? 'Voir les forfaits →' : 'See Packages →'}
+                            {fr ? 'Voir la portée →' : 'View Scope →'}
                           </button>
                         </div>
                       </div>
@@ -560,7 +560,7 @@ export function ServicesPage() {
               size="lg"
               className="px-10 py-6 rounded-xl text-sm tracking-wide transition-all duration-300"
               style={{ backgroundColor: '#D4A843', color: '#121212' }}
-              onClick={() => navigate('/contact')}
+              onClick={() => navigate('/start-a-project')}
               onMouseEnter={(e) => {
                 e.currentTarget.style.backgroundColor = '#F8F9FA';
                 e.currentTarget.style.transform = 'translateY(-2px)';
@@ -592,7 +592,7 @@ export function ServicesPage() {
           >
             {[...Array(prefersReduced ? 1 : 2)].map((_, rep) => (
               <div key={rep} className={prefersReduced ? 'flex flex-wrap justify-center gap-x-10 gap-y-3' : 'flex gap-10 items-center'}>
-                {(fr ? ['Photographie de marque', "Couverture d'événements", 'Vision aérienne', 'Médias sociaux', 'Identité de marque', 'Photographie de produits', 'Vidéographie', 'Direction créative', 'Design graphique', "Location d'équipement"] : ['Brand Photography', 'Event Coverage', 'Aerial Vision', 'Social Media', 'Brand Identity', 'Product Photography', 'Videography', 'Creative Direction', 'Graphic Design', 'Equipment Rental']).map((item) => (
+                {(fr ? ['Photographie de marque', "Couverture d'événements", 'Vision aérienne', 'Médias sociaux', 'Identité de marque', 'Photographie de produits', 'Vidéographie', 'Direction créative', 'Design graphique'] : ['Brand Photography', 'Event Coverage', 'Aerial Vision', 'Social Media', 'Brand Identity', 'Product Photography', 'Videography', 'Creative Direction', 'Graphic Design']).map((item) => (
                   <span key={item} className="flex items-center gap-10">
                     <span className="text-sm tracking-[0.3em] uppercase" style={{ color: 'rgba(248,249,250,0.35)' }}>{item}</span>
                     <span className="w-1 h-1 rounded-full flex-shrink-0" style={{ backgroundColor: '#D4A843' }} />
@@ -667,35 +667,21 @@ export function ServicesPage() {
           >
             <div className="flex items-center justify-center gap-4 mb-4">
               <div className="w-10 h-px" style={{ backgroundColor: 'rgba(212,168,67,0.5)' }} />
-              <span className="text-[10px] tracking-[0.5em] uppercase" style={{ color: '#D4A843' }}>{fr ? 'Témoignages clients' : 'Client Stories'}</span>
+              <span className="text-[10px] tracking-[0.5em] uppercase" style={{ color: '#D4A843' }}>{fr ? 'Preuves publiées' : 'Published Evidence'}</span>
               <div className="w-10 h-px" style={{ backgroundColor: 'rgba(212,168,67,0.5)' }} />
             </div>
             <h2 className="text-4xl font-light tracking-tight" style={{ color: '#F8F9FA' }}>
-              {fr ? 'Les résultats parlent.' : 'The results speak.'}
+              {fr ? 'Un travail conçu pour durer.' : 'Work designed for continued use.'}
             </h2>
           </motion.div>
 
           <div className="grid md:grid-cols-3 gap-6">
-            {[
-              {
-                quote: fr ? "CREOVA a transformé l'image et le ressenti de notre marque en ligne. La photographie a tout rehaussé — les clients remarquent la différence immédiatement." : "CREOVA transformed how our brand looks and feels online. The photography elevated everything — clients notice the difference immediately.",
-                author: "Amara N.",
-                role: fr ? "Fondatrice, Nairobi Kitchen Co." : "Founder, Nairobi Kitchen Co.",
-                accent: '#D4A843',
-              },
-              {
-                quote: fr ? "De la séance de marque à la stratégie sur les médias sociaux, CREOVA a compris notre culture et notre vision. Ils n'ont pas seulement exécuté — ils ont élevé." : "From the brand shoot to the social media strategy, CREOVA understood our culture and our vision. They didn't just execute — they elevated.",
-                author: "Marcus T.",
-                role: fr ? "Directeur créatif, BLOK Studios" : "Creative Director, BLOK Studios",
-                accent: '#B1643B',
-              },
-              {
-                quote: fr ? "La couverture de l'événement était à couper le souffle. Nos invités nous écrivent encore au sujet des photos. CREOVA a capté une énergie qu'on ne se savait même pas en train de créer." : "The event coverage was breathtaking. Our guests still message us about the photos. CREOVA captured energy we didn't even know we were creating.",
-                author: "Priya K.",
-                role: fr ? "Responsable des événements, AfroFutures Conference" : "Events Lead, AfroFutures Conference",
-                accent: '#D4A843',
-              },
-            ].map((item, i) => (
+            {(institutionalProof ? [{
+              quote: institutionalProof.copy[fr ? 'fr' : 'en'].summary,
+              author: 'CREOVA',
+              role: fr ? 'Travail documenté par des sources publiques liées' : 'Work documented by linked public sources',
+              accent: '#D4A843',
+            }] : []).map((item, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 20 }}
@@ -715,7 +701,7 @@ export function ServicesPage() {
               >
                 <div style={{ width: '32px', height: '2px', backgroundColor: item.accent }} />
                 <p className="text-base leading-relaxed flex-1" style={{ color: '#E0E0E0' }}>
-                  "{item.quote}"
+                  {item.quote}
                 </p>
                 <div>
                   <p className="text-sm font-medium" style={{ color: '#F8F9FA' }}>{item.author}</p>
@@ -848,13 +834,13 @@ export function ServicesPage() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
             {[
-              { name: fr ? 'Heure supplémentaire (photo/vidéo)' : 'Extra Hour (photo/video)', price: '$100-$150' },
-              { name: fr ? 'Option images par drone' : 'Drone Footage Add-On', price: '$200' },
-              { name: fr ? 'Caméra cabine 360 (événements)' : '360 Booth Camera (Events)', price: '$650' },
-              { name: fr ? 'Séquences brutes non montées' : 'Raw Unedited Footage', price: '$150' },
-              { name: fr ? 'Livraison accélérée (72 h)' : 'Expedited Delivery (72 hrs)', price: '$250' },
-              { name: fr ? "Album personnalisé (prêt à imprimer)" : 'Custom Album (Print-Ready)', price: fr ? 'À partir de 175 $' : 'From $175' },
-              { name: fr ? 'Soutien mensuel en conception' : 'Monthly Design Support', price: fr ? 'À partir de 300 $/mois' : 'From $300/mo' }
+              { name: fr ? 'Heure supplémentaire (photo/vidéo)' : 'Extra Hour (photo/video)', price: fr ? 'Sur devis' : 'Quoted with scope' },
+              { name: fr ? 'Option images par drone' : 'Drone Footage Add-On', price: fr ? 'Sur devis' : 'Quoted with scope' },
+              { name: fr ? 'Caméra cabine 360 (événements)' : '360 Booth Camera (Events)', price: fr ? 'Sur devis' : 'Quoted with scope' },
+              { name: fr ? 'Séquences brutes non montées' : 'Raw Unedited Footage', price: fr ? 'Sur devis' : 'Quoted with scope' },
+              { name: fr ? 'Livraison accélérée (72 h)' : 'Expedited Delivery (72 hrs)', price: fr ? 'Sur devis' : 'Quoted with scope' },
+              { name: fr ? "Album personnalisé (prêt à imprimer)" : 'Custom Album (Print-Ready)', price: fr ? 'Sur devis' : 'Quoted with scope' },
+              { name: fr ? 'Soutien mensuel en conception' : 'Monthly Design Support', price: fr ? 'Sur devis' : 'Quoted with scope' }
             ].map((addon, index) => (
               <motion.div
                 key={index}
@@ -882,7 +868,7 @@ export function ServicesPage() {
       </section>
 
       {/* Equipment Rental Terms */}
-      {(activeTab === 'rental' || activeTab === 'all') && (
+      {activeTab === 'rental' && (
         <section className="py-16" style={{ backgroundColor: '#F8F9FA' }}>
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
@@ -1007,14 +993,14 @@ export function ServicesPage() {
               <div style={{ height: '1px', width: '40px', backgroundColor: 'rgba(212,168,67,0.5)' }} />
               <p className="text-xs tracking-[0.5em] uppercase" style={{ color: '#D4A843' }}>{fr ? 'Pour notre communauté' : 'For Our Community'}</p>
             </div>
-            <h2 className="text-4xl font-light tracking-tight" style={{ color: '#F8F9FA' }}>{fr ? 'Rabais communauté et fidélité' : 'Community & Loyalty Discounts'}</h2>
+            <h2 className="text-4xl font-light tracking-tight" style={{ color: '#F8F9FA' }}>{fr ? 'Considérations communautaires' : 'Community Considerations'}</h2>
           </motion.div>
 
           <div className="grid md:grid-cols-3 gap-5 mb-12">
             {[
-              { title: fr ? 'Étudiants et OBNL' : 'Students & Nonprofits', desc: fr ? 'Tarif communautaire disponible' : 'Community pricing available', discount: fr ? '15 % DE RABAIS' : '15% OFF' },
-              { title: fr ? 'Clients fidèles' : 'Returning Clients', desc: fr ? '15 % sur tous les services' : '15% off all services', discount: fr ? '15 % DE RABAIS' : '15% OFF' },
-              { title: fr ? 'Prime de recommandation' : 'Referral Bonus', desc: fr ? '25 $ de crédit pour vous et la personne référée' : '$25 credit for you & referral', discount: '$25' }
+              { title: fr ? 'Étudiants et OBNL' : 'Students & Nonprofits', desc: fr ? 'Parlez-nous de votre contexte communautaire' : 'Tell us about your community context', discount: fr ? 'SELON LA PORTÉE' : 'SCOPE-BASED' },
+              { title: fr ? 'Collaborateurs fidèles' : 'Returning Collaborators', desc: fr ? 'La continuité est prise en compte dans la proposition' : 'Continuity is considered in the proposal', discount: fr ? 'SUR PROPOSITION' : 'PROPOSAL-BASED' },
+              { title: fr ? 'Recommandations' : 'Referrals', desc: fr ? 'Les présentations à de nouveaux collaborateurs sont bienvenues' : 'Introductions to new collaborators are welcome', discount: fr ? 'MERCI' : 'THANK YOU' }
             ].map((item, index) => (
               <motion.div
                 key={index}
@@ -1048,7 +1034,7 @@ export function ServicesPage() {
               size="lg"
               className="px-10 py-6 rounded-xl text-sm tracking-wide transition-all duration-300"
               style={{ backgroundColor: '#D4A843', color: '#121212' }}
-              onClick={() => navigate('/booking')}
+              onClick={() => navigate('/start-a-project')}
               onMouseEnter={(e) => {
                 e.currentTarget.style.backgroundColor = '#F8F9FA';
                 e.currentTarget.style.transform = 'translateY(-2px)';
@@ -1065,7 +1051,7 @@ export function ServicesPage() {
               variant="outline"
               className="px-10 py-6 rounded-xl text-sm tracking-wide transition-all duration-300 border"
               style={{ backgroundColor: 'transparent', borderColor: 'rgba(212,168,67,0.4)', color: '#D4A843' }}
-              onClick={() => navigate('/pricing')}
+              onClick={() => navigate('/services#event-story')}
               onMouseEnter={(e) => {
                 e.currentTarget.style.borderColor = '#D4A843';
                 e.currentTarget.style.transform = 'translateY(-2px)';
@@ -1075,7 +1061,7 @@ export function ServicesPage() {
                 e.currentTarget.style.transform = 'translateY(0)';
               }}
             >
-              {fr ? 'Voir les tarifs' : 'See Pricing'}
+              {fr ? 'Voir le récit d’événement' : 'Explore Event Storytelling'}
             </Button>
           </div>
         </div>

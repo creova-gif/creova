@@ -78,11 +78,11 @@ export function ServiceAreaPage({ slug }: { slug: string }) {
             </h1>
             <p className="text-lg leading-relaxed mb-8" style={{ color: '#E0E0E0', maxWidth: '60ch' }}>{copy.intro}</p>
             <div className="flex flex-wrap items-center gap-4">
-              <Link to="/contact" className="group inline-flex items-center gap-2.5 px-7 py-3.5 rounded-xl text-sm font-semibold tracking-wide transition-all duration-300 hover:-translate-y-px hover:shadow-lg" style={{ backgroundColor: '#B1643B', color: '#F8F9FA' }}>
+              <Link to="/start-a-project" className="group inline-flex items-center gap-2.5 px-7 py-3.5 rounded-xl text-sm font-semibold tracking-wide transition-all duration-300 hover:-translate-y-px hover:shadow-lg" style={{ backgroundColor: '#B1643B', color: '#F8F9FA' }}>
                 {fr ? 'Réserver un appel' : 'Book a call'}
                 <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
-              <Link to="/pricing" className="inline-flex items-center gap-2 text-sm tracking-wide transition-colors" style={{ color: '#E0E0E0' }}>
+              <Link to="/services#event-story" className="inline-flex items-center gap-2 text-sm tracking-wide transition-colors" style={{ color: '#E0E0E0' }}>
                 {area.price} · {fr ? 'voir les tarifs' : 'see pricing'}
                 <ArrowUpRight className="w-4 h-4" style={{ color: '#D4A843' }} />
               </Link>
@@ -164,7 +164,7 @@ export function ServiceAreaPage({ slug }: { slug: string }) {
           <h2 className="tracking-tight mb-6" style={{ color: '#F8F9FA', fontFamily: 'var(--font-display)', fontSize: 'clamp(2rem, 5vw, 3.2rem)', lineHeight: 1.06 }}>
             {fr ? 'Racontons votre histoire.' : "Let's tell your story."}
           </h2>
-          <Link to="/contact" className="group inline-flex items-center gap-3 px-8 py-4 rounded-xl text-base font-semibold tracking-wide transition-all duration-300 hover:-translate-y-px hover:shadow-xl" style={{ backgroundColor: '#B1643B', color: '#F8F9FA' }}>
+          <Link to="/start-a-project" className="group inline-flex items-center gap-3 px-8 py-4 rounded-xl text-base font-semibold tracking-wide transition-all duration-300 hover:-translate-y-px hover:shadow-xl" style={{ backgroundColor: '#B1643B', color: '#F8F9FA' }}>
             {fr ? 'Réserver un appel' : 'Book a call'}
             <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
           </Link>

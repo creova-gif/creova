@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Link } from '../i18n/LocaleLink';
 import { PageSEO } from '../components/PageSEO';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
@@ -15,18 +14,24 @@ import { apiUrl } from '../utils/api';
 import { useLanguage } from '../context/LanguageContext';
 import { logger } from '../utils/logger';
 import { publicFormStatusMessage } from '../utils/publicFormStatus';
+import { createRequestId, isIntakeReceipt, type IntakeReceipt } from '../contracts/intake';
 
 export function ContactPage() {
   const { t, language } = useLanguage();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    organization: '',
     phone: '',
-    service: '',
-    message: '',
+    projectType: '',
+    eventDate: '',
+    dateNotSet: false,
+    description: '',
     budget: '',
-    timeline: ''
+    context: '',
   });
+  const [requestId, setRequestId] = useState(() => createRequestId());
+  const [receipt, setReceipt] = useState<IntakeReceipt | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const [captchaReset, setCaptchaReset] = useState(0);
@@ -59,6 +64,10 @@ export function ContactPage() {
       toast.error(t('contact.toast.captcha.missing'));
       return;
     }
+    if (!formData.dateNotSet && !formData.eventDate) {
+      toast.error(language === 'fr' ? 'Choisissez une date ou indiquez qu’elle n’est pas déterminée.' : 'Choose a date or mark it as not set.');
+      return;
+    }
 
     setIsSubmitting(true);
 
@@ -72,27 +81,62 @@ export function ContactPage() {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ ...formData, captchaToken })
+          body: JSON.stringify({
+            requestId,
+            ...formData,
+            eventDate: formData.dateNotSet ? null : formData.eventDate || null,
+            captchaToken,
+            // Rollout aliases keep submissions compatible until the Worker is deployed.
+            service: formData.projectType,
+            message: formData.description,
+            timeline: formData.dateNotSet ? 'Not set' : formData.eventDate,
+          })
         }
       );
 
       if (response.ok) {
-        // The submission handler sends the notification after it verifies
-        // the captcha token. A second public email call would reuse a
-        // single-use token and was an unauthenticated mail route.
+        const body: unknown = await response.json().catch(() => null);
+        if (
+          body && typeof body === 'object' &&
+          'stored' in body && body.stored === false
+        ) {
+          throw new Error('The server could not persist the request');
+        }
+        const parsedReceipt = isIntakeReceipt(body)
+          ? body
+          : body && typeof body === 'object' && 'contactId' in body && typeof body.contactId === 'string'
+            ? {
+                requestId: body.contactId,
+                status: 'received' as const,
+                receivedAt: new Date().toISOString(),
+                responseDueAt: '',
+              }
+            : null;
+
+        if (!parsedReceipt) {
+          throw new Error('The server did not return a valid receipt');
+        }
+
+        setReceipt(parsedReceipt);
 
         toast.success(t('contact.form.success.title'), {
-          description: t('contact.form.success.description')
+          description: parsedReceipt.responseDueAt
+            ? `${language === 'fr' ? 'Réponse prévue avant le' : 'Response due by'} ${new Intl.DateTimeFormat(language === 'fr' ? 'fr-CA' : 'en-CA', { dateStyle: 'long', timeStyle: 'short', timeZone: 'America/Toronto' }).format(new Date(parsedReceipt.responseDueAt))}`
+            : t('contact.form.success.description')
         });
         setFormData({
           name: '',
           email: '',
+          organization: '',
           phone: '',
-          service: '',
-          message: '',
+          projectType: '',
+          eventDate: '',
+          dateNotSet: false,
+          description: '',
           budget: '',
-          timeline: ''
+          context: '',
         });
+        setRequestId(createRequestId());
         setCaptchaToken(null);
         setCaptchaReset((n) => n + 1);
       } else {
@@ -122,9 +166,9 @@ export function ContactPage() {
   return (
     <div style={{ backgroundColor: '#F8F9FA' }}>
       <PageSEO
-        title="Contact Us"
-        description="Get in touch with CREOVA. Book a consultation, ask about our creative services, or start your photography, videography, or brand design project today."
-      path="/contact"
+        title="Start a Project"
+        description="Tell CREOVA about your photography, videography, brand, digital, or event storytelling project. Submit an inquiry and receive a request reference."
+        path="/start-a-project"
       />
       {/* Hero — full-width dark with large email CTA treatment */}
       <section
@@ -190,7 +234,7 @@ export function ContactPage() {
                   >
                     <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: '#D4A843' }} />
                     <span className="text-[9px] tracking-[0.4em] uppercase" style={{ color: 'rgba(248,249,250,0.25)' }}>
-                      Replies within 24 hrs
+                      {language === 'fr' ? 'Identifiant confirmé après envoi' : 'Request ID confirmed on receipt'}
                     </span>
                   </motion.div>
                 </span>
@@ -247,35 +291,21 @@ export function ContactPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            {/* Booking Callout — dark card */}
+            {/* Intake promise — dark card */}
             <div className="rounded-2xl p-6 mb-8 overflow-hidden" style={{ backgroundColor: '#121212', border: '1px solid rgba(212,168,67,0.25)' }}>
               <div className="flex items-start gap-4">
                 <div className="flex-1">
                   <h2 className="text-lg mb-1 tracking-tight" style={{ color: '#F8F9FA' }}>
-                    {t('contact.book.title')}
+                    {language === 'fr' ? 'Parlez-nous du projet.' : 'Tell us about the project.'}
                   </h2>
                   <p className="text-sm mb-4" style={{ color: '#777777' }}>
-                    {t('contact.book.desc')}
+                    {language === 'fr'
+                      ? 'Nous enregistrons d’abord votre demande, puis nous affichons son identifiant de suivi.'
+                      : 'We persist your request first, then show its tracking ID.'}
                   </p>
-                  <div className="flex flex-col sm:flex-row gap-3">
-                    <Button
-                      style={{ backgroundColor: '#D4A843', color: '#121212' }}
-                      onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#F8F9FA'; }}
-                      onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = '#D4A843'; }}
-                      asChild
-                    >
-                      <Link to="/booking">{t('contact.book.btn.now')}</Link>
-                    </Button>
-                    <Button
-                      variant="outline"
-                      style={{ borderColor: 'rgba(212,168,67,0.4)', color: '#D4A843', backgroundColor: 'transparent' }}
-                      onClick={() => {
-                        window.dispatchEvent(new CustomEvent('support-chat:open'));
-                      }}
-                    >
-                      {t('contact.book.btn.chat')}
-                    </Button>
-                  </div>
+                  <p className="text-xs tracking-wide" style={{ color: '#D4A843' }}>
+                    {language === 'fr' ? 'Du lundi au vendredi · heure de Toronto' : 'Monday–Friday · Toronto time'}
+                  </p>
                 </div>
               </div>
             </div>
@@ -283,12 +313,25 @@ export function ContactPage() {
             {/* Divider */}
             <div className="flex items-center gap-4 mb-8">
               <div style={{ flex: 1, height: '1px', backgroundColor: 'rgba(18,18,18,0.1)' }} />
-              <p className="text-xs tracking-widest uppercase" style={{ color: '#777777' }}>{t('contact.form.or')}</p>
+              <p className="text-xs tracking-widest uppercase" style={{ color: '#777777' }}>{language === 'fr' ? 'Démarrer un projet' : 'Start a project'}</p>
               <div style={{ flex: 1, height: '1px', backgroundColor: 'rgba(18,18,18,0.1)' }} />
             </div>
 
             <div className="rounded-2xl p-8 md:p-12" style={{ backgroundColor: '#FFFFFF', border: '1px solid rgba(18,18,18,0.1)' }}>
               <h2 className="text-2xl mb-6">{t('contact.form.title')}</h2>
+
+              {receipt && (
+                <div className="mb-8 rounded-xl p-5" role="status" style={{ backgroundColor: 'rgba(212,168,67,0.1)', border: '1px solid rgba(212,168,67,0.3)' }}>
+                  <p className="font-medium mb-2">{language === 'fr' ? 'Demande enregistrée' : 'Request received'}</p>
+                  <p className="text-sm break-all" style={{ color: '#555' }}>{language === 'fr' ? 'Identifiant' : 'Request ID'}: {receipt.requestId}</p>
+                  {receipt.responseDueAt && (
+                    <p className="text-sm mt-1" style={{ color: '#555' }}>
+                      {language === 'fr' ? 'Réponse prévue avant le' : 'Response due by'}{' '}
+                      {new Intl.DateTimeFormat(language === 'fr' ? 'fr-CA' : 'en-CA', { dateStyle: 'long', timeStyle: 'short', timeZone: 'America/Toronto' }).format(new Date(receipt.responseDueAt))}
+                    </p>
+                  )}
+                </div>
+              )}
               
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-6">
@@ -319,6 +362,18 @@ export function ContactPage() {
                 </div>
 
                 <div>
+                  <Label htmlFor="organization">{language === 'fr' ? 'Organisation *' : 'Organization *'}</Label>
+                  <Input
+                    id="organization"
+                    autoComplete="organization"
+                    required
+                    value={formData.organization}
+                    onChange={(e) => setFormData({ ...formData, organization: e.target.value })}
+                    placeholder={language === 'fr' ? 'Nom de votre organisation' : 'Your organization name'}
+                  />
+                </div>
+
+                <div>
                   <Label htmlFor="phone">
                     {t('contact.form.label.phone')}
                     <span className="text-xs ml-1" style={{ color: '#777777' }}>({t('form.optional')})</span>
@@ -334,28 +389,43 @@ export function ContactPage() {
                 </div>
 
                 <div>
-                  <Label htmlFor="service">{t('contact.form.label.service')}</Label>
+                  <Label htmlFor="projectType">{language === 'fr' ? 'Type de projet *' : 'Project type *'}</Label>
                   <select
-                    id="service"
+                    id="projectType"
                     required
-                    value={formData.service}
-                    onChange={(e) => setFormData({ ...formData, service: e.target.value })}
+                    value={formData.projectType}
+                    onChange={(e) => setFormData({ ...formData, projectType: e.target.value })}
                     className="w-full border border-neutral-300 rounded-md px-3 py-2"
                   >
                     <option value="">{t('contact.form.select.service')}</option>
-                    <option value="family-photography">{t('contact.form.opt.family')}</option>
-                    <option value="brand-photography">{t('contact.form.opt.brand')}</option>
-                    <option value="product-photography">{t('contact.form.opt.product')}</option>
-                    <option value="event-coverage">{t('contact.form.opt.event')}</option>
-                    <option value="drone-aerial">{t('contact.form.opt.drone')}</option>
-                    <option value="social-media">{t('contact.form.opt.social')}</option>
-                    <option value="brand-management">{t('contact.form.opt.brandmgt')}</option>
-                    <option value="collaboration">{t('contact.form.opt.collab')}</option>
+                    <option value="event-story">{language === 'fr' ? 'Récit et documentation d’événement' : 'Event story and documentation'}</option>
+                    <option value="brand-system">{language === 'fr' ? 'Marque et système visuel' : 'Brand and visual system'}</option>
+                    <option value="digital-experience">{language === 'fr' ? 'Expérience numérique ou technologie' : 'Digital experience or technology'}</option>
+                    <option value="campaign">{language === 'fr' ? 'Campagne et contenu' : 'Campaign and content'}</option>
+                    <option value="partnership">{language === 'fr' ? 'Partenariat ou collaboration' : 'Partnership or collaboration'}</option>
                     <option value="other">{t('contact.form.opt.other')}</option>
                   </select>
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-6">
+                  <div>
+                    <Label htmlFor="eventDate">{language === 'fr' ? 'Date du projet' : 'Project or event date'}</Label>
+                    <Input
+                      id="eventDate"
+                      type="date"
+                      disabled={formData.dateNotSet}
+                      value={formData.eventDate}
+                      onChange={(e) => setFormData({ ...formData, eventDate: e.target.value })}
+                    />
+                    <label className="mt-2 flex items-center gap-2 text-sm" style={{ color: '#555' }}>
+                      <input
+                        type="checkbox"
+                        checked={formData.dateNotSet}
+                        onChange={(e) => setFormData({ ...formData, dateNotSet: e.target.checked, eventDate: e.target.checked ? '' : formData.eventDate })}
+                      />
+                      {language === 'fr' ? 'Date non déterminée' : 'Date not set'}
+                    </label>
+                  </div>
                   <div>
                     <Label htmlFor="budget">
                       {t('contact.form.label.budget')}
@@ -369,29 +439,31 @@ export function ContactPage() {
                     />
                   </div>
 
-                  <div>
-                    <Label htmlFor="timeline">
-                      {t('contact.form.label.timeline')}
-                      <span className="text-xs ml-1" style={{ color: '#777777' }}>({t('form.optional')})</span>
-                    </Label>
-                    <Input
-                      id="timeline"
-                      value={formData.timeline}
-                      onChange={(e) => setFormData({ ...formData, timeline: e.target.value })}
-                      placeholder={t('contact.form.placeholder.timeline')}
-                    />
-                  </div>
                 </div>
 
                 <div>
-                  <Label htmlFor="message">{t('contact.form.label.message')}</Label>
+                  <Label htmlFor="description">{language === 'fr' ? 'Description du projet *' : 'Project description *'}</Label>
                   <Textarea
-                    id="message"
+                    id="description"
                     required
-                    value={formData.message}
-                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                    value={formData.description}
+                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                     placeholder={t('contact.form.placeholder.message')}
                     rows={6}
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="context">
+                    {language === 'fr' ? 'Contexte ou liens utiles' : 'Helpful context or links'}
+                    <span className="text-xs ml-1" style={{ color: '#777777' }}>({t('form.optional')})</span>
+                  </Label>
+                  <Textarea
+                    id="context"
+                    value={formData.context}
+                    onChange={(e) => setFormData({ ...formData, context: e.target.value })}
+                    placeholder={language === 'fr' ? 'Objectifs, public, références ou liens…' : 'Goals, audience, references, or links…'}
+                    rows={3}
                   />
                 </div>
 

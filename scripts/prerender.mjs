@@ -7,9 +7,8 @@
  * time and writes a real index.html per route, so every page ships correct
  * markup plus its own title/description/canonical/OG/JSON-LD.
  *
- * Deliberately excluded: /admin/*, /analytics/*, /checkout, /order-confirmation
- * and /payment-success are all noindex, and the bare redirect paths
- * (/events, /collaborate, /about, /digital-products) resolve client-side.
+ * Deliberately excluded: /admin/* and /analytics/* are private surfaces. Old
+ * commerce, pricing, booking, rental, and event URLs resolve as redirects.
  */
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
@@ -23,14 +22,9 @@ const BASE_ROUTES = [
   '/about',
   '/work',
   '/services',
-  '/pricing',
-  '/shop',
-  '/shop/digital',
-  '/experience',
   '/community',
-  '/contact',
-  '/booking',
-  '/rental',
+  '/ventures',
+  '/start-a-project',
   '/seen',
   '/terms-of-service',
   '/privacy-policy',
@@ -63,7 +57,11 @@ function journalRoutes() {
 function caseStudyRoutes() {
   try {
     const src = readFileSync(join(root, 'src/data/caseStudies.ts'), 'utf8');
-    return [...src.matchAll(/slug:\s*'([^']+)'/g)].map((m) => `/work/${m[1]}`);
+    const caseStudySlugs = new Set([...src.matchAll(/slug:\s*'([^']+)'/g)].map((m) => m[1]));
+    const evidence = JSON.parse(readFileSync(join(root, 'src/content/public-evidence.json'), 'utf8'));
+    return evidence
+      .filter((record) => record.kind === 'client-work' && record.publicationStatus === 'published' && caseStudySlugs.has(record.slug))
+      .map((record) => `/work/${record.slug}`);
   } catch {
     return [];
   }
@@ -79,8 +77,8 @@ const ROUTES = [
 
 // Priority hints for the generated sitemap. Anything unlisted defaults to 0.7.
 const SITEMAP_PRIORITY = {
-  '/': '1.0', '/services': '0.9', '/pricing': '0.9', '/work': '0.8',
-  '/contact': '0.8', '/experience': '0.8', '/community': '0.8',
+  '/': '1.0', '/services': '0.9', '/work': '0.8',
+  '/start-a-project': '0.8', '/ventures': '0.8', '/community': '0.8',
   '/terms-of-service': '0.3', '/privacy-policy': '0.3',
 };
 
@@ -106,23 +104,30 @@ function writeSitemap() {
 }
 
 /**
- * Fetch the admin-managed gallery list once and expose it on globalThis, where
- * useGalleries picks it up during SSR. Without it /work prerenders its empty
- * state. A failure here is non-fatal: /work still gets correct head tags, and
- * the browser refetches on mount — we just log loudly so it isn't silent.
+ * Fetch the optional admin-managed gallery list once and expose it on
+ * globalThis, where useGalleries picks it up during SSR. Builds without a
+ * configured API use the curated repository fallback deterministically.
  */
 async function loadGalleries() {
-  // Vite inlines VITE_ for the browser bundle. This script runs in Node, so
-  // it reads the same variable from the process environment.
-  const base = (process.env.VITE_API_BASE_URL || '').trim().replace(/\/+$/, '');
-  if (!base) {
-    console.warn(
-      '[prerender] WARNING: VITE_API_BASE_URL is unset. /work will prerender its empty state.'
-    );
+  const legacyGalleryBase = process.env.VITE_GALLERY_API_BASE_URL?.trim().replace(/\/+$/, '');
+  const apiBase = legacyGalleryBase || process.env.VITE_API_BASE_URL?.trim().replace(/\/+$/, '');
+  if (!apiBase) {
+    console.log('[prerender] gallery API not configured; using curated repository fallback');
     return;
   }
   try {
-    const res = await fetch(`${base}/galleries`, { signal: AbortSignal.timeout(10_000) });
+    let headers = {};
+    if (legacyGalleryBase) {
+      // The legacy gallery endpoint expects the public Supabase token. The
+      // current Cloudflare Worker endpoint does not.
+      const info = readFileSync(join(root, 'src/utils/supabase/info.tsx'), 'utf8');
+      const publicAnonKey = info.match(/publicAnonKey\s*=\s*"([^"]+)"/)?.[1];
+      headers = publicAnonKey ? { Authorization: `Bearer ${publicAnonKey}` } : {};
+    }
+    const res = await fetch(`${apiBase}/galleries`, {
+      headers,
+      signal: AbortSignal.timeout(10_000),
+    });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
     const galleries = (data.galleries || []).sort((a, b) => a.order - b.order);
@@ -131,7 +136,7 @@ async function loadGalleries() {
   } catch (error) {
     console.warn(
       `[prerender] WARNING: could not load galleries (${error?.message ?? error}). ` +
-        `/work will prerender its empty state.`
+        `Using the curated repository fallback.`
     );
   }
 }

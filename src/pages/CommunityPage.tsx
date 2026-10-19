@@ -24,6 +24,7 @@ import { toast } from 'sonner';
 import { useState, useMemo } from 'react';
 import { Input } from '../components/ui/input';
 import { useGalleries } from '../hooks/useGalleries';
+import { VENTURE_URLS } from '../config';
 
 export function CommunityPage() {
   const { language } = useLanguage();
@@ -46,20 +47,9 @@ export function CommunityPage() {
       return;
     }
     
-    toast.success(
-      language === 'fr' 
-        ? 'Bienvenue dans la communauté CREOVA! Vérifiez votre email.'
-        : 'Welcome to CREOVA Community! Check your email.'
-    );
-    setEmail('');
-    
-    setTimeout(() => {
-      toast.success(
-        language === 'fr'
-          ? 'Code de réduction de 10%: WELCOME10'
-          : '10% discount code: WELCOME10'
-      );
-    }, 2000);
+    const subject = encodeURIComponent(language === 'fr' ? 'Rester en contact avec CREOVA' : 'Stay connected with CREOVA');
+    const body = encodeURIComponent(`${language === 'fr' ? 'Mon courriel' : 'My email'}: ${email}`);
+    window.location.href = `mailto:support@creova.one?subject=${subject}&body=${body}`;
   };
 
   const communityPartners = [
@@ -179,23 +169,17 @@ export function CommunityPage() {
     icon: Heart,
     color: '#D4A843',
     perks: language === 'fr' ? [
-      '10% de réduction sur votre première commande VERSE',
-      'Accès à la newsletter exclusive mensuelle',
-      'Invitations aux événements communautaires',
+      'Nouvelles sur les projets CREOVA',
+      'Invitations lorsque des activités sont confirmées',
       'Contenu des coulisses',
-      'Récompenses d\'anniversaire (20$ de crédit)',
-      'Programme de parrainage (15$ par référence)',
-      'Accès aux tutoriels de création de contenu',
-      'Support communautaire prioritaire'
+      'Ressources créatives sélectionnées',
+      'Occasions de collaboration annoncées publiquement'
     ] : [
-      '10% off your first VERSE order',
-      'Access to exclusive monthly newsletter',
-      'Invitations to community events',
+      'Updates on CREOVA projects',
+      'Invitations when activities are confirmed',
       'Behind-the-scenes content',
-      'Birthday rewards ($20 credit)',
-      'Referral program ($15 per referral)',
-      'Content creation tutorials',
-      'Priority community support'
+      'Curated creative resources',
+      'Publicly announced collaboration opportunities'
     ]
   };
 
@@ -552,11 +536,16 @@ export function CommunityPage() {
                     }}
                   >
                     <span className="relative z-10 flex items-center justify-center gap-2">
-                      {language === 'fr' ? 'Rejoindre Gratuitement' : 'Join Free'}
+                      {language === 'fr' ? 'Préparer le courriel' : 'Draft the Email'}
                       <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                     </span>
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
                   </Button>
+                  <p className="text-xs leading-relaxed text-center" style={{ color: '#777777' }}>
+                    {language === 'fr'
+                      ? 'Votre application de courriel s’ouvrira avec un brouillon. Envoyez-le pour communiquer avec CREOVA.'
+                      : 'Your email app will open with a draft. Send it to contact CREOVA.'}
+                  </p>
                 </div>
               </div>
             </RevealOnScroll>
@@ -810,30 +799,34 @@ export function CommunityPage() {
 
             <div className="flex flex-wrap gap-4 justify-center">
               <Button
-                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                onClick={() => navigate('/start-a-project')}
                 className="px-10 py-6 rounded-xl text-base font-semibold group"
                 style={{ backgroundColor: '#D4A843', color: '#121212' }}
               >
-                {language === 'fr' ? 'Commencer Gratuitement' : 'Start Free'}
+                {language === 'fr' ? 'Démarrer un projet' : 'Start a Project'}
                 <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>
-              <Button
-                onClick={() => navigate('/shop')}
-                className="px-10 py-6 rounded-xl text-base font-semibold border"
-                style={{
-                  backgroundColor: 'transparent',
-                  color: '#F8F9FA',
-                  borderColor: 'rgba(248,249,250,0.25)',
-                }}
-              >
-                {language === 'fr' ? 'Magasiner VERSE' : 'Shop VERSE'}
-              </Button>
+              {VENTURE_URLS.verse ? (
+                <Button asChild className="px-10 py-6 rounded-xl text-base font-semibold border" style={{ backgroundColor: 'transparent', color: '#F8F9FA', borderColor: 'rgba(248,249,250,0.25)' }}>
+                  <a href={VENTURE_URLS.verse} target="_blank" rel="noopener noreferrer">
+                    {language === 'fr' ? 'Visiter le site VERSE' : 'Visit the VERSE website'}
+                  </a>
+                </Button>
+              ) : (
+                <Button
+                  onClick={() => navigate('/ventures#verse')}
+                  className="px-10 py-6 rounded-xl text-base font-semibold border"
+                  style={{ backgroundColor: 'transparent', color: '#F8F9FA', borderColor: 'rgba(248,249,250,0.25)' }}
+                >
+                  {language === 'fr' ? 'Voir VERSE en incubation' : 'See VERSE in Incubation'}
+                </Button>
+              )}
             </div>
 
             <p className="mt-8 text-xs tracking-widest uppercase" style={{ color: 'rgba(248,249,250,0.3)', fontFamily: 'var(--font-display)' }}>
               {language === 'fr'
-                ? 'Aucune carte de crédit requise pour l\'adhésion Communauté'
-                : 'No credit card required for Community membership'}
+                ? 'VERSE n’accepte ni commande ni précommande pour le moment.'
+                : 'VERSE is not accepting orders or preorders at this stage.'}
             </p>
           </motion.div>
         </div>

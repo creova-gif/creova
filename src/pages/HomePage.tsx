@@ -3,13 +3,11 @@ import { Link } from '../i18n/LocaleLink';
 import { PageSEO } from '../components/PageSEO';
 import { Button } from '../components/ui/button';
 import {
-  Camera, Video, Palette, TrendingUp, ShoppingBag, Calendar,
+  Camera, Video, Palette, TrendingUp, Sparkles, Calendar,
   CheckCircle2, Globe, Users, ArrowRight, Heart, Award,
 } from 'lucide-react';
 import { motion, useScroll, useTransform } from 'motion/react';
-import { TestimonialsSection } from '../components/TestimonialsSection';
 import { CommunityInsights } from '../components/CommunityInsights';
-import { TrustSignals } from '../components/TrustSignals';
 import { ClientLogos } from '../components/ClientLogos';
 import { CaseStudy } from '../components/CaseStudy';
 import { FounderSection } from '../components/FounderSection';
@@ -29,19 +27,19 @@ import photoServiceEvents from '../assets/photo-service-events.jpg';
 import photoServiceVideography from '../assets/photo-service-videography.jpg';
 import photoCollage2 from '../assets/photo-collage-2.jpg';
 import photoBrandDesign from '../assets/photo-collage-3.jpg';
-import photoShopLifestyle from '../assets/photo-collage-4.jpg';
+import photoVentures from '../assets/photo-collage-4.jpg';
 import { FloatingOrbs } from '../components/FloatingOrbs';
 import { Magnetic } from '../components/Magnetic';
 import { TiltCard } from '../components/TiltCard';
-import { FallDropTeaser } from '../components/FallDropTeaser';
 import { organizationSchema } from '../utils/structuredData';
 import { useGalleries } from '../hooks/useGalleries';
 import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion';
-import { GOOGLE_REVIEW_URL } from '../config';
+import { GOOGLE_REVIEW_URL, VENTURE_URLS } from '../config';
 
 
 export function HomePage() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  const fr = language === 'fr';
   const { open: openExplore } = useExploreMenu();
   const heroRef = useRef<HTMLElement>(null);
   const prefersReduced = usePrefersReducedMotion();
@@ -63,12 +61,12 @@ export function HomePage() {
   const heroOpacityOut = useTransform(heroScrollY, [0, 0.7], [1, 0]);
 
   const features = [
-    { icon: Camera, title: t('home.feature.1.title'), description: t('home.feature.1.desc'), link: '/services', image: photoServicePhotography, objectPosition: 'center 25%', accent: '#D4A843', startingPrice: '$450' },
-    { icon: Video, title: t('home.feature.2.title'), description: t('home.feature.2.desc'), link: '/services', image: photoServiceVideography, objectPosition: 'center top', accent: '#B1643B', startingPrice: '$500' },
-    { icon: Palette, title: t('home.feature.3.title'), description: t('home.feature.3.desc'), link: '/services', image: photoBrandDesign, objectPosition: 'center 15%', accent: '#D4A843', startingPrice: '$750' },
-    { icon: TrendingUp, title: t('home.feature.4.title'), description: t('home.feature.4.desc'), link: '/services', image: photoSocialLaptop, objectPosition: 'center top', accent: '#B1643B', startingPrice: '$950/mo' },
-    { icon: ShoppingBag, title: t('home.feature.5.title'), description: t('home.feature.5.desc'), link: '/shop', image: photoShopLifestyle, objectPosition: 'center 20%', accent: '#D4A843', startingPrice: '$15' },
-    { icon: Calendar, title: t('home.feature.6.title'), description: t('home.feature.6.desc'), link: '/experience', image: photoServiceEvents, objectPosition: 'center 40%', accent: '#B1643B', startingPrice: '$750' },
+    { icon: Camera, title: t('home.feature.1.title'), description: t('home.feature.1.desc'), link: '/services', image: photoServicePhotography, objectPosition: 'center 25%', accent: '#D4A843', badge: t('home.feature.badge.service') },
+    { icon: Video, title: t('home.feature.2.title'), description: t('home.feature.2.desc'), link: '/services', image: photoServiceVideography, objectPosition: 'center top', accent: '#B1643B', badge: t('home.feature.badge.service') },
+    { icon: Palette, title: t('home.feature.3.title'), description: t('home.feature.3.desc'), link: '/services', image: photoBrandDesign, objectPosition: 'center 15%', accent: '#D4A843', badge: t('home.feature.badge.strategy') },
+    { icon: TrendingUp, title: t('home.feature.4.title'), description: t('home.feature.4.desc'), link: '/services', image: photoSocialLaptop, objectPosition: 'center top', accent: '#B1643B', badge: t('home.feature.badge.ongoing') },
+    { icon: Sparkles, title: t('home.feature.ventures.title'), description: t('home.feature.ventures.desc'), link: '/ventures', image: photoVentures, objectPosition: 'center 20%', accent: '#D4A843', badge: t('home.feature.badge.venture') },
+    { icon: Calendar, title: t('home.feature.6.title'), description: t('home.feature.6.desc'), link: '/services#event-story', image: photoServiceEvents, objectPosition: 'center 40%', accent: '#B1643B', badge: t('home.feature.badge.event') },
   ];
 
 
@@ -205,7 +203,7 @@ export function HomePage() {
                   <Button size="lg"
                     className="group px-6 py-4 sm:px-8 sm:py-6 rounded-xl text-base sm:text-lg border-2 hover:shadow-2xl transition-all duration-500"
                     style={{ backgroundColor: '#F8F9FA', color: '#121212', borderColor: '#F8F9FA' }} asChild>
-                    <Link to="/contact" className="flex items-center gap-2">
+                    <Link to="/start-a-project" className="flex items-center gap-2">
                       {t('home.cta.get.in.touch')}
                       <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                     </Link>
@@ -303,12 +301,25 @@ export function HomePage() {
                 {t('home.seen.features')}
               </p>
               <Magnetic strength={0.22}>
-                <Link to="/seen"
-                  className="inline-flex items-center gap-3 px-8 py-4 rounded-xl text-base font-medium tracking-wide transition-all duration-500 hover:shadow-2xl group"
-                  style={{ backgroundColor: '#F8F9FA', color: '#121212' }}>
-                  {t('home.seen.cta')}
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </Link>
+                {VENTURE_URLS.seen ? (
+                  <a
+                    href={VENTURE_URLS.seen}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-3 px-8 py-4 rounded-xl text-base font-medium tracking-wide transition-all duration-500 hover:shadow-2xl group"
+                    style={{ backgroundColor: '#F8F9FA', color: '#121212' }}
+                  >
+                    {fr ? 'Visiter le site SEEN' : 'Visit the SEEN website'}
+                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </a>
+                ) : (
+                  <Link to="/ventures#seen"
+                    className="inline-flex items-center gap-3 px-8 py-4 rounded-xl text-base font-medium tracking-wide transition-all duration-500 hover:shadow-2xl group"
+                    style={{ backgroundColor: '#F8F9FA', color: '#121212' }}>
+                    {t('home.seen.cta')}
+                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                )}
               </Magnetic>
             </motion.div>
             <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }}
@@ -397,7 +408,7 @@ export function HomePage() {
                         </div>
                         <span className="text-xs font-semibold tracking-wide px-2.5 py-1 rounded-full"
                           style={{ backgroundColor: 'rgba(18,18,18,0.7)', color: feature.accent, border: `1px solid ${feature.accent}40`, backdropFilter: 'blur(4px)' }}>
-                          From {feature.startingPrice}
+                          {feature.badge}
                         </span>
                       </div>
                       <h3 className={`tracking-tight ${isFeatured ? 'text-3xl lg:text-4xl mb-3' : 'text-xl mb-2'}`} style={{ color: '#F8F9FA', fontFamily: isFeatured ? 'var(--font-display)' : undefined }}>{feature.title}</h3>
@@ -450,7 +461,7 @@ export function HomePage() {
               onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = '#F8F9FA'}
               onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = '#D4A843'}
             >
-              View all {galleries.length} galleries
+              {t('home.work.view.selected')}
               <ArrowRight className="w-4 h-4" />
             </Link>
           </motion.div>
@@ -533,7 +544,7 @@ export function HomePage() {
 
       <CommunityInsights />
 
-      {/* Fall 2026 Season */}
+      {/* Project pathways */}
       <section className="py-28 relative overflow-hidden" style={{ backgroundColor: '#F8F9FA' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
@@ -588,7 +599,7 @@ export function HomePage() {
                   </motion.div>
                 ))}
               </div>
-              <Link to="/experience"
+              <Link to="/services#event-story"
                 className="inline-flex items-center gap-3 px-8 py-4 rounded-xl text-base font-medium tracking-wide transition-all duration-500 hover:shadow-xl group"
                 style={{ backgroundColor: '#121212', color: '#F8F9FA' }}>
                 {t('home.fall.cta')}
@@ -710,8 +721,6 @@ export function HomePage() {
       </section>
 
       <FounderSection />
-      <TrustSignals />
-      <TestimonialsSection />
 
       {/* Google Reviews CTA */}
       <section className="py-16 relative overflow-hidden" style={{ backgroundColor: '#F8F9FA' }}>
@@ -749,8 +758,6 @@ export function HomePage() {
         </div>
       </section>
 
-      <FallDropTeaser />
-
       <CaseStudy />
 
       {/* Urgency + Mini Conversion Block */}
@@ -778,7 +785,7 @@ export function HomePage() {
                   <Button
                     className="px-6 py-3 rounded-xl hover:scale-105 transition-all duration-300"
                     style={{ backgroundColor: '#121212', color: '#F8F9FA' }} asChild>
-                    <Link to="/contact" className="flex items-center gap-2">
+                    <Link to="/start-a-project" className="flex items-center gap-2">
                       {t('home.urgency.cta')}
                       <ArrowRight className="w-4 h-4" />
                     </Link>
@@ -786,7 +793,7 @@ export function HomePage() {
                   <Button variant="outline"
                     className="px-6 py-3 rounded-xl border-2 hover:scale-105 transition-all duration-300"
                     style={{ borderColor: '#D4A843', color: '#D4A843' }} asChild>
-                    <Link to="/pricing">{t('home.cta.pricing')}</Link>
+                    <Link to="/services#event-story">{t('home.cta.pricing')}</Link>
                   </Button>
                 </div>
               </div>
@@ -830,7 +837,7 @@ export function HomePage() {
               <Button size="lg"
                 className="group w-full sm:w-auto px-8 py-5 sm:px-10 sm:py-7 rounded-xl text-base sm:text-xl border-2 hover:shadow-2xl hover:scale-105 transition-all duration-500"
                 style={{ backgroundColor: '#F8F9FA', color: '#121212', borderColor: '#F8F9FA' }} asChild>
-                <Link to="/contact" className="flex items-center gap-2">
+                <Link to="/start-a-project" className="flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: '#D4A843' }} />
                   {t('home.cta.book')}
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
@@ -839,7 +846,7 @@ export function HomePage() {
               <Button size="lg" variant="outline"
                 className="w-full sm:w-auto px-8 py-5 sm:px-10 sm:py-7 rounded-xl text-base sm:text-xl border-2 backdrop-blur-sm hover:scale-105 transition-transform duration-500"
                 style={{ borderColor: '#D4A843', color: '#D4A843', backgroundColor: 'rgba(212, 168, 67, 0.1)' }} asChild>
-                <Link to="/pricing">{t('home.cta.pricing')}</Link>
+                <Link to="/services#event-story">{t('home.cta.pricing')}</Link>
               </Button>
             </div>
             <motion.p

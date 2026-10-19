@@ -14,17 +14,8 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - run: npm --prefix workers/api ci
       - run: npm run lint
       - run: npm run typecheck
+      - run: npm test
       - run: npm run build
-      - name: Run guard tests
-        run: node --experimental-strip-types --test src/supabase/functions/server/guards.test.ts workers/api/src/guards.test.ts workers/api/src/analytics.test.ts
-      - name: Install worker dependencies
-        working-directory: workers/api
-        run: npm ci
-      - name: Typecheck worker
-        working-directory: workers/api
-        run: npm run typecheck
-      - name: Run worker route tests
-        working-directory: workers/api
-        run: npm test

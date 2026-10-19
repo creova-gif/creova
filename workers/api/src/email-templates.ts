@@ -19,13 +19,16 @@ export interface BookingEmailData {
 }
 
 export interface ContactEmailData {
+  requestId?: string;
   name: string;
   email: string;
+  organization?: string;
   phone?: string;
   service?: string;
   message: string;
   budget?: string;
   timeline?: string;
+  context?: string;
 }
 
 export interface CollaborationEmailData {
@@ -166,11 +169,11 @@ export const bookingConfirmationEN = (data: BookingEmailData): string => {
       <h1>CREOVA</h1>
       <p>Your Booking is Confirmed</p>
     </div>
-    
+
     <div class="content">
       <h2>Thank you for choosing CREOVA! 🎬</h2>
       <p>We've received your booking request and are excited to work with you. Our team will review your details and contact you within 24 hours to confirm the final arrangements.</p>
-      
+
       <div class="details-box">
         <h3>📋 Booking Details</h3>
         <ul>
@@ -183,14 +186,14 @@ export const bookingConfirmationEN = (data: BookingEmailData): string => {
           ${Number(data.amount) > 0 ? `<li><strong>Deposit Amount:</strong> $${escapeHtml(data.amount)} CAD</li>` : ''}
         </ul>
       </div>
-      
+
       ${data.specialRequests ? `
       <div class="details-box">
         <h3>💬 Special Requests</h3>
         <p style="margin: 0;">${escapeHtmlMultiline(data.specialRequests)}</p>
       </div>
       ` : ''}
-      
+
       <div class="next-steps">
         <h3>✅ Next Steps</h3>
         <ol>
@@ -200,12 +203,12 @@ export const bookingConfirmationEN = (data: BookingEmailData): string => {
           <li>Get ready for an amazing creative experience!</li>
         </ol>
       </div>
-      
+
       <p><strong>Questions?</strong> Reply to this email or call us at <a href="tel:+14372608925" style="color: #D4A843;">+1 (437) 260-8925</a></p>
-      
+
       <p style="margin-top: 30px;">Best regards,<br><strong>The CREOVA Team</strong><br>Ontario, Canada</p>
     </div>
-    
+
     <div class="footer">
       <p><strong>CREOVA</strong> | Black-Led Creative Studio</p>
       <p>Ontario, Canada | <a href="mailto:support@creova.one">support@creova.one</a></p>
@@ -347,11 +350,11 @@ export const bookingConfirmationFR = (data: BookingEmailData): string => {
       <h1>CREOVA</h1>
       <p>Votre Réservation est Confirmée</p>
     </div>
-    
+
     <div class="content">
       <h2>Merci d'avoir choisi CREOVA! 🎬</h2>
       <p>Nous avons reçu votre demande de réservation et sommes ravis de travailler avec vous. Notre équipe examinera vos détails et vous contactera dans les 24 heures pour confirmer les arrangements finaux.</p>
-      
+
       <div class="details-box">
         <h3>📋 Détails de la Réservation</h3>
         <ul>
@@ -364,14 +367,14 @@ export const bookingConfirmationFR = (data: BookingEmailData): string => {
           ${Number(data.amount) > 0 ? `<li><strong>Montant du Dépôt:</strong> ${escapeHtml(data.amount)} $ CAD</li>` : ''}
         </ul>
       </div>
-      
+
       ${data.specialRequests ? `
       <div class="details-box">
         <h3>💬 Demandes Spéciales</h3>
         <p style="margin: 0;">${escapeHtmlMultiline(data.specialRequests)}</p>
       </div>
       ` : ''}
-      
+
       <div class="next-steps">
         <h3>✅ Prochaines Étapes</h3>
         <ol>
@@ -381,12 +384,12 @@ export const bookingConfirmationFR = (data: BookingEmailData): string => {
           <li>Préparez-vous pour une expérience créative incroyable!</li>
         </ol>
       </div>
-      
+
       <p><strong>Des questions?</strong> Répondez à cet email ou appelez-nous au <a href="tel:+14372608925" style="color: #D4A843;">+1 (437) 260-8925</a></p>
-      
+
       <p style="margin-top: 30px;">Cordialement,<br><strong>L'Équipe CREOVA</strong><br>Ontario, Canada</p>
     </div>
-    
+
     <div class="footer">
       <p><strong>CREOVA</strong> | Studio Créatif Dirigé par des Noirs</p>
       <p>Ontario, Canada | <a href="mailto:support@creova.one">support@creova.one</a></p>
@@ -477,59 +480,59 @@ export const adminBookingNotification = (data: BookingEmailData): string => {
     <div class="header">
       <h1>🎬 New Booking Received</h1>
     </div>
-    
+
     <div class="content">
       <div class="alert-box">
         <strong>⏰ Action Required:</strong> Contact customer within 24 hours to confirm booking details and availability.
       </div>
-      
+
       <h2>Customer Information</h2>
       <div class="info-grid">
         <div class="info-label">Name:</div>
         <div class="info-value">${escapeHtml(data.customerName)}</div>
-        
+
         <div class="info-label">Email:</div>
         <div class="info-value"><a href="mailto:${escapeHtmlAttr(data.customerEmail)}">${escapeHtml(data.customerEmail)}</a></div>
-        
+
         <div class="info-label">Phone:</div>
         <div class="info-value"><a href="tel:${escapeHtmlAttr(data.customerPhone)}">${escapeHtml(data.customerPhone)}</a></div>
       </div>
-      
+
       <h2>Booking Details</h2>
       <div class="info-grid">
         <div class="info-label">Service:</div>
         <div class="info-value"><strong>${escapeHtml(data.service)}</strong></div>
-        
+
         <div class="info-label">Package:</div>
         <div class="info-value">${escapeHtml(data.package)}</div>
-        
+
         <div class="info-label">Preferred Date:</div>
         <div class="info-value"><strong>${escapeHtml(data.preferredDate)}</strong></div>
-        
+
         <div class="info-label">Preferred Time:</div>
         <div class="info-value"><strong>${escapeHtml(data.preferredTime)}</strong></div>
-        
+
         <div class="info-label">Location:</div>
         <div class="info-value">${escapeHtml(data.location)}</div>
-        
+
         ${data.numberOfPeople ? `
         <div class="info-label">Number of People:</div>
         <div class="info-value">${escapeHtml(data.numberOfPeople)}</div>
         ` : ''}
-        
+
         ${Number(data.amount) > 0 ? `
         <div class="info-label">Deposit Amount:</div>
         <div class="info-value"><strong style="color: #2E7D32; font-size: 18px;">$${escapeHtml(data.amount)} CAD</strong></div>
         ` : ''}
       </div>
-      
+
       ${data.specialRequests ? `
       <h2>Special Requests</h2>
       <div style="background-color: #F8F9FA; padding: 15px; border-radius: 4px;">
         ${escapeHtmlMultiline(data.specialRequests)}
       </div>
       ` : ''}
-      
+
       <div class="action-box">
         <h3>✅ Action Checklist</h3>
         <ul>
@@ -541,7 +544,7 @@ export const adminBookingNotification = (data: BookingEmailData): string => {
           <li>Add to booking management system</li>
         </ul>
       </div>
-      
+
       <p style="text-align: center; margin-top: 30px;">
         <a href="https://creova.one/admin/bookings" style="display: inline-block; background-color: #121212; color: #F8F9FA; padding: 12px 24px; text-decoration: none; border-radius: 4px; font-weight: 600;">View in Admin Dashboard</a>
       </p>
@@ -606,43 +609,60 @@ export const adminContactNotification = (data: ContactEmailData): string => {
     <div class="header">
       <h1>📧 New Contact Form Submission</h1>
     </div>
-    
+
     <div class="content">
       <h2>Contact Information</h2>
       <div class="info-grid">
+        ${data.requestId ? `
+        <div class="info-label">Request ID:</div>
+        <div>${escapeHtml(data.requestId)}</div>
+        ` : ''}
+
         <div class="info-label">Name:</div>
         <div>${escapeHtml(data.name)}</div>
-        
+
         <div class="info-label">Email:</div>
         <div><a href="mailto:${escapeHtmlAttr(data.email)}">${escapeHtml(data.email)}</a></div>
-        
+
+        ${data.organization ? `
+        <div class="info-label">Organization:</div>
+        <div>${escapeHtml(data.organization)}</div>
+        ` : ''}
+
         ${data.phone ? `
         <div class="info-label">Phone:</div>
         <div><a href="tel:${escapeHtmlAttr(data.phone)}">${escapeHtml(data.phone)}</a></div>
         ` : ''}
-        
+
         ${data.service ? `
         <div class="info-label">Service:</div>
         <div><strong>${escapeHtml(data.service)}</strong></div>
         ` : ''}
-        
+
         ${data.budget ? `
         <div class="info-label">Budget:</div>
         <div>${escapeHtml(data.budget)}</div>
         ` : ''}
-        
+
         ${data.timeline ? `
         <div class="info-label">Timeline:</div>
         <div>${escapeHtml(data.timeline)}</div>
         ` : ''}
       </div>
-      
+
       <h2>Message</h2>
       <div class="message-box">
         ${escapeHtmlMultiline(data.message)}
       </div>
-      
-      <p style="margin-top: 30px;"><strong>⏰ Action Required:</strong> Respond within 24 hours</p>
+
+      ${data.context ? `
+      <h2>Helpful Context</h2>
+      <div class="message-box">
+        ${escapeHtmlMultiline(data.context)}
+      </div>
+      ` : ''}
+
+      <p style="margin-top: 30px;"><strong>⏰ Action Required:</strong> Respond within two business days</p>
     </div>
   </div>
 </body>
@@ -704,42 +724,42 @@ export const adminCollaborationNotification = (data: CollaborationEmailData): st
     <div class="header">
       <h1>🤝 New Collaboration Request</h1>
     </div>
-    
+
     <div class="content">
       <h2>Partner Information</h2>
       <div class="info-grid">
         <div class="info-label">Name:</div>
         <div>${escapeHtml(data.name)}</div>
-        
+
         <div class="info-label">Email:</div>
         <div><a href="mailto:${escapeHtmlAttr(data.email)}">${escapeHtml(data.email)}</a></div>
-        
+
         ${data.organization ? `
         <div class="info-label">Organization:</div>
         <div><strong>${escapeHtml(data.organization)}</strong></div>
         ` : ''}
-        
+
         ${data.collaborationType ? `
         <div class="info-label">Collaboration Type:</div>
         <div>${escapeHtml(data.collaborationType)}</div>
         ` : ''}
-        
+
         ${data.timeline ? `
         <div class="info-label">Timeline:</div>
         <div>${escapeHtml(data.timeline)}</div>
         ` : ''}
-        
+
         ${data.budget ? `
         <div class="info-label">Budget:</div>
         <div>${escapeHtml(data.budget)}</div>
         ` : ''}
       </div>
-      
+
       <h2>Project Description</h2>
       <div class="message-box">
         ${escapeHtmlMultiline(data.projectDescription)}
       </div>
-      
+
       <p style="margin-top: 30px;"><strong>⏰ Priority:</strong> Review and respond within 48 hours</p>
     </div>
   </div>

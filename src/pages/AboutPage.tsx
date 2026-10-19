@@ -5,6 +5,7 @@ import { Link } from '../i18n/LocaleLink';
 import { PageSEO } from '../components/PageSEO';
 import { useLanguage } from '../context/LanguageContext';
 import { absoluteUrl } from '../i18n/locale';
+import { VENTURE_URLS } from '../config';
 
 const SITE_URL = 'https://www.creova.one';
 
@@ -250,13 +251,20 @@ export function AboutPage() {
           <div className="grid sm:grid-cols-3 gap-4">
             {[
               { name: 'CREOVA', tag: fr ? 'L’agence créative' : 'The creative agency', to: '/services' },
-              { name: 'VERSE', tag: fr ? 'La marque lifestyle' : 'The lifestyle label', to: '/shop' },
-              { name: 'SEEN', tag: fr ? 'Le produit numérique' : 'The digital product', to: '/seen' },
+              { name: 'VERSE', tag: fr ? 'La marque lifestyle en incubation' : 'The lifestyle brand in incubation', to: VENTURE_URLS.verse ?? '/ventures#verse', external: Boolean(VENTURE_URLS.verse) },
+              { name: 'SEEN', tag: fr ? 'Le produit numérique' : 'The digital product', to: VENTURE_URLS.seen ?? '/ventures#seen', external: Boolean(VENTURE_URLS.seen) },
             ].map((b) => (
-              <Link key={b.name} to={b.to} className="group block rounded-xl p-5 transition-all duration-300 hover:-translate-y-1" style={{ backgroundColor: '#151515', border: '1px solid rgba(212,168,67,0.15)' }}>
-                <p className="tracking-tight mb-1 transition-colors group-hover:text-[#D4A843]" style={{ color: '#F8F9FA', fontFamily: 'var(--font-display)', fontSize: '1.4rem' }}>{b.name}</p>
-                <p className="text-xs" style={{ color: '#8C7B75' }}>{b.tag}</p>
-              </Link>
+              b.external ? (
+                <a key={b.name} href={b.to} target="_blank" rel="noopener noreferrer" className="group block rounded-xl p-5 transition-all duration-300 hover:-translate-y-1" style={{ backgroundColor: '#151515', border: '1px solid rgba(212,168,67,0.15)' }}>
+                  <p className="tracking-tight mb-1 transition-colors group-hover:text-[#D4A843]" style={{ color: '#F8F9FA', fontFamily: 'var(--font-display)', fontSize: '1.4rem' }}>{b.name}</p>
+                  <p className="text-xs" style={{ color: '#8C7B75' }}>{b.tag}</p>
+                </a>
+              ) : (
+                <Link key={b.name} to={b.to} className="group block rounded-xl p-5 transition-all duration-300 hover:-translate-y-1" style={{ backgroundColor: '#151515', border: '1px solid rgba(212,168,67,0.15)' }}>
+                  <p className="tracking-tight mb-1 transition-colors group-hover:text-[#D4A843]" style={{ color: '#F8F9FA', fontFamily: 'var(--font-display)', fontSize: '1.4rem' }}>{b.name}</p>
+                  <p className="text-xs" style={{ color: '#8C7B75' }}>{b.tag}</p>
+                </Link>
+              )
             ))}
           </div>
         </div>
@@ -268,7 +276,7 @@ export function AboutPage() {
           <h2 className="tracking-tight mb-6" style={{ color: '#F8F9FA', fontFamily: 'var(--font-display)', fontSize: 'clamp(2rem, 5vw, 3.2rem)', lineHeight: 1.06 }}>
             {fr ? 'Une bonne idée à partager ?' : 'Have a story worth telling?'}
           </h2>
-          <Link to="/contact" className="group inline-flex items-center gap-3 px-8 py-4 rounded-xl text-base font-semibold tracking-wide transition-all duration-300 hover:-translate-y-px hover:shadow-xl" style={{ backgroundColor: '#B1643B', color: '#F8F9FA' }}>
+          <Link to="/start-a-project" className="group inline-flex items-center gap-3 px-8 py-4 rounded-xl text-base font-semibold tracking-wide transition-all duration-300 hover:-translate-y-px hover:shadow-xl" style={{ backgroundColor: '#B1643B', color: '#F8F9FA' }}>
             {fr ? 'Travaillons ensemble' : 'Let’s work together'}
             <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
           </Link>

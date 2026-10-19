@@ -1,11 +1,12 @@
 import { useRef } from 'react';
 import { motion, useInView } from 'motion/react';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ExternalLink } from 'lucide-react';
 import { Link } from '../i18n/LocaleLink';
 import { PageSEO } from '../components/PageSEO';
 import { useLanguage } from '../context/LanguageContext';
 import { getCaseStudy } from '../data/caseStudies';
 import { absoluteUrl } from '../i18n/locale';
+import { getPublishedEvidenceBySlug } from '../content/publicEvidence';
 
 const SITE_URL = 'https://www.creova.one';
 
@@ -14,7 +15,8 @@ export function CaseStudyPage({ slug }: { slug: string }) {
   const cs = getCaseStudy(slug);
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: '-12% 0px' });
-  if (!cs) return null;
+  const evidence = getPublishedEvidenceBySlug(slug);
+  if (!cs || !evidence) return null;
   const c = fr ? cs.fr : cs.en;
 
   const jsonLd = {
@@ -89,6 +91,23 @@ export function CaseStudyPage({ slug }: { slug: string }) {
         </div>
       </section>
 
+      {evidence && (
+        <section className="pb-16">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <p className="text-xs tracking-[0.35em] uppercase mb-4" style={{ color: '#D4A843' }}>
+              {fr ? 'Sources publiques' : 'Public sources'}
+            </p>
+            <div className="flex flex-wrap gap-3">
+              {evidence.sources.map((source) => (
+                <a key={source.url} href={source.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs" style={{ color: '#E0E0E0', border: '1px solid rgba(212,168,67,0.25)' }}>
+                  {source.label}<ExternalLink className="w-3 h-3" />
+                </a>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Optional client quote (only if present) */}
       {c.quote && (
         <section className="relative py-16">
@@ -104,7 +123,7 @@ export function CaseStudyPage({ slug }: { slug: string }) {
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <p className="text-xs tracking-[0.4em] uppercase mb-5" style={{ color: '#D4A843' }}>{c.resultLabel}</p>
           <p className="text-xl lg:text-2xl leading-relaxed mb-10" style={{ color: '#F8F9FA', fontFamily: 'var(--font-display)' }}>{c.result}</p>
-          <Link to="/contact" className="group inline-flex items-center gap-3 px-8 py-4 rounded-xl text-base font-semibold tracking-wide transition-all duration-300 hover:-translate-y-px hover:shadow-xl" style={{ backgroundColor: '#B1643B', color: '#F8F9FA' }}>
+          <Link to="/start-a-project" className="group inline-flex items-center gap-3 px-8 py-4 rounded-xl text-base font-semibold tracking-wide transition-all duration-300 hover:-translate-y-px hover:shadow-xl" style={{ backgroundColor: '#B1643B', color: '#F8F9FA' }}>
             {fr ? 'Démarrer un projet' : 'Start a project'}
             <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
           </Link>

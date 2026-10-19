@@ -91,7 +91,7 @@ export function FounderSection() {
                 <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
               <Link
-                to="/contact"
+                to="/start-a-project"
                 className="inline-flex items-center gap-2 text-sm tracking-wide transition-colors duration-200 hover:text-[#D4A843]"
                 style={{ color: '#E0E0E0' }}
               >

@@ -1,27 +1,16 @@
 import { useState, useEffect } from 'react';
+import { GALLERY_FALLBACK } from '../data/galleryFallback';
+import type { Gallery } from '../types/gallery';
 import { apiUrl } from '../utils/api';
 
-export type GalleryCategory = 'events' | 'sports' | 'brand' | 'conference';
+export type { Gallery, GalleryCategory } from '../types/gallery';
 
-export interface Gallery {
-  id: string;
-  title: string;
-  subtitle: string;
-  category: GalleryCategory;
-  org: string;
-  year: string;
-  /** ISO date (YYYY-MM-DD) — used for sorting and display */
-  date?: string;
-  /** Number of photos in the Pixieset collection */
-  itemCount?: number;
-  /** True if the Pixieset collection is password-protected */
-  locked?: boolean;
-  image: string;
-  objectPosition: string;
-  url: string;
-  accent: string;
-  featured: boolean;
-  order: number;
+const API_BASE = (import.meta.env.VITE_GALLERY_API_BASE_URL as string | undefined)?.trim().replace(/\/+$/, '');
+
+type GallerySource = 'remote' | 'fallback' | 'empty';
+
+function galleryUrl() {
+  return API_BASE ? `${API_BASE}/galleries` : apiUrl('/galleries');
 }
 
 /**
@@ -30,7 +19,7 @@ export interface Gallery {
  * instead of a hardcoded array, so adding a new shoot doesn't require a
  * code change — see AdminGalleriesPage.
  */
-export function useGalleries() {
+export function useGalleries({ useFallback = true }: { useFallback?: boolean } = {}) {
   // During prerendering there is no browser to run the fetch below, so the
   // build script fetches the galleries once and hands them over on globalThis.
   // Without this /work would prerender its empty state — telling JS-less
@@ -40,29 +29,42 @@ export function useGalleries() {
       ? (globalThis as { __CREOVA_GALLERIES__?: Gallery[] }).__CREOVA_GALLERIES__
       : undefined;
 
-  const [galleries, setGalleries] = useState<Gallery[]>(prerendered ?? []);
-  // An unset API is a quiet empty list. Loading starts only when a fetch
-  // will actually run, so the prerendered empty state stays put.
-  const [loading, setLoading] = useState(!prerendered && apiUrl('/galleries') !== null);
+  const initialGalleries = prerendered?.length
+    ? prerendered
+    : useFallback
+      ? GALLERY_FALLBACK
+      : [];
+  const [galleries, setGalleries] = useState<Gallery[]>(initialGalleries);
+  const [source, setSource] = useState<GallerySource>(
+    prerendered?.length ? 'remote' : useFallback ? 'fallback' : 'empty',
+  );
+  const [loading, setLoading] = useState(Boolean(galleryUrl()) && initialGalleries.length === 0);
   const [error, setError] = useState(false);
   const [refetchIndex, setRefetchIndex] = useState(0);
 
   useEffect(() => {
-    const url = apiUrl('/galleries');
+    const url = galleryUrl();
     if (!url) return;
     let cancelled = false;
     (async () => {
-      setLoading(true);
       try {
         const res = await fetch(url);
         const data = await res.json();
-        if (cancelled) return;
-        if (!res.ok) {
-          setError(true);
-          return;
+        if (!cancelled) {
+          if (res.ok) {
+            const remote = (data.galleries || []).sort((a: Gallery, b: Gallery) => a.order - b.order);
+            if (remote.length > 0) {
+              setGalleries(remote);
+              setSource('remote');
+            } else if (!useFallback) {
+              setGalleries([]);
+              setSource('empty');
+            }
+            setError(false);
+          } else {
+            setError(true);
+          }
         }
-        setGalleries((data.galleries || []).sort((a: Gallery, b: Gallery) => a.order - b.order));
-        setError(false);
       } catch {
         if (!cancelled) setError(true);
       } finally {
@@ -72,9 +74,9 @@ export function useGalleries() {
     return () => {
       cancelled = true;
     };
-  }, [refetchIndex]);
+  }, [refetchIndex, useFallback]);
 
   const refetch = () => setRefetchIndex(i => i + 1);
 
-  return { galleries, loading, error, refetch };
+  return { galleries, loading, error, refetch, source };
 }

@@ -11,6 +11,7 @@ import { useGalleries, type Gallery } from '../hooks/useGalleries';
 import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion';
 import { galleryListSchema } from '../utils/structuredData';
 import { CASE_STUDIES } from '../data/caseStudies';
+import { getPublishedEvidenceBySlug } from '../content/publicEvidence';
 
 const MONTHS_SHORT = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -170,7 +171,8 @@ export function WorkPage() {
   const [activeTab, setActiveTab] = useState<Category>('all');
   const [query, setQuery] = useState('');
   const marqueeRef = useRef<HTMLDivElement>(null);
-  const { galleries, loading } = useGalleries();
+  const { galleries, loading, source } = useGalleries();
+  const featuredCaseStudy = CASE_STUDIES.find((caseStudy) => getPublishedEvidenceBySlug(caseStudy.slug));
 
   const sorted = useMemo(() => {
     // Newest first, using date if present, otherwise year
@@ -235,7 +237,7 @@ export function WorkPage() {
     <div style={{ backgroundColor: '#121212' }}>
       <PageSEO
         title="Our Work"
-        description={`Explore CREOVA's ${sorted.length}-gallery portfolio of photography, videography, brand design, and creative campaigns for BIPOC entrepreneurs and cultural brands across Canada.`}
+        description="Explore CREOVA's curated portfolio of photography, videography, brand design, and creative campaigns for BIPOC entrepreneurs and cultural organizations."
         path="/work"
         jsonLd={structuredData}
       />
@@ -286,7 +288,7 @@ export function WorkPage() {
             className="hidden sm:flex items-center gap-2"
           >
             <span className="text-[10px] tracking-[0.4em] uppercase" style={{ color: 'rgba(248,249,250,0.3)' }}>
-              {sorted.length} {fr ? 'galeries · Depuis 2019' : 'Galleries · Since 2019'}
+              {fr ? 'Portfolio public' : 'Public Portfolio'}
             </span>
           </motion.div>
         </div>
@@ -360,7 +362,7 @@ export function WorkPage() {
                         className="text-[9px] tracking-[0.5em] uppercase hidden sm:block"
                         style={{ color: 'rgba(248,249,250,0.2)' }}
                       >
-                        {sorted.length} {fr ? 'galeries · Depuis 2019' : 'galleries · Since 2019'}
+                        {fr ? 'Sélection publique' : 'Public selection'}
                       </motion.span>
                     </span>
                   </h1>
@@ -385,9 +387,9 @@ export function WorkPage() {
                 className="flex gap-10 lg:gap-12 flex-shrink-0"
               >
                 {[
-                  { n: String(sorted.length), l: fr ? 'Galeries' : 'Galleries' },
-                  { n: '100+', l: fr ? 'Événements couverts' : 'Events Shot' },
-                  { n: '2024', l: fr ? 'Depuis' : 'Since' },
+                  { n: String(sorted.length), l: fr ? 'Galeries choisies' : 'Selected Galleries' },
+                  { n: 'Public', l: 'Pixieset' },
+                  { n: 'ON', l: fr ? 'Basé en Ontario' : 'Ontario-Based' },
                 ].map((s) => (
                   <div key={s.l}>
                     <div className="text-3xl font-light tracking-tight" style={{ color: '#D4A843' }}>{s.n}</div>
@@ -401,6 +403,17 @@ export function WorkPage() {
 
         <ScrollIndicator />
       </section>
+
+      {source === 'fallback' && (
+        <div className="px-4 py-4 text-center" style={{ backgroundColor: '#0E0E0E', borderTop: '1px solid rgba(212,168,67,0.12)' }}>
+          <p className="text-xs leading-relaxed" style={{ color: 'rgba(248,249,250,0.55)' }}>
+            {fr ? 'Une sélection organisée du portfolio public de CREOVA.' : "A curated selection from CREOVA's public portfolio."}{' '}
+            <a href="https://creova.pixieset.com/" target="_blank" rel="noopener noreferrer" className="underline underline-offset-4" style={{ color: '#D4A843' }}>
+              {fr ? 'Voir les galeries sur Pixieset' : 'Browse the galleries on Pixieset'}
+            </a>
+          </p>
+        </div>
+      )}
 
       {/* ── MARQUEE STRIP ── */}
       <div
@@ -423,8 +436,8 @@ export function WorkPage() {
       </div>
 
       {/* ── FEATURED CASE STUDY ── */}
-      {CASE_STUDIES[0] && (() => {
-        const cs = CASE_STUDIES[0];
+      {featuredCaseStudy && (() => {
+        const cs = featuredCaseStudy;
         const c = fr ? cs.fr : cs.en;
         return (
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
@@ -603,7 +616,7 @@ export function WorkPage() {
                   className="px-8 py-4 rounded-xl text-sm tracking-wide border transition-all duration-300"
                   style={{ backgroundColor: 'transparent', borderColor: 'rgba(212,168,67,0.35)', color: '#D4A843' }}
                 >
-                  <Link to="/booking">
+                  <Link to="/start-a-project">
                     {fr ? 'Réserve une séance' : 'Book a Shoot'}
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Link>

@@ -23,6 +23,7 @@ import {
   consumeRateLimit,
   collaborationAdminSubject,
   contactAdminSubject,
+  contactResponseDueAt,
   contactReceivedHtml,
   escapeHtml,
   isUsableTurnstileSecret,
@@ -363,17 +364,17 @@ const requireAdmin = async (c: any, next: any) => {
 // Security: Add security headers middleware
 app.use('*', async (c, next) => {
   await next();
-  
+
   // Security headers
   c.header('X-Content-Type-Options', 'nosniff');
   c.header('X-Frame-Options', 'DENY');
   c.header('X-XSS-Protection', '1; mode=block');
   c.header('Referrer-Policy', 'strict-origin-when-cross-origin');
   c.header('Permissions-Policy', 'geolocation=(), microphone=(), camera=()');
-  
+
   // Strict-Transport-Security (HSTS) - Force HTTPS for 1 year
   c.header('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
-  
+
   // JSON API. No third-party script, connect, or frame origins.
   c.header(
     "Content-Security-Policy",
@@ -441,7 +442,7 @@ app.post("/make-server-feacf0d8/audit-log", requireAdmin, async (c) => {
 
     // Store audit log in key-value store
     const logId = `audit_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     await store(c).set(logId, {
       timestamp,
       eventType,
@@ -506,7 +507,7 @@ app.get("/make-server-feacf0d8/audit-logs/export", requireAdmin, async (c) => {
 
     // Get all audit logs
     const logs = await store(c).getByPrefix('audit_');
-    
+
     // Filter by date range and event types
     const filtered = logs.filter((log: any) => {
       const logDate = new Date(log.timestamp);
@@ -722,13 +723,36 @@ app.post("/make-server-feacf0d8/submit-contact", rateLimit(5, 60000), async (c) 
     const body = parsedBody.body;
     const name = requiredText(body.name, TEXT_LIMITS.name);
     const email = parseEmailAddress(body.email);
-    const message = requiredText(body.message, TEXT_LIMITS.message);
+    const message = requiredText(body.description ?? body.message, TEXT_LIMITS.message);
     const phone = optionalText(body.phone, TEXT_LIMITS.phone);
-    const service = optionalText(body.service, TEXT_LIMITS.service);
+    const organization = optionalText(body.organization, TEXT_LIMITS.short);
+    const service = optionalText(body.projectType ?? body.service, TEXT_LIMITS.service);
     const budget = optionalText(body.budget, TEXT_LIMITS.short);
-    const timeline = optionalText(body.timeline, TEXT_LIMITS.short);
+    const context = optionalText(body.context, TEXT_LIMITS.message);
+    const suppliedRequestId = body.requestId === undefined ? null : safeKeyPart(body.requestId, 80);
+    const eventDate = body.eventDate === null || body.eventDate === undefined
+      ? null
+      : requiredText(body.eventDate, 10);
+    const dateNotSet = body.dateNotSet === true;
+    const timeline = optionalText(
+      body.timeline ?? (dateNotSet ? "Not set" : eventDate),
+      TEXT_LIMITS.short,
+    );
+    const isProjectIntake =
+      body.requestId !== undefined || body.organization !== undefined ||
+      body.projectType !== undefined || body.description !== undefined ||
+      body.eventDate !== undefined || body.dateNotSet !== undefined;
 
-    if (!name || !email || !message || !phone.ok || !service.ok || !budget.ok || !timeline.ok) {
+    if (
+      !name || !email || !message || !phone.ok || !organization.ok || !service.ok ||
+      !budget.ok || !timeline.ok || !context.ok ||
+      (body.requestId !== undefined && !suppliedRequestId) ||
+      (eventDate !== null && !/^\d{4}-\d{2}-\d{2}$/.test(eventDate)) ||
+      (isProjectIntake && (
+        !suppliedRequestId || !organization.value || !service.value ||
+        dateNotSet === Boolean(eventDate)
+      ))
+    ) {
       return c.json({ error: "Name, email, and message are required" }, 400);
     }
 
@@ -737,19 +761,30 @@ app.post("/make-server-feacf0d8/submit-contact", rateLimit(5, 60000), async (c) 
       return c.json({ error: captcha.error }, captcha.status);
     }
 
-    const contactId = `contact_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const requestId = suppliedRequestId ?? `contact_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    const contactId = suppliedRequestId ? `contact_${suppliedRequestId}` : requestId;
+    const receivedAt = new Date().toISOString();
+    const responseDueAt = contactResponseDueAt(new Date(receivedAt));
 
     const stored = await persistLead(c, contactId, {
+      requestId,
       name,
       email,
+      organization: organization.value,
       phone: phone.value,
       service: service.value,
+      projectType: service.value,
       message,
+      description: message,
       budget: budget.value,
       timeline: timeline.value,
+      eventDate,
+      dateNotSet,
+      context: context.value,
       status: 'new',
       type: 'contact',
-      created_at: new Date().toISOString()
+      created_at: receivedAt,
+      response_due_at: responseDueAt,
     });
 
     console.log(`Contact form submitted: ${contactId}`);
@@ -757,21 +792,24 @@ app.post("/make-server-feacf0d8/submit-contact", rateLimit(5, 60000), async (c) 
     defer(c, syncToAirtable(c.env.AIRTABLE_API_KEY, "tblgMShO3Sa6ynJyb", {
       Name: name, Email: email, Phone: phone.value, Message: message,
       Service: service.value, Budget: budget.value, Timeline: timeline.value,
-      Type: "contact", "Submitted At": new Date().toISOString(),
-      "Supabase Record ID": contactId,
+      Type: "contact", "Submitted At": receivedAt,
+      "Supabase Record ID": requestId,
     }));
 
     // Customer copy is a fixed receipt. The admin copy keeps the submission.
     const emailApiKey = c.env.EMAIL_SERVICE_API_KEY;
     if (emailApiKey) {
       const contactEmailData: ContactEmailData = {
+        requestId,
         name,
         email,
+        organization: organization.value,
         phone: phone.value,
         service: service.value,
         message,
         budget: budget.value,
         timeline: timeline.value,
+        context: context.value,
       };
       defer(c, (async () => {
         try {
@@ -804,12 +842,23 @@ app.post("/make-server-feacf0d8/submit-contact", rateLimit(5, 60000), async (c) 
       })());
     }
 
+    if (!stored) {
+      return c.json({
+        error: 'Failed to persist contact form',
+        requestId,
+        stored: false,
+      }, 503);
+    }
+
     return c.json({
       contactId,
-      status: 'success',
+      requestId,
+      status: 'received',
+      receivedAt,
+      responseDueAt,
       message: 'Contact form submitted successfully',
-      stored,
-    }, leadStatus(stored));
+      stored: true,
+    });
   } catch (error) {
     console.error("Error submitting contact form:", errorLabel(error));
     return c.json({ error: "Failed to submit contact form" }, 500);
@@ -840,7 +889,7 @@ app.post("/make-server-feacf0d8/submit-collaboration", rateLimit(5, 60000), asyn
     }
 
     const collaborationId = `collaboration_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     const stored = await persistLead(c, collaborationId, {
       name,
       email,
@@ -939,7 +988,7 @@ app.post("/make-server-feacf0d8/submit-booking", rateLimit(5, 60000), async (c) 
     }
 
     const bookingId = `booking_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     const stored = await persistLead(c, bookingId, {
       service,
       package: packageName.value,
@@ -1050,7 +1099,7 @@ app.post("/make-server-feacf0d8/submit-rental", rateLimit(5, 60000), async (c) =
 
     const rentalId = `rental_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const equipmentNames = equipment.filter((item: string | null): item is string => item !== null);
-    
+
     const stored = await persistLead(c, rentalId, {
       equipment: equipmentNames,
       name,
@@ -1125,7 +1174,7 @@ app.post("/make-server-feacf0d8/update-submission-status", requireAdmin, async (
     }
 
     const submission = await store(c).get(submissionId);
-    
+
     if (!submission) {
       return c.json({ error: "Submission not found" }, 404);
     }
@@ -1322,12 +1371,12 @@ app.post("/make-server-feacf0d8/send-booking-confirmation", requireAdmin, rateLi
 
     // Check if email service is configured
     const emailServiceApiKey = c.env.EMAIL_SERVICE_API_KEY;
-    
+
     if (!emailServiceApiKey) {
       console.warn('EMAIL_SERVICE_API_KEY not configured - skipping email send');
-      return c.json({ 
-        status: 'warning', 
-        message: 'Email service not configured. Booking saved but confirmation not sent.' 
+      return c.json({
+        status: 'warning',
+        message: 'Email service not configured. Booking saved but confirmation not sent.'
       }, 200);
     }
 
@@ -1348,7 +1397,7 @@ app.post("/make-server-feacf0d8/send-booking-confirmation", requireAdmin, rateLi
 
     // Get customer email template in correct language
     const customerEmailHtml = getBookingConfirmationTemplate(language || 'en', emailData);
-    const customerSubject = language === 'fr' 
+    const customerSubject = language === 'fr'
       ? 'Confirmation de Réservation - CREOVA'
       : 'Booking Confirmation - CREOVA';
 
@@ -1378,7 +1427,7 @@ app.post("/make-server-feacf0d8/send-booking-confirmation", requireAdmin, rateLi
 
     // Send notification to admin
     const adminEmailHtml = adminBookingNotification(emailData);
-    
+
     const adminEmailResponse = await outbound.fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
@@ -1402,15 +1451,15 @@ app.post("/make-server-feacf0d8/send-booking-confirmation", requireAdmin, rateLi
       console.log(`Admin notification sent: ${adminResult.id}`);
     }
 
-    return c.json({ 
-      status: 'success', 
+    return c.json({
+      status: 'success',
       message: 'Booking confirmation emails sent successfully',
       customerEmailId: customerResult.id
     });
 
   } catch (error) {
     console.error("Error sending booking confirmation emails:", errorLabel(error));
-    return c.json({ 
+    return c.json({
       error: 'Failed to send confirmation email',
     }, 500);
   }
@@ -1423,14 +1472,14 @@ app.post("/make-server-feacf0d8/send-contact-notification", requireAdmin, rateLi
     const contactData: ContactEmailData = body;
 
     const emailServiceApiKey = c.env.EMAIL_SERVICE_API_KEY;
-    
+
     if (!emailServiceApiKey) {
       console.warn('EMAIL_SERVICE_API_KEY not configured - skipping admin notification');
       return c.json({ status: 'warning', message: 'Email service not configured' }, 200);
     }
 
     const adminEmailHtml = adminContactNotification(contactData);
-    
+
     const emailResponse = await outbound.fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
@@ -1455,15 +1504,15 @@ app.post("/make-server-feacf0d8/send-contact-notification", requireAdmin, rateLi
     const result = (await emailResponse.json()) as { id?: string };
     console.log(`Contact form notification sent: ${result.id}`);
 
-    return c.json({ 
-      status: 'success', 
+    return c.json({
+      status: 'success',
       message: 'Admin notification sent',
       emailId: result.id
     });
 
   } catch (error) {
     console.error("Error sending contact notification:", errorLabel(error));
-    return c.json({ 
+    return c.json({
       error: 'Failed to send notification',
     }, 500);
   }
@@ -1476,14 +1525,14 @@ app.post("/make-server-feacf0d8/send-collaboration-notification", requireAdmin, 
     const collaborationData: CollaborationEmailData = body;
 
     const emailServiceApiKey = c.env.EMAIL_SERVICE_API_KEY;
-    
+
     if (!emailServiceApiKey) {
       console.warn('EMAIL_SERVICE_API_KEY not configured - skipping admin notification');
       return c.json({ status: 'warning', message: 'Email service not configured' }, 200);
     }
 
     const adminEmailHtml = adminCollaborationNotification(collaborationData);
-    
+
     const emailResponse = await outbound.fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
@@ -1508,15 +1557,15 @@ app.post("/make-server-feacf0d8/send-collaboration-notification", requireAdmin, 
     const result = (await emailResponse.json()) as { id?: string };
     console.log(`Collaboration notification sent: ${result.id}`);
 
-    return c.json({ 
-      status: 'success', 
+    return c.json({
+      status: 'success',
       message: 'Admin notification sent',
       emailId: result.id
     });
 
   } catch (error) {
     console.error("Error sending collaboration notification:", errorLabel(error));
-    return c.json({ 
+    return c.json({
       error: 'Failed to send notification',
     }, 500);
   }

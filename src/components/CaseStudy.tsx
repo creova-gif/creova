@@ -262,7 +262,7 @@ export function CaseStudy() {
               className="flex items-center gap-4"
             >
               <Link
-                to="/contact"
+                to="/start-a-project"
                 className="group inline-flex items-center gap-3 px-7 py-3.5 rounded-xl text-sm font-semibold tracking-wide transition-all duration-500 hover:shadow-xl hover:scale-[1.02]"
                 style={{ backgroundColor: '#121212', color: '#F8F9FA' }}
               >
@@ -270,7 +270,7 @@ export function CaseStudy() {
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link
-                to="/experience"
+                to="/services#event-story"
                 className="text-sm transition-opacity hover:opacity-60"
                 style={{ color: '#D4A843' }}
               >

@@ -4,9 +4,15 @@ import { outbound } from "../src/index";
 import { postJson } from "./helpers";
 
 const CONTACT = {
+  requestId: "8ec8ea88-cf48-46b5-992a-e43ecb2af234",
   name: "Ada Lovelace",
   email: "ada@creova.one",
-  message: "Hello from the local test env",
+  organization: "Analytical Engine Society",
+  projectType: "event-story",
+  eventDate: "2026-12-10",
+  dateNotSet: false,
+  description: "Hello from the local test env",
+  context: "Document the community impact for the annual report.",
 };
 
 const BOOKING = {
@@ -44,9 +50,33 @@ describe("local captcha skip", () => {
       LOOPBACK,
     );
     expect(contact.status).toBe(200);
-    const contactBody = (await contact.json()) as { status?: string; contactId?: string };
-    expect(contactBody.status).toBe("success");
-    expect(contactBody.contactId?.startsWith("contact_")).toBe(true);
+    const contactBody = (await contact.json()) as {
+      status?: string;
+      contactId?: string;
+      requestId?: string;
+      receivedAt?: string;
+      responseDueAt?: string;
+    };
+    expect(contactBody.status).toBe("received");
+    expect(contactBody.contactId).toBe(`contact_${CONTACT.requestId}`);
+    expect(contactBody.requestId).toBe(CONTACT.requestId);
+    expect(Date.parse(contactBody.receivedAt ?? "")).not.toBeNaN();
+    expect(Date.parse(contactBody.responseDueAt ?? "")).not.toBeNaN();
+
+    const row = await env.DB.prepare("SELECT value FROM kv WHERE key = ?")
+      .bind(`contact_${CONTACT.requestId}`)
+      .first<{ value: string }>();
+    const stored = JSON.parse(row?.value ?? "{}") as Record<string, unknown>;
+    expect(stored).toMatchObject({
+      requestId: CONTACT.requestId,
+      organization: CONTACT.organization,
+      projectType: CONTACT.projectType,
+      eventDate: CONTACT.eventDate,
+      dateNotSet: false,
+      description: CONTACT.description,
+      context: CONTACT.context,
+    });
+    expect(stored.response_due_at).toBe(contactBody.responseDueAt);
 
     const booking = await postJson(
       "/make-server-feacf0d8/submit-booking",
@@ -94,11 +124,17 @@ describe("local captcha skip", () => {
       undefined,
       LOOPBACK,
     );
-    expect(contact.status).toBe(202);
-    const body = (await contact.json()) as { status?: string; contactId?: string; stored?: boolean };
-    expect(body.status).toBe("success");
+    expect(contact.status).toBe(503);
+    const body = (await contact.json()) as {
+      status?: string;
+      requestId?: string;
+      receivedAt?: string;
+      stored?: boolean;
+    };
+    expect(body.status).toBeUndefined();
+    expect(body.receivedAt).toBeUndefined();
     expect(body.stored).toBe(false);
-    expect(body.contactId?.startsWith("contact_")).toBe(true);
+    expect(body.requestId).toBe(CONTACT.requestId);
     const sent = calls.slice(before);
     expect(sent.some((url) => url.startsWith("https://api.resend.com"))).toBe(true);
     expect(sent.some((url) => url.startsWith("https://api.airtable.com"))).toBe(true);
