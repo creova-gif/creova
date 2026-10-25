@@ -17,7 +17,6 @@ export const organizationSchema = {
   image: `${SITE_URL}/card-blackprint.jpg`,
   description:
     'CREOVA is an Ontario cultural storytelling studio helping organizations extend the value of events, programs, and community initiatives.',
-  telephone: '+1-437-260-8925',
   email: 'support@creova.one',
   areaServed: {
     '@type': 'Place',

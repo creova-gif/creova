@@ -66,9 +66,9 @@ export function AboutPage() {
           background: 'radial-gradient(ellipse 60% 50% at 20% 0%, rgba(212,168,67,0.10) 0%, transparent 55%)',
         }} />
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-10 lg:pt-32">
-          <span className="text-xs tracking-[0.4em] uppercase" style={{ color: '#D4A843' }}>{fr ? 'L’histoire' : 'The Story'}</span>
+          <span className="text-xs tracking-[0.4em] uppercase" style={{ color: '#D4A843' }}>{fr ? 'À propos de CREOVA' : 'About CREOVA'}</span>
           <h1 className="tracking-tight mt-5" style={{ color: '#F8F9FA', fontFamily: 'var(--font-display)', fontSize: 'clamp(2.6rem, 7vw, 4.8rem)', lineHeight: 1.02 }}>
-            {fr ? 'Pourquoi j’ai bâti CREOVA' : 'Why I built CREOVA'}
+            {fr ? 'Un studio conçu pour raconter la culture avec contexte et soin.' : 'A studio built to tell cultural stories with context and care.'}
           </h1>
         </div>
       </section>

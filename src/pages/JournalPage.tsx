@@ -50,7 +50,7 @@ export function JournalPage() {
             {fr ? 'Le Journal' : 'The Journal'}
           </span>
           <h1 className="tracking-tight mt-5 mb-5" style={{ color: '#F8F9FA', fontFamily: 'var(--font-display)', fontSize: 'clamp(2.6rem, 7vw, 4.6rem)', lineHeight: 1.02 }}>
-            {fr ? 'Guides & perspectives' : 'Guides & perspective'}
+            {fr ? 'Des conseils pratiques pour mieux raconter la culture.' : 'Practical guidance for better cultural storytelling.'}
           </h1>
           <p className="text-lg" style={{ color: '#8C7B75', maxWidth: '54ch' }}>
             {fr

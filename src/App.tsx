@@ -12,15 +12,9 @@ import { JOURNAL } from './data/journal';
 import { CASE_STUDIES } from './data/caseStudies';
 import { LanguageProvider, useLanguage } from './context/LanguageContext';
 import { Toaster } from './components/ui/sonner';
-import { BackToTop } from './components/BackToTop';
 import { ScrollToTop } from './components/ScrollToTop';
 import { ScrollToTopOnMount } from './components/ScrollToTopOnMount';
-import { SupportChat } from './components/SupportChat';
 import { AnalyticsTracker } from './components/AnalyticsTracker';
-import { ContactInfoBanner } from './components/ContactInfoBanner';
-import { ScrollProgressBar } from './components/ScrollProgressBar';
-import { GrainOverlay } from './components/GrainOverlay';
-import { IntroLoader } from './components/IntroLoader';
 
 const HomePage = lazy(() => import('./pages/HomePage').then(m => ({ default: m.HomePage })));
 const ServicesPage = lazy(() => import('./pages/ServicesPage').then(m => ({ default: m.ServicesPage })));
@@ -191,7 +185,6 @@ function AppContent() {
             ? "Studio de narration culturelle qui aide les organisations à prolonger l'impact de leurs événements et programmes."
             : "A cultural storytelling studio helping organizations extend the value of their events and programs.",
           "url": "https://www.creova.one/",
-          "telephone": "+1-437-260-8925",
           "email": "support@creova.one",
           "address": {
             "@type": "PostalAddress",
@@ -246,8 +239,6 @@ function AppContent() {
         })
       }} />
       
-      {/* <LenisProvider /> disabled: smooth-scroll library made scrolling feel laggy; using native scroll */}
-      <IntroLoader />
       <ScrollToTopOnMount />
       
       {isChanging && (
@@ -270,8 +261,7 @@ function AppContent() {
       </a>
       
       <div className="min-h-screen flex flex-col bg-white overflow-x-hidden">
-        <div className="sticky top-0 z-50 flex flex-col">
-          <ContactInfoBanner />
+        <div className="sticky top-0 z-50">
           <Navigation />
         </div>
         <main id="main-content" className="flex-grow">
@@ -279,12 +269,8 @@ function AppContent() {
         </main>
         <Footer />
         <Toaster richColors position="top-right" />
-        <BackToTop />
-        <SupportChat />
         <AnalyticsTracker />
         {/* <CustomCursor /> disabled: trailing custom cursor made the site feel laggy; using native cursor */}
-        <ScrollProgressBar />
-        <GrainOverlay />
       </div>
     </>
   );

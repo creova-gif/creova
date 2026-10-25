@@ -333,38 +333,8 @@ export function WorkPage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.9, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
                 >
-                  {/* MASSIVE "Creative" — takes up the width */}
-                  <h1 className="leading-none">
-                    <span className="block font-light tracking-tighter" style={{ fontSize: 'clamp(72px, 15vw, 200px)', color: '#F8F9FA' }}>
-                      {fr ? 'Créatif' : 'Creative'}
-                    </span>
-                    {/* Small italic "/ Portfolio." — scale contrast is the technique */}
-                    <span className="flex items-end justify-between mt-1">
-                      <motion.span
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.7, delay: 0.5 }}
-                        className="italic tracking-tight"
-                        style={{
-                          fontSize: 'clamp(22px, 3.5vw, 44px)',
-                          backgroundImage: 'linear-gradient(95deg, #D4A843 0%, #E0E0E0 60%)',
-                          WebkitBackgroundClip: 'text',
-                          backgroundClip: 'text',
-                          color: 'transparent',
-                        }}
-                      >
-                        {fr ? '/ Portfolio.' : '/ Portfolio.'}
-                      </motion.span>
-                      <motion.span
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.7 }}
-                        className="text-[9px] tracking-[0.5em] uppercase hidden sm:block"
-                        style={{ color: 'rgba(248,249,250,0.2)' }}
-                      >
-                        {fr ? 'Sélection publique' : 'Public selection'}
-                      </motion.span>
-                    </span>
+                  <h1 className="max-w-6xl font-light tracking-tight leading-[0.96]" style={{ fontSize: 'clamp(3.4rem, 8vw, 7.8rem)', color: '#F8F9FA' }}>
+                    {fr ? 'Des histoires ancrées dans de vrais événements, personnes et programmes.' : 'Stories built from real events, people, and programs.'}
                   </h1>
                 </motion.div>
 
@@ -372,10 +342,10 @@ export function WorkPage() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.7, delay: 0.55 }}
-                  className="mt-5 text-base leading-relaxed max-w-md"
-                  style={{ color: 'rgba(248,249,250,0.5)' }}
+                  className="mt-6 text-lg leading-relaxed max-w-2xl"
+                  style={{ color: 'rgba(248,249,250,0.72)' }}
                 >
-                  {fr ? "Photographie et contenu de marque pour les organisations dirigées par des personnes BIPOC, les événements culturels et les institutions communautaires de Niagara et de l'Ontario." : 'Photography and brand content for BIPOC-led organizations, cultural events, and community institutions across Niagara and Ontario.'}
+                  {fr ? "Parcourez une sélection publique de photographies et de contenus créés pour des organisations, des événements culturels et des institutions communautaires de l'Ontario." : 'Explore public photography and content created for organizations, cultural events, and community institutions across Ontario.'}
                 </motion.p>
               </div>
 

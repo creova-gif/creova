@@ -38,7 +38,6 @@ export function ServiceAreaPage({ slug }: { slug: string }) {
         '@type': 'ProfessionalService',
         name: 'CREOVA',
         url: `${SITE_URL}/`,
-        telephone: '+1-437-260-8925',
         email: 'support@creova.one',
         address: { '@type': 'PostalAddress', addressRegion: 'ON', addressCountry: 'CA', addressLocality: 'St. Catharines' },
       },

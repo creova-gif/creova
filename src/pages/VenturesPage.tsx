@@ -29,7 +29,7 @@ export function VenturesPage() {
             {fr ? 'Construit par CREOVA' : 'Built by CREOVA'}
           </p>
           <h1 className="max-w-4xl font-light tracking-tight leading-[0.95]" style={{ color: '#F8F9FA', fontSize: 'clamp(3.5rem, 9vw, 8rem)' }}>
-            {fr ? 'Des idées qui deviennent des actifs.' : 'Ideas becoming owned assets.'}
+            {fr ? 'Voyez ce que CREOVA construit — et où en est chaque projet.' : 'See what CREOVA is building—and how far each venture has progressed.'}
           </h1>
           <p className="max-w-2xl mt-8 text-lg leading-relaxed" style={{ color: '#9B9B9B' }}>
             {fr

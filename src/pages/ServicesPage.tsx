@@ -93,10 +93,10 @@ export function ServicesPage() {
         <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .7 }} className="relative max-w-7xl mx-auto px-6 lg:px-8">
           <p className="text-xs tracking-[.35em] uppercase mb-6" style={{ color: '#D4A843' }}>{fr ? 'Services' : 'What we do'}</p>
           <h1 className="max-w-5xl font-light tracking-tight leading-[.98]" style={{ color: '#F8F9FA', fontSize: 'clamp(3.2rem, 8vw, 7.5rem)' }}>
-            {fr ? 'Des histoires conçues pour continuer à travailler.' : 'Stories designed to keep working.'}
+            {fr ? 'Un système narratif pour le moment, le public et la suite.' : 'One story system for the moment, the audience, and what comes next.'}
           </h1>
           <p className="max-w-3xl mt-7 text-lg md:text-xl leading-relaxed" style={{ color: '#B7BBC3' }}>
-            {fr ? 'Nous ne vendons pas une liste de livrables isolés. Nous construisons le bon système narratif autour du résultat recherché.' : 'We do not sell a disconnected menu of deliverables. We build the right storytelling system around the outcome you need.'}
+            {fr ? 'Stratégie, photo, vidéo et actifs organisés autour du résultat recherché — pas une liste de livrables isolés.' : 'Strategy, photography, video, and organized assets built around the outcome you need—not a disconnected menu of deliverables.'}
           </p>
         </motion.div>
       </section>

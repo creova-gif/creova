@@ -6,7 +6,7 @@ import { Textarea } from '../components/ui/textarea';
 import { Label } from '../components/ui/label';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '../components/ui/accordion';
 import { Captcha } from '../components/Captcha';
-import { MapPin, Phone, Mail, Clock, Star } from 'lucide-react';
+import { Star } from 'lucide-react';
 import { GOOGLE_REVIEW_URL } from '../config';
 import { motion } from 'motion/react';
 import { toast } from 'sonner';
@@ -199,45 +199,8 @@ export function ContactPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
               >
-                <h1 className="leading-none">
-                {/* Massive "Let's" */}
-                <motion.span
-                  className="block font-light tracking-tighter cursor-default select-none"
-                  style={{ fontSize: 'clamp(72px, 14vw, 190px)', color: '#F8F9FA' }}
-                  whileHover={{ x: 6, color: 'rgba(248,249,250,0.7)' }}
-                  transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                >
-                  Let's
-                </motion.span>
-                {/* Small italic "Connect." — the scale contrast */}
-                <span className="flex items-end justify-between gap-4">
-                  <motion.span
-                    className="block italic leading-none tracking-tight cursor-default select-none"
-                    style={{
-                      fontSize: 'clamp(20px, 3.2vw, 42px)',
-                      backgroundImage: 'linear-gradient(95deg, #B1643B 0%, #D4A843 100%)',
-                      WebkitBackgroundClip: 'text',
-                      backgroundClip: 'text',
-                      color: 'transparent',
-                    }}
-                    whileHover={{ x: 10 }}
-                    transition={{ type: 'spring', stiffness: 300, damping: 28 }}
-                  >
-                    Connect.
-                  </motion.span>
-                  {/* Live response signal */}
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.9 }}
-                    className="hidden sm:flex items-center gap-2 pb-1 flex-shrink-0"
-                  >
-                    <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: '#D4A843' }} />
-                    <span className="text-[9px] tracking-[0.4em] uppercase" style={{ color: 'rgba(248,249,250,0.25)' }}>
-                      {language === 'fr' ? 'Identifiant confirmé après envoi' : 'Request ID confirmed on receipt'}
-                    </span>
-                  </motion.div>
-                </span>
+                <h1 className="font-light tracking-tight leading-[0.96] max-w-5xl" style={{ fontSize: 'clamp(3.4rem, 9vw, 8rem)', color: '#F8F9FA' }}>
+                  {language === 'fr' ? 'Parlez-nous de ce que vous préparez.' : 'Tell us what you’re planning.'}
                 </h1>
               </motion.div>
 
@@ -245,40 +208,14 @@ export function ContactPage() {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.35 }}
-                className="mt-6 text-base leading-relaxed max-w-sm"
-                style={{ color: 'rgba(248,249,250,0.42)' }}
+                className="mt-6 text-lg leading-relaxed max-w-2xl"
+                style={{ color: 'rgba(248,249,250,0.72)' }}
               >
-                {t('contact.hero.subtitle')}
+                {language === 'fr'
+                  ? 'Décrivez l’événement, le programme ou la campagne, le public à rejoindre et ce que le travail doit accomplir.'
+                  : 'Share the event, program, or campaign, who it needs to reach, and what the work needs to accomplish.'}
               </motion.p>
             </div>
-
-            {/* Right: contact info tiles */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.4 }}
-              className="grid grid-cols-2 gap-3 lg:w-72 flex-shrink-0"
-            >
-              {[
-                { icon: Phone, label: 'Call Us', value: '+1 (437) 260-8925', href: 'tel:+14372608925' },
-                { icon: Mail, label: 'Email', value: 'support@creova.one', href: 'mailto:support@creova.one' },
-                { icon: MapPin, label: 'Location', value: 'Niagara, Ontario', href: null },
-                { icon: Clock, label: 'Hours', value: 'Mon–Fri 9AM–6PM', href: null },
-              ].map(({ icon: Icon, label, value, href }) => {
-                const inner = (
-                  <div className="flex flex-col gap-2 p-4 rounded-xl border transition-colors" style={{ backgroundColor: 'rgba(255,255,255,0.03)', borderColor: 'rgba(212,168,67,0.12)' }}>
-                    <Icon className="w-4 h-4" style={{ color: '#D4A843' }} />
-                    <div className="text-[9px] tracking-[0.3em] uppercase" style={{ color: 'rgba(248,249,250,0.3)' }}>{label}</div>
-                    <div className="text-xs leading-tight" style={{ color: 'rgba(248,249,250,0.7)' }}>{value}</div>
-                  </div>
-                );
-                return href ? (
-                  <a key={label} href={href} className="block hover:opacity-80 transition-opacity">{inner}</a>
-                ) : (
-                  <div key={label}>{inner}</div>
-                );
-              })}
-            </motion.div>
           </div>
         </div>
       </section>

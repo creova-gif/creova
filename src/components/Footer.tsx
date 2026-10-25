@@ -48,7 +48,6 @@ export function Footer() {
             <ul className="space-y-3 text-sm" style={{ color: '#9B9B9B' }}>
               <li><a href="https://instagram.com/creativeinnovation__" target="_blank" rel="noopener noreferrer" className="hover:text-white">Instagram</a></li>
               <li><a href="https://www.linkedin.com/company/creovaspace/" target="_blank" rel="noopener noreferrer" className="hover:text-white">LinkedIn</a></li>
-              <li><a href="tel:+14372608925" className="hover:text-white">+1 437 260 8925</a></li>
               <li><a href="mailto:support@creova.one" className="hover:text-white">support@creova.one</a></li>
             </ul>
           </div>

@@ -44,8 +44,8 @@ export function CommunityPage() {
         <div className="absolute inset-0" style={{ background: 'linear-gradient(90deg, rgba(18,18,18,.97), rgba(18,18,18,.62) 70%, rgba(18,18,18,.38))' }} />
         <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .7 }} className="relative max-w-7xl mx-auto w-full px-6 lg:px-8 py-20 lg:py-28">
           <p className="text-xs tracking-[.35em] uppercase mb-6" style={{ color: '#D4A843' }}>{fr ? 'Communauté' : 'Community'}</p>
-          <h1 className="max-w-5xl font-light tracking-tight leading-[.98]" style={{ color: '#F8F9FA', fontSize: 'clamp(3.1rem, 8vw, 7.2rem)' }}>{fr ? 'Des relations claires créent de meilleures histoires.' : 'Clear relationships make better stories.'}</h1>
-          <p className="max-w-3xl mt-7 text-lg md:text-xl leading-relaxed" style={{ color: '#E0E0E0' }}>{fr ? 'CREOVA travaille avec des organisations, des créatifs et des partenaires lorsque le rôle de chacun, la valeur échangée et le résultat visé sont compris dès le départ.' : 'CREOVA works with organizations, creatives, and partners when everyone understands the role, value exchange, and intended outcome from the start.'}</p>
+          <h1 className="max-w-5xl font-light tracking-tight leading-[.98]" style={{ color: '#F8F9FA', fontSize: 'clamp(3.1rem, 8vw, 7.2rem)' }}>{fr ? 'Mandater, collaborer ou soutenir — avec des rôles clairs dès le départ.' : 'Commission, collaborate, or partner—with clear roles from the start.'}</h1>
+          <p className="max-w-3xl mt-7 text-lg md:text-xl leading-relaxed" style={{ color: '#E0E0E0' }}>{fr ? 'Choisissez la relation qui correspond à votre objectif. Nous clarifions le rôle de chacun, la valeur échangée et le résultat avant de commencer.' : 'Choose the relationship that matches your goal. We clarify roles, value exchange, and the intended outcome before work begins.'}</p>
         </motion.div>
       </section>
 

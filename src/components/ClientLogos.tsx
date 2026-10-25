@@ -65,7 +65,7 @@ export function ClientLogos() {
                 src={client.logo}
                 alt={client.name}
                 loading="lazy"
-                className="object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-400"
+                className="object-contain opacity-100 transition-transform duration-300"
                 style={{ height: '48px', maxWidth: '140px' }}
               />
             </motion.a>

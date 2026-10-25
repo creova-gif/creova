@@ -8,6 +8,8 @@ import { organizationSchema } from '../utils/structuredData';
 import heroImage from '../assets/photo-community-celebration.jpg';
 import communityImage from '../assets/photo-community-convo.jpg';
 import founderImage from '../assets/photo-team-atrium.jpg';
+import logoBrock from '../assets/logo-brock-university.webp';
+import logoBSSC from '../assets/logo-bssc.png';
 
 export function HomePage() {
   const { language } = useLanguage();
@@ -91,7 +93,7 @@ export function HomePage() {
               {fr ? 'Studio de narration culturelle · Ontario' : 'Cultural storytelling studio · Ontario'}
             </p>
             <h1 className="font-light tracking-tight leading-[0.96]" style={{ color: '#F8F9FA', fontSize: 'clamp(3.2rem, 8vw, 7.6rem)' }}>
-              {fr ? 'Transformer les moments marquants en élan durable.' : 'Turn meaningful moments into lasting momentum.'}
+              {fr ? 'Transformez vos événements en histoires qui rassemblent et font agir.' : 'Turn your events into stories that connect people and move them to act.'}
             </h1>
             <p className="mt-7 max-w-3xl text-lg md:text-xl leading-relaxed" style={{ color: '#E0E0E0' }}>
               {fr
@@ -116,14 +118,16 @@ export function HomePage() {
       </section>
 
       <section className="border-b" style={{ backgroundColor: '#FFFFFF', borderColor: '#E0E0E0' }}>
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-7 grid md:grid-cols-[1fr_auto_auto] gap-5 md:items-center">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-7 grid md:grid-cols-[1fr_auto] gap-6 md:items-center">
           <p className="text-sm leading-relaxed" style={{ color: '#555' }}>
             {fr
               ? 'Travail public vérifié : documentation du Mois de l’histoire des Noirs et de programmes communautaires liés au Black Student Success Centre de l’Université Brock.'
               : 'Verified public work: Black History Month and community-program documentation connected with Brock University’s Black Student Success Centre.'}
           </p>
-          <span className="text-xs tracking-[0.2em] uppercase" style={{ color: '#2E4057' }}>Brock University</span>
-          <span className="text-xs tracking-[0.2em] uppercase" style={{ color: '#2E4057' }}>Black Student Success Centre</span>
+          <div className="flex items-center gap-5" aria-label="Verified collaborators">
+            <img src={logoBrock} alt="Brock University" className="h-11 w-auto object-contain" />
+            <img src={logoBSSC} alt="Black Student Success Centre" className="h-11 w-11 object-contain" />
+          </div>
         </div>
       </section>
 
@@ -227,7 +231,7 @@ export function HomePage() {
 
       <section className="py-24" style={{ backgroundColor: '#F8F9FA' }}>
         <div className="max-w-7xl mx-auto px-6 lg:px-8 grid lg:grid-cols-[.8fr_1.2fr] gap-12 items-center">
-          <img src={founderImage} alt="Justin Mafie working with the CREOVA community" loading="lazy" className="w-full rounded-3xl object-cover aspect-[4/5]" />
+          <img src={founderImage} alt="Justin Mafie working with the CREOVA community" decoding="async" className="w-full rounded-3xl object-cover aspect-[4/5]" />
           <div>
             <p className="text-xs tracking-[0.35em] uppercase mb-5" style={{ color: '#C0392B' }}>{fr ? 'Approche fondée par Justin Mafie' : 'Founder-led by Justin Mafie'}</p>
             <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-6" style={{ color: '#1A1A2E' }}>{fr ? 'La culture n’est pas une couche décorative.' : 'Culture is not a decorative layer.'}</h2>

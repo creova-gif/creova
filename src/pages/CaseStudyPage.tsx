@@ -7,6 +7,8 @@ import { useLanguage } from '../context/LanguageContext';
 import { getCaseStudy } from '../data/caseStudies';
 import { absoluteUrl } from '../i18n/locale';
 import { getPublishedEvidenceBySlug } from '../content/publicEvidence';
+import logoBrock from '../assets/logo-brock-university.webp';
+import logoBSSC from '../assets/logo-bssc.png';
 
 const SITE_URL = 'https://www.creova.one';
 
@@ -45,6 +47,13 @@ export function CaseStudyPage({ slug }: { slug: string }) {
           <span className="block text-xs tracking-[0.35em] uppercase" style={{ color: '#D4A843' }}>{c.kicker}</span>
           <h1 className="tracking-tight mt-5 mb-6" style={{ color: '#F8F9FA', fontFamily: 'var(--font-display)', fontSize: 'clamp(2.4rem, 6vw, 4.2rem)', lineHeight: 1.03 }}>{c.title}</h1>
           <p className="text-lg leading-relaxed" style={{ color: '#E0E0E0', maxWidth: '62ch' }}>{c.overview}</p>
+          <div className="mt-8 flex items-center gap-4" aria-label="Collaborators">
+            <img src={logoBrock} alt="Brock University" className="h-11 w-auto object-contain" />
+            <span className="text-sm" style={{ color: '#777' }}>×</span>
+            <span className="rounded-md bg-white p-1.5">
+              <img src={logoBSSC} alt="Black Student Success Centre" className="h-8 w-8 object-contain" />
+            </span>
+          </div>
         </div>
       </section>
 
