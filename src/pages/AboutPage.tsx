@@ -54,7 +54,7 @@ export function AboutPage() {
         title={fr ? 'À propos — L’histoire de CREOVA' : 'About — The CREOVA Story'}
         description={fr
           ? 'L’histoire derrière CREOVA, par son fondateur Justin Mafie — pourquoi il a bâti une agence créative pour rendre le travail de qualité accessible à tous.'
-          : 'The story behind CREOVA, by founder Justin Mafie — why he built a creative agency to make world-class creative work accessible to everyone with a story worth telling.'}
+          : 'The story behind CREOVA, by founder Justin Mafie — and why cultural context, responsible production, and useful storytelling belong together.'}
         path="/about"
         ogImage={`${SITE_URL}/card-justin-panel.jpg`}
         jsonLd={jsonLd}
@@ -245,12 +245,12 @@ export function AboutPage() {
           </h2>
           <p className="text-lg leading-relaxed mb-8" style={{ color: '#E0E0E0' }}>
             {fr
-              ? 'CREOVA est une agence créative et une marque lifestyle. Le studio livre photographie, vidéo, image de marque et design — et a donné naissance à ses propres produits. Une entreprise, mille façons de raconter une histoire.'
-              : 'CREOVA is a creative agency and lifestyle brand. The studio delivers photography, videography, brand and design work — and it has grown into products of its own. One company, many ways to tell a story.'}
+              ? 'CREOVA est une entreprise créative centrée sur la narration culturelle. Le studio réalise le travail client; SEEN est en développement et VERSE reste en incubation. Une entreprise, des étapes clairement nommées.'
+              : 'CREOVA is a creative company centered on cultural storytelling. The studio delivers client work; SEEN is in development and VERSE remains in incubation. One company, with each stage named clearly.'}
           </p>
           <div className="grid sm:grid-cols-3 gap-4">
             {[
-              { name: 'CREOVA', tag: fr ? 'L’agence créative' : 'The creative agency', to: '/services' },
+              { name: 'CREOVA', tag: fr ? 'Le studio de narration culturelle' : 'The cultural storytelling studio', to: '/services' },
               { name: 'VERSE', tag: fr ? 'La marque lifestyle en incubation' : 'The lifestyle brand in incubation', to: VENTURE_URLS.verse ?? '/ventures#verse', external: Boolean(VENTURE_URLS.verse) },
               { name: 'SEEN', tag: fr ? 'Le produit numérique' : 'The digital product', to: VENTURE_URLS.seen ?? '/ventures#seen', external: Boolean(VENTURE_URLS.seen) },
             ].map((b) => (

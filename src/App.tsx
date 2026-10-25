@@ -7,7 +7,6 @@ import { Navigation } from './components/Navigation';
 import { Footer } from './components/Footer';
 import { AdminAuth } from './components/AdminAuth';
 import { ErrorBoundary } from './components/ErrorBoundary';
-import { ExploreMenuProvider } from './context/ExploreMenuContext';
 import { SERVICE_AREAS } from './data/serviceAreas';
 import { JOURNAL } from './data/journal';
 import { CASE_STUDIES } from './data/caseStudies';
@@ -18,7 +17,6 @@ import { ScrollToTop } from './components/ScrollToTop';
 import { ScrollToTopOnMount } from './components/ScrollToTopOnMount';
 import { SupportChat } from './components/SupportChat';
 import { AnalyticsTracker } from './components/AnalyticsTracker';
-import { ExitIntentModal } from './components/ExitIntentModal';
 import { ContactInfoBanner } from './components/ContactInfoBanner';
 import { ScrollProgressBar } from './components/ScrollProgressBar';
 import { GrainOverlay } from './components/GrainOverlay';
@@ -30,7 +28,6 @@ const CommunityPage = lazy(() => import('./pages/CommunityPage').then(m => ({ de
 const ContactPage = lazy(() => import('./pages/ContactPage').then(m => ({ default: m.ContactPage })));
 const TermsOfServicePage = lazy(() => import('./pages/TermsOfServicePage').then(m => ({ default: m.TermsOfServicePage })));
 const PrivacyPolicyPage = lazy(() => import('./pages/PrivacyPolicyPage').then(m => ({ default: m.PrivacyPolicyPage })));
-const SEENPage = lazy(() => import('./pages/SEENPage').then(m => ({ default: m.SEENPage })));
 const VenturesPage = lazy(() => import('./pages/VenturesPage').then(m => ({ default: m.VenturesPage })));
 const AdminSubmissionsPage = lazy(() => import('./pages/AdminSubmissionsPage').then(m => ({ default: m.AdminSubmissionsPage })));
 const AnalyticsDashboardPage = lazy(() => import('./pages/AnalyticsDashboardPage').then(m => ({ default: m.AnalyticsDashboardPage })));
@@ -73,7 +70,6 @@ const LOCALIZED_ROUTES: Array<{ path: string; element: React.ReactNode }> = [
   { path: 'community', element: <CommunityPage /> },
   { path: 'start-a-project', element: <ContactPage /> },
   { path: 'ventures', element: <VenturesPage /> },
-  { path: 'seen', element: <SEENPage /> },
   { path: 'about', element: <AboutPage /> },
   { path: 'terms-of-service', element: <TermsOfServicePage /> },
   { path: 'privacy-policy', element: <PrivacyPolicyPage /> },
@@ -89,6 +85,7 @@ const LOCALIZED_ROUTES: Array<{ path: string; element: React.ReactNode }> = [
 /** Legacy paths kept alive as redirects. English only — they were never localized. */
 const LEGACY_REDIRECTS: Array<{ from: string; to: string }> = [
   { from: '/contact', to: '/start-a-project' },
+  { from: '/seen', to: '/ventures#seen' },
   { from: '/pricing', to: '/services#event-story' },
   { from: '/shop', to: '/ventures#verse' },
   { from: '/shop/digital', to: '/ventures' },
@@ -181,7 +178,7 @@ function AppContent() {
         <meta name="geo.region" content="CA-ON" />
         <meta name="geo.placename" content="Ontario, Niagara Region" />
         <meta name="geo.position" content="43.0896;-79.0849" />
-        <meta name="author" content="CREOVA Creative Agency" />
+        <meta name="author" content="CREOVA" />
         <meta name="theme-color" content="#121212" />
       </Helmet>
 
@@ -189,8 +186,10 @@ function AppContent() {
         __html: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "ProfessionalService",
-          "name": "CREOVA Creative Agency",
-          "description": t('seo.schema.desc'),
+          "name": "CREOVA",
+          "description": currentLang === 'fr'
+            ? "Studio de narration culturelle qui aide les organisations à prolonger l'impact de leurs événements et programmes."
+            : "A cultural storytelling studio helping organizations extend the value of their events and programs.",
           "url": "https://www.creova.one/",
           "telephone": "+1-437-260-8925",
           "email": "support@creova.one",
@@ -205,8 +204,6 @@ function AppContent() {
             "latitude": "43.0896",
             "longitude": "-79.0849"
           },
-          "priceRange": "$$",
-          "openingHours": "Mo-Fr 09:00-18:00",
           "sameAs": [
             "https://www.instagram.com/creativeinnovation__"
           ],
@@ -218,30 +215,30 @@ function AppContent() {
           ],
           "hasOfferCatalog": {
             "@type": "OfferCatalog",
-            "name": t('seo.schema.catalog'),
+            "name": currentLang === 'fr' ? "Services de narration culturelle" : "Cultural storytelling services",
             "itemListElement": [
               {
                 "@type": "Offer",
                 "itemOffered": {
                   "@type": "Service",
-                  "name": t('seo.schema.photo.name'),
-                  "description": t('seo.schema.photo.desc')
+                  "name": currentLang === 'fr' ? "Récit d'événement et d'expérience" : "Event and experience storytelling",
+                  "description": currentLang === 'fr' ? "Stratégie narrative, photographie, vidéo et actifs pour prolonger un événement." : "Narrative strategy, photography, video, and assets that extend an event."
                 }
               },
               {
                 "@type": "Offer",
                 "itemOffered": {
                   "@type": "Service",
-                  "name": t('seo.schema.video.name'),
-                  "description": t('seo.schema.video.desc')
+                  "name": currentLang === 'fr' ? "Campagnes et récits communautaires" : "Campaign and community narratives",
+                  "description": currentLang === 'fr' ? "Systèmes narratifs pour programmes, initiatives et rapports d'impact." : "Story systems for programs, initiatives, and impact communications."
                 }
               },
               {
                 "@type": "Offer",
                 "itemOffered": {
                   "@type": "Service",
-                  "name": t('seo.schema.brand.name'),
-                  "description": t('seo.schema.brand.desc')
+                  "name": currentLang === 'fr' ? "Partenariats narratifs continus" : "Ongoing storytelling partnerships",
+                  "description": currentLang === 'fr' ? "Production récurrente et bibliothèque d'actifs organisés." : "Recurring production and an organized asset library."
                 }
               }
             ]
@@ -285,7 +282,6 @@ function AppContent() {
         <BackToTop />
         <SupportChat />
         <AnalyticsTracker />
-        <ExitIntentModal />
         {/* <CustomCursor /> disabled: trailing custom cursor made the site feel laggy; using native cursor */}
         <ScrollProgressBar />
         <GrainOverlay />
@@ -302,12 +298,10 @@ function AppContent() {
 export function AppShell() {
   return (
     <LanguageProvider>
-      <ExploreMenuProvider>
-        <ScrollToTop />
-        <ErrorBoundary>
-          <AppContent />
-        </ErrorBoundary>
-      </ExploreMenuProvider>
+      <ScrollToTop />
+      <ErrorBoundary>
+        <AppContent />
+      </ErrorBoundary>
     </LanguageProvider>
   );
 }

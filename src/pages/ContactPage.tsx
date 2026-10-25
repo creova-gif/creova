@@ -167,7 +167,7 @@ export function ContactPage() {
     <div style={{ backgroundColor: '#F8F9FA' }}>
       <PageSEO
         title="Start a Project"
-        description="Tell CREOVA about your photography, videography, brand, digital, or event storytelling project. Submit an inquiry and receive a request reference."
+        description={language === 'fr' ? 'Parlez à CREOVA de votre événement, campagne, programme communautaire ou partenariat narratif.' : 'Tell CREOVA about your event, campaign, community program, or ongoing storytelling partnership.'}
         path="/start-a-project"
       />
       {/* Hero — full-width dark with large email CTA treatment */}
@@ -398,10 +398,9 @@ export function ContactPage() {
                     className="w-full border border-neutral-300 rounded-md px-3 py-2"
                   >
                     <option value="">{t('contact.form.select.service')}</option>
-                    <option value="event-story">{language === 'fr' ? 'Récit et documentation d’événement' : 'Event story and documentation'}</option>
-                    <option value="brand-system">{language === 'fr' ? 'Marque et système visuel' : 'Brand and visual system'}</option>
-                    <option value="digital-experience">{language === 'fr' ? 'Expérience numérique ou technologie' : 'Digital experience or technology'}</option>
-                    <option value="campaign">{language === 'fr' ? 'Campagne et contenu' : 'Campaign and content'}</option>
+                    <option value="event-story">{language === 'fr' ? 'Récit d’événement et d’expérience' : 'Event and experience storytelling'}</option>
+                    <option value="campaign-story">{language === 'fr' ? 'Campagne et récit communautaire' : 'Campaign and community narrative'}</option>
+                    <option value="ongoing-partnership">{language === 'fr' ? 'Partenariat narratif continu' : 'Ongoing storytelling partnership'}</option>
                     <option value="partnership">{language === 'fr' ? 'Partenariat ou collaboration' : 'Partnership or collaboration'}</option>
                     <option value="other">{t('contact.form.opt.other')}</option>
                   </select>

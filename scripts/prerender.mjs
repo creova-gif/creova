@@ -25,7 +25,6 @@ const BASE_ROUTES = [
   '/community',
   '/ventures',
   '/start-a-project',
-  '/seen',
   '/terms-of-service',
   '/privacy-policy',
 ];

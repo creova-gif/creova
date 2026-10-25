@@ -1,872 +1,271 @@
-import { useRef } from 'react';
+import { ArrowRight, Building2, CalendarDays, CheckCircle2, Globe2, HeartHandshake, Repeat2, Users } from 'lucide-react';
+import { motion } from 'motion/react';
 import { Link } from '../i18n/LocaleLink';
 import { PageSEO } from '../components/PageSEO';
-import { Button } from '../components/ui/button';
-import {
-  Camera, Video, Palette, TrendingUp, Sparkles, Calendar,
-  CheckCircle2, Globe, Users, ArrowRight, Heart, Award,
-} from 'lucide-react';
-import { motion, useScroll, useTransform } from 'motion/react';
-import { CommunityInsights } from '../components/CommunityInsights';
-import { ClientLogos } from '../components/ClientLogos';
-import { CaseStudy } from '../components/CaseStudy';
-import { FounderSection } from '../components/FounderSection';
 import { useLanguage } from '../context/LanguageContext';
-import { useExploreMenu } from '../context/ExploreMenuContext';
-import { VideoHero } from '../components/VideoHero';
-import { SplitText } from '../components/SplitText';
-import { InfiniteMarquee } from '../components/InfiniteMarquee';
-import { ScrollScrubText } from '../components/ScrollScrubText';
-import heroBackground from '../assets/photo-community-celebration.jpg';
-import heroImage1 from '../assets/photo-duo-portrait.jpg';
-import heroImage3 from '../assets/photo-duo-bench.jpg';
-import teamPhoto from '../assets/photo-team-atrium.jpg';
-import photoServicePhotography from '../assets/photo-carnival-portrait.jpg';
-import photoSocialLaptop from '../assets/photo-social-laptop.jpg';
-import photoServiceEvents from '../assets/photo-service-events.jpg';
-import photoServiceVideography from '../assets/photo-service-videography.jpg';
-import photoCollage2 from '../assets/photo-collage-2.jpg';
-import photoBrandDesign from '../assets/photo-collage-3.jpg';
-import photoVentures from '../assets/photo-collage-4.jpg';
-import { FloatingOrbs } from '../components/FloatingOrbs';
-import { Magnetic } from '../components/Magnetic';
-import { TiltCard } from '../components/TiltCard';
+import { VENTURE_URLS } from '../config';
 import { organizationSchema } from '../utils/structuredData';
-import { useGalleries } from '../hooks/useGalleries';
-import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion';
-import { GOOGLE_REVIEW_URL, VENTURE_URLS } from '../config';
-
+import heroImage from '../assets/photo-community-celebration.jpg';
+import communityImage from '../assets/photo-community-convo.jpg';
+import founderImage from '../assets/photo-team-atrium.jpg';
 
 export function HomePage() {
-  const { t, language } = useLanguage();
+  const { language } = useLanguage();
   const fr = language === 'fr';
-  const { open: openExplore } = useExploreMenu();
-  const heroRef = useRef<HTMLElement>(null);
-  const prefersReduced = usePrefersReducedMotion();
-  const { galleries } = useGalleries();
-  // Prefer galleries flagged as featured; fall back to newest-first
-  const featuredGalleries = (() => {
-    const flagged = galleries.filter(g => g.featured);
-    const rest = [...galleries]
-      .filter(g => !g.featured)
-      .sort((a, b) => (b.date || `${b.year}-01-01`).localeCompare(a.date || `${a.year}-01-01`));
-    return [...flagged, ...rest].slice(0, 6);
-  })();
 
-  const { scrollYProgress: heroScrollY } = useScroll({
-    target: heroRef,
-    offset: ['start start', 'end start'],
-  });
-  const heroParallax = useTransform(heroScrollY, [0, 1], ['0%', '20%']);
-  const heroOpacityOut = useTransform(heroScrollY, [0, 0.7], [1, 0]);
-
-  const features = [
-    { icon: Camera, title: t('home.feature.1.title'), description: t('home.feature.1.desc'), link: '/services', image: photoServicePhotography, objectPosition: 'center 25%', accent: '#D4A843', badge: t('home.feature.badge.service') },
-    { icon: Video, title: t('home.feature.2.title'), description: t('home.feature.2.desc'), link: '/services', image: photoServiceVideography, objectPosition: 'center top', accent: '#B1643B', badge: t('home.feature.badge.service') },
-    { icon: Palette, title: t('home.feature.3.title'), description: t('home.feature.3.desc'), link: '/services', image: photoBrandDesign, objectPosition: 'center 15%', accent: '#D4A843', badge: t('home.feature.badge.strategy') },
-    { icon: TrendingUp, title: t('home.feature.4.title'), description: t('home.feature.4.desc'), link: '/services', image: photoSocialLaptop, objectPosition: 'center top', accent: '#B1643B', badge: t('home.feature.badge.ongoing') },
-    { icon: Sparkles, title: t('home.feature.ventures.title'), description: t('home.feature.ventures.desc'), link: '/ventures', image: photoVentures, objectPosition: 'center 20%', accent: '#D4A843', badge: t('home.feature.badge.venture') },
-    { icon: Calendar, title: t('home.feature.6.title'), description: t('home.feature.6.desc'), link: '/services#event-story', image: photoServiceEvents, objectPosition: 'center 40%', accent: '#B1643B', badge: t('home.feature.badge.event') },
+  const offers = fr ? [
+    {
+      number: '01',
+      title: 'Récit d’événement et d’expérience',
+      text: 'Planifier l’histoire, documenter le moment avec soin et créer des actifs utiles pour le public, les partenaires, les commanditaires et la suite.',
+      cta: 'Planifier un récit d’événement',
+    },
+    {
+      number: '02',
+      title: 'Campagnes et récits communautaires',
+      text: 'Transformer un programme ou une initiative en un récit cohérent que les gens peuvent comprendre, croire et soutenir.',
+      cta: 'Construire une campagne',
+    },
+    {
+      number: '03',
+      title: 'Partenariats narratifs continus',
+      text: 'Créer une archive vivante de récits et de preuves au fil de l’année, sans repartir de zéro à chaque événement.',
+      cta: 'Discuter d’un partenariat',
+    },
+  ] : [
+    {
+      number: '01',
+      title: 'Event & Experience Storytelling',
+      text: 'Plan the story, document the moment with care, and create useful assets for audiences, partners, sponsors, funders, and what comes next.',
+      cta: 'Plan an event story',
+    },
+    {
+      number: '02',
+      title: 'Campaign & Community Narratives',
+      text: 'Turn a program or initiative into a coherent narrative people can understand, trust, and participate in.',
+      cta: 'Build a campaign',
+    },
+    {
+      number: '03',
+      title: 'Ongoing Storytelling Partnerships',
+      text: 'Build a useful body of stories and evidence across the year instead of restarting with a new vendor every quarter.',
+      cta: 'Discuss a partnership',
+    },
   ];
 
-
-  const marqueeItems = [
-    t('home.marquee.1'), t('home.marquee.2'), t('home.marquee.3'), t('home.marquee.4'),
-    t('home.marquee.5'), t('home.marquee.6'), t('home.marquee.7'), t('home.marquee.8'),
-    t('home.marquee.9'), t('home.marquee.10'), t('home.marquee.11'), t('home.marquee.12'),
+  const routes = fr ? [
+    { icon: Building2, title: 'Mandater CREOVA', text: 'Pour les organisations et entreprises qui planifient un programme, un événement ou une campagne.', to: '/start-a-project', cta: 'Démarrer un projet' },
+    { icon: Users, title: 'Collaborer avec CREOVA', text: 'Pour les créatifs, artistes et travailleurs culturels qui proposent une collaboration définie et équitable.', to: '/community#collaborate', cta: 'Proposer une collaboration' },
+    { icon: HeartHandshake, title: 'Devenir partenaire ou bailleur', text: 'Pour les organismes hôtes, commanditaires, institutions et bailleurs qui veulent soutenir un résultat précis.', to: '/community#partner', cta: 'Discuter d’un partenariat' },
+  ] : [
+    { icon: Building2, title: 'Commission CREOVA', text: 'For organizations and businesses planning a program, event, or campaign.', to: '/start-a-project', cta: 'Start a project' },
+    { icon: Users, title: 'Collaborate with CREOVA', text: 'For creatives, artists, and cultural workers proposing a defined, equitable collaboration.', to: '/community#collaborate', cta: 'Propose a collaboration' },
+    { icon: HeartHandshake, title: 'Partner or fund', text: 'For hosts, sponsors, institutions, and funders supporting a specific outcome.', to: '/community#partner', cta: 'Discuss a partnership' },
   ];
 
   return (
     <div className="overflow-x-hidden" style={{ backgroundColor: '#F8F9FA' }}>
       <PageSEO
-        title="BIPOC-Led Creative Agency in Ontario"
-        description="CREOVA is a BIPOC-led creative agency offering photography, videography, brand design, and social media services across Ontario and Canada."
+        title={fr ? 'Studio de narration culturelle en Ontario' : 'Cultural Storytelling Studio in Ontario'}
+        description={fr
+          ? 'CREOVA aide les organisations culturelles, les bâtisseurs de communautés et les entreprises engagées à transformer leurs événements et programmes en récits durables.'
+          : 'CREOVA helps cultural organizations, community builders, and purpose-led businesses turn events and programs into stories that grow participation, prove impact, and keep people connected.'}
         path="/"
         jsonLd={organizationSchema}
       />
 
-      {/* Hero */}
-      <section
-        ref={heroRef}
-        className="relative min-h-screen flex items-center overflow-hidden"
-        style={{ backgroundColor: '#121212' }}
-      >
-        <motion.div className="absolute inset-0" style={{ y: heroParallax }}>
-          <VideoHero
-            videoSrc="/hero-reel.mp4"
-            posterSrc={heroBackground}
-            fallbackSrc={heroBackground}
-            overlay={false}
-            className="w-full h-full"
-          />
-        </motion.div>
+      <section className="relative min-h-[82vh] flex items-end overflow-hidden" style={{ backgroundColor: '#121212' }}>
+        <img
+          src={heroImage}
+          alt="A community gathering documented by CREOVA"
+          className="absolute inset-0 h-full w-full object-cover"
+          style={{ objectPosition: 'center 42%' }}
+          fetchPriority="high"
+        />
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(90deg, rgba(18,18,18,.98) 0%, rgba(18,18,18,.9) 45%, rgba(18,18,18,.34) 100%)' }} />
+        <div className="absolute inset-x-0 bottom-0 h-40" style={{ background: 'linear-gradient(transparent, rgba(18,18,18,.92))' }} />
 
-        <div className="absolute inset-0 pointer-events-none" style={{
-          background: 'linear-gradient(to right, rgba(18,18,18,0.97) 0%, rgba(18,18,18,0.75) 55%, rgba(18,18,18,0.35) 100%)',
-        }} />
-        <div className="absolute inset-0 pointer-events-none opacity-20" style={{
-          backgroundImage: `radial-gradient(circle at 30% 50%, #D4A843 0%, transparent 50%),
-                            radial-gradient(circle at 70% 70%, #B1643B 0%, transparent 60%)`,
-        }} />
-        <FloatingOrbs />
-
-        <motion.div
-          className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 z-10 w-full"
-          style={{ opacity: heroOpacityOut }}
-        >
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.3, duration: 0.8 }}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-8 backdrop-blur-sm"
-                style={{ backgroundColor: 'rgba(212, 168, 67, 0.15)', border: '1px solid rgba(212, 168, 67, 0.3)' }}
-              >
-                <Award className="w-4 h-4" style={{ color: '#D4A843' }} />
-                <span className="text-sm tracking-wide" style={{ color: '#D4A843' }}>{t('home.hero.badge')}</span>
-              </motion.div>
-
-              <div className="mb-8">
-                {/* The wordmark doubles as the primary "enter the site" control —
-                    clicking it opens the full-screen Explore menu. Kept as an h1
-                    for SEO, with a real <button> inside for semantics/keyboard. */}
-                <h1 className="mb-6" style={{ lineHeight: '1.02' }}>
-                  <button
-                    type="button"
-                    onClick={openExplore}
-                    aria-haspopup="dialog"
-                    aria-label={t('nav.explore')}
-                    className="group inline-flex flex-col items-start text-left cursor-pointer bg-transparent border-0 p-0 outline-none focus-visible:ring-2 focus-visible:ring-[#D4A843] focus-visible:ring-offset-4 focus-visible:ring-offset-[#121212] rounded-sm"
-                  >
-                    <SplitText
-                      text="CREOVA"
-                      tag="span"
-                      className="tracking-tight block transition-transform duration-500 group-hover:-translate-y-0.5"
-                      style={{ color: '#F8F9FA', lineHeight: '1.02', fontFamily: 'var(--font-display)', fontSize: 'clamp(3.5rem, 6.5vw, 5.5rem)' }}
-                      delay={0.2}
-                      stagger={0.06}
-                      mode="chars"
-                    />
-                    <span
-                      className="mt-1 inline-flex items-center gap-1.5 text-xs tracking-[0.3em] uppercase opacity-0 -translate-x-1 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0"
-                      style={{ color: '#D4A843' }}
-                    >
-                      {t('nav.explore')}
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </span>
-                  </button>
-                </h1>
-                <motion.p
-                  className="text-xl md:text-2xl font-medium leading-tight mb-2"
-                  style={{ color: '#D4A843', letterSpacing: '0.02em' }}
-                  initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.9, duration: 0.8 }}
-                >
-                  {t('home.hero.tagline1')}
-                </motion.p>
-                <motion.p
-                  className="text-xl md:text-2xl font-light"
-                  style={{ color: '#777777', letterSpacing: '0.02em' }}
-                  initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 1.0, duration: 0.8 }}
-                >
-                  {t('home.hero.tagline2')}
-                </motion.p>
-              </div>
-
-              <motion.p
-                className="text-lg mb-8 leading-relaxed max-w-xl"
-                style={{ color: '#E0E0E0' }}
-                initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2, duration: 1 }}
-              >
-                {t('home.hero.body')}
-              </motion.p>
-
-              {/* Availability signal */}
-              <motion.div
-                initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.35, duration: 0.7 }}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6"
-                style={{ backgroundColor: 'rgba(177,100,59,0.1)', border: '1px solid rgba(177,100,59,0.25)' }}
-              >
-                <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: '#B1643B' }} />
-                <span className="text-xs tracking-wide" style={{ color: '#B1643B' }}>
-                  {t('home.hero.availability')}
-                </span>
-              </motion.div>
-
-              <motion.div className="flex flex-wrap gap-4"
-                initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.4, duration: 0.8 }}>
-                <Magnetic strength={0.22}>
-                  <Button size="lg"
-                    className="group px-6 py-4 sm:px-8 sm:py-6 rounded-xl text-base sm:text-lg border-2 hover:shadow-2xl transition-all duration-500"
-                    style={{ backgroundColor: '#F8F9FA', color: '#121212', borderColor: '#F8F9FA' }} asChild>
-                    <Link to="/start-a-project" className="flex items-center gap-2">
-                      {t('home.cta.get.in.touch')}
-                      <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                    </Link>
-                  </Button>
-                </Magnetic>
-                <Magnetic strength={0.22}>
-                  <Button size="lg" variant="outline"
-                    className="px-6 py-4 sm:px-8 sm:py-6 rounded-xl text-base sm:text-lg border-2 backdrop-blur-sm transition-colors duration-500"
-                    style={{ borderColor: '#D4A843', color: '#D4A843', backgroundColor: 'rgba(212, 168, 67, 0.05)' }} asChild>
-                    <Link to="/services">{t('home.cta.our.services')}</Link>
-                  </Button>
-                </Magnetic>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.6, duration: 0.8 }}
-                className="flex flex-wrap gap-6 mt-10 pt-8 border-t" style={{ borderColor: 'rgba(224, 224, 224, 0.2)' }}>
-                {[
-                  { icon: Award, text: t('home.hero.badge1') },
-                  { icon: Heart, text: t('home.hero.badge2') },
-                  { icon: CheckCircle2, text: t('home.hero.badge3') },
-                ].map((badge, i) => (
-                  <div key={i} className="flex items-center gap-2">
-                    <badge.icon className="w-5 h-5" style={{ color: '#D4A843' }} />
-                    <span className="text-sm" style={{ color: '#E0E0E0' }}>{badge.text}</span>
-                  </div>
-                ))}
-              </motion.div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1.2, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
-              className="hidden lg:block relative">
-              <div className="grid grid-cols-3 gap-6">
-                {[
-                  { src: heroImage1, alt: 'CREOVA Team', offset: '', rotate: -1 },
-                  { src: teamPhoto, alt: 'CREOVA Together', offset: 'mt-16', rotate: 1 },
-                  { src: heroImage3, alt: 'CREOVA Community', offset: '', rotate: -1 },
-                ].map((img, i) => (
-                  <TiltCard
-                    key={i}
-                    maxAngle={10}
-                    className={`aspect-[3/4] overflow-hidden rounded-3xl shadow-2xl ${img.offset}`}
-                  >
-                    <img src={img.src} alt={img.alt} className="w-full h-full object-cover" loading="eager" />
-                  </TiltCard>
-                ))}
-              </div>
-            </motion.div>
-          </div>
-        </motion.div>
-
-        <motion.div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10"
-          initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
-          transition={prefersReduced ? { delay: 2, duration: 1 } : { delay: 2, duration: 1, repeat: Infinity, repeatType: 'reverse' }}>
-          <div className="w-6 h-10 border-2 rounded-full flex items-start justify-center p-2" style={{ borderColor: '#D4A843' }}>
-            <div className="w-1 h-2 rounded-full" style={{ backgroundColor: '#D4A843' }} />
-          </div>
-        </motion.div>
-      </section>
-
-      {/* Infinite Marquee */}
-      <div className="py-5 overflow-hidden border-y" style={{ backgroundColor: '#121212', borderColor: 'rgba(212,168,67,0.2)' }}>
-        <InfiniteMarquee items={marqueeItems} speed={45} direction="left" />
-      </div>
-
-
-      {/* SEEN Platform Teaser */}
-      <section className="relative overflow-hidden" style={{ backgroundColor: '#121212' }}>
-        <FloatingOrbs />
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute inset-0" style={{
-            backgroundImage: `radial-gradient(circle at 70% 50%, #D4A843 0%, transparent 55%),
-                             radial-gradient(circle at 20% 70%, #B1643B 0%, transparent 50%)`,
-          }} />
-        </div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 1 }} viewport={{ once: true }}>
-              <div className="flex items-center gap-3 mb-6">
-                <span className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: '#D4A843' }} />
-                <span className="text-xs tracking-[0.4em] uppercase" style={{ color: '#D4A843' }}>{t('home.seen.badge')}</span>
-              </div>
-              <h2 className="italic leading-none mb-6 tracking-tight" style={{
-                fontSize: 'clamp(4rem, 10vw, 7rem)', color: 'transparent',
-                backgroundImage: 'linear-gradient(135deg, #F8F9FA 0%, #D4A843 55%, #B1643B 100%)',
-                WebkitBackgroundClip: 'text', backgroundClip: 'text',
-              }}>SEEN</h2>
-              <p className="text-base md:text-lg mb-4 leading-relaxed" style={{ color: '#E0E0E0' }}>
-                {t('home.seen.desc')}
-              </p>
-              <p className="text-sm mb-10" style={{ color: '#777777' }}>
-                {t('home.seen.features')}
-              </p>
-              <Magnetic strength={0.22}>
-                {VENTURE_URLS.seen ? (
-                  <a
-                    href={VENTURE_URLS.seen}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-3 px-8 py-4 rounded-xl text-base font-medium tracking-wide transition-all duration-500 hover:shadow-2xl group"
-                    style={{ backgroundColor: '#F8F9FA', color: '#121212' }}
-                  >
-                    {fr ? 'Visiter le site SEEN' : 'Visit the SEEN website'}
-                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                  </a>
-                ) : (
-                  <Link to="/ventures#seen"
-                    className="inline-flex items-center gap-3 px-8 py-4 rounded-xl text-base font-medium tracking-wide transition-all duration-500 hover:shadow-2xl group"
-                    style={{ backgroundColor: '#F8F9FA', color: '#121212' }}>
-                    {t('home.seen.cta')}
-                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                  </Link>
-                )}
-              </Magnetic>
-            </motion.div>
-            <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 1, delay: 0.2 }} viewport={{ once: true }}
-              className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {[
-                { label: t('home.seen.f1.label'), desc: t('home.seen.f1.desc') },
-                { label: t('home.seen.f2.label'), desc: t('home.seen.f2.desc') },
-                { label: t('home.seen.f3.label'), desc: t('home.seen.f3.desc') },
-                { label: t('home.seen.f4.label'), desc: t('home.seen.f4.desc') },
-              ].map((item, i) => (
-                <motion.div key={item.label}
-                  initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.3 + i * 0.1 }} viewport={{ once: true }}
-                  className="p-5 rounded-2xl"
-                  style={{ backgroundColor: 'rgba(212, 168, 67, 0.07)', border: '1px solid rgba(212, 168, 67, 0.15)' }}>
-                  <div className="w-8 h-1 rounded-full mb-3" style={{ backgroundColor: '#D4A843' }} />
-                  <div className="text-sm font-medium mb-1" style={{ color: '#F8F9FA' }}>{item.label}</div>
-                  <div className="text-xs leading-relaxed" style={{ color: '#777777' }}>{item.desc}</div>
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* Services */}
-      <section className="py-32 relative" style={{ backgroundColor: '#121212' }}>
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-0 right-0 w-1/2 h-full" style={{
-            backgroundImage: `repeating-linear-gradient(90deg, #D4A843 0px, transparent 1px, transparent 80px)`,
-          }} />
-        </div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }} viewport={{ once: true }} className="mb-20">
-            <div className="flex items-center gap-4 mb-6">
-              <div className="w-12 h-px" style={{ backgroundColor: '#D4A843' }} />
-              <span className="text-xs tracking-[0.4em] uppercase" style={{ color: '#D4A843' }}>{t('home.services.badge')}</span>
-            </div>
-            <SplitText text={t('home.services.heading')} tag="h2"
-              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl tracking-tight leading-tight"
-              style={{ color: '#F8F9FA' }} mode="words" stagger={0.07} />
-            <p className="text-base sm:text-xl mt-6 max-w-2xl leading-relaxed" style={{ color: '#777777' }}>
-              {t('home.services.sub')}
+        <div className="relative z-10 max-w-7xl mx-auto w-full px-6 lg:px-8 pt-32 pb-20">
+          <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.75 }} className="max-w-4xl">
+            <p className="text-xs tracking-[0.34em] uppercase mb-6" style={{ color: '#D4A843' }}>
+              {fr ? 'Studio de narration culturelle · Ontario' : 'Cultural storytelling studio · Ontario'}
             </p>
+            <h1 className="font-light tracking-tight leading-[0.96]" style={{ color: '#F8F9FA', fontSize: 'clamp(3.2rem, 8vw, 7.6rem)' }}>
+              {fr ? 'Transformer les moments marquants en élan durable.' : 'Turn meaningful moments into lasting momentum.'}
+            </h1>
+            <p className="mt-7 max-w-3xl text-lg md:text-xl leading-relaxed" style={{ color: '#E0E0E0' }}>
+              {fr
+                ? 'CREOVA aide les organisations culturelles, les bâtisseurs de communautés et les entreprises engagées à transformer leurs événements et programmes en récits qui stimulent la participation, démontrent l’impact et maintiennent le lien.'
+                : 'CREOVA helps cultural organizations, community builders, and purpose-led businesses turn events and programs into stories that grow participation, prove impact, and keep people connected.'}
+            </p>
+            <div className="mt-9 flex flex-wrap gap-4">
+              <Link to="/start-a-project" className="inline-flex items-center gap-2 rounded-xl px-6 py-3.5 text-sm font-semibold transition-transform hover:-translate-y-0.5" style={{ backgroundColor: '#C0392B', color: '#FFFFFF' }}>
+                {fr ? 'Démarrer un projet' : 'Start a project'} <ArrowRight className="w-4 h-4" />
+              </Link>
+              <Link to="/work" className="inline-flex items-center gap-2 rounded-xl px-6 py-3.5 text-sm font-semibold border transition-colors" style={{ borderColor: 'rgba(248,249,250,.45)', color: '#F8F9FA', backgroundColor: 'rgba(18,18,18,.25)' }}>
+                {fr ? 'Voir les études de cas' : 'View case studies'}
+              </Link>
+            </div>
+            <div className="mt-10 flex flex-wrap gap-x-7 gap-y-3 text-sm" style={{ color: 'rgba(248,249,250,.72)' }}>
+              <span className="inline-flex items-center gap-2"><CheckCircle2 className="w-4 h-4" style={{ color: '#D4A843' }} />{fr ? 'Dirigé par des personnes BIPOC' : 'BIPOC-led'}</span>
+              <span className="inline-flex items-center gap-2"><Globe2 className="w-4 h-4" style={{ color: '#D4A843' }} />{fr ? 'Collaboration en anglais et en français' : 'English and French collaboration'}</span>
+              <span className="inline-flex items-center gap-2"><CalendarDays className="w-4 h-4" style={{ color: '#D4A843' }} />Niagara · Hamilton · GTA</span>
+            </div>
           </motion.div>
-          {/* Asymmetric editorial mosaic — one large featured tile plus
-              varied-size tiles, rather than a uniform grid of equal cards. */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-6 lg:auto-rows-[190px]">
-            {features.map((feature, index) => {
-              const isFeatured = index === 0;
-              const spanClass = [
-                'sm:col-span-2 lg:col-span-4 lg:row-span-2',
-                'lg:col-span-2 lg:row-span-1',
-                'lg:col-span-2 lg:row-span-1',
-                'lg:col-span-3 lg:row-span-1',
-                'lg:col-span-3 lg:row-span-1',
-                'sm:col-span-2 lg:col-span-6 lg:row-span-1',
-              ][index] || '';
-              return (
-                <motion.div key={index}
-                  initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.7, delay: index * 0.08 }} viewport={{ once: true }}
-                  className={spanClass}
-                >
-                  <TiltCard
-                    spotlight
-                    spotlightColor="rgba(212,168,67,0.14)"
-                    maxAngle={6}
-                    className="group rounded-3xl overflow-hidden transition-shadow duration-700 hover:shadow-2xl h-[300px] lg:h-full"
-                  >
-                    <Link to={feature.link} className="absolute inset-0 z-10" aria-label={feature.title} />
-                    <img src={feature.image} alt={feature.title}
-                      className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                      style={{ objectPosition: feature.objectPosition || 'center center' }}
-                      loading="lazy" />
-                    <div className="absolute inset-0" style={{
-                      background: 'linear-gradient(to top, rgba(18,18,18,0.95) 0%, rgba(18,18,18,0.5) 50%, rgba(18,18,18,0.1) 100%)',
-                    }} />
-                    <div className={`absolute inset-0 flex flex-col justify-end z-[3] ${isFeatured ? 'p-9' : 'p-6'}`}>
-                      <div className="flex items-center justify-between mb-4">
-                        <div className={`rounded-2xl flex items-center justify-center transition-transform duration-500 group-hover:scale-110 ${isFeatured ? 'w-14 h-14' : 'w-10 h-10'}`}
-                          style={{ backgroundColor: 'rgba(212, 168, 67, 0.15)', border: `1px solid rgba(212,168,67,0.3)` }}>
-                          <feature.icon className={isFeatured ? 'w-6 h-6' : 'w-4.5 h-4.5'} style={{ color: feature.accent }} />
-                        </div>
-                        <span className="text-xs font-semibold tracking-wide px-2.5 py-1 rounded-full"
-                          style={{ backgroundColor: 'rgba(18,18,18,0.7)', color: feature.accent, border: `1px solid ${feature.accent}40`, backdropFilter: 'blur(4px)' }}>
-                          {feature.badge}
-                        </span>
-                      </div>
-                      <h3 className={`tracking-tight ${isFeatured ? 'text-3xl lg:text-4xl mb-3' : 'text-xl mb-2'}`} style={{ color: '#F8F9FA', fontFamily: isFeatured ? 'var(--font-display)' : undefined }}>{feature.title}</h3>
-                      <p className={`leading-relaxed mb-4 ${isFeatured ? 'text-base max-w-md' : 'text-sm line-clamp-2'}`} style={{ color: '#E0E0E0' }}>{feature.description}</p>
-                      <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-500"
-                        style={{ color: feature.accent }}>
-                        <span className="text-sm font-medium">{t('home.services.explore')}</span>
-                        <ArrowRight className="w-4 h-4" />
-                      </div>
-                      <div className="h-px mt-3 w-0 group-hover:w-full transition-all duration-700"
-                        style={{ backgroundColor: feature.accent }} />
-                    </div>
-                  </TiltCard>
-                </motion.div>
-              );
-            })}
-          </div>
         </div>
       </section>
 
-      {/* Trusted By — real client logos */}
-      <ClientLogos />
+      <section className="border-b" style={{ backgroundColor: '#FFFFFF', borderColor: '#E0E0E0' }}>
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-7 grid md:grid-cols-[1fr_auto_auto] gap-5 md:items-center">
+          <p className="text-sm leading-relaxed" style={{ color: '#555' }}>
+            {fr
+              ? 'Travail public vérifié : documentation du Mois de l’histoire des Noirs et de programmes communautaires liés au Black Student Success Centre de l’Université Brock.'
+              : 'Verified public work: Black History Month and community-program documentation connected with Brock University’s Black Student Success Centre.'}
+          </p>
+          <span className="text-xs tracking-[0.2em] uppercase" style={{ color: '#2E4057' }}>Brock University</span>
+          <span className="text-xs tracking-[0.2em] uppercase" style={{ color: '#2E4057' }}>Black Student Success Centre</span>
+        </div>
+      </section>
 
-      {/* Selected Work */}
-      <section className="py-24 relative overflow-hidden" style={{ backgroundColor: '#121212' }}>
-        <div className="absolute inset-0 pointer-events-none" style={{
-          background: 'radial-gradient(ellipse 50% 60% at 50% 0%, rgba(212,168,67,0.07) 0%, transparent 60%)'
-        }} />
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          {/* Header */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-12"
-          >
+      <section className="py-24 lg:py-32">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="grid lg:grid-cols-[.9fr_1.1fr] gap-14 lg:gap-24">
             <div>
-              <div className="flex items-center gap-4 mb-3">
-                <div style={{ height: '1px', width: '40px', backgroundColor: '#D4A843' }} />
-                <span className="text-xs tracking-[0.45em] uppercase" style={{ color: '#D4A843' }}>Selected Work</span>
-              </div>
-              <h2 className="text-4xl md:text-5xl font-light tracking-tight" style={{ color: '#F8F9FA' }}>
-                Events we've shot
+              <p className="text-xs tracking-[0.35em] uppercase mb-5" style={{ color: '#C0392B' }}>{fr ? 'Le problème' : 'The problem'}</p>
+              <h2 className="font-light tracking-tight leading-tight" style={{ color: '#1A1A2E', fontSize: 'clamp(2.5rem, 5vw, 4.8rem)' }}>
+                {fr ? 'L’événement se termine. Sa valeur ne devrait pas disparaître.' : 'The event ends. Its value should not.'}
               </h2>
             </div>
-            <Link
-              to="/work"
-              className="inline-flex items-center gap-2 text-sm tracking-wide transition-colors duration-300 flex-shrink-0"
-              style={{ color: '#D4A843' }}
-              onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = '#F8F9FA'}
-              onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = '#D4A843'}
-            >
-              {t('home.work.view.selected')}
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </motion.div>
-
-          {/* 2×3 preview grid */}
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {featuredGalleries.map((item, i) => (
-              <motion.a
-                key={item.id}
-                href={item.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.08, duration: 0.6 }}
-                whileHover={{ scale: 1.02 }}
-                className="group relative block overflow-hidden rounded-xl cursor-pointer"
-                style={{ aspectRatio: '4/3', backgroundColor: '#111' }}
-              >
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  loading="lazy"
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  style={{ objectPosition: item.objectPosition }}
-                />
-                <div className="absolute inset-0" style={{
-                  background: 'linear-gradient(to top, rgba(10,10,10,0.9) 0%, rgba(10,10,10,0.2) 60%, transparent 100%)'
-                }} />
-                <div className="absolute bottom-0 left-0 right-0 p-5">
-                  <div className="w-6 mb-2" style={{ height: '1px', backgroundColor: item.accent }} />
-                  <p className="text-[10px] tracking-[0.25em] uppercase mb-1" style={{ color: item.accent }}>{item.org}</p>
-                  <h3 className="text-base tracking-tight leading-tight" style={{ color: '#F8F9FA' }}>{item.title}</h3>
-                  <p className="text-xs mt-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ color: 'rgba(248,249,250,0.5)' }}>{item.subtitle}</p>
-                </div>
-              </motion.a>
-            ))}
-          </div>
-
-          <div className="text-center mt-10">
-            <Link
-              to="/work"
-              className="inline-flex items-center gap-3 px-8 py-4 rounded-xl text-sm tracking-wide transition-all duration-300"
-              style={{ border: '1px solid rgba(212,168,67,0.35)', color: '#D4A843', backgroundColor: 'transparent' }}
-              onMouseEnter={e => {
-                (e.currentTarget as HTMLElement).style.backgroundColor = 'rgba(212,168,67,0.1)';
-                (e.currentTarget as HTMLElement).style.borderColor = 'rgba(212,168,67,0.6)';
-              }}
-              onMouseLeave={e => {
-                (e.currentTarget as HTMLElement).style.backgroundColor = 'transparent';
-                (e.currentTarget as HTMLElement).style.borderColor = 'rgba(212,168,67,0.35)';
-              }}
-            >
-              Browse all galleries
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Scroll Scrub Manifesto */}
-      <section className="py-32 px-6 relative overflow-hidden" style={{ backgroundColor: '#121212' }}>
-        <div className="absolute inset-0 pointer-events-none" style={{
-          backgroundImage: 'radial-gradient(circle, rgba(212,168,67,0.04) 1px, transparent 1px)',
-          backgroundSize: '32px 32px',
-        }} />
-        <div className="max-w-4xl mx-auto">
-          <div className="flex items-center gap-4 mb-16">
-            <div className="w-12 h-px" style={{ backgroundColor: 'rgba(212,168,67,0.5)' }} />
-            <span className="text-xs tracking-[0.4em] uppercase" style={{ color: '#D4A843' }}>{t('home.manifesto.badge')}</span>
-          </div>
-          <ScrollScrubText
-            text={t('home.manifesto.text')}
-            className="text-2xl md:text-3xl lg:text-4xl font-light leading-relaxed"
-            style={{ color: '#F8F9FA', fontFamily: 'var(--font-display)', letterSpacing: '-0.01em' }}
-          />
-        </div>
-      </section>
-
-      <CommunityInsights />
-
-      {/* Project pathways */}
-      <section className="py-28 relative overflow-hidden" style={{ backgroundColor: '#F8F9FA' }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <motion.div initial={{ opacity: 0, x: -40 }} whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 1 }} viewport={{ once: true }} className="grid grid-cols-2 gap-4">
-              <div className="space-y-4">
-                <div className="relative overflow-hidden rounded-3xl aspect-[4/5]">
-                  <img src={heroImage1} alt="CREOVA community portrait" className="w-full h-full object-cover" style={{ objectPosition: 'center 20%' }} loading="lazy" />
-                  <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(18,18,18,0.4) 0%, transparent 60%)' }} />
-                </div>
-                <div className="relative overflow-hidden rounded-3xl aspect-square">
-                  <img src="/community-chess-new.jpg" alt="CREOVA community chess session" className="w-full h-full object-cover" style={{ objectPosition: 'center 40%' }} loading="lazy" />
-                </div>
-              </div>
-              <div className="space-y-4 pt-8">
-                <div className="relative overflow-hidden rounded-3xl aspect-square">
-                  <img src={photoCollage2} alt="CREOVA community members" className="w-full h-full object-cover" style={{ objectPosition: 'center 20%' }} loading="lazy" />
-                  <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(18,18,18,0.3) 0%, transparent 70%)' }} />
-                </div>
-                <div className="relative overflow-hidden rounded-3xl aspect-[4/5]">
-                  <img src={teamPhoto} alt="CREOVA team in atrium" className="w-full h-full object-cover" style={{ objectPosition: 'center 30%' }} loading="lazy" />
-                </div>
-              </div>
-            </motion.div>
-
-            <motion.div initial={{ opacity: 0, x: 40 }} whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 1 }} viewport={{ once: true }}>
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-px" style={{ backgroundColor: '#B1643B' }} />
-                <span className="text-xs tracking-[0.4em] uppercase" style={{ color: '#B1643B' }}>{t('home.fall.badge')}</span>
-              </div>
-              <SplitText text={t('home.fall.heading')} tag="h2"
-                className="text-4xl md:text-5xl mb-6 tracking-tight leading-tight"
-                style={{ color: '#121212' }} mode="words" stagger={0.05} />
-              <p className="text-lg mb-8 leading-relaxed" style={{ color: '#777777' }}>
-                {t('home.fall.desc')}
-              </p>
-              <div className="space-y-4 mb-10">
-                {[
-                  { label: t('home.fall.sep.label'), desc: t('home.fall.sep.desc') },
-                  { label: t('home.fall.oct.label'), desc: t('home.fall.oct.desc') },
-                  { label: t('home.fall.nov.label'), desc: t('home.fall.nov.desc') },
-                  { label: t('home.fall.dec.label'), desc: t('home.fall.dec.desc') },
-                ].map((item, i) => (
-                  <motion.div key={i}
-                    initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5, delay: i * 0.08 }} viewport={{ once: true }}
-                    className="flex items-start gap-4 p-4 rounded-2xl"
-                    style={{ backgroundColor: 'rgba(212,168,67,0.06)', border: '1px solid rgba(212,168,67,0.12)' }}>
-                    <div className="text-sm font-medium w-24 flex-shrink-0 pt-0.5" style={{ color: '#D4A843' }}>{item.label}</div>
-                    <div className="text-sm" style={{ color: '#777777' }}>{item.desc}</div>
-                  </motion.div>
-                ))}
-              </div>
-              <Link to="/services#event-story"
-                className="inline-flex items-center gap-3 px-8 py-4 rounded-xl text-base font-medium tracking-wide transition-all duration-500 hover:shadow-xl group"
-                style={{ backgroundColor: '#121212', color: '#F8F9FA' }}>
-                {t('home.fall.cta')}
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </Link>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* Editorial Quote Strip */}
-      <div className="relative overflow-hidden" style={{ backgroundColor: '#121212', minHeight: '520px' }}>
-        <img src="/community-photo.jpg" alt="" aria-hidden="true" loading="lazy"
-          className="absolute inset-0 w-full h-full object-cover"
-          style={{ objectPosition: 'center 30%', opacity: 0.18 }} />
-        <div className="absolute inset-0 pointer-events-none" style={{
-          background: 'radial-gradient(ellipse 70% 60% at 50% 50%, rgba(212,168,67,0.10) 0%, transparent 70%)',
-        }} />
-        <div className="absolute inset-0 pointer-events-none" style={{
-          backgroundImage: 'radial-gradient(circle, rgba(212,168,67,0.06) 1px, transparent 1px)',
-          backgroundSize: '28px 28px',
-        }} />
-        <div className="absolute top-0 left-0 right-0" style={{ height: '1px', backgroundColor: 'rgba(212,168,67,0.35)' }} />
-        <div className="absolute bottom-0 left-0 right-0" style={{ height: '1px', backgroundColor: 'rgba(212,168,67,0.35)' }} />
-        <div className="relative flex items-center justify-center" style={{ minHeight: '520px', padding: '80px 24px' }}>
-          <motion.div className="text-center max-w-5xl"
-            initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: 'easeOut' }} viewport={{ once: true }}>
-            <div className="flex items-center justify-center gap-5 mb-10">
-              <div style={{ height: '1px', width: '60px', backgroundColor: 'rgba(212,168,67,0.5)' }} />
-              <p className="text-xs tracking-[0.55em] uppercase" style={{ color: '#D4A843' }}>{t('home.editorial.badge')}</p>
-              <div style={{ height: '1px', width: '60px', backgroundColor: 'rgba(212,168,67,0.5)' }} />
-            </div>
-            <div className="leading-none mb-2 select-none" style={{
-              fontSize: 'clamp(100px, 14vw, 180px)', color: 'rgba(212,168,67,0.12)',
-              fontFamily: 'var(--font-display)', lineHeight: '0.6', marginBottom: '-10px',
-            }}>"</div>
-            <motion.h2
-              className="font-light italic text-center"
-              style={{
-                fontSize: 'clamp(2rem, 3.8vw, 4.5rem)',
-                lineHeight: 1.3,
-                color: '#F8F9FA',
-                letterSpacing: '-0.02em',
-                fontFamily: 'var(--font-display)',
-              }}
-              initial={{ opacity: 0, y: 28 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-              viewport={{ once: true }}
-            >
-              {t('home.editorial.quote')}<br />
-              {t('home.editorial.quote2')}{' '}
-              <span style={{ color: '#D4A843' }}>{t('home.editorial.highlight')}</span>
-            </motion.h2>
-            <div className="flex items-center justify-center gap-4 mt-10">
-              <div style={{ height: '1px', width: '40px', backgroundColor: 'rgba(212,168,67,0.4)' }} />
-              <p className="text-xs tracking-[0.4em] uppercase" style={{ color: 'rgba(212,168,67,0.65)' }}>
-                {t('home.editorial.credit')}
-              </p>
-              <div style={{ height: '1px', width: '40px', backgroundColor: 'rgba(212,168,67,0.4)' }} />
-            </div>
-          </motion.div>
-        </div>
-      </div>
-
-      {/* Why CREOVA */}
-      <section className="py-32 relative overflow-hidden" style={{ backgroundColor: '#FFFFFF' }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }} viewport={{ once: true }}>
-            <div className="h-1 w-24 mb-10" style={{ backgroundColor: '#B1643B' }} />
-            <div className="mb-12">
-              <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1 }} viewport={{ once: true }}>
-                <SplitText text={t('home.why.heading')} tag="h2"
-                  className="text-4xl md:text-5xl lg:text-6xl mb-8 tracking-tight"
-                  style={{ color: '#121212' }} mode="words" stagger={0.06} />
-                <p className="text-xl mb-10 leading-relaxed" style={{ color: '#777777' }}>
-                  {t('home.why.sub')}
-                </p>
-                <div className="grid sm:grid-cols-2 gap-5">
-                  {[
-                    { icon: Globe, title: t('home.why.v1.title'), desc: t('home.why.v1.desc') },
-                    { icon: TrendingUp, title: t('home.why.v2.title'), desc: t('home.why.v2.desc') },
-                    { icon: Users, title: t('home.why.v3.title'), desc: t('home.why.v3.desc') },
-                    { icon: Award, title: t('home.why.v4.title'), desc: t('home.why.v4.desc') },
-                  ].map((item, i) => (
-                    <motion.div key={i}
-                      initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.6, delay: i * 0.1 }} viewport={{ once: true }}
-                      className="group flex gap-4 p-5 rounded-2xl hover:shadow-lg transition-all duration-300"
-                      style={{ backgroundColor: '#F8F9FA' }}>
-                      <div className="flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300"
-                        style={{ backgroundColor: 'rgba(177, 100, 59, 0.1)' }}>
-                        <item.icon className="w-6 h-6" style={{ color: '#B1643B' }} />
-                      </div>
-                      <div>
-                        <h3 className="text-lg mb-2 group-hover:text-[#D4A843] transition-colors" style={{ color: '#121212' }}>{item.title}</h3>
-                        <p className="text-sm leading-relaxed" style={{ color: '#777777' }}>{item.desc}</p>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-                <div className="mt-10">
-                  <Button size="lg"
-                    className="group px-8 py-6 rounded-xl text-base border-2 hover:shadow-xl hover:scale-105 transition-all duration-300"
-                    style={{ backgroundColor: '#121212', color: '#F8F9FA', borderColor: '#121212' }} asChild>
-                    <Link to="/community" className="flex items-center gap-2">
-                      {t('home.why.cta')}
-                      <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                    </Link>
-                  </Button>
-                </div>
-              </motion.div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      <FounderSection />
-
-      {/* Google Reviews CTA */}
-      <section className="py-16 relative overflow-hidden" style={{ backgroundColor: '#F8F9FA' }}>
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="flex flex-col sm:flex-row items-center justify-between gap-8 rounded-3xl p-8 md:p-10"
-            style={{ backgroundColor: '#FFFFFF', border: '1px solid #E0E0E0', boxShadow: '0 4px 40px rgba(18,18,18,0.06)' }}
-          >
-            <div className="flex flex-col sm:flex-row items-center gap-6">
-              {/* Google G */}
-              <div className="flex-shrink-0 w-14 h-14 rounded-2xl flex items-center justify-center text-2xl font-bold select-none"
-                style={{ background: 'linear-gradient(135deg, #4285F4 0%, #34A853 33%, #FBBC05 66%, #EA4335 100%)', color: '#FFFFFF' }}>
-                G
-              </div>
-              <div className="text-center sm:text-left">
-                <p className="text-base font-medium mb-1" style={{ color: '#121212' }}>{t('home.review.title')}</p>
-                <p className="text-sm" style={{ color: '#777777', maxWidth: '44ch' }}>{t('home.review.sub')}</p>
-              </div>
-            </div>
-            <a
-              href={GOOGLE_REVIEW_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex-shrink-0 inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold tracking-wide transition-all duration-300 hover:opacity-90 hover:shadow-lg hover:-translate-y-px"
-              style={{ backgroundColor: '#121212', color: '#F8F9FA' }}
-            >
-              {t('home.review.cta')}
-              <ArrowRight className="w-4 h-4" />
-            </a>
-          </motion.div>
-        </div>
-      </section>
-
-      <CaseStudy />
-
-      {/* Urgency + Mini Conversion Block */}
-      <section className="py-20" style={{ backgroundColor: '#F8F9FA' }}>
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }} viewport={{ once: true }}
-            className="bg-white rounded-3xl p-10 md:p-14 border-2 shadow-xl"
-            style={{ borderColor: '#E0E0E0' }}>
-            <div className="flex flex-col md:flex-row gap-10 items-start">
-              <div className="flex-1">
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full mb-5"
-                  style={{ backgroundColor: 'rgba(177,100,59,0.08)', border: '1px solid rgba(177,100,59,0.2)' }}>
-                  <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: '#B1643B' }} />
-                  <span className="text-xs tracking-wide" style={{ color: '#B1643B' }}>{t('home.urgency.badge')}</span>
-                </div>
-                <h3 className="text-2xl md:text-3xl mb-4 tracking-tight" style={{ color: '#121212' }}>
-                  {t('home.urgency.heading')}
-                </h3>
-                <p className="text-base mb-6 leading-relaxed" style={{ color: '#777777' }}>
-                  {t('home.urgency.desc')}
-                </p>
-                <div className="flex flex-wrap gap-3">
-                  <Button
-                    className="px-6 py-3 rounded-xl hover:scale-105 transition-all duration-300"
-                    style={{ backgroundColor: '#121212', color: '#F8F9FA' }} asChild>
-                    <Link to="/start-a-project" className="flex items-center gap-2">
-                      {t('home.urgency.cta')}
-                      <ArrowRight className="w-4 h-4" />
-                    </Link>
-                  </Button>
-                  <Button variant="outline"
-                    className="px-6 py-3 rounded-xl border-2 hover:scale-105 transition-all duration-300"
-                    style={{ borderColor: '#D4A843', color: '#D4A843' }} asChild>
-                    <Link to="/services#event-story">{t('home.cta.pricing')}</Link>
-                  </Button>
-                </div>
-              </div>
-              <div className="flex-shrink-0 flex flex-col gap-4 w-full md:w-48">
-                {[
-                  { label: t('home.urgency.check1'), check: true },
-                  { label: t('home.urgency.check2'), check: true },
-                  { label: t('home.urgency.check3'), check: true },
-                  { label: t('home.urgency.check4'), check: true },
-                ].map((item, i) => (
-                  <div key={i} className="flex items-center gap-3">
-                    <CheckCircle2 className="w-4 h-4 flex-shrink-0" style={{ color: '#D4A843' }} />
-                    <span className="text-sm" style={{ color: '#777777' }}>{item.label}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="relative py-32 overflow-hidden" style={{ backgroundColor: '#121212' }}>
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute inset-0" style={{
-            backgroundImage: `radial-gradient(circle at 70% 30%, #D4A843 0%, transparent 50%),
-                             radial-gradient(circle at 30% 70%, #B1643B 0%, transparent 50%)`,
-          }} />
-        </div>
-        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }} viewport={{ once: true }}>
-            <div className="h-1 w-24 mx-auto mb-10" style={{ backgroundColor: '#D4A843' }} />
-            <SplitText text={t('home.cta.heading')}
-              tag="h2" className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl mb-6 sm:mb-8 tracking-tight"
-              style={{ color: '#F8F9FA', lineHeight: '1.1' }} mode="words" stagger={0.04} />
-            <p className="text-base sm:text-lg md:text-xl mb-8 sm:mb-12 leading-relaxed max-w-3xl mx-auto" style={{ color: '#E0E0E0' }}>
-              {t('home.cta.desc')}
-            </p>
-            <div className="flex flex-col sm:flex-row flex-wrap gap-4 sm:gap-6 justify-center items-center">
-              <Button size="lg"
-                className="group w-full sm:w-auto px-8 py-5 sm:px-10 sm:py-7 rounded-xl text-base sm:text-xl border-2 hover:shadow-2xl hover:scale-105 transition-all duration-500"
-                style={{ backgroundColor: '#F8F9FA', color: '#121212', borderColor: '#F8F9FA' }} asChild>
-                <Link to="/start-a-project" className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: '#D4A843' }} />
-                  {t('home.cta.book')}
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
-                </Link>
-              </Button>
-              <Button size="lg" variant="outline"
-                className="w-full sm:w-auto px-8 py-5 sm:px-10 sm:py-7 rounded-xl text-base sm:text-xl border-2 backdrop-blur-sm hover:scale-105 transition-transform duration-500"
-                style={{ borderColor: '#D4A843', color: '#D4A843', backgroundColor: 'rgba(212, 168, 67, 0.1)' }} asChild>
-                <Link to="/services#event-story">{t('home.cta.pricing')}</Link>
-              </Button>
-            </div>
-            <motion.p
-              initial={{ opacity: 0 }} whileInView={{ opacity: 1 }}
-              transition={{ delay: 0.5, duration: 0.8 }} viewport={{ once: true }}
-              className="text-xs mt-4" style={{ color: '#777777' }}>
-              {t('home.cta.note')}
-            </motion.p>
-            <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }}
-              transition={{ delay: 0.3, duration: 0.8 }} viewport={{ once: true }}
-              className="flex flex-wrap gap-8 justify-center mt-16 pt-12 border-t"
-              style={{ borderColor: 'rgba(224, 224, 224, 0.2)' }}>
-              {[{ icon: Users, text: t('home.cta.badge1') }, { icon: CheckCircle2, text: t('home.cta.badge2') }, { icon: Globe, text: t('home.cta.badge3') }].map((item, i) => (
-                <div key={i} className="flex items-center gap-3">
-                  <item.icon className="w-6 h-6" style={{ color: '#D4A843' }} />
-                  <span className="text-sm tracking-wide" style={{ color: '#E0E0E0' }}>{item.text}</span>
+            <div className="grid gap-5">
+              {(fr ? [
+                ['Attirer', 'Des récits et actifs de campagne qui aident le bon public à comprendre pourquoi le moment compte.'],
+                ['Documenter avec soin', 'Une production culturellement attentive, guidée par le contexte, les droits, le consentement et l’usage prévu.'],
+                ['Prolonger le récit', 'Des actifs rapides, une archive utile et une voie éditoriale pour les rapports, la promotion et le prochain programme.'],
+              ] : [
+                ['Bring people in', 'Narrative and campaign assets that help the right audience understand why the moment matters.'],
+                ['Capture with care', 'Culturally attentive production shaped by context, rights, consent, and intended use.'],
+                ['Carry the story forward', 'Rapid assets, a useful archive, and an editorial path for reporting, promotion, and the next program.'],
+              ]).map(([title, text], index) => (
+                <div key={title} className="grid grid-cols-[auto_1fr] gap-5 rounded-2xl p-6" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E0E0E0' }}>
+                  <span className="text-xs pt-1" style={{ color: '#C0392B' }}>0{index + 1}</span>
+                  <div><h3 className="text-xl mb-2" style={{ color: '#1A1A2E' }}>{title}</h3><p className="leading-relaxed" style={{ color: '#555' }}>{text}</p></div>
                 </div>
               ))}
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-24" style={{ backgroundColor: '#1A1A2E' }}>
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-5 mb-12">
+            <div>
+              <p className="text-xs tracking-[0.35em] uppercase mb-4" style={{ color: '#D4A843' }}>{fr ? 'Façons de travailler ensemble' : 'Ways to create momentum'}</p>
+              <h2 className="text-4xl md:text-6xl font-light tracking-tight" style={{ color: '#F8F9FA' }}>{fr ? 'Trois systèmes. Un résultat clair.' : 'Three systems. One clear outcome.'}</h2>
+            </div>
+            <Link to="/services" className="inline-flex items-center gap-2 text-sm" style={{ color: '#D4A843' }}>{fr ? 'Voir notre approche' : 'See how we work'} <ArrowRight className="w-4 h-4" /></Link>
+          </div>
+          <div className="grid lg:grid-cols-3 gap-5">
+            {offers.map((offer) => (
+              <article key={offer.number} className="rounded-2xl p-7 md:p-8 flex flex-col min-h-[330px]" style={{ backgroundColor: 'rgba(248,249,250,.04)', border: '1px solid rgba(212,168,67,.2)' }}>
+                <span className="text-xs tracking-[0.25em]" style={{ color: '#D4A843' }}>{offer.number}</span>
+                <h3 className="text-2xl mt-12 mb-4" style={{ color: '#F8F9FA' }}>{offer.title}</h3>
+                <p className="leading-relaxed flex-1" style={{ color: '#B7BBC3' }}>{offer.text}</p>
+                <Link to="/start-a-project" className="inline-flex items-center gap-2 text-sm mt-8" style={{ color: '#D4A843' }}>{offer.cta} <ArrowRight className="w-4 h-4" /></Link>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="py-24 lg:py-32">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+          <div className="relative overflow-hidden rounded-3xl min-h-[480px]">
+            <img src={communityImage} alt="Community programming documented by CREOVA" loading="lazy" className="absolute inset-0 w-full h-full object-cover" />
+            <div className="absolute inset-0" style={{ background: 'linear-gradient(transparent 40%, rgba(18,18,18,.85))' }} />
+            <div className="absolute bottom-0 p-7 md:p-9">
+              <p className="text-xs tracking-[0.3em] uppercase mb-3" style={{ color: '#D4A843' }}>BSSC × CREOVA</p>
+              <h2 className="text-3xl md:text-4xl font-light" style={{ color: '#FFFFFF' }}>{fr ? 'Documenter la vie étudiante noire à Brock' : 'Documenting Black student life at Brock'}</h2>
+            </div>
+          </div>
+          <div>
+            <p className="text-xs tracking-[0.35em] uppercase mb-5" style={{ color: '#C0392B' }}>{fr ? 'Étude de cas' : 'Featured case study'}</p>
+            <h2 className="text-4xl md:text-5xl font-light tracking-tight mb-6" style={{ color: '#1A1A2E' }}>{fr ? 'Conçu pour le moment. Utile longtemps après.' : 'Made for the moment. Useful long after it.'}</h2>
+            <p className="text-lg leading-relaxed mb-5" style={{ color: '#555' }}>
+              {fr
+                ? 'CREOVA a photographié et documenté la vie étudiante noire et des programmes culturels liés au Black Student Success Centre de l’Université Brock.'
+                : 'CREOVA photographed and documented Black student life and cultural programming connected with Brock University’s Black Student Success Centre.'}
+            </p>
+            <p className="leading-relaxed mb-8" style={{ color: '#777' }}>
+              {fr
+                ? 'Une sélection du travail continue de soutenir les communications sociales, promotionnelles, communautaires et institutionnelles. Aucun résultat ni témoignage non vérifié n’est ajouté.'
+                : 'Selected work continues to support social, promotional, community, and institutional communications. No unverified result or testimonial is added.'}
+            </p>
+            <Link to="/work/black-student-success-centre" className="inline-flex items-center gap-2 font-medium" style={{ color: '#C0392B' }}>{fr ? 'Lire l’étude de cas' : 'Read the case study'} <ArrowRight className="w-4 h-4" /></Link>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-24" style={{ backgroundColor: '#FFFFFF' }}>
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="max-w-3xl mb-12">
+            <p className="text-xs tracking-[0.35em] uppercase mb-4" style={{ color: '#148F77' }}>{fr ? 'Choisissez votre voie' : 'Choose the right route'}</p>
+            <h2 className="text-4xl md:text-6xl font-light tracking-tight" style={{ color: '#1A1A2E' }}>{fr ? 'Une relation claire dès le départ.' : 'A clear relationship from the start.'}</h2>
+          </div>
+          <div className="grid md:grid-cols-3 gap-5">
+            {routes.map(({ icon: Icon, title, text, to, cta }) => (
+              <article key={title} className="rounded-2xl p-7" style={{ backgroundColor: '#F8F9FA', border: '1px solid #E0E0E0' }}>
+                <Icon className="w-6 h-6 mb-8" style={{ color: '#148F77' }} />
+                <h3 className="text-2xl mb-3" style={{ color: '#1A1A2E' }}>{title}</h3>
+                <p className="leading-relaxed min-h-[96px]" style={{ color: '#555' }}>{text}</p>
+                <Link to={to} className="inline-flex items-center gap-2 text-sm mt-6" style={{ color: '#148F77' }}>{cta} <ArrowRight className="w-4 h-4" /></Link>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="py-24" style={{ backgroundColor: '#F8F9FA' }}>
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 grid lg:grid-cols-[.8fr_1.2fr] gap-12 items-center">
+          <img src={founderImage} alt="Justin Mafie working with the CREOVA community" loading="lazy" className="w-full rounded-3xl object-cover aspect-[4/5]" />
+          <div>
+            <p className="text-xs tracking-[0.35em] uppercase mb-5" style={{ color: '#C0392B' }}>{fr ? 'Approche fondée par Justin Mafie' : 'Founder-led by Justin Mafie'}</p>
+            <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-6" style={{ color: '#1A1A2E' }}>{fr ? 'La culture n’est pas une couche décorative.' : 'Culture is not a decorative layer.'}</h2>
+            <p className="text-lg leading-relaxed mb-8" style={{ color: '#555' }}>
+              {fr
+                ? 'Elle influence l’auteur du récit, les personnes qui en bénéficient, la manière dont les gens sont représentés et l’usage des images après la remise. CREOVA intègre ces décisions à la stratégie et à la production.'
+                : 'It shapes who authors the story, who benefits, how people are represented, and how the work can be used after delivery. CREOVA brings those decisions into strategy and production.'}
+            </p>
+            <Link to="/about" className="inline-flex items-center gap-2 font-medium" style={{ color: '#C0392B' }}>{fr ? 'À propos de CREOVA' : 'About CREOVA'} <ArrowRight className="w-4 h-4" /></Link>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-24" style={{ backgroundColor: '#121212' }}>
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 grid lg:grid-cols-[1fr_auto] gap-10 items-end">
+          <div>
+            <p className="text-xs tracking-[0.35em] uppercase mb-5" style={{ color: '#D4A843' }}>{fr ? 'Ce que nous bâtissons' : 'What we are building'}</p>
+            <h2 className="text-4xl md:text-6xl font-light tracking-tight max-w-4xl" style={{ color: '#F8F9FA' }}>{fr ? 'Le travail client finance l’expertise. Les produits doivent mériter leur prochaine étape.' : 'Client work builds the craft. Products must earn their next stage.'}</h2>
+            <p className="mt-6 max-w-3xl leading-relaxed" style={{ color: '#9B9B9B' }}>
+              {fr
+                ? 'SEEN est en développement vers une cible bêta en décembre 2026. VERSE est en incubation; son dossier technique est prêt, mais aucun lancement ni précommande n’est annoncé.'
+                : 'SEEN is in development toward a December 2026 beta target. VERSE is incubating; its tech pack is ready, but no launch or preorder is being announced.'}
+            </p>
+          </div>
+          <div className="flex flex-wrap lg:flex-col gap-3">
+            <Link to="/ventures" className="inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm border" style={{ color: '#D4A843', borderColor: 'rgba(212,168,67,.35)' }}>{fr ? 'Voir les projets' : 'Explore ventures'} <ArrowRight className="w-4 h-4" /></Link>
+            {VENTURE_URLS.seen && <a href={VENTURE_URLS.seen} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm px-2 py-2" style={{ color: '#E0E0E0' }}>SEEN <ArrowRight className="w-4 h-4" /></a>}
+            {VENTURE_URLS.verse && <a href={VENTURE_URLS.verse} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm px-2 py-2" style={{ color: '#E0E0E0' }}>VERSE <ArrowRight className="w-4 h-4" /></a>}
+          </div>
+        </div>
+      </section>
+
+      <section className="py-24" style={{ backgroundColor: '#C0392B' }}>
+        <div className="max-w-5xl mx-auto px-6 lg:px-8 text-center">
+          <Repeat2 className="w-7 h-7 mx-auto mb-6" style={{ color: '#FFFFFF' }} />
+          <h2 className="text-4xl md:text-6xl font-light tracking-tight" style={{ color: '#FFFFFF' }}>{fr ? 'Vous planifiez un moment qui doit compter après la journée?' : 'Planning a moment that needs to matter beyond the day?'}</h2>
+          <p className="mt-5 text-lg" style={{ color: 'rgba(255,255,255,.82)' }}>{fr ? 'Dites-nous ce qui se passe, qui il faut rejoindre et à quoi ressemble la réussite.' : 'Tell us what is happening, who it needs to reach, and what success should look like.'}</p>
+          <Link to="/start-a-project" className="mt-9 inline-flex items-center gap-2 rounded-xl px-6 py-3.5 text-sm font-semibold" style={{ backgroundColor: '#FFFFFF', color: '#1A1A2E' }}>{fr ? 'Démarrer un projet' : 'Start a project'} <ArrowRight className="w-4 h-4" /></Link>
         </div>
       </section>
     </div>

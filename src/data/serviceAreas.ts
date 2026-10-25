@@ -2,11 +2,11 @@
  * Service-area landing pages — the organic-search engine.
  *
  * Each entry is a genuinely distinct page (unique intro, local context, FAQs,
- * pricing and portfolio filter) targeting one high-intent "service + place"
+ * service context and portfolio filter) targeting one high-intent "service + place"
  * query CREOVA can honestly rank for. These are NOT thin doorway pages: the
  * copy is specific to the service and the community, grounded in real work
  * (Brock University, the Black Student Success Centre, the Niagara Region) and
- * real pricing from /pricing. Add or edit entries here; routing, prerendering,
+ * public evidence. Add or edit entries here; routing, prerendering,
  * the sitemap and footer links all read from this list.
  */
 
@@ -30,7 +30,6 @@ export interface ServiceArea {
   slug: string;
   /** Portfolio category to surface (matches gallery.category), or null. */
   galleryCategory: 'events' | 'sports' | 'brand' | 'conference' | null;
-  price: string;        // e.g. "from $450"
   serviceLabel: string; // short label for internal links / breadcrumb
   en: ServiceAreaCopy;
   fr: ServiceAreaCopy;
@@ -40,7 +39,6 @@ export const SERVICE_AREAS: ServiceArea[] = [
   {
     slug: 'event-photography-niagara',
     galleryCategory: 'events',
-    price: 'from $450',
     serviceLabel: 'Event Photography',
     en: {
       title: 'Event Photography in Niagara Region',
@@ -59,7 +57,7 @@ export const SERVICE_AREAS: ServiceArea[] = [
       localContext:
         'We are based in the Niagara Region and have covered events for Brock University, the Black Student Success Centre and BIPOC-led community groups across the peninsula. That means we already know the venues, the light, and how to make a Niagara crowd look as good as it feels.',
       faqs: [
-        { q: 'How much does event photography cost in Niagara?', a: 'Event coverage starts at $450 and scales with hours, location count and whether you need a second shooter. See the full breakdown on our pricing page.' },
+        { q: 'How is event storytelling scoped?', a: 'We scope each engagement around the event, intended audience, coverage needs, usage rights, delivery plan and required team. Share those details for a proposal.' },
         { q: 'How fast do we get the photos?', a: 'A curated preview goes out within 48 hours and the full edited gallery is typically delivered within one week.' },
         { q: 'Do you travel across the Niagara Region?', a: 'Yes — St. Catharines, Niagara Falls, Welland, Thorold and the surrounding area are all covered, and we travel further across Ontario for larger engagements.' },
       ],
@@ -81,7 +79,7 @@ export const SERVICE_AREAS: ServiceArea[] = [
       localContext:
         'Basés dans la région de Niagara, nous avons couvert des événements pour l’Université Brock, le Black Student Success Centre et des groupes communautaires BIPOC de toute la péninsule. On connaît déjà les lieux et la lumière.',
       faqs: [
-        { q: 'Combien coûte la photographie d’événement à Niagara ?', a: 'La couverture débute à 450 $ et varie selon les heures, le nombre de lieux et le besoin d’un second photographe. Voir la page tarifs.' },
+        { q: 'Comment le mandat est-il défini ?', a: 'Chaque mandat tient compte de l’événement, du public, de la couverture, des droits d’usage, de la livraison et de l’équipe requise. Partagez ces détails pour recevoir une proposition.' },
         { q: 'En combien de temps reçoit-on les photos ?', a: 'Un aperçu sort en 48 heures et la galerie complète est généralement livrée en une semaine.' },
         { q: 'Vous déplacez-vous dans la région ?', a: 'Oui — St. Catharines, Niagara Falls, Welland, Thorold et les environs, et plus loin en Ontario pour les mandats importants.' },
       ],
@@ -91,7 +89,6 @@ export const SERVICE_AREAS: ServiceArea[] = [
   {
     slug: 'videography-niagara',
     galleryCategory: null,
-    price: 'from $500',
     serviceLabel: 'Videography',
     en: {
       title: 'Videography & Video Production in Niagara',
@@ -110,9 +107,9 @@ export const SERVICE_AREAS: ServiceArea[] = [
       localContext:
         'We produce video across St. Catharines, Niagara Falls and Welland, and have filmed at Brock University and community venues throughout the region. Local means faster scouting, easier reshoots, and a crew that already knows the room.',
       faqs: [
-        { q: 'How much does a video cost?', a: 'Video production starts at $500 and depends on length, shoot days and finishing. Brand films and multi-day shoots are quoted per project — see pricing.' },
+        { q: 'How is a video project scoped?', a: 'Scope depends on the story, intended use, production days, locations, participants, edit requirements, rights and delivery schedule. We quote after those details are clear.' },
         { q: 'Do you deliver social-ready vertical cuts?', a: 'Yes. Every project includes vertical (9:16) cut-downs for Reels, TikTok and Shorts alongside the main horizontal edit.' },
-        { q: 'Can you add drone footage?', a: 'Yes — aerial capture is available as an add-on starting at $600 for venues and locations that call for it.' },
+        { q: 'Can aerial footage be included?', a: 'Where the location, permissions, weather and project needs allow it, aerial capture can be considered during scoping.' },
       ],
     },
     fr: {
@@ -132,9 +129,9 @@ export const SERVICE_AREAS: ServiceArea[] = [
       localContext:
         'Nous produisons de la vidéo à St. Catharines, Niagara Falls et Welland, et avons filmé à l’Université Brock et dans des lieux communautaires de toute la région.',
       faqs: [
-        { q: 'Combien coûte une vidéo ?', a: 'La production vidéo débute à 500 $ selon la durée, les jours de tournage et la finition. Les films de marque sont chiffrés par projet.' },
+        { q: 'Comment un projet vidéo est-il défini ?', a: 'Le mandat dépend du récit, de l’usage prévu, des jours de production, des lieux, des personnes, du montage, des droits et du calendrier de livraison.' },
         { q: 'Livrez-vous des versions verticales ?', a: 'Oui. Chaque projet inclut des versions verticales (9:16) pour Reels, TikTok et Shorts, en plus du montage horizontal.' },
-        { q: 'Peut-on ajouter des prises de drone ?', a: 'Oui — la captation aérienne est offerte en option à partir de 600 $.' },
+        { q: 'Peut-on inclure des prises aériennes ?', a: 'Lorsque le lieu, les autorisations, la météo et le mandat le permettent, la captation aérienne peut être considérée pendant le cadrage.' },
       ],
     },
   },
@@ -142,7 +139,6 @@ export const SERVICE_AREAS: ServiceArea[] = [
   {
     slug: 'brand-photography-st-catharines',
     galleryCategory: 'brand',
-    price: 'from $750',
     serviceLabel: 'Brand Photography',
     en: {
       title: 'Brand Photography in St. Catharines',
@@ -161,8 +157,8 @@ export const SERVICE_AREAS: ServiceArea[] = [
       localContext:
         'St. Catharines is home base — from the Brock University campus to the downtown core, we know where the good light and the right backdrops are. That local knowledge keeps sessions efficient and keeps your brand looking like it belongs here.',
       faqs: [
-        { q: 'What does brand photography include?', a: 'Brand sessions start at $750 and typically cover headshots, product and lifestyle content, with pre-shoot direction so the images match your positioning.' },
-        { q: 'Can you keep us stocked with content?', a: 'Yes — many clients move to a monthly social + content retainer (from $950/mo) so there is always fresh, on-brand imagery in the pipeline.' },
+        { q: 'What can a brand photography engagement include?', a: 'A scoped engagement can combine portraits, product, environment and lifestyle imagery, with pre-production direction tied to the intended story and channels.' },
+        { q: 'Can you support recurring content needs?', a: 'Yes. Recurring needs can be structured as an ongoing storytelling partnership with an agreed cadence, priorities and asset plan.' },
         { q: 'Do you photograph products as well as people?', a: 'Both. A single session can mix founder headshots, team photos, product and lifestyle so you leave with a full content library.' },
       ],
     },
@@ -183,8 +179,8 @@ export const SERVICE_AREAS: ServiceArea[] = [
       localContext:
         'St. Catharines, c’est notre base — du campus de l’Université Brock au centre-ville, on sait où trouver la bonne lumière et les bons décors.',
       faqs: [
-        { q: 'Qu’inclut la photographie de marque ?', a: 'Les séances débutent à 750 $ et couvrent portraits, produits et contenu lifestyle, avec une direction avant la séance.' },
-        { q: 'Pouvez-vous nous fournir du contenu en continu ?', a: 'Oui — plusieurs clients optent pour un forfait mensuel réseaux + contenu (dès 950 $/mois).' },
+        { q: 'Que peut inclure un mandat de photographie de marque ?', a: 'Un mandat défini peut réunir portraits, produits, lieux et images lifestyle, avec une direction de préproduction liée au récit et aux canaux prévus.' },
+        { q: 'Pouvez-vous soutenir des besoins récurrents ?', a: 'Oui. Les besoins récurrents peuvent devenir un partenariat narratif continu avec une cadence, des priorités et un plan d’actifs convenus.' },
         { q: 'Photographiez-vous aussi les produits ?', a: 'Les deux. Une séance peut combiner portraits, équipe, produits et lifestyle.' },
       ],
     },
@@ -193,48 +189,47 @@ export const SERVICE_AREAS: ServiceArea[] = [
   {
     slug: 'bipoc-creative-agency-ontario',
     galleryCategory: null,
-    price: 'from $450',
     serviceLabel: 'BIPOC Creative Agency',
     en: {
-      title: 'BIPOC-Led Creative Agency in Ontario',
+      title: 'BIPOC-Led Cultural Storytelling Studio in Ontario',
       description:
-        'CREOVA is a Black-owned, BIPOC-led creative agency in Ontario offering photography, videography and brand design for organizations, founders and cultural events across the province.',
-      kicker: 'Ontario · BIPOC Creative Agency',
-      h1: 'A BIPOC-Led Creative Agency in Ontario',
+        'CREOVA is a BIPOC-led cultural storytelling studio in Ontario helping organizations turn events, programs and community initiatives into useful stories.',
+      kicker: 'Ontario · BIPOC-Led Storytelling Studio',
+      h1: 'A BIPOC-Led Cultural Storytelling Studio in Ontario',
       intro:
         'CREOVA is a Black-owned creative studio built on a simple idea: the communities that shape culture deserve to be photographed and filmed like they matter. We partner with BIPOC-led organizations, founders and events across Ontario to make photography, video and brand work that carries the weight of the story behind it.',
       included: [
-        'Photography, videography and brand design under one roof',
+        'Narrative strategy, photography, video and editorial assets in one engagement',
         'A team that reflects and understands the communities we shoot',
         'Work delivered in English and French',
-        'Pricing built for founders and community organizations, not just enterprises',
+        'A scope built around the intended outcome, audience and use',
       ],
       localContext:
         'Rooted in the Niagara Region and working across Ontario, CREOVA has documented culture from Brock University to community centres and cultural nights — including partnerships with the Black Student Success Centre. When representation is the point, having a studio that lives it is not a nice-to-have.',
       faqs: [
-        { q: 'What does CREOVA do?', a: 'We are a full-service creative agency: photography, videography, brand design, social content and event coverage — for BIPOC-led organizations, founders and events across Ontario.' },
+        { q: 'What does CREOVA do?', a: 'CREOVA develops cultural storytelling systems for events, campaigns, community programs and ongoing organizational communications.' },
         { q: 'Where are you based?', a: 'We are based in the Niagara Region of Ontario and work across the province, with bilingual (EN/FR) delivery.' },
         { q: 'Do you only work with BIPOC clients?', a: 'Our focus and heart are with BIPOC-led communities, but we partner with any organization that shares those values and wants work made with that care.' },
       ],
     },
     fr: {
-      title: 'Agence créative dirigée par des BIPOC en Ontario',
+      title: 'Studio de narration culturelle dirigé par des BIPOC en Ontario',
       description:
-        'CREOVA est une agence créative appartenant à des Noirs et dirigée par des BIPOC en Ontario : photographie, vidéographie et design de marque pour organisations, fondateurs et événements culturels.',
-      kicker: 'Ontario · Agence créative BIPOC',
-      h1: 'Une agence créative dirigée par des BIPOC en Ontario',
+        'CREOVA est un studio de narration culturelle dirigé par des BIPOC en Ontario qui aide les organisations à prolonger la valeur de leurs événements, programmes et initiatives communautaires.',
+      kicker: 'Ontario · Studio de narration dirigé par des BIPOC',
+      h1: 'Un studio de narration culturelle dirigé par des BIPOC en Ontario',
       intro:
         'CREOVA est un studio créatif appartenant à des Noirs, bâti sur une idée simple : les communautés qui façonnent la culture méritent d’être photographiées et filmées à leur juste valeur. Nous collaborons avec des organisations, fondateurs et événements dirigés par des BIPOC partout en Ontario.',
       included: [
-        'Photographie, vidéographie et design de marque sous un même toit',
+        'Stratégie narrative, photographie, vidéo et actifs éditoriaux dans un même mandat',
         'Une équipe qui reflète et comprend les communautés qu’elle capte',
         'Travail livré en anglais et en français',
-        'Des tarifs pensés pour les fondateurs et les organismes communautaires',
+        'Un mandat défini selon le résultat, le public et les usages prévus',
       ],
       localContext:
         'Enracinée dans la région de Niagara et active partout en Ontario, CREOVA a documenté la culture de l’Université Brock aux centres communautaires — dont des partenariats avec le Black Student Success Centre.',
       faqs: [
-        { q: 'Que fait CREOVA ?', a: 'Une agence créative complète : photographie, vidéographie, design de marque, contenu social et couverture d’événements pour les communautés BIPOC de l’Ontario.' },
+        { q: 'Que fait CREOVA ?', a: 'CREOVA développe des systèmes narratifs culturels pour les événements, les campagnes, les programmes communautaires et les communications organisationnelles continues.' },
         { q: 'Où êtes-vous situés ?', a: 'Dans la région de Niagara, en Ontario, avec un service bilingue (EN/FR) partout dans la province.' },
         { q: 'Travaillez-vous seulement avec des clients BIPOC ?', a: 'Notre cœur est avec les communautés BIPOC, mais nous collaborons avec toute organisation qui partage ces valeurs.' },
       ],
@@ -244,7 +239,6 @@ export const SERVICE_AREAS: ServiceArea[] = [
   {
     slug: 'graduation-photography-brock-university',
     galleryCategory: 'events',
-    price: 'from $450',
     serviceLabel: 'Grad & Campus Photography',
     en: {
       title: 'Graduation & Campus Photography — Brock University',
@@ -263,9 +257,9 @@ export const SERVICE_AREAS: ServiceArea[] = [
       localContext:
         'We work with student groups on the Brock campus and have partnered with the Black Student Success Centre on cultural programming and events. We know the spots — the atrium, the LINC, the campus greens — where grad photos actually look great.',
       faqs: [
-        { q: 'Do you offer group rates for clubs?', a: 'Yes. Clubs, associations and student cohorts get group pricing — reach out with your headcount and date and we will put a rate together.' },
+        { q: 'Can you work with clubs and cohorts?', a: 'Yes. Share the headcount, date, intended use and required coverage so a group engagement can be scoped appropriately.' },
         { q: 'How quickly are grad photos ready?', a: 'We time delivery to convocation and end-of-term socials, with a preview within 48 hours and the full gallery within about a week.' },
-        { q: 'Can you cover a cultural night or showcase?', a: 'Absolutely — event coverage starts at $450 and we regularly shoot cultural nights, showcases and student-led programming on and off campus.' },
+        { q: 'Can you cover a cultural night or showcase?', a: 'Yes. Share the event context, audience, schedule, intended uses and coverage needs so the right engagement can be scoped.' },
       ],
     },
     fr: {
@@ -285,9 +279,9 @@ export const SERVICE_AREAS: ServiceArea[] = [
       localContext:
         'Nous travaillons avec des groupes étudiants sur le campus de Brock et avons collaboré avec le Black Student Success Centre. On connaît les meilleurs endroits — l’atrium, le LINC, les espaces verts.',
       faqs: [
-        { q: 'Offrez-vous des tarifs de groupe ?', a: 'Oui. Clubs, associations et cohortes bénéficient de tarifs de groupe — écrivez-nous avec votre nombre et votre date.' },
+        { q: 'Travaillez-vous avec les clubs et cohortes ?', a: 'Oui. Partagez le nombre de personnes, la date, l’usage prévu et la couverture requise afin de définir un mandat de groupe adapté.' },
         { q: 'Quand les photos sont-elles prêtes ?', a: 'Nous synchronisons la livraison avec la collation des grades : aperçu en 48 heures, galerie complète en une semaine environ.' },
-        { q: 'Pouvez-vous couvrir une soirée culturelle ?', a: 'Absolument — la couverture débute à 450 $ et nous photographions régulièrement soirées culturelles et vitrines étudiantes.' },
+        { q: 'Pouvez-vous couvrir une soirée culturelle ?', a: 'Oui. Partagez le contexte, le public, le calendrier, les usages prévus et les besoins de couverture afin de définir le bon mandat.' },
       ],
     },
   },

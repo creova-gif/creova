@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { motion, useInView } from 'motion/react';
-import { ArrowRight, ArrowUpRight, Check, MapPin } from 'lucide-react';
+import { ArrowRight, Check, MapPin } from 'lucide-react';
 import { Link } from '../i18n/LocaleLink';
 import { PageSEO } from '../components/PageSEO';
 import { useLanguage } from '../context/LanguageContext';
@@ -42,7 +42,6 @@ export function ServiceAreaPage({ slug }: { slug: string }) {
         email: 'support@creova.one',
         address: { '@type': 'PostalAddress', addressRegion: 'ON', addressCountry: 'CA', addressLocality: 'St. Catharines' },
       },
-      offers: { '@type': 'Offer', priceCurrency: 'CAD', price: area.price.replace(/[^0-9]/g, '') },
     },
     {
       '@context': 'https://schema.org',
@@ -82,9 +81,9 @@ export function ServiceAreaPage({ slug }: { slug: string }) {
                 {fr ? 'Réserver un appel' : 'Book a call'}
                 <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
-              <Link to="/services#event-story" className="inline-flex items-center gap-2 text-sm tracking-wide transition-colors" style={{ color: '#E0E0E0' }}>
-                {area.price} · {fr ? 'voir les tarifs' : 'see pricing'}
-                <ArrowUpRight className="w-4 h-4" style={{ color: '#D4A843' }} />
+              <Link to="/services" className="inline-flex items-center gap-2 text-sm tracking-wide transition-colors" style={{ color: '#E0E0E0' }}>
+                {fr ? 'Voir notre approche' : 'See our approach'}
+                <ArrowRight className="w-4 h-4" style={{ color: '#D4A843' }} />
               </Link>
             </div>
           </motion.div>

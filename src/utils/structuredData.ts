@@ -11,12 +11,12 @@ export const organizationSchema = {
   '@context': 'https://schema.org',
   '@type': 'ProfessionalService',
   name: 'CREOVA',
-  alternateName: 'CREOVA Creative Agency',
+  alternateName: 'CREOVA Cultural Storytelling Studio',
   url: `${SITE_URL}/`,
   logo: `${SITE_URL}/logo.png`,
   image: `${SITE_URL}/card-blackprint.jpg`,
   description:
-    "CREOVA is Ontario's Black-owned BIPOC creative agency offering professional photography, videography, brand management, event design, and social media services.",
+    'CREOVA is an Ontario cultural storytelling studio helping organizations extend the value of events, programs, and community initiatives.',
   telephone: '+1-437-260-8925',
   email: 'support@creova.one',
   areaServed: {
@@ -32,7 +32,6 @@ export const organizationSchema = {
     'https://instagram.com/creativeinnovation__',
     'https://www.linkedin.com/company/creovaspace/',
   ],
-  priceRange: '$450-$950',
 };
 
 export function productSchema(product: {

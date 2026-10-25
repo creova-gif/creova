@@ -15,13 +15,13 @@ export interface SeoCopy {
 }
 
 /** Appended to every title. English form lives in PageSEO. */
-export const FR_TITLE_SUFFIX = 'CREOVA — Agence créative';
+export const FR_TITLE_SUFFIX = 'CREOVA — Studio de narration culturelle';
 
 export const SEO_FR: Record<string, SeoCopy> = {
   '/': {
-    title: 'Agence créative dirigée par des personnes BIPOC en Ontario',
+    title: 'Studio de narration culturelle en Ontario',
     description:
-      "CREOVA est une agence créative dirigée par des personnes BIPOC offrant photographie, vidéographie, image de marque et gestion des médias sociaux partout en Ontario et au Canada.",
+      "CREOVA aide les organisations culturelles et communautaires à transformer leurs événements et programmes en récits durables.",
   },
   '/work': {
     title: 'Nos réalisations',
@@ -29,14 +29,14 @@ export const SEO_FR: Record<string, SeoCopy> = {
       "Découvrez le portfolio de CREOVA : photographie, vidéographie, image de marque et campagnes créatives pour les entrepreneurs BIPOC et les marques culturelles du Canada.",
   },
   '/services': {
-    title: 'Services créatifs',
+    title: 'Services de narration culturelle',
     description:
-      "Photographie, vidéographie, image de marque, gestion des médias sociaux et couverture d'événements pour les entrepreneurs et marques BIPOC partout en Ontario.",
+      "Trois façons de travailler avec CREOVA : événements, campagnes communautaires et partenariats narratifs continus.",
   },
   '/community': {
-    title: 'Communauté',
+    title: 'Communauté et collaborations',
     description:
-      "Rejoignez la communauté CREOVA — un espace pour les créatifs, entrepreneurs et conteurs culturels BIPOC du Canada. Connectez-vous, collaborez et grandissez.",
+      "Mandater CREOVA, proposer une collaboration ou discuter d'un partenariat communautaire avec des attentes claires.",
   },
   '/ventures': {
     title: 'Produits et marques en développement',
@@ -47,11 +47,6 @@ export const SEO_FR: Record<string, SeoCopy> = {
     title: 'Démarrer un projet',
     description:
       'Présentez votre projet à CREOVA et recevez un identifiant de demande ainsi qu’une échéance de réponse claire.',
-  },
-  '/seen': {
-    title: 'SEEN — Plateforme de narration multilingue',
-    description:
-      "SEEN est un produit numérique de narration multilingue de CREOVA, actuellement en développement vers une cible bêta en décembre 2026.",
   },
   '/terms-of-service': {
     title: "Conditions d'utilisation",

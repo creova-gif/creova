@@ -43,7 +43,7 @@ export function PageSEO({
   const frCopy = locale === 'fr' ? SEO_FR[barePath] : undefined;
   const localizedTitle = frCopy?.title ?? title;
   const localizedDescription = frCopy?.description ?? description;
-  const suffix = locale === 'fr' ? FR_TITLE_SUFFIX : 'CREOVA — Creative Agency';
+  const suffix = locale === 'fr' ? FR_TITLE_SUFFIX : 'CREOVA — Cultural Storytelling Studio';
   const fullTitle = `${localizedTitle} | ${suffix}`;
 
   const canonicalUrl = absoluteUrl(barePath, locale, SITE_URL);

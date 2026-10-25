@@ -221,7 +221,7 @@ export function WorkPage() {
       <div style={{ backgroundColor: '#121212', minHeight: '100vh' }} className="flex items-center justify-center px-4">
         <PageSEO
           title="Our Work"
-          description="Explore CREOVA's portfolio of photography, videography, brand design, and creative campaigns for BIPOC entrepreneurs and cultural brands across Canada."
+          description="Explore verified CREOVA work documenting cultural events, community programs, and institutional stories in Ontario."
           path="/work"
         />
         {!loading && (
@@ -237,7 +237,7 @@ export function WorkPage() {
     <div style={{ backgroundColor: '#121212' }}>
       <PageSEO
         title="Our Work"
-        description="Explore CREOVA's curated portfolio of photography, videography, brand design, and creative campaigns for BIPOC entrepreneurs and cultural organizations."
+        description="Explore verified CREOVA work documenting cultural events, community programs, and institutional stories in Ontario."
         path="/work"
         jsonLd={structuredData}
       />

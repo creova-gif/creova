@@ -44,11 +44,11 @@ const translations = {
     'home.marquee.12': 'Cultural Storytelling',
 
     // SEO Keys
-    'seo.title': 'CREOVA | Black-Owned Creative Agency Ontario | Photography, Videography, Brand Design',
-    'seo.description': 'CREOVA is a Black-owned creative agency in Ontario, Canada specializing in professional photography, videography, brand management, and digital content creation. Serving BIPOC communities across Niagara, Toronto & GTA with authentic storytelling and premium creative services.',
-    'seo.keywords': 'Black-owned creative agency Ontario, BIPOC photographer Niagara, videography services Toronto, brand photography Ontario, creative studio Canada, Black photographer Toronto, Niagara videographer, brand design Ontario, social media management, Ontario creative agency, African Canadian photographer',
-    'seo.og.title': 'CREOVA | Black-Owned Creative Agency Ontario',
-    'seo.og.description': 'Professional photography, videography, brand management & digital content creation for BIPOC communities across Ontario. Book your creative session today.',
+    'seo.title': 'CREOVA | Cultural Storytelling Studio in Ontario',
+    'seo.description': 'CREOVA helps cultural organizations, community builders, and purpose-led businesses turn events and programs into stories that keep working.',
+    'seo.keywords': 'cultural storytelling Ontario, event storytelling Niagara, community campaign storytelling, BIPOC-led storytelling studio, cultural event photography Ontario, community video production',
+    'seo.og.title': 'CREOVA | Cultural Storytelling Studio',
+    'seo.og.description': 'Story systems for cultural events, community programs, campaigns, and ongoing organizational communications.',
     'seo.schema.desc': 'Black-owned creative agency specializing in photography, videography, and brand design',
     'seo.schema.catalog': 'Creative Services',
     'seo.schema.photo.name': 'Photography Services',
@@ -785,11 +785,11 @@ const translations = {
     'home.marquee.12': 'Narration Culturelle',
 
     // SEO Keys
-    'seo.title': 'CREOVA | Agence Créative Appartenant à des Noirs en Ontario | Photographie, Vidéographie, Design de Marque',
-    'seo.description': 'CREOVA est une agence créative appartenant à des Noirs en Ontario, Canada, spécialisée dans la photographie professionnelle, la vidéographie, la gestion de marque et la création de contenu numérique. Servir les communautés PABCN à travers Niagara, Toronto et le RGT avec une narration authentique et des services créatifs de premier ordre.',
-    'seo.keywords': 'Agence créative appartenant à des Noirs Ontario, photographe PABCN Niagara, services de vidéographie Toronto, photographie de marque Ontario, studio créatif Canada, photographe Noir Toronto, vidéaste Niagara, design de marque Ontario, gestion des médias sociaux, agence créative Ontario, photographe afro-canadien',
-    'seo.og.title': 'CREOVA | Agence Créative Appartenant à des Noirs en Ontario',
-    'seo.og.description': 'Photographie professionnelle, vidéographie, gestion de marque et création de contenu numérique pour les communautés PABCN à travers l\'Ontario. Réservez votre session créative aujourd\'hui.',
+    'seo.title': 'CREOVA | Studio de narration culturelle en Ontario',
+    'seo.description': 'CREOVA aide les organisations culturelles, les bâtisseurs de communautés et les entreprises engagées à transformer leurs événements et programmes en récits durables.',
+    'seo.keywords': 'narration culturelle Ontario, récit événementiel Niagara, campagnes communautaires, studio narratif dirigé par des BIPOC, photographie événementielle culturelle Ontario',
+    'seo.og.title': 'CREOVA | Studio de narration culturelle',
+    'seo.og.description': 'Des systèmes narratifs pour les événements culturels, les programmes communautaires, les campagnes et les communications continues.',
     'seo.schema.desc': 'Agence créative appartenant à des Noirs spécialisée dans la photographie, la vidéographie et le design de marque',
     'seo.schema.catalog': 'Services Créatifs',
     'seo.schema.photo.name': 'Services de Photographie',
