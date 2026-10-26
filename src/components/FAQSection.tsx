@@ -26,25 +26,25 @@ export function FAQSection({
     light: {
       bg: '#FFFFFF',
       border: '#E0E0E0',
-      text: '#121212',
+      text: '#2D1011',
       subtext: '#777777',
-      accent: '#D4A843',
-      hoverBg: '#F8F9FA'
+      accent: '#C6A45A',
+      hoverBg: '#FFFFFF'
     },
     dark: {
-      bg: '#121212',
+      bg: '#2D1011',
       border: '#2A2A2A',
-      text: '#F8F9FA',
+      text: '#FFFFFF',
       subtext: '#E0E0E0',
-      accent: '#D4A843',
-      hoverBg: 'rgba(212, 168, 67, 0.1)'
+      accent: '#C6A45A',
+      hoverBg: 'rgba(198,164,90, 0.1)'
     }
   };
 
   const theme = colors[variant];
 
   return (
-    <section className="py-20" style={{ backgroundColor: variant === 'light' ? '#F8F9FA' : '#0F0F0F' }}>
+    <section className="py-20" style={{ backgroundColor: variant === 'light' ? '#FFFFFF' : '#0F0F0F' }}>
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
@@ -145,8 +145,8 @@ export function FAQSection({
             href="mailto:support@creova.one"
             className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-all duration-300 hover:shadow-lg"
             style={{ 
-              backgroundColor: '#121212',
-              color: '#F8F9FA'
+              backgroundColor: '#2D1011',
+              color: '#FFFFFF'
             }}
           >
             Contact Support

@@ -105,7 +105,7 @@ export function BookingDialog({
 
           {step === 'success' ? (
             <div className="text-center py-8">
-              <CheckCircle2 className="w-16 h-16 mx-auto mb-4" style={{ color: '#D4A843' }} />
+              <CheckCircle2 className="w-16 h-16 mx-auto mb-4" style={{ color: '#C6A45A' }} />
               <h3 className="text-xl mb-2">Booking & Payment Successful!</h3>
               <p className="text-sm mb-4" style={{ color: '#777777' }}>
                 You'll receive a confirmation email at {customerInfo.email} with all the details.
@@ -117,10 +117,10 @@ export function BookingDialog({
           ) : (
             <form onSubmit={handleBookingSubmit} className="space-y-4">
               {/* Service Info */}
-              <div className="p-4 rounded-lg" style={{ backgroundColor: '#F8F9FA' }}>
+              <div className="p-4 rounded-lg" style={{ backgroundColor: '#FFFFFF' }}>
                 <div className="flex justify-between items-start mb-2">
                   <div>
-                    <h4 style={{ color: '#121212' }}>{service.name}</h4>
+                    <h4 style={{ color: '#2D1011' }}>{service.name}</h4>
                     {service.description && (
                       <p className="text-sm mt-1" style={{ color: '#777777' }}>
                         {service.description}
@@ -128,7 +128,7 @@ export function BookingDialog({
                     )}
                   </div>
                   <div className="text-right">
-                    <div style={{ color: '#B1643B' }}>${service.price.toFixed(2)}</div>
+                    <div style={{ color: '#887759' }}>${service.price.toFixed(2)}</div>
                     <div className="text-xs" style={{ color: '#777777' }}>CAD</div>
                   </div>
                 </div>
@@ -136,7 +136,7 @@ export function BookingDialog({
 
               {/* Customer Information */}
               <div className="space-y-3">
-                <h4 className="text-sm" style={{ color: '#D4A843' }}>Your Information</h4>
+                <h4 className="text-sm" style={{ color: '#C6A45A' }}>Your Information</h4>
                 
                 <div>
                   <Label htmlFor="name">Full Name *</Label>
@@ -176,7 +176,7 @@ export function BookingDialog({
 
               {/* Booking Details */}
               <div className="space-y-3">
-                <h4 className="text-sm" style={{ color: '#D4A843' }}>Booking Details</h4>
+                <h4 className="text-sm" style={{ color: '#C6A45A' }}>Booking Details</h4>
                 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
@@ -242,7 +242,7 @@ export function BookingDialog({
                   type="submit"
                   className="flex-1"
                   disabled={isCreating}
-                  style={{ backgroundColor: '#121212' }}
+                  style={{ backgroundColor: '#2D1011' }}
                 >
                   {isCreating ? (
                     <>

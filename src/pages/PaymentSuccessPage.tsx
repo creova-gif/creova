@@ -15,7 +15,7 @@ export function PaymentSuccessPage() {
   }, []);
 
   return (
-    <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#F8F9FA' }}>
+    <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#FFFFFF' }}>
       <PageSEO
         title="Payment Successful"
         description="Your CREOVA payment was successful."
@@ -30,7 +30,7 @@ export function PaymentSuccessPage() {
         >
           <CheckCircle2
             className="w-24 h-24 mx-auto mb-8"
-            style={{ color: '#D4A843' }}
+            style={{ color: '#C6A45A' }}
           />
         </motion.div>
 
@@ -39,7 +39,7 @@ export function PaymentSuccessPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.6 }}
         >
-          <h1 className="text-4xl mb-4" style={{ color: '#121212' }}>
+          <h1 className="text-4xl mb-4" style={{ color: '#2D1011' }}>
             {fr ? 'Paiement réussi !' : 'Payment Successful!'}
           </h1>
           <p className="text-xl mb-8" style={{ color: '#777777' }}>
@@ -55,7 +55,7 @@ export function PaymentSuccessPage() {
               <a
                 href="mailto:support@creova.one"
                 className="underline"
-                style={{ color: '#D4A843' }}
+                style={{ color: '#C6A45A' }}
               >
                 support@creova.one
               </a>
@@ -75,7 +75,7 @@ export function PaymentSuccessPage() {
               onClick={() => navigate('/shop')}
               size="lg"
               className="px-8"
-              style={{ backgroundColor: '#121212', color: '#F8F9FA' }}
+              style={{ backgroundColor: '#2D1011', color: '#FFFFFF' }}
             >
               {fr ? 'Continuer vos achats' : 'Continue Shopping'}
               <ArrowRight className="w-4 h-4 ml-2" />

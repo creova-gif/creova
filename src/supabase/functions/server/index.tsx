@@ -328,7 +328,7 @@ app.post("/make-server-feacf0d8/audit-log", requireAdmin, async (c) => {
 
     // Log critical events to console immediately
     if (severity === 'critical' || severity === 'high') {
-      console.warn(`🚨 [${severity.toUpperCase()}] ${eventType}:`, {
+      console.warn(`[${severity.toUpperCase()}] ${eventType}:`, {
         timestamp,
         userId,
         email,
@@ -349,7 +349,7 @@ app.post("/make-server-feacf0d8/security-alert", requireAdmin, async (c) => {
     const body = await c.req.json();
     const { alert, log } = body;
 
-    console.error(`🚨🚨🚨 CRITICAL SECURITY ALERT: ${alert}`, {
+    console.error(`CRITICAL SECURITY ALERT: ${alert}`, {
       eventType: log.eventType,
       timestamp: log.timestamp,
       ip: log.ip,
@@ -827,7 +827,7 @@ app.post("/make-server-feacf0d8/submit-booking", rateLimit(5, 60000), async (c) 
               body: JSON.stringify({
                 from: 'CREOVA <support@creova.one>',
                 to: ['support@creova.one'],
-                subject: `🎬 New Booking: ${oneLine(service)} — ${oneLine(name)}`,
+                subject: `New Booking: ${oneLine(service)} — ${oneLine(name)}`,
                 html: adminBookingNotification(emailData),
                 reply_to: oneLine(email)
               })
@@ -1279,7 +1279,7 @@ app.post("/make-server-feacf0d8/admin/galleries", requireAdmin, async (c) => {
       image,
       objectPosition: objectPosition || "center",
       url,
-      accent: accent || "#D4A843",
+      accent: accent || "#C6A45A",
       featured: !!featured,
       order: typeof order === "number" ? order : Date.now(),
       created_at: new Date().toISOString(),
@@ -1421,7 +1421,7 @@ app.post("/make-server-feacf0d8/send-booking-confirmation", requireAdmin, rateLi
       body: JSON.stringify({
         from: 'CREOVA <support@creova.one>',
         to: ['support@creova.one'],
-        subject: `🎬 New Booking: ${oneLine(bookingDetails.service)} - ${oneLine(bookingDetails.name)}`,
+        subject: `New Booking: ${oneLine(bookingDetails.service)} - ${oneLine(bookingDetails.name)}`,
         html: adminEmailHtml,
         reply_to: oneLine(to)
       })

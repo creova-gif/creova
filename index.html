@@ -3,6 +3,20 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      try {
+        if (!sessionStorage.getItem('creova-intro-shown') && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          document.documentElement.classList.add('creova-intro-pending');
+          setTimeout(function () { document.documentElement.classList.remove('creova-intro-pending'); }, 2500);
+        }
+      } catch (_) {}
+    </script>
+    <style>
+      html.creova-intro-pending,
+      html.creova-intro-pending body { background: #2D1011; }
+      html.creova-intro-pending #root { visibility: hidden; }
+      html.creova-intro-pending [data-creova-intro] { visibility: visible; }
+    </style>
 
     <!--
       Primary SEO: title/description/OG/Twitter here are a fallback ONLY for
@@ -19,16 +33,16 @@
       replaced by it. Omitting them means the only value ever present is
       the one PageSEO renders.
     -->
-    <title>CREOVA — Ontario's BIPOC Creative Agency | Photography, Videography & Brand Design</title>
-    <meta name="description" content="CREOVA is Ontario's Black-owned BIPOC creative agency offering professional photography, videography, brand management, event design, and social media services. Serving Niagara Region and across Canada." />
-    <meta name="keywords" content="BIPOC creative agency, Black-owned agency Ontario, photography Niagara, videography Brock University, brand design Canada, CREOVA" />
+    <title>CREOVA — Cultural Storytelling Studio in Ontario</title>
+    <meta name="description" content="CREOVA helps cultural, community, and purpose-led organizations turn meaningful events and programs into stories people can return to." />
+    <meta name="keywords" content="cultural storytelling studio Ontario, event photography Niagara, community storytelling, videography, brand storytelling, CREOVA" />
     <meta name="author" content="CREOVA" />
 
     <!-- Open Graph (Facebook, LinkedIn, WhatsApp) -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://www.creova.one/" />
-    <meta property="og:title" content="CREOVA — Ontario's BIPOC Creative Agency" />
-    <meta property="og:description" content="Professional photography, videography, brand management, and event design for BIPOC communities across Canada. Based in Niagara Region, Ontario." />
+    <meta property="og:title" content="CREOVA — Cultural Storytelling Studio in Ontario" />
+    <meta property="og:description" content="Stories built with cultural and community organizations, from the room itself to the archive that remains." />
     <meta property="og:image" content="https://www.creova.one/card-blackprint.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -38,8 +52,8 @@
     <!-- Twitter / X Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@creova_ca" />
-    <meta name="twitter:title" content="CREOVA — Ontario's BIPOC Creative Agency" />
-    <meta name="twitter:description" content="Professional photography, videography, brand management, and event design for BIPOC communities across Canada." />
+    <meta name="twitter:title" content="CREOVA — Cultural Storytelling Studio in Ontario" />
+    <meta name="twitter:description" content="Stories built with cultural and community organizations, from the room itself to the archive that remains." />
     <meta name="twitter:image" content="https://www.creova.one/card-blackprint.jpg" />
 
     <!-- Favicon -->
@@ -50,15 +64,15 @@
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
     <!--
-      Fonts. Display: Instrument Serif (Google) — expressive editorial serif.
-      Body/UI: General Sans (Fontshare) — a crisp, geometric, restrained
-      grotesque that gives the bespoke editorial-tech contrast we want, without
-      the generic feel of a system sans.
+      Brand typography prefers Quasimoda (Adobe Fonts / licensed self-hosting).
+      General Sans and Instrument Serif remain verified web fallbacks until a
+      CREOVA Adobe Fonts web-project kit is connected.
     -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preconnect" href="https://api.fontshare.com" />
     <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin />
+    <link rel="preconnect" href="https://images.pixieset.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
     <link href="https://api.fontshare.com/v2/css?f[]=general-sans@300,400,500,600,700&display=swap" rel="stylesheet" />
   </head>

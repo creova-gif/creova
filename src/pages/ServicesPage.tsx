@@ -1,4 +1,4 @@
-import { ArrowRight, Check, Compass, FileStack, HeartHandshake, Repeat2 } from 'lucide-react';
+import { ArrowRight, Camera, Check, Compass, FileStack, HeartHandshake, Repeat2 } from 'lucide-react';
 import { motion } from 'motion/react';
 import { Link } from '../i18n/LocaleLink';
 import { PageSEO } from '../components/PageSEO';
@@ -46,6 +46,15 @@ export function ServicesPage() {
       includes: ['Cadence et priorités convenues', 'Bibliothèque d’actifs organisée', 'Production et livraison récurrentes', 'Révision régulière des usages et apprentissages'],
       icon: Repeat2,
     },
+    {
+      id: 'equipment-access',
+      number: '04',
+      title: 'Accès à l’équipement de production',
+      promise: 'Accéder à du matériel photo, vidéo, éclairage ou audio pour un projet défini, sans forfait commercial non vérifié.',
+      fit: 'Pour les créatifs et petites équipes ayant un brief, des dates et un plan de production clairs.',
+      includes: ['Disponibilité confirmée par demande', 'Matériel et état documentés par écrit', 'Conditions de ramassage et retour convenues', 'Tarif, dépôt et assurance confirmés avant engagement'],
+      icon: Camera,
+    },
   ] : [
     {
       id: 'event-story',
@@ -74,6 +83,15 @@ export function ServicesPage() {
       includes: ['Agreed cadence and priorities', 'An organized asset library', 'Recurring production and delivery', 'Regular review of use and learning'],
       icon: Repeat2,
     },
+    {
+      id: 'equipment-access',
+      number: '04',
+      title: 'Production Equipment Access',
+      promise: 'Access photography, video, lighting, or audio equipment for a defined project without relying on an unverified public catalogue.',
+      fit: 'For creators and small teams with a clear brief, dates, and production plan.',
+      includes: ['Availability confirmed by inquiry', 'Kit and condition documented in writing', 'Pickup and return terms agreed in advance', 'Rate, deposit, and insurance confirmed before commitment'],
+      icon: Camera,
+    },
   ];
 
   const steps = fr
@@ -81,18 +99,18 @@ export function ServicesPage() {
     : [['Frame', 'Objective, audience, cultural context, rights, and intended outcome.'], ['Design', 'A narrative and production plan shaped to the moment and its channels.'], ['Produce', 'A right-sized team working from clear expectations.'], ['Extend', 'Organized assets for communications, reporting, and what comes next.']];
 
   return (
-    <div style={{ backgroundColor: '#F8F9FA' }}>
+    <div style={{ backgroundColor: '#FFFFFF' }}>
       <PageSEO
         title={fr ? 'Services de narration culturelle' : 'Cultural Storytelling Services'}
-        description={fr ? 'Trois façons de travailler avec CREOVA : événements, campagnes communautaires et partenariats narratifs continus.' : 'Three ways to work with CREOVA: event storytelling, community campaigns, and ongoing storytelling partnerships.'}
+        description={fr ? 'Récit d’événement, campagnes communautaires, partenariats continus et accès à l’équipement sur demande.' : 'Event storytelling, community campaigns, ongoing partnerships, and inquiry-led production equipment access.'}
         path="/services"
       />
 
-      <section className="relative overflow-hidden py-24 lg:py-36" style={{ backgroundColor: '#121212' }}>
-        <div className="absolute inset-0 opacity-60" style={{ background: 'radial-gradient(circle at 85% 20%, rgba(212,168,67,.18), transparent 38%)' }} />
+      <section className="relative overflow-hidden py-24 lg:py-36" style={{ backgroundColor: '#2D1011' }}>
+        <div className="absolute inset-0 opacity-60" style={{ background: 'radial-gradient(circle at 85% 20%, rgba(198,164,90,.18), transparent 38%)' }} />
         <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .7 }} className="relative max-w-7xl mx-auto px-6 lg:px-8">
-          <p className="text-xs tracking-[.35em] uppercase mb-6" style={{ color: '#D4A843' }}>{fr ? 'Services' : 'What we do'}</p>
-          <h1 className="max-w-5xl font-light tracking-tight leading-[.98]" style={{ color: '#F8F9FA', fontSize: 'clamp(3.2rem, 8vw, 7.5rem)' }}>
+          <p className="text-xs tracking-[.35em] uppercase mb-6" style={{ color: '#C6A45A' }}>{fr ? 'Services' : 'What we do'}</p>
+          <h1 className="max-w-5xl font-light tracking-tight leading-[.98]" style={{ color: '#FFFFFF', fontSize: 'clamp(3.2rem, 8vw, 7.5rem)' }}>
             {fr ? 'Un système narratif pour le moment, le public et la suite.' : 'One story system for the moment, the audience, and what comes next.'}
           </h1>
           <p className="max-w-3xl mt-7 text-lg md:text-xl leading-relaxed" style={{ color: '#B7BBC3' }}>
@@ -106,29 +124,29 @@ export function ServicesPage() {
           {offers.map(({ id, number, title, promise, fit, includes, icon: Icon }) => (
             <article id={id} key={id} className="scroll-mt-36 grid lg:grid-cols-[.7fr_1.3fr] gap-10 rounded-3xl p-7 md:p-10 lg:p-12" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E0E0E0' }}>
               <div>
-                <div className="flex items-center gap-3 mb-10"><Icon className="w-5 h-5" style={{ color: '#C0392B' }} /><span className="text-xs tracking-[.3em]" style={{ color: '#C0392B' }}>{number}</span></div>
-                <h2 className="text-3xl md:text-5xl font-light tracking-tight mb-5" style={{ color: '#1A1A2E' }}>{title}</h2>
+                <div className="flex items-center gap-3 mb-10"><Icon className="w-5 h-5" style={{ color: '#887759' }} /><span className="text-xs tracking-[.3em]" style={{ color: '#887759' }}>{number}</span></div>
+                <h2 className="text-3xl md:text-5xl font-light tracking-tight mb-5" style={{ color: '#2D1011' }}>{title}</h2>
                 <p className="text-lg leading-relaxed" style={{ color: '#555' }}>{promise}</p>
               </div>
               <div className="lg:border-l lg:pl-12" style={{ borderColor: '#E0E0E0' }}>
-                <p className="text-xs tracking-[.25em] uppercase mb-3" style={{ color: '#148F77' }}>{fr ? 'Conçu pour' : 'Designed for'}</p>
+                <p className="text-xs tracking-[.25em] uppercase mb-3" style={{ color: '#887759' }}>{fr ? 'Conçu pour' : 'Designed for'}</p>
                 <p className="leading-relaxed mb-8" style={{ color: '#555' }}>{fit}</p>
                 <ul className="grid sm:grid-cols-2 gap-4 mb-9">
-                  {includes.map((item) => <li key={item} className="flex gap-3 text-sm leading-relaxed" style={{ color: '#333' }}><Check className="w-4 h-4 mt-1 shrink-0" style={{ color: '#148F77' }} />{item}</li>)}
+                  {includes.map((item) => <li key={item} className="flex gap-3 text-sm leading-relaxed" style={{ color: '#333' }}><Check className="w-4 h-4 mt-1 shrink-0" style={{ color: '#887759' }} />{item}</li>)}
                 </ul>
-                <Link to="/start-a-project" className="inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold" style={{ backgroundColor: '#1A1A2E', color: '#FFFFFF' }}>{fr ? 'Parler de votre projet' : 'Talk about your project'} <ArrowRight className="w-4 h-4" /></Link>
+                <Link to="/start-a-project" className="inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold" style={{ backgroundColor: '#2D1011', color: '#FFFFFF' }}>{fr ? 'Parler de votre projet' : 'Talk about your project'} <ArrowRight className="w-4 h-4" /></Link>
               </div>
             </article>
           ))}
         </div>
       </section>
 
-      <section className="py-24" style={{ backgroundColor: '#1A1A2E' }}>
+      <section className="py-24" style={{ backgroundColor: '#2D1011' }}>
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid lg:grid-cols-[.75fr_1.25fr] gap-12 lg:gap-20">
-            <div><p className="text-xs tracking-[.35em] uppercase mb-5" style={{ color: '#D4A843' }}>{fr ? 'Notre approche' : 'How it works'}</p><h2 className="text-4xl md:text-6xl font-light tracking-tight" style={{ color: '#F8F9FA' }}>{fr ? 'Un mandat clair. Une production responsable.' : 'A clear brief. A responsible production.'}</h2></div>
+            <div><p className="text-xs tracking-[.35em] uppercase mb-5" style={{ color: '#C6A45A' }}>{fr ? 'Notre approche' : 'How it works'}</p><h2 className="text-4xl md:text-6xl font-light tracking-tight" style={{ color: '#FFFFFF' }}>{fr ? 'Un mandat clair. Une production responsable.' : 'A clear brief. A responsible production.'}</h2></div>
             <div className="grid sm:grid-cols-2 gap-5">
-              {steps.map(([title, text], index) => <div key={title} className="rounded-2xl p-6" style={{ backgroundColor: 'rgba(248,249,250,.04)', border: '1px solid rgba(212,168,67,.18)' }}><span className="text-xs" style={{ color: '#D4A843' }}>0{index + 1}</span><h3 className="text-xl mt-7 mb-3" style={{ color: '#F8F9FA' }}>{title}</h3><p className="text-sm leading-relaxed" style={{ color: '#B7BBC3' }}>{text}</p></div>)}
+              {steps.map(([title, text], index) => <div key={title} className="rounded-2xl p-6" style={{ backgroundColor: 'rgba(255,255,255,.04)', border: '1px solid rgba(198,164,90,.18)' }}><span className="text-xs" style={{ color: '#C6A45A' }}>0{index + 1}</span><h3 className="text-xl mt-7 mb-3" style={{ color: '#FFFFFF' }}>{title}</h3><p className="text-sm leading-relaxed" style={{ color: '#B7BBC3' }}>{text}</p></div>)}
             </div>
           </div>
         </div>
@@ -136,10 +154,10 @@ export function ServicesPage() {
 
       <section className="py-24">
         <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
-          <HeartHandshake className="w-7 h-7 mx-auto mb-6" style={{ color: '#C0392B' }} />
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-6" style={{ color: '#1A1A2E' }}>{fr ? 'Le prix suit le mandat.' : 'Scope first. Price second.'}</h2>
+          <HeartHandshake className="w-7 h-7 mx-auto mb-6" style={{ color: '#887759' }} />
+          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-6" style={{ color: '#2D1011' }}>{fr ? 'Le prix suit le mandat.' : 'Scope first. Price second.'}</h2>
           <p className="max-w-2xl mx-auto leading-relaxed mb-9" style={{ color: '#555' }}>{fr ? 'Chaque proposition définit le résultat, les responsabilités, les droits d’usage, le calendrier et le budget. Aucun forfait public ne remplace cette conversation.' : 'Every proposal defines the outcome, responsibilities, usage rights, timeline, and budget. A public package cannot replace that conversation.'}</p>
-          <Link to="/start-a-project" className="inline-flex items-center gap-2 rounded-xl px-7 py-4 font-semibold" style={{ backgroundColor: '#C0392B', color: '#FFFFFF' }}>{fr ? 'Démarrer un projet' : 'Start a project'} <ArrowRight className="w-4 h-4" /></Link>
+          <Link to="/start-a-project" className="inline-flex items-center gap-2 rounded-xl px-7 py-4 font-semibold" style={{ backgroundColor: '#7D6D51', color: '#FFFFFF' }}>{fr ? 'Démarrer un projet' : 'Start a project'} <ArrowRight className="w-4 h-4" /></Link>
         </div>
       </section>
     </div>

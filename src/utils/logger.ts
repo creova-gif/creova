@@ -50,11 +50,11 @@ export const logger = {
   },
 
   /**
-   * Success log with emoji - only in development
+   * Success log - only in development
    */
   success: (...args: any[]) => {
     if (isDevelopment) {
-      console.log('✅', ...args);
+      console.log('[success]', ...args);
     }
   },
 
@@ -63,7 +63,7 @@ export const logger = {
    */
   debug: (...args: any[]) => {
     if (isDevelopment) {
-      console.log('🔍 [DEBUG]', ...args);
+      console.log('[DEBUG]', ...args);
     }
   },
 

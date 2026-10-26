@@ -19,7 +19,7 @@ export function TiltCard({
   style,
   maxAngle = 8,
   spotlight = false,
-  spotlightColor = 'rgba(212,168,67,0.12)',
+  spotlightColor = 'rgba(198,164,90,0.12)',
   onClick,
   ...rest
 }: TiltCardProps) {

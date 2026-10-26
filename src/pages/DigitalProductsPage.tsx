@@ -5,7 +5,7 @@ import { motion } from 'motion/react';
 import { useState } from 'react';
 import { productListSchema } from '../utils/structuredData';
 
-const warmGradient = 'linear-gradient(135deg, #D4A843 0%, #B1643B 100%)';
+const warmGradient = 'linear-gradient(135deg, #C6A45A 0%, #887759 100%)';
 
 interface DigitalProductsPageProps {
   /**
@@ -56,16 +56,16 @@ export function DigitalProductsPage({ embedded = false }: DigitalProductsPagePro
   ];
 
   const typeColor: Record<string, string> = {
-    Templates: 'rgba(212,168,67,0.85)',
+    Templates: 'rgba(198,164,90,0.85)',
     Planning: 'rgba(74,62,54,0.85)',
-    Business: 'rgba(18,18,18,0.85)',
-    Presets: 'rgba(177,100,59,0.85)',
-    Video: 'rgba(18,18,18,0.85)',
-    Marketing: 'rgba(212,168,67,0.85)'
+    Business: 'rgba(45,16,17,0.85)',
+    Presets: 'rgba(136,119,89,0.85)',
+    Video: 'rgba(45,16,17,0.85)',
+    Marketing: 'rgba(198,164,90,0.85)'
   };
 
   return (
-    <div style={{ backgroundColor: '#F8F9FA' }}>
+    <div style={{ backgroundColor: '#FFFFFF' }}>
       {/*
         Rendered in both modes: ShopPage only emits its own <PageSEO> for the
         apparel tab, so /shop/digital would otherwise ship with no title or
@@ -79,14 +79,14 @@ export function DigitalProductsPage({ embedded = false }: DigitalProductsPagePro
       />
 
       {/* Hero — editorial asymmetric split */}
-      <section className={`relative overflow-hidden ${embedded ? 'hidden' : ''}`} style={{ backgroundColor: '#121212', minHeight: '480px' }}>
+      <section className={`relative overflow-hidden ${embedded ? 'hidden' : ''}`} style={{ backgroundColor: '#2D1011', minHeight: '480px' }}>
         {/* Subtle ambient glows */}
         <div className="absolute inset-0 pointer-events-none" style={{
-          background: `radial-gradient(ellipse 50% 80% at 0% 50%, rgba(212,168,67,0.07) 0%, transparent 60%),
-                       radial-gradient(ellipse 40% 60% at 100% 20%, rgba(177,100,59,0.05) 0%, transparent 60%)`
+          background: `radial-gradient(ellipse 50% 80% at 0% 50%, rgba(198,164,90,0.07) 0%, transparent 60%),
+                       radial-gradient(ellipse 40% 60% at 100% 20%, rgba(136,119,89,0.05) 0%, transparent 60%)`
         }} />
         <div className="absolute top-0 left-0 right-0" style={{ height: '3px', background: warmGradient }} />
-        <div className="absolute bottom-0 left-0 right-0" style={{ height: '1px', backgroundColor: 'rgba(212,168,67,0.2)' }} />
+        <div className="absolute bottom-0 left-0 right-0" style={{ height: '1px', backgroundColor: 'rgba(198,164,90,0.2)' }} />
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-[1fr_auto] gap-0 items-center py-16 sm:py-24">
@@ -100,9 +100,9 @@ export function DigitalProductsPage({ embedded = false }: DigitalProductsPagePro
                 transition={{ duration: 0.6 }}
                 className="flex items-center gap-3 mb-6"
               >
-                <div style={{ height: '1px', width: '32px', backgroundColor: 'rgba(212,168,67,0.5)' }} />
-                <span className="text-[10px] tracking-[0.5em] uppercase" style={{ color: '#D4A843' }}>CREOVA Digital Studio</span>
-                <span className="text-[9px] tracking-[0.3em] uppercase px-2 py-0.5 rounded-sm ml-2" style={{ backgroundColor: 'rgba(212,168,67,0.12)', border: '1px solid rgba(212,168,67,0.25)', color: '#D4A843' }}>November 2026</span>
+                <div style={{ height: '1px', width: '32px', backgroundColor: 'rgba(198,164,90,0.5)' }} />
+                <span className="text-[10px] tracking-[0.5em] uppercase" style={{ color: '#C6A45A' }}>CREOVA Digital Studio</span>
+                <span className="text-[9px] tracking-[0.3em] uppercase px-2 py-0.5 rounded-sm ml-2" style={{ backgroundColor: 'rgba(198,164,90,0.12)', border: '1px solid rgba(198,164,90,0.25)', color: '#C6A45A' }}>November 2026</span>
               </motion.div>
 
               <h1 className="leading-none">
@@ -112,7 +112,7 @@ export function DigitalProductsPage({ embedded = false }: DigitalProductsPagePro
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.7, delay: 0.1 }}
                   className="block font-light tracking-tighter"
-                  style={{ fontSize: 'clamp(72px, 13vw, 180px)', color: '#F8F9FA' }}
+                  style={{ fontSize: 'clamp(72px, 13vw, 180px)', color: '#FFFFFF' }}
                 >
                   Digital.
                 </motion.span>
@@ -140,7 +140,7 @@ export function DigitalProductsPage({ embedded = false }: DigitalProductsPagePro
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.4 }}
                 className="text-sm font-light max-w-sm mb-8"
-                style={{ color: 'rgba(248,249,250,0.4)' }}
+                style={{ color: 'rgba(255,255,255,0.4)' }}
               >
                 Templates · Presets · Tools built for creative entrepreneurs.
               </motion.p>
@@ -165,9 +165,9 @@ export function DigitalProductsPage({ embedded = false }: DigitalProductsPagePro
               className="hidden md:flex flex-col gap-3 w-64 ml-16"
             >
               {[
-                { icon: Package, label: 'Templates', count: '12+', desc: 'Canva · Notion · InDesign', color: '#D4A843' },
-                { icon: Sliders, label: 'Presets', count: '30+', desc: 'Lightroom · Mobile', color: '#B1643B' },
-                { icon: Wrench, label: 'Tools', count: '8+', desc: 'Workbooks · Guides', color: '#D4A843' },
+                { icon: Package, label: 'Templates', count: '12+', desc: 'Canva · Notion · InDesign', color: '#C6A45A' },
+                { icon: Sliders, label: 'Presets', count: '30+', desc: 'Lightroom · Mobile', color: '#887759' },
+                { icon: Wrench, label: 'Tools', count: '8+', desc: 'Workbooks · Guides', color: '#C6A45A' },
               ].map((cat, i) => (
                 <motion.div
                   key={cat.label}
@@ -176,26 +176,26 @@ export function DigitalProductsPage({ embedded = false }: DigitalProductsPagePro
                   transition={{ delay: 0.4 + i * 0.1 }}
                   className="flex items-center gap-4 px-5 py-4 rounded-xl"
                   style={{
-                    backgroundColor: 'rgba(248,249,250,0.04)',
-                    border: '1px solid rgba(212,168,67,0.12)',
+                    backgroundColor: 'rgba(255,255,255,0.04)',
+                    border: '1px solid rgba(198,164,90,0.12)',
                   }}
                 >
                   <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
-                    style={{ backgroundColor: 'rgba(212,168,67,0.1)', border: `1px solid ${cat.color}30` }}>
+                    style={{ backgroundColor: 'rgba(198,164,90,0.1)', border: `1px solid ${cat.color}30` }}>
                     <cat.icon className="w-4 h-4" style={{ color: cat.color }} />
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between gap-2">
-                      <span className="text-sm font-medium" style={{ color: '#F8F9FA' }}>{cat.label}</span>
+                      <span className="text-sm font-medium" style={{ color: '#FFFFFF' }}>{cat.label}</span>
                       <span className="text-xs font-semibold" style={{ color: cat.color }}>{cat.count}</span>
                     </div>
-                    <p className="text-[11px] mt-0.5" style={{ color: 'rgba(248,249,250,0.3)' }}>{cat.desc}</p>
+                    <p className="text-[11px] mt-0.5" style={{ color: 'rgba(255,255,255,0.3)' }}>{cat.desc}</p>
                   </div>
                 </motion.div>
               ))}
               <div className="mt-1 flex items-center gap-2 px-1">
-                <span className="w-1.5 h-1.5 rounded-full animate-pulse flex-shrink-0" style={{ backgroundColor: '#D4A843' }} />
-                <span className="text-[10px] tracking-wide" style={{ color: 'rgba(248,249,250,0.25)' }}>Launching November 2026</span>
+                <span className="w-1.5 h-1.5 rounded-full animate-pulse flex-shrink-0" style={{ backgroundColor: '#C6A45A' }} />
+                <span className="text-[10px] tracking-wide" style={{ color: 'rgba(255,255,255,0.25)' }}>Launching November 2026</span>
               </div>
             </motion.div>
           </div>
@@ -203,7 +203,7 @@ export function DigitalProductsPage({ embedded = false }: DigitalProductsPagePro
       </section>
 
       {/* Dark filter bar */}
-      <section className="sticky z-40" style={{ top: '64px', backgroundColor: '#121212', borderBottom: '1px solid rgba(212,168,67,0.15)' }}>
+      <section className="sticky z-40" style={{ top: '64px', backgroundColor: '#2D1011', borderBottom: '1px solid rgba(198,164,90,0.15)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             <div className="flex overflow-x-auto scrollbar-hide" style={{ WebkitOverflowScrolling: 'touch' }}>
@@ -212,7 +212,7 @@ export function DigitalProductsPage({ embedded = false }: DigitalProductsPagePro
                   key={item.value}
                   onClick={() => setFilter(item.value)}
                   className="px-4 sm:px-5 py-4 text-xs tracking-[0.3em] whitespace-nowrap transition-all duration-200 relative flex-shrink-0"
-                  style={{ color: filter === item.value ? '#F8F9FA' : '#777777' }}
+                  style={{ color: filter === item.value ? '#FFFFFF' : '#777777' }}
                 >
                   {item.label}
                   {filter === item.value && (
@@ -233,7 +233,7 @@ export function DigitalProductsPage({ embedded = false }: DigitalProductsPagePro
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {filteredProducts.length === 0 && (
             <div className="py-20 text-center">
-              <p className="text-lg mb-2" style={{ color: '#121212' }}>No products in this category yet</p>
+              <p className="text-lg mb-2" style={{ color: '#2D1011' }}>No products in this category yet</p>
               <p className="text-sm" style={{ color: '#777777' }}>New digital products dropping November 2026.</p>
             </div>
           )}
@@ -249,7 +249,7 @@ export function DigitalProductsPage({ embedded = false }: DigitalProductsPagePro
                 onMouseLeave={() => setHoveredProduct(null)}
               >
                 {/* Image area */}
-                <div className="relative aspect-[4/3] mb-3 overflow-hidden" style={{ backgroundColor: '#F8F9FA' }}>
+                <div className="relative aspect-[4/3] mb-3 overflow-hidden" style={{ backgroundColor: '#FFFFFF' }}>
                   <img
                     src={product.image}
                     alt={product.name}
@@ -271,7 +271,7 @@ export function DigitalProductsPage({ embedded = false }: DigitalProductsPagePro
 
                   {/* Type badge */}
                   <div className="absolute top-2 right-2 px-2 py-0.5 text-[8px] tracking-widest z-10"
-                    style={{ backgroundColor: typeColor[product.type] || 'rgba(18,18,18,0.85)', color: '#FFFFFF' }}>
+                    style={{ backgroundColor: typeColor[product.type] || 'rgba(45,16,17,0.85)', color: '#FFFFFF' }}>
                     {product.type.toUpperCase()}
                   </div>
 
@@ -287,13 +287,13 @@ export function DigitalProductsPage({ embedded = false }: DigitalProductsPagePro
                     <div
                       role="status"
                       className="flex-1 flex items-center justify-center py-2 text-[10px] tracking-widest"
-                      style={{ backgroundColor: 'rgba(255,255,255,0.12)', color: '#F8F9FA' }}
+                      style={{ backgroundColor: 'rgba(255,255,255,0.12)', color: '#FFFFFF' }}
                     >
                       {t('digital.closed')}
                     </div>
                     <button
                       className="w-9 flex items-center justify-center transition-colors"
-                      style={{ backgroundColor: 'rgba(255,255,255,0.15)', color: '#F8F9FA' }}
+                      style={{ backgroundColor: 'rgba(255,255,255,0.15)', color: '#FFFFFF' }}
                     >
                       <Heart className="w-3.5 h-3.5" />
                     </button>
@@ -302,9 +302,9 @@ export function DigitalProductsPage({ embedded = false }: DigitalProductsPagePro
 
                 {/* Product info */}
                 <div className="space-y-1">
-                  <h2 className="text-[10px] tracking-wider leading-snug" style={{ color: '#121212' }}>{product.name}</h2>
+                  <h2 className="text-[10px] tracking-wider leading-snug" style={{ color: '#2D1011' }}>{product.name}</h2>
                   <p className="text-[9px] tracking-wide leading-relaxed" style={{ color: '#777777' }}>{product.includes}</p>
-                  <p className="text-sm font-light" style={{ color: '#121212' }}>${product.price} CAD</p>
+                  <p className="text-sm font-light" style={{ color: '#2D1011' }}>${product.price} CAD</p>
 
                   {/* Description on hover */}
                   {hoveredProduct === product.id && (
@@ -320,11 +320,11 @@ export function DigitalProductsPage({ embedded = false }: DigitalProductsPagePro
       </section>
 
       {/* Info bar — dark editorial */}
-      <section className="py-16 relative overflow-hidden" style={{ backgroundColor: '#121212' }}>
-        <div className="absolute top-0 left-0 right-0" style={{ height: '1px', backgroundColor: 'rgba(212,168,67,0.25)' }} />
-        <div className="absolute bottom-0 left-0 right-0" style={{ height: '1px', backgroundColor: 'rgba(212,168,67,0.25)' }} />
+      <section className="py-16 relative overflow-hidden" style={{ backgroundColor: '#2D1011' }}>
+        <div className="absolute top-0 left-0 right-0" style={{ height: '1px', backgroundColor: 'rgba(198,164,90,0.25)' }} />
+        <div className="absolute bottom-0 left-0 right-0" style={{ height: '1px', backgroundColor: 'rgba(198,164,90,0.25)' }} />
         <div className="absolute inset-0 pointer-events-none" style={{
-          background: 'radial-gradient(ellipse 60% 80% at 50% 50%, rgba(212,168,67,0.04) 0%, transparent 65%)'
+          background: 'radial-gradient(ellipse 60% 80% at 50% 50%, rgba(198,164,90,0.04) 0%, transparent 65%)'
         }} />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
@@ -337,7 +337,7 @@ export function DigitalProductsPage({ embedded = false }: DigitalProductsPagePro
                 <div className="w-10 h-10 mx-auto mb-4 flex items-center justify-center rounded-sm" style={{ background: warmGradient }}>
                   <item.icon className="w-4 h-4 text-white" />
                 </div>
-                <h3 className="text-[10px] tracking-[0.4em] mb-2 uppercase" style={{ color: '#F8F9FA' }}>{item.title}</h3>
+                <h3 className="text-[10px] tracking-[0.4em] mb-2 uppercase" style={{ color: '#FFFFFF' }}>{item.title}</h3>
                 <p className="text-xs" style={{ color: '#777777' }}>{item.desc}</p>
               </div>
             ))}
@@ -363,7 +363,7 @@ export function DigitalProductsPage({ embedded = false }: DigitalProductsPagePro
             <a
               href="/contact"
               className="inline-block px-8 py-3 text-xs tracking-[0.35em] uppercase transition-all hover:opacity-90"
-              style={{ backgroundColor: '#121212', color: '#F8F9FA' }}
+              style={{ backgroundColor: '#2D1011', color: '#FFFFFF' }}
             >
               REQUEST CUSTOM WORK
             </a>
@@ -372,16 +372,16 @@ export function DigitalProductsPage({ embedded = false }: DigitalProductsPagePro
       </section>
 
       {/* Free Lead Magnets — editorial cream */}
-      <section className="py-20" style={{ backgroundColor: '#F8F9FA' }}>
+      <section className="py-20" style={{ backgroundColor: '#FFFFFF' }}>
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
             <div className="text-center mb-12">
               <div className="flex items-center justify-center gap-5 mb-5">
-                <div style={{ height: '1px', width: '40px', backgroundColor: 'rgba(212,168,67,0.5)' }} />
-                <p className="text-xs tracking-[0.5em] uppercase" style={{ color: '#D4A843' }}>Free Resources</p>
-                <div style={{ height: '1px', width: '40px', backgroundColor: 'rgba(212,168,67,0.5)' }} />
+                <div style={{ height: '1px', width: '40px', backgroundColor: 'rgba(198,164,90,0.5)' }} />
+                <p className="text-xs tracking-[0.5em] uppercase" style={{ color: '#C6A45A' }}>Free Resources</p>
+                <div style={{ height: '1px', width: '40px', backgroundColor: 'rgba(198,164,90,0.5)' }} />
               </div>
-              <h2 className="text-2xl sm:text-3xl tracking-tight mb-3 font-light" style={{ color: '#121212' }}>
+              <h2 className="text-2xl sm:text-3xl tracking-tight mb-3 font-light" style={{ color: '#2D1011' }}>
                 FREE LEAD MAGNETS
               </h2>
               <p className="text-sm" style={{ color: '#777777' }}>Exclusive resources to enhance your brand and content strategy</p>
@@ -392,20 +392,20 @@ export function DigitalProductsPage({ embedded = false }: DigitalProductsPagePro
                 <div
                   key={magnet.id}
                   className="overflow-hidden"
-                  style={{ border: '1px solid rgba(18,18,18,0.08)', backgroundColor: '#FFFFFF' }}
+                  style={{ border: '1px solid rgba(45,16,17,0.08)', backgroundColor: '#FFFFFF' }}
                 >
                   {/* Dark header band */}
-                  <div className="px-5 py-3 flex items-center justify-between" style={{ backgroundColor: '#121212' }}>
+                  <div className="px-5 py-3 flex items-center justify-between" style={{ backgroundColor: '#2D1011' }}>
                     <div className="flex items-center gap-2">
-                      <magnet.icon className="w-4 h-4" style={{ color: '#D4A843' }} />
-                      <span className="text-[9px] tracking-widest uppercase" style={{ color: '#D4A843' }}>{magnet.fileType}</span>
+                      <magnet.icon className="w-4 h-4" style={{ color: '#C6A45A' }} />
+                      <span className="text-[9px] tracking-widest uppercase" style={{ color: '#C6A45A' }}>{magnet.fileType}</span>
                     </div>
-                    <span className="text-xs" style={{ color: '#F8F9FA' }}>{magnet.value} value</span>
+                    <span className="text-xs" style={{ color: '#FFFFFF' }}>{magnet.value} value</span>
                   </div>
 
                   {/* Content body */}
                   <div className="p-5">
-                    <h3 className="text-xs tracking-wide mb-2 leading-snug" style={{ color: '#121212' }}>
+                    <h3 className="text-xs tracking-wide mb-2 leading-snug" style={{ color: '#2D1011' }}>
                       {magnet.title}
                     </h3>
                     <p className="text-xs leading-relaxed mb-4" style={{ color: '#777777' }}>
@@ -413,7 +413,7 @@ export function DigitalProductsPage({ embedded = false }: DigitalProductsPagePro
                     </p>
                     <button
                       className="flex items-center gap-2 px-4 py-2 text-[9px] tracking-widest uppercase transition-all"
-                      style={{ backgroundColor: 'rgba(212,168,67,0.12)', color: '#777777', cursor: 'not-allowed', border: '1px solid rgba(212,168,67,0.2)' }}
+                      style={{ backgroundColor: 'rgba(198,164,90,0.12)', color: '#777777', cursor: 'not-allowed', border: '1px solid rgba(198,164,90,0.2)' }}
                       disabled
                     >
                       <Gift className="w-3 h-3" />

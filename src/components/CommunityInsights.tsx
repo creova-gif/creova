@@ -33,7 +33,7 @@ export function CommunityInsights() {
           className="flex flex-col md:flex-row md:items-center gap-6 md:gap-10"
         >
           <div className="md:w-64 flex-shrink-0">
-            <p className="text-xs tracking-[0.35em] uppercase mb-2" style={{ color: '#B1643B' }}>
+            <p className="text-xs tracking-[0.35em] uppercase mb-2" style={{ color: '#887759' }}>
               {fr ? 'Validation marché' : 'Market Validation'}
             </p>
             <p className="text-sm leading-relaxed" style={{ color: '#777777' }}>
@@ -46,9 +46,9 @@ export function CommunityInsights() {
           <div className="flex-1 grid grid-cols-3 gap-4 sm:gap-6">
             {stats.map((stat, i) => (
               <div key={i} className="flex items-center gap-3">
-                <stat.icon className="w-5 h-5 flex-shrink-0" style={{ color: '#D4A843' }} strokeWidth={1.75} />
+                <stat.icon className="w-5 h-5 flex-shrink-0" style={{ color: '#C6A45A' }} strokeWidth={1.75} />
                 <div>
-                  <p className="text-lg sm:text-xl font-semibold leading-none mb-1" style={{ color: '#121212', fontFamily: 'var(--font-display)' }}>
+                  <p className="text-lg sm:text-xl font-semibold leading-none mb-1" style={{ color: '#2D1011', fontFamily: 'var(--font-display)' }}>
                     {stat.value}
                   </p>
                   <p className="text-xs leading-snug" style={{ color: '#777777' }}>

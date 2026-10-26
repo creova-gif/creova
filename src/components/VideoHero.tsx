@@ -107,7 +107,7 @@ export function VideoHero({
           className="absolute inset-0 pointer-events-none"
           style={{
             background:
-              'linear-gradient(to right, rgba(18,18,18,0.95) 0%, rgba(18,18,18,0.7) 60%, rgba(18,18,18,0.4) 100%)',
+              'linear-gradient(to right, rgba(45,16,17,0.95) 0%, rgba(45,16,17,0.7) 60%, rgba(45,16,17,0.4) 100%)',
           }}
         />
       )}

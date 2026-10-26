@@ -44,7 +44,7 @@ export function AnalyticsDashboardPage() {
   const [loading, setLoading] = useState(true);
   const [period, setPeriod] = useState(30); // Default: last 30 days
 
-  const COLORS = ['#B1643B', '#D4A843', '#D4A843', '#E0E0E0', '#121212'];
+  const COLORS = ['#887759', '#C6A45A', '#C6A45A', '#E0E0E0', '#2D1011'];
 
   const fetchAnalytics = async () => {
     setLoading(true);
@@ -90,17 +90,17 @@ export function AnalyticsDashboardPage() {
           </div>
         )}
       </div>
-      <div className="text-3xl mb-1" style={{ color: '#121212' }}>{value}</div>
+      <div className="text-3xl mb-1" style={{ color: '#2D1011' }}>{value}</div>
       <div className="text-sm" style={{ color: '#777777' }}>{label}</div>
     </motion.div>
   );
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#F8F9FA' }}>
+      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#FFFFFF' }}>
         <div className="text-center">
-          <RefreshCw className="w-12 h-12 mx-auto mb-4 animate-spin" style={{ color: '#B1643B' }} />
-          <p style={{ color: '#121212' }}>Loading analytics...</p>
+          <RefreshCw className="w-12 h-12 mx-auto mb-4 animate-spin" style={{ color: '#887759' }} />
+          <p style={{ color: '#2D1011' }}>Loading analytics...</p>
         </div>
       </div>
     );
@@ -108,10 +108,10 @@ export function AnalyticsDashboardPage() {
 
   if (!analytics) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#F8F9FA' }}>
+      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#FFFFFF' }}>
         <div className="text-center">
           <BarChart3 className="w-16 h-16 mx-auto mb-4" style={{ color: '#777777' }} />
-          <h3 className="text-2xl mb-2" style={{ color: '#121212' }}>No analytics data</h3>
+          <h3 className="text-2xl mb-2" style={{ color: '#2D1011' }}>No analytics data</h3>
           <p style={{ color: '#777777' }}>Start tracking to see your data here</p>
         </div>
       </div>
@@ -119,7 +119,7 @@ export function AnalyticsDashboardPage() {
   }
 
   return (
-    <div style={{ backgroundColor: '#F8F9FA', minHeight: '100vh' }}>
+    <div style={{ backgroundColor: '#FFFFFF', minHeight: '100vh' }}>
       <PageSEO
         title="Analytics Dashboard"
         description="CREOVA staff admin dashboard."
@@ -127,11 +127,11 @@ export function AnalyticsDashboardPage() {
         noIndex
       />
       {/* Header */}
-      <section className="py-16" style={{ backgroundColor: '#121212' }}>
+      <section className="py-16" style={{ backgroundColor: '#2D1011' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-4xl md:text-5xl mb-3" style={{ color: '#F8F9FA' }}>
+              <h1 className="text-4xl md:text-5xl mb-3" style={{ color: '#FFFFFF' }}>
                 Website Analytics
               </h1>
               <p className="text-lg" style={{ color: '#E0E0E0' }}>
@@ -141,7 +141,7 @@ export function AnalyticsDashboardPage() {
             <Button 
               onClick={fetchAnalytics}
               className="px-6 py-3 rounded-xl"
-              style={{ backgroundColor: '#B1643B', color: '#F8F9FA' }}
+              style={{ backgroundColor: '#7D6D51', color: '#FFFFFF' }}
             >
               <RefreshCw className="w-5 h-5 mr-2" />
               Refresh
@@ -151,7 +151,7 @@ export function AnalyticsDashboardPage() {
       </section>
 
       {/* Period Selector */}
-      <section className="py-6" style={{ backgroundColor: '#121212', borderBottom: '1px solid #E0E0E0' }}>
+      <section className="py-6" style={{ backgroundColor: '#2D1011', borderBottom: '1px solid #E0E0E0' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-2">
             <Calendar className="w-5 h-5" style={{ color: '#E0E0E0' }} />
@@ -165,8 +165,8 @@ export function AnalyticsDashboardPage() {
                 className="rounded-xl"
                 style={
                   period === days
-                    ? { backgroundColor: '#B1643B', color: '#F8F9FA' }
-                    : { color: '#F8F9FA', borderColor: '#E0E0E0' }
+                    ? { backgroundColor: '#7D6D51', color: '#FFFFFF' }
+                    : { color: '#FFFFFF', borderColor: '#E0E0E0' }
                 }
               >
                 Last {days} days
@@ -183,13 +183,13 @@ export function AnalyticsDashboardPage() {
             icon={Eye}
             label="Total Pageviews"
             value={analytics.summary.totalPageviews.toLocaleString()}
-            color="#B1643B"
+            color="#887759"
           />
           <StatCard
             icon={Users}
             label="Unique Visitors"
             value={analytics.summary.uniqueVisitors.toLocaleString()}
-            color="#D4A843"
+            color="#C6A45A"
           />
           <StatCard
             icon={MousePointer}
@@ -214,8 +214,8 @@ export function AnalyticsDashboardPage() {
             className="bg-white rounded-2xl p-6 shadow-lg border"
             style={{ borderColor: '#E0E0E0' }}
           >
-            <h3 className="text-xl mb-4 flex items-center gap-2" style={{ color: '#121212' }}>
-              <Activity className="w-5 h-5" style={{ color: '#B1643B' }} />
+            <h3 className="text-xl mb-4 flex items-center gap-2" style={{ color: '#2D1011' }}>
+              <Activity className="w-5 h-5" style={{ color: '#887759' }} />
               Daily Traffic
             </h3>
             <ResponsiveContainer width="100%" height={300}>
@@ -228,15 +228,15 @@ export function AnalyticsDashboardPage() {
                 />
                 <YAxis tick={{ fill: '#777777' }} />
                 <Tooltip 
-                  contentStyle={{ backgroundColor: '#F8F9FA', border: '1px solid #E0E0E0', borderRadius: '8px' }}
-                  labelStyle={{ color: '#121212' }}
+                  contentStyle={{ backgroundColor: '#FFFFFF', border: '1px solid #E0E0E0', borderRadius: '8px' }}
+                  labelStyle={{ color: '#2D1011' }}
                 />
                 <Line 
                   type="monotone" 
                   dataKey="views" 
-                  stroke="#B1643B" 
+                  stroke="#887759"
                   strokeWidth={2}
-                  dot={{ fill: '#B1643B', r: 4 }}
+                  dot={{ fill: '#887759', r: 4 }}
                   activeDot={{ r: 6 }}
                 />
               </LineChart>
@@ -251,8 +251,8 @@ export function AnalyticsDashboardPage() {
             className="bg-white rounded-2xl p-6 shadow-lg border"
             style={{ borderColor: '#E0E0E0' }}
           >
-            <h3 className="text-xl mb-4 flex items-center gap-2" style={{ color: '#121212' }}>
-              <BarChart3 className="w-5 h-5" style={{ color: '#B1643B' }} />
+            <h3 className="text-xl mb-4 flex items-center gap-2" style={{ color: '#2D1011' }}>
+              <BarChart3 className="w-5 h-5" style={{ color: '#887759' }} />
               Top Pages
             </h3>
             <ResponsiveContainer width="100%" height={300}>
@@ -266,9 +266,9 @@ export function AnalyticsDashboardPage() {
                   width={100}
                 />
                 <Tooltip 
-                  contentStyle={{ backgroundColor: '#F8F9FA', border: '1px solid #E0E0E0', borderRadius: '8px' }}
+                  contentStyle={{ backgroundColor: '#FFFFFF', border: '1px solid #E0E0E0', borderRadius: '8px' }}
                 />
-                <Bar dataKey="count" fill="#B1643B" radius={[0, 8, 8, 0]} />
+                <Bar dataKey="count" fill="#887759" radius={[0, 8, 8, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </motion.div>
@@ -284,8 +284,8 @@ export function AnalyticsDashboardPage() {
             className="bg-white rounded-2xl p-6 shadow-lg border"
             style={{ borderColor: '#E0E0E0' }}
           >
-            <h3 className="text-xl mb-4 flex items-center gap-2" style={{ color: '#121212' }}>
-              <Monitor className="w-5 h-5" style={{ color: '#B1643B' }} />
+            <h3 className="text-xl mb-4 flex items-center gap-2" style={{ color: '#2D1011' }}>
+              <Monitor className="w-5 h-5" style={{ color: '#887759' }} />
               Devices
             </h3>
             <ResponsiveContainer width="100%" height={250}>
@@ -304,7 +304,7 @@ export function AnalyticsDashboardPage() {
                   ))}
                 </Pie>
                 <Tooltip 
-                  contentStyle={{ backgroundColor: '#F8F9FA', border: '1px solid #E0E0E0', borderRadius: '8px' }}
+                  contentStyle={{ backgroundColor: '#FFFFFF', border: '1px solid #E0E0E0', borderRadius: '8px' }}
                 />
               </RePieChart>
             </ResponsiveContainer>
@@ -318,8 +318,8 @@ export function AnalyticsDashboardPage() {
             className="bg-white rounded-2xl p-6 shadow-lg border"
             style={{ borderColor: '#E0E0E0' }}
           >
-            <h3 className="text-xl mb-4 flex items-center gap-2" style={{ color: '#121212' }}>
-              <Globe className="w-5 h-5" style={{ color: '#B1643B' }} />
+            <h3 className="text-xl mb-4 flex items-center gap-2" style={{ color: '#2D1011' }}>
+              <Globe className="w-5 h-5" style={{ color: '#887759' }} />
               Browsers
             </h3>
             <ResponsiveContainer width="100%" height={250}>
@@ -338,7 +338,7 @@ export function AnalyticsDashboardPage() {
                   ))}
                 </Pie>
                 <Tooltip 
-                  contentStyle={{ backgroundColor: '#F8F9FA', border: '1px solid #E0E0E0', borderRadius: '8px' }}
+                  contentStyle={{ backgroundColor: '#FFFFFF', border: '1px solid #E0E0E0', borderRadius: '8px' }}
                 />
               </RePieChart>
             </ResponsiveContainer>
@@ -352,15 +352,15 @@ export function AnalyticsDashboardPage() {
             className="bg-white rounded-2xl p-6 shadow-lg border"
             style={{ borderColor: '#E0E0E0' }}
           >
-            <h3 className="text-xl mb-4 flex items-center gap-2" style={{ color: '#121212' }}>
-              <ExternalLink className="w-5 h-5" style={{ color: '#B1643B' }} />
+            <h3 className="text-xl mb-4 flex items-center gap-2" style={{ color: '#2D1011' }}>
+              <ExternalLink className="w-5 h-5" style={{ color: '#887759' }} />
               Traffic Sources
             </h3>
             <div className="space-y-3">
               {analytics.topReferrers.slice(0, 5).map((referrer, index) => (
                 <div key={index} className="flex items-center justify-between">
-                  <span className="text-sm truncate" style={{ color: '#121212' }}>
-                    {referrer.referrer === 'direct' ? '🔗 Direct' : `🌐 ${referrer.referrer}`}
+                  <span className="text-sm truncate" style={{ color: '#2D1011' }}>
+                    {referrer.referrer === 'direct' ? 'Direct' : referrer.referrer}
                   </span>
                   <div className="flex items-center gap-2">
                     <div 
@@ -387,8 +387,8 @@ export function AnalyticsDashboardPage() {
             className="bg-white rounded-2xl p-6 shadow-lg border mb-6"
             style={{ borderColor: '#E0E0E0' }}
           >
-            <h3 className="text-xl mb-4 flex items-center gap-2" style={{ color: '#121212' }}>
-              <PieChart className="w-5 h-5" style={{ color: '#B1643B' }} />
+            <h3 className="text-xl mb-4 flex items-center gap-2" style={{ color: '#2D1011' }}>
+              <PieChart className="w-5 h-5" style={{ color: '#887759' }} />
               Top Events
             </h3>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -396,10 +396,10 @@ export function AnalyticsDashboardPage() {
                 <div 
                   key={index}
                   className="p-4 rounded-xl border"
-                  style={{ backgroundColor: '#F8F9FA', borderColor: '#E0E0E0' }}
+                  style={{ backgroundColor: '#FFFFFF', borderColor: '#E0E0E0' }}
                 >
-                  <div className="text-2xl mb-1" style={{ color: '#B1643B' }}>{event.count}</div>
-                  <div className="text-sm" style={{ color: '#121212' }}>{event.event}</div>
+                  <div className="text-2xl mb-1" style={{ color: '#887759' }}>{event.count}</div>
+                  <div className="text-sm" style={{ color: '#2D1011' }}>{event.event}</div>
                 </div>
               ))}
             </div>
@@ -414,8 +414,8 @@ export function AnalyticsDashboardPage() {
           className="bg-white rounded-2xl p-6 shadow-lg border"
           style={{ borderColor: '#E0E0E0' }}
         >
-          <h3 className="text-xl mb-4 flex items-center gap-2" style={{ color: '#121212' }}>
-            <Activity className="w-5 h-5" style={{ color: '#B1643B' }} />
+          <h3 className="text-xl mb-4 flex items-center gap-2" style={{ color: '#2D1011' }}>
+            <Activity className="w-5 h-5" style={{ color: '#887759' }} />
             Recent Pageviews
           </h3>
           <div className="overflow-x-auto">
@@ -430,7 +430,7 @@ export function AnalyticsDashboardPage() {
               <tbody>
                 {analytics.recentPageviews.slice(0, 10).map((pv, index) => (
                   <tr key={index} style={{ borderBottom: '1px solid #E0E0E0' }}>
-                    <td className="py-3 px-4 text-sm" style={{ color: '#121212' }}>{pv.page}</td>
+                    <td className="py-3 px-4 text-sm" style={{ color: '#2D1011' }}>{pv.page}</td>
                     <td className="py-3 px-4 text-sm" style={{ color: '#777777' }}>
                       {pv.referrer || 'Direct'}
                     </td>

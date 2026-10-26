@@ -22,20 +22,43 @@ before it asks anyone to inquire.
 1. Home
 2. Work
 3. Services, including Event Story
-4. Community
-5. Ventures
-6. About
-7. Start a Project
+4. Resources
+5. Community
+6. Our Brands
+7. About
+8. Start a Project
 
 Legacy pricing, shop, booking, rental, and checkout URLs redirect into this
-architecture. They must not expose an active commerce or direct-booking flow.
+architecture. Equipment access may be presented as an inquiry-led service, but
+must not expose an unverified inventory, rate, deposit, availability, checkout,
+or direct-booking flow.
 
 ## Visual rules
 
-- Ink `#121212`, paper `#F8F9FA`, gold `#D4A843`, and clay `#B1643B` are the
-  core palette.
+- The supplied CREOVA brand board is the source of truth: warm beige
+  `#CDBFAE`, olive `#887759`, deep oxblood `#2D1011`, white `#FFFFFF`, and a
+  restrained digital metallic-gold accent `#C6A45A`.
+- Use the derived olive shade `#7D6D51` only when white small text needs an
+  accessible solid background; the board's `#887759` remains the visible
+  palette reference.
+- Quasimoda Bold is the preferred heading face and Quasimoda Regular is the
+  preferred body face. Use only through a licensed Adobe Fonts web project or
+  licensed self-hosted files. Until that is connected, the site uses its
+  declared Avenir Next, General Sans, and Instrument Serif fallbacks.
 - Use generous editorial spacing, strong type contrast, and real CREOVA work.
+- The logo-led intro plays once per browser-tab session, stays under roughly
+  1.2 seconds, never delays content loading, and is skipped for reduced motion.
+- Partner logos use their official colour artwork. Do not recolour, desaturate,
+  or force institutional marks into monochrome treatments.
+- Project cards use the corresponding public Pixieset collection cover and
+  link to that exact collection. Locked galleries are not public case-study
+  evidence.
 - Motion should clarify hierarchy and respect reduced-motion preferences.
+- CREOVA Music may use official, public CREOVA Music releases in a compact
+  click-to-play module. Never autoplay audio or load a third-party player before
+  the visitor asks to listen.
+- Community resources must be real, directly downloadable, free of lead gates,
+  and scrubbed of internal contact, banking, legal, or draft-only information.
 - Every interactive element needs keyboard focus, a readable label, and a
   minimum practical touch target.
 - Avoid urgency copy, artificial scarcity, inflated metrics, and unsupported

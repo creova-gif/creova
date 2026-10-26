@@ -7,7 +7,7 @@ import { toast } from 'sonner';
 import { apiUrl } from '../utils/api';
 import { Captcha } from './Captcha';
 
-const warmGradient = 'linear-gradient(135deg, #D4A843 0%, #B1643B 100%)';
+const warmGradient = 'linear-gradient(135deg, #C6A45A 0%, #887759 100%)';
 const LAUNCH_DATE = new Date('2026-11-01T00:00:00');
 
 // Real style codes from the FW2026 tech pack — names redacted
@@ -55,11 +55,11 @@ function CountUnit({ value, label }: { value: number; label: string }) {
     <div className="flex flex-col items-center">
       <div
         className="text-2xl sm:text-3xl font-light leading-none tabular-nums"
-        style={{ color: '#F8F9FA', fontFamily: 'var(--font-display)' }}
+        style={{ color: '#FFFFFF', fontFamily: 'var(--font-display)' }}
       >
         {String(value).padStart(2, '0')}
       </div>
-      <div className="text-[8px] tracking-[0.4em] uppercase mt-1" style={{ color: 'rgba(248,249,250,0.3)' }}>
+      <div className="text-[8px] tracking-[0.4em] uppercase mt-1" style={{ color: 'rgba(255,255,255,0.3)' }}>
         {label}
       </div>
     </div>
@@ -74,15 +74,15 @@ function StyleRow({ code, label, cat, index }: { code: string; label: string; ca
       viewport={{ once: true }}
       transition={{ duration: 0.4, delay: index * 0.05 }}
       className="flex items-center gap-3 py-2.5 border-b"
-      style={{ borderColor: 'rgba(212,168,67,0.08)' }}
+      style={{ borderColor: 'rgba(198,164,90,0.08)' }}
     >
       {/* Lock icon */}
-      <Lock className="w-3 h-3 flex-shrink-0" style={{ color: 'rgba(212,168,67,0.4)' }} />
+      <Lock className="w-3 h-3 flex-shrink-0" style={{ color: 'rgba(198,164,90,0.4)' }} />
 
       {/* Style code — visible */}
       <span
         className="text-[10px] tracking-[0.25em] font-mono flex-shrink-0 w-44"
-        style={{ color: 'rgba(212,168,67,0.7)' }}
+        style={{ color: 'rgba(198,164,90,0.7)' }}
       >
         {code}
       </span>
@@ -90,7 +90,7 @@ function StyleRow({ code, label, cat, index }: { code: string; label: string; ca
       {/* Redacted name */}
       <span
         className="text-[11px] flex-1 select-none"
-        style={{ color: 'rgba(248,249,250,0.18)', fontFamily: 'var(--font-display)', letterSpacing: '0.05em' }}
+        style={{ color: 'rgba(255,255,255,0.18)', fontFamily: 'var(--font-display)', letterSpacing: '0.05em' }}
       >
         {label}
       </span>
@@ -98,7 +98,7 @@ function StyleRow({ code, label, cat, index }: { code: string; label: string; ca
       {/* Category pill */}
       <span
         className="text-[8px] tracking-[0.3em] uppercase px-2 py-0.5 rounded-sm flex-shrink-0 hidden sm:block"
-        style={{ backgroundColor: 'rgba(212,168,67,0.08)', color: 'rgba(212,168,67,0.5)' }}
+        style={{ backgroundColor: 'rgba(198,164,90,0.08)', color: 'rgba(198,164,90,0.5)' }}
       >
         {cat}
       </span>
@@ -161,13 +161,13 @@ export function FallDropTeaser() {
   };
 
   return (
-    <section className="relative overflow-hidden" style={{ backgroundColor: '#121212' }}>
+    <section className="relative overflow-hidden" style={{ backgroundColor: '#2D1011' }}>
       {/* Top gradient stripe */}
       <div className="absolute top-0 left-0 right-0" style={{ height: '2px', background: warmGradient }} />
 
       {/* Ambient glow */}
       <div className="absolute inset-0 pointer-events-none" style={{
-        background: 'radial-gradient(ellipse 60% 50% at 50% 0%, rgba(212,168,67,0.06) 0%, transparent 70%)'
+        background: 'radial-gradient(ellipse 60% 50% at 50% 0%, rgba(198,164,90,0.06) 0%, transparent 70%)'
       }} />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
@@ -182,10 +182,10 @@ export function FallDropTeaser() {
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
               className="inline-flex items-center gap-2 px-3 py-1.5 rounded-sm mb-5"
-              style={{ backgroundColor: 'rgba(177,100,59,0.1)', border: '1px solid rgba(177,100,59,0.25)' }}
+              style={{ backgroundColor: 'rgba(136,119,89,0.1)', border: '1px solid rgba(136,119,89,0.25)' }}
             >
-              <Lock className="w-2.5 h-2.5" style={{ color: '#B1643B' }} />
-              <span className="text-[9px] tracking-[0.4em] uppercase font-medium" style={{ color: '#B1643B' }}>
+              <Lock className="w-2.5 h-2.5" style={{ color: '#887759' }} />
+              <span className="text-[9px] tracking-[0.4em] uppercase font-medium" style={{ color: '#887759' }}>
                 Classified · Fall/Winter Capsule · Vol. 01
               </span>
             </motion.div>
@@ -197,7 +197,7 @@ export function FallDropTeaser() {
               viewport={{ once: true }}
               transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
               className="font-light leading-none tracking-tighter"
-              style={{ fontSize: 'clamp(48px, 8vw, 112px)', color: '#F8F9FA' }}
+              style={{ fontSize: 'clamp(48px, 8vw, 112px)', color: '#FFFFFF' }}
             >
               VERSE.
             </motion.h2>
@@ -224,7 +224,7 @@ export function FallDropTeaser() {
               viewport={{ once: true }}
               transition={{ delay: 0.3 }}
               className="text-sm font-light mt-5 max-w-xs"
-              style={{ color: 'rgba(248,249,250,0.35)' }}
+              style={{ color: 'rgba(255,255,255,0.35)' }}
             >
               14 styles. 2 drops. Zero leaks — until the day it lands.
             </motion.p>
@@ -238,7 +238,7 @@ export function FallDropTeaser() {
               <Link
                 to="/seen"
                 className="inline-flex items-center gap-1.5 text-[11px] mt-4 transition-opacity hover:opacity-70"
-                style={{ color: 'rgba(212,168,67,0.7)' }}
+                style={{ color: 'rgba(198,164,90,0.7)' }}
               >
                 Also launching: the SEEN storytelling app
                 <ArrowRight className="w-3 h-3" />
@@ -253,14 +253,14 @@ export function FallDropTeaser() {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
             className="flex items-center gap-5 p-6 rounded-2xl flex-shrink-0"
-            style={{ backgroundColor: 'rgba(248,249,250,0.03)', border: '1px solid rgba(212,168,67,0.12)' }}
+            style={{ backgroundColor: 'rgba(255,255,255,0.03)', border: '1px solid rgba(198,164,90,0.12)' }}
           >
             <CountUnit value={countdown.days}    label="Days"    />
-            <div className="text-xl font-light" style={{ color: 'rgba(212,168,67,0.3)' }}>:</div>
+            <div className="text-xl font-light" style={{ color: 'rgba(198,164,90,0.3)' }}>:</div>
             <CountUnit value={countdown.hours}   label="Hours"   />
-            <div className="text-xl font-light" style={{ color: 'rgba(212,168,67,0.3)' }}>:</div>
+            <div className="text-xl font-light" style={{ color: 'rgba(198,164,90,0.3)' }}>:</div>
             <CountUnit value={countdown.minutes} label="Minutes" />
-            <div className="text-xl font-light" style={{ color: 'rgba(212,168,67,0.3)' }}>:</div>
+            <div className="text-xl font-light" style={{ color: 'rgba(198,164,90,0.3)' }}>:</div>
             <CountUnit value={countdown.seconds} label="Seconds" />
           </motion.div>
         </div>
@@ -278,12 +278,12 @@ export function FallDropTeaser() {
             <div className="flex items-center gap-3 mb-4">
               <span
                 className="text-[9px] tracking-[0.45em] uppercase px-2 py-1"
-                style={{ backgroundColor: 'rgba(212,168,67,0.1)', color: '#D4A843', border: '1px solid rgba(212,168,67,0.2)' }}
+                style={{ backgroundColor: 'rgba(198,164,90,0.1)', color: '#C6A45A', border: '1px solid rgba(198,164,90,0.2)' }}
               >
                 Drop 01
               </span>
-              <div style={{ height: '1px', flex: 1, backgroundColor: 'rgba(212,168,67,0.12)' }} />
-              <span className="text-[9px]" style={{ color: 'rgba(248,249,250,0.2)' }}>8 styles</span>
+              <div style={{ height: '1px', flex: 1, backgroundColor: 'rgba(198,164,90,0.12)' }} />
+              <span className="text-[9px]" style={{ color: 'rgba(255,255,255,0.2)' }}>8 styles</span>
             </div>
             {DROP_01.map((s, i) => (
               <StyleRow key={s.code} {...s} index={i} />
@@ -300,12 +300,12 @@ export function FallDropTeaser() {
             <div className="flex items-center gap-3 mb-4">
               <span
                 className="text-[9px] tracking-[0.45em] uppercase px-2 py-1"
-                style={{ backgroundColor: 'rgba(177,100,59,0.1)', color: '#B1643B', border: '1px solid rgba(177,100,59,0.2)' }}
+                style={{ backgroundColor: 'rgba(136,119,89,0.1)', color: '#887759', border: '1px solid rgba(136,119,89,0.2)' }}
               >
                 Drop 02
               </span>
-              <div style={{ height: '1px', flex: 1, backgroundColor: 'rgba(212,168,67,0.12)' }} />
-              <span className="text-[9px]" style={{ color: 'rgba(248,249,250,0.2)' }}>6 styles</span>
+              <div style={{ height: '1px', flex: 1, backgroundColor: 'rgba(198,164,90,0.12)' }} />
+              <span className="text-[9px]" style={{ color: 'rgba(255,255,255,0.2)' }}>6 styles</span>
             </div>
             {DROP_02.map((s, i) => (
               <StyleRow key={s.code} {...s} index={i} />
@@ -325,7 +325,7 @@ export function FallDropTeaser() {
             <span
               key={tag}
               className="text-[10px] tracking-[0.35em] uppercase px-3 py-1.5 rounded-full"
-              style={{ backgroundColor: 'rgba(248,249,250,0.04)', border: '1px solid rgba(212,168,67,0.12)', color: 'rgba(248,249,250,0.4)' }}
+              style={{ backgroundColor: 'rgba(255,255,255,0.04)', border: '1px solid rgba(198,164,90,0.12)', color: 'rgba(255,255,255,0.4)' }}
             >
               {tag}
             </span>
@@ -340,10 +340,10 @@ export function FallDropTeaser() {
           transition={{ duration: 0.6 }}
           className="max-w-xl"
         >
-          <p className="text-[10px] tracking-[0.4em] uppercase mb-1" style={{ color: 'rgba(212,168,67,0.6)' }}>
+          <p className="text-[10px] tracking-[0.4em] uppercase mb-1" style={{ color: 'rgba(198,164,90,0.6)' }}>
             Early Access · FW Capsule
           </p>
-          <p className="text-xs mb-4 font-light" style={{ color: 'rgba(248,249,250,0.3)' }}>
+          <p className="text-xs mb-4 font-light" style={{ color: 'rgba(255,255,255,0.3)' }}>
             Be first in line when VERSE Fall/Winter 2026 drops.
           </p>
 
@@ -356,10 +356,10 @@ export function FallDropTeaser() {
                 exit={{ opacity: 0 }}
                 className="flex items-center gap-3"
               >
-                <CheckCircle2 className="w-5 h-5 flex-shrink-0" style={{ color: '#D4A843' }} />
+                <CheckCircle2 className="w-5 h-5 flex-shrink-0" style={{ color: '#C6A45A' }} />
                 <div>
-                  <p className="text-sm font-medium" style={{ color: '#F8F9FA' }}>You're on the list.</p>
-                  <p className="text-xs" style={{ color: 'rgba(248,249,250,0.4)' }}>
+                  <p className="text-sm font-medium" style={{ color: '#FFFFFF' }}>You're on the list.</p>
+                  <p className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>
                     You'll be the first to know when the drop goes live.
                   </p>
                 </div>
@@ -374,7 +374,7 @@ export function FallDropTeaser() {
               >
                 <div className="flex flex-col sm:flex-row gap-2">
                 <div className="relative flex-1">
-                  <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5" style={{ color: 'rgba(212,168,67,0.5)' }} />
+                  <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5" style={{ color: 'rgba(198,164,90,0.5)' }} />
                   <Input
                     type="email"
                     placeholder="your@email.com"
@@ -383,9 +383,9 @@ export function FallDropTeaser() {
                     required
                     className="pl-10 py-5 text-sm rounded-xl border"
                     style={{
-                      backgroundColor: 'rgba(248,249,250,0.04)',
-                      borderColor: 'rgba(212,168,67,0.2)',
-                      color: '#F8F9FA',
+                      backgroundColor: 'rgba(255,255,255,0.04)',
+                      borderColor: 'rgba(198,164,90,0.2)',
+                      color: '#FFFFFF',
                     }}
                   />
                 </div>
@@ -393,7 +393,7 @@ export function FallDropTeaser() {
                   type="submit"
                   disabled={submitting}
                   className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-medium tracking-wide flex-shrink-0 transition-all duration-300 hover:opacity-90 hover:-translate-y-px"
-                  style={{ background: warmGradient, color: '#F8F9FA' }}
+                  style={{ background: warmGradient, color: '#FFFFFF' }}
                 >
                   {submitting ? 'Joining…' : 'Get Early Access'}
                   {!submitting && <ArrowRight className="w-3.5 h-3.5" />}
@@ -411,17 +411,17 @@ export function FallDropTeaser() {
             )}
           </AnimatePresence>
 
-          <p className="text-[10px] mt-3" style={{ color: 'rgba(248,249,250,0.2)' }}>
+          <p className="text-[10px] mt-3" style={{ color: 'rgba(255,255,255,0.2)' }}>
             No spam. Drop access only. Unsubscribe anytime.
           </p>
         </motion.div>
 
         {/* Bottom stamp */}
-        <div className="mt-16 pt-8 border-t flex flex-wrap items-center justify-between gap-4" style={{ borderColor: 'rgba(212,168,67,0.1)' }}>
-          <span className="text-[9px] tracking-[0.5em] uppercase" style={{ color: 'rgba(248,249,250,0.15)' }}>
+        <div className="mt-16 pt-8 border-t flex flex-wrap items-center justify-between gap-4" style={{ borderColor: 'rgba(198,164,90,0.1)' }}>
+          <span className="text-[9px] tracking-[0.5em] uppercase" style={{ color: 'rgba(255,255,255,0.15)' }}>
             VERSE · Fall/Winter Capsule · Vol. 01 · Apparel · Footwear · Accessories
           </span>
-          <span className="text-[9px] tracking-[0.5em] uppercase" style={{ color: 'rgba(248,249,250,0.15)' }}>
+          <span className="text-[9px] tracking-[0.5em] uppercase" style={{ color: 'rgba(255,255,255,0.15)' }}>
             Studio CREOVA · FW 2026 · Confidential
           </span>
         </div>

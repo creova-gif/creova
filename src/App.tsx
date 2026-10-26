@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect } from 'react';
+import { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router';
 import { AnimatePresence } from 'motion/react';
 import { PageTransition } from './components/PageTransition';
@@ -15,6 +15,7 @@ import { Toaster } from './components/ui/sonner';
 import { ScrollToTop } from './components/ScrollToTop';
 import { ScrollToTopOnMount } from './components/ScrollToTopOnMount';
 import { AnalyticsTracker } from './components/AnalyticsTracker';
+import { IntroLoader } from './components/IntroLoader';
 
 const HomePage = lazy(() => import('./pages/HomePage').then(m => ({ default: m.HomePage })));
 const ServicesPage = lazy(() => import('./pages/ServicesPage').then(m => ({ default: m.ServicesPage })));
@@ -34,6 +35,7 @@ const ServiceAreaPage = lazy(() => import('./pages/ServiceAreaPage').then(m => (
 const JournalPage = lazy(() => import('./pages/JournalPage').then(m => ({ default: m.JournalPage })));
 const JournalPostPage = lazy(() => import('./pages/JournalPostPage').then(m => ({ default: m.JournalPostPage })));
 const AboutPage = lazy(() => import('./pages/AboutPage').then(m => ({ default: m.AboutPage })));
+const ResourcesPage = lazy(() => import('./pages/ResourcesPage').then(m => ({ default: m.ResourcesPage })));
 const CaseStudyPage = lazy(() => import('./pages/CaseStudyPage').then(m => ({ default: m.CaseStudyPage })));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage').then(m => ({ default: m.NotFoundPage })));
 
@@ -41,12 +43,12 @@ function PageLoader() {
   return (
     <div
       className="min-h-screen flex items-center justify-center"
-      style={{ backgroundColor: '#121212' }}
+      style={{ backgroundColor: '#2D1011' }}
       aria-label="Loading page"
     >
       <div
         className="w-8 h-8 rounded-full border-2 border-t-transparent animate-spin"
-        style={{ borderColor: '#D4A843', borderTopColor: 'transparent' }}
+        style={{ borderColor: '#C6A45A', borderTopColor: 'transparent' }}
         role="status"
       />
     </div>
@@ -62,6 +64,7 @@ const LOCALIZED_ROUTES: Array<{ path: string; element: React.ReactNode }> = [
   { path: 'work', element: <WorkPage /> },
   { path: 'services', element: <ServicesPage /> },
   { path: 'community', element: <CommunityPage /> },
+  { path: 'resources', element: <ResourcesPage /> },
   { path: 'start-a-project', element: <ContactPage /> },
   { path: 'ventures', element: <VenturesPage /> },
   { path: 'about', element: <AboutPage /> },
@@ -134,20 +137,6 @@ function AnimatedRoutes() {
   );
 }
 
-export function LenisProvider() {
-  useEffect(() => {
-    let raf: number;
-    let lenis: any;
-    import(/* @vite-ignore */ 'lenis').then(({ default: Lenis }) => {
-      lenis = new Lenis({ lerp: 0.08, smoothWheel: true });
-      const loop = (time: number) => { lenis.raf(time); raf = requestAnimationFrame(loop); };
-      raf = requestAnimationFrame(loop);
-    }).catch(() => {});
-    return () => { cancelAnimationFrame(raf); lenis?.destroy(); };
-  }, []);
-  return null;
-}
-
 function AppContent() {
   const { language, t, isChanging } = useLanguage();
 
@@ -157,6 +146,7 @@ function AppContent() {
 
   return (
     <>
+      <IntroLoader />
       {/*
         Site-wide defaults only. Everything page-specific — title, description,
         canonical, robots, og/twitter title+description+url+image, hreflang,
@@ -173,7 +163,7 @@ function AppContent() {
         <meta name="geo.placename" content="Ontario, Niagara Region" />
         <meta name="geo.position" content="43.0896;-79.0849" />
         <meta name="author" content="CREOVA" />
-        <meta name="theme-color" content="#121212" />
+        <meta name="theme-color" content="#2D1011" />
       </Helmet>
 
       <script type="application/ld+json" dangerouslySetInnerHTML={{
@@ -233,6 +223,14 @@ function AppContent() {
                   "name": currentLang === 'fr' ? "Partenariats narratifs continus" : "Ongoing storytelling partnerships",
                   "description": currentLang === 'fr' ? "Production récurrente et bibliothèque d'actifs organisés." : "Recurring production and an organized asset library."
                 }
+              },
+              {
+                "@type": "Offer",
+                "itemOffered": {
+                  "@type": "Service",
+                  "name": currentLang === 'fr' ? "Accès à l'équipement de production" : "Production equipment access",
+                  "description": currentLang === 'fr' ? "Location sur demande, sous réserve de disponibilité et de conditions écrites." : "Inquiry-led equipment rentals, subject to availability and written terms."
+                }
               }
             ]
           }
@@ -245,7 +243,7 @@ function AppContent() {
         <div
           className="fixed inset-0 z-[9999] pointer-events-none"
           style={{
-            backgroundColor: '#121212',
+            backgroundColor: '#2D1011',
             opacity: 0.18,
             transition: 'opacity 120ms ease',
           }}
@@ -255,7 +253,7 @@ function AppContent() {
 
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:bg-[#121212] focus:text-[#F8F9FA] focus:px-4 focus:py-2 focus:rounded"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:bg-[#2D1011] focus:text-[#FFFFFF] focus:px-4 focus:py-2 focus:rounded"
       >
         {t('a11y.skip.content')}
       </a>

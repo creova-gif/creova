@@ -6,7 +6,7 @@ import { useNavigate } from '../i18n/LocaleLink';
 import { motion, AnimatePresence } from 'motion/react';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 
-const warmGradient = 'linear-gradient(135deg, #D4A843 0%, #B1643B 100%)';
+const warmGradient = 'linear-gradient(135deg, #C6A45A 0%, #887759 100%)';
 
 interface CartDrawerProps {
   open: boolean;
@@ -48,7 +48,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
               exit={{ x: '100%' }}
               transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
               className="fixed right-0 top-0 h-full w-full max-w-md z-50 flex flex-col outline-none"
-              style={{ backgroundColor: '#121212' }}
+              style={{ backgroundColor: '#2D1011' }}
             >
             {/* Warm gradient top stripe */}
             <div style={{ height: '2px', background: warmGradient, flexShrink: 0 }} />
@@ -56,13 +56,13 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
             {/* Header */}
             <div
               className="flex items-center justify-between px-6 py-5"
-              style={{ borderBottom: '1px solid rgba(212,168,67,0.15)', flexShrink: 0 }}
+              style={{ borderBottom: '1px solid rgba(198,164,90,0.15)', flexShrink: 0 }}
             >
               <div className="flex items-center gap-3">
-                <ShoppingBag className="w-4 h-4" style={{ color: '#D4A843' }} />
+                <ShoppingBag className="w-4 h-4" style={{ color: '#C6A45A' }} />
                 <div>
                   <DialogPrimitive.Title asChild>
-                    <p className="text-xs tracking-[0.4em] uppercase mb-0.5" style={{ color: '#D4A843' }}>
+                    <p className="text-xs tracking-[0.4em] uppercase mb-0.5" style={{ color: '#C6A45A' }}>
                       {t('cart.title')}
                     </p>
                   </DialogPrimitive.Title>
@@ -76,7 +76,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
               <DialogPrimitive.Close asChild>
                 <button
                   className="w-8 h-8 flex items-center justify-center rounded-full transition-colors"
-                  style={{ backgroundColor: 'rgba(212,168,67,0.08)', color: '#EFEFEF' }}
+                  style={{ backgroundColor: 'rgba(198,164,90,0.08)', color: '#EFEFEF' }}
                   aria-label={t('a11y.close')}
                 >
                   <X className="w-4 h-4" />
@@ -90,16 +90,16 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                 <div className="flex flex-col items-center justify-center h-full px-8 py-16 text-center">
                   <div
                     className="w-16 h-16 rounded-2xl flex items-center justify-center mb-6"
-                    style={{ backgroundColor: 'rgba(212,168,67,0.08)', border: '1px solid rgba(212,168,67,0.18)' }}
+                    style={{ backgroundColor: 'rgba(198,164,90,0.08)', border: '1px solid rgba(198,164,90,0.18)' }}
                   >
-                    <ShoppingBag className="w-7 h-7" style={{ color: '#D4A843' }} />
+                    <ShoppingBag className="w-7 h-7" style={{ color: '#C6A45A' }} />
                   </div>
                   <div className="flex items-center gap-3 mb-4">
-                    <div style={{ height: '1px', width: '28px', backgroundColor: 'rgba(212,168,67,0.35)' }} />
-                    <p className="text-xs tracking-[0.4em] uppercase" style={{ color: '#D4A843' }}>{t('cart.bag')}</p>
-                    <div style={{ height: '1px', width: '28px', backgroundColor: 'rgba(212,168,67,0.35)' }} />
+                    <div style={{ height: '1px', width: '28px', backgroundColor: 'rgba(198,164,90,0.35)' }} />
+                    <p className="text-xs tracking-[0.4em] uppercase" style={{ color: '#C6A45A' }}>{t('cart.bag')}</p>
+                    <div style={{ height: '1px', width: '28px', backgroundColor: 'rgba(198,164,90,0.35)' }} />
                   </div>
-                  <p className="text-lg font-light mb-2" style={{ color: '#F8F9FA' }}>{t('cart.empty')}</p>
+                  <p className="text-lg font-light mb-2" style={{ color: '#FFFFFF' }}>{t('cart.empty')}</p>
                   <p className="text-sm mb-8 leading-relaxed" style={{ color: '#777777' }}>
                     {t('cart.empty.desc')}
                   </p>
@@ -113,7 +113,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                   <button
                     onClick={() => { onClose(); navigate('/shop/digital'); }}
                     className="w-full py-3 rounded-lg text-sm font-medium border"
-                    style={{ borderColor: 'rgba(212,168,67,0.3)', color: '#EFEFEF', backgroundColor: 'transparent' }}
+                    style={{ borderColor: 'rgba(198,164,90,0.3)', color: '#EFEFEF', backgroundColor: 'transparent' }}
                   >
                     {t('cart.btn.digital')}
                   </button>
@@ -125,11 +125,11 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                       key={item.id}
                       className="flex gap-4 py-5"
                       style={{
-                        borderBottom: i < items.length - 1 ? '1px solid rgba(212,168,67,0.1)' : 'none'
+                        borderBottom: i < items.length - 1 ? '1px solid rgba(198,164,90,0.1)' : 'none'
                       }}
                     >
                       {item.image && (
-                        <div className="w-20 h-20 rounded-xl overflow-hidden flex-shrink-0" style={{ border: '1px solid rgba(212,168,67,0.15)' }}>
+                        <div className="w-20 h-20 rounded-xl overflow-hidden flex-shrink-0" style={{ border: '1px solid rgba(198,164,90,0.15)' }}>
                           <img
                             src={item.image}
                             alt={item.name}
@@ -138,12 +138,12 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                         </div>
                       )}
                       <div className="flex-grow min-w-0">
-                        <h3 className="text-sm font-medium mb-1 truncate" style={{ color: '#F8F9FA' }}>{item.name}</h3>
-                        <p className="text-sm mb-3" style={{ color: '#D4A843' }}>${item.price}{t('cart.cad')}</p>
+                        <h3 className="text-sm font-medium mb-1 truncate" style={{ color: '#FFFFFF' }}>{item.name}</h3>
+                        <p className="text-sm mb-3" style={{ color: '#C6A45A' }}>${item.price}{t('cart.cad')}</p>
                         <div className="flex items-center justify-between">
                           <div
                             className="flex items-center gap-0 rounded-lg overflow-hidden"
-                            style={{ backgroundColor: 'rgba(212,168,67,0.08)', border: '1px solid rgba(212,168,67,0.18)' }}
+                            style={{ backgroundColor: 'rgba(198,164,90,0.08)', border: '1px solid rgba(198,164,90,0.18)' }}
                           >
                             <button
                               onClick={() => updateQuantity(item.id, item.quantity - 1)}
@@ -152,7 +152,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                             >
                               <Minus className="w-3 h-3" />
                             </button>
-                            <span className="text-xs w-8 text-center font-medium" style={{ color: '#F8F9FA' }}>{item.quantity}</span>
+                            <span className="text-xs w-8 text-center font-medium" style={{ color: '#FFFFFF' }}>{item.quantity}</span>
                             <button
                               onClick={() => updateQuantity(item.id, item.quantity + 1)}
                               className="w-8 h-8 flex items-center justify-center transition-colors"
@@ -180,18 +180,18 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
             {items.length > 0 && (
               <div
                 className="px-6 py-6 space-y-4"
-                style={{ borderTop: '1px solid rgba(212,168,67,0.15)', flexShrink: 0 }}
+                style={{ borderTop: '1px solid rgba(198,164,90,0.15)', flexShrink: 0 }}
               >
                 <div className="flex justify-between items-baseline">
                   <span className="text-xs tracking-[0.35em] uppercase" style={{ color: '#777777' }}>{t('cart.total')}</span>
-                  <span className="text-xl font-light" style={{ color: '#F8F9FA' }}>${totalPrice.toFixed(2)} <span className="text-sm" style={{ color: '#777777' }}>{t('cart.cad')}</span></span>
+                  <span className="text-xl font-light" style={{ color: '#FFFFFF' }}>${totalPrice.toFixed(2)} <span className="text-sm" style={{ color: '#777777' }}>{t('cart.cad')}</span></span>
                 </div>
                 <p role="status" className="text-sm text-center leading-relaxed" style={{ color: '#EFEFEF' }}>
                   {t('cart.closed')}
                 </p>
                 <button
                   className="w-full py-3 rounded-xl text-sm border transition-colors"
-                  style={{ borderColor: 'rgba(212,168,67,0.25)', color: '#EFEFEF', backgroundColor: 'transparent' }}
+                  style={{ borderColor: 'rgba(198,164,90,0.25)', color: '#EFEFEF', backgroundColor: 'transparent' }}
                   onClick={onClose}
                 >
                   {t('cart.continue')}

@@ -79,7 +79,7 @@ export function CustomCursor() {
           translateY: '-50%',
           width: 7,
           height: 7,
-          backgroundColor: '#D4A843',
+          backgroundColor: '#C6A45A',
         }}
         animate={{
           opacity: visible ? 1 : 0,
@@ -98,12 +98,12 @@ export function CustomCursor() {
           translateY: '-50%',
           width: 38,
           height: 38,
-          borderColor: 'rgba(212,168,67,0.65)',
+          borderColor: 'rgba(198,164,90,0.65)',
         }}
         animate={{
           opacity: visible ? 1 : 0,
           scale: clicking ? 0.65 : hovering ? 1.55 : 1,
-          backgroundColor: hovering ? 'rgba(212,168,67,0.06)' : 'transparent',
+          backgroundColor: hovering ? 'rgba(198,164,90,0.06)' : 'transparent',
         }}
         transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
       />

@@ -111,14 +111,14 @@ export class ErrorBoundary extends Component<Props, State> {
       return (
         <div 
           className="min-h-screen flex items-center justify-center px-4"
-          style={{ backgroundColor: '#121212' }}
+          style={{ backgroundColor: '#2D1011' }}
         >
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             className="max-w-2xl w-full text-center p-8 rounded-lg"
-            style={{ backgroundColor: '#F8F9FA' }}
+            style={{ backgroundColor: '#FFFFFF' }}
           >
             {/* Icon */}
             <motion.div
@@ -126,15 +126,15 @@ export class ErrorBoundary extends Component<Props, State> {
               animate={{ scale: 1 }}
               transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
               className="inline-flex items-center justify-center w-20 h-20 rounded-full mb-6"
-              style={{ backgroundColor: '#B1643B' }}
+              style={{ backgroundColor: '#887759' }}
             >
-              <AlertTriangle className="w-10 h-10" style={{ color: '#F8F9FA' }} />
+              <AlertTriangle className="w-10 h-10" style={{ color: '#FFFFFF' }} />
             </motion.div>
 
             {/* Title */}
             <h1 
               className="text-3xl md:text-4xl font-bold mb-4"
-              style={{ color: '#121212' }}
+              style={{ color: '#2D1011' }}
             >
               Oops! Something went wrong
             </h1>
@@ -153,10 +153,10 @@ export class ErrorBoundary extends Component<Props, State> {
                 className="mb-8 p-4 rounded-lg text-left overflow-auto max-h-64"
                 style={{ backgroundColor: '#E0E0E0' }}
               >
-                <p className="font-mono text-sm font-bold mb-2" style={{ color: '#121212' }}>
+                <p className="font-mono text-sm font-bold mb-2" style={{ color: '#2D1011' }}>
                   Error Details (Dev Only):
                 </p>
-                <p className="font-mono text-xs mb-2" style={{ color: '#B1643B' }}>
+                <p className="font-mono text-xs mb-2" style={{ color: '#887759' }}>
                   {this.state.error.toString()}
                 </p>
                 {this.state.errorInfo && (
@@ -174,8 +174,8 @@ export class ErrorBoundary extends Component<Props, State> {
                 size="lg"
                 className="gap-2"
                 style={{ 
-                  backgroundColor: '#B1643B',
-                  color: '#F8F9FA'
+                  backgroundColor: '#887759',
+                  color: '#FFFFFF'
                 }}
               >
                 <RefreshCw className="w-5 h-5" />
@@ -188,8 +188,8 @@ export class ErrorBoundary extends Component<Props, State> {
                 variant="outline"
                 className="gap-2"
                 style={{ 
-                  borderColor: '#B1643B',
-                  color: '#B1643B'
+                  borderColor: '#887759',
+                  color: '#887759'
                 }}
               >
                 <Home className="w-5 h-5" />
@@ -206,7 +206,7 @@ export class ErrorBoundary extends Component<Props, State> {
               <a 
                 href="mailto:support@creova.one" 
                 className="underline"
-                style={{ color: '#B1643B' }}
+                style={{ color: '#887759' }}
               >
                 support@creova.one
               </a>

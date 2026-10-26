@@ -9,6 +9,7 @@ import { absoluteUrl } from '../i18n/locale';
 import { getPublishedEvidenceBySlug } from '../content/publicEvidence';
 import logoBrock from '../assets/logo-brock-university.webp';
 import logoBSSC from '../assets/logo-bssc.png';
+import { GALLERY_FALLBACK } from '../data/galleryFallback';
 
 const SITE_URL = 'https://www.creova.one';
 
@@ -20,13 +21,15 @@ export function CaseStudyPage({ slug }: { slug: string }) {
   const evidence = getPublishedEvidenceBySlug(slug);
   if (!cs || !evidence) return null;
   const c = fr ? cs.fr : cs.en;
+  const coverUrl = cs.cover.startsWith('http') ? cs.cover : `${SITE_URL}${cs.cover}`;
+  const relatedGalleries = GALLERY_FALLBACK.filter((gallery) => cs.relatedGalleryIds?.includes(gallery.id));
 
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Article',
     headline: c.title,
     description: c.metaDescription,
-    image: `${SITE_URL}${cs.cover}`,
+    image: coverUrl,
     author: { '@type': 'Organization', name: 'CREOVA' },
     publisher: { '@type': 'Organization', name: 'CREOVA', url: `${SITE_URL}/` },
     about: { '@type': 'Organization', name: `${cs.partner}, ${cs.org}` },
@@ -34,18 +37,18 @@ export function CaseStudyPage({ slug }: { slug: string }) {
   };
 
   return (
-    <div style={{ backgroundColor: '#121212' }}>
-      <PageSEO title={c.title} description={c.metaDescription} path={`/work/${slug}`} ogImage={`${SITE_URL}${cs.cover}`} jsonLd={jsonLd} />
+    <div style={{ backgroundColor: '#2D1011' }}>
+      <PageSEO title={c.title} description={c.metaDescription} path={`/work/${slug}`} ogImage={coverUrl} jsonLd={jsonLd} />
 
       {/* Hero */}
       <section className="relative overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse 60% 50% at 20% 0%, rgba(212,168,67,0.10) 0%, transparent 55%)' }} />
+        <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse 60% 50% at 20% 0%, rgba(198,164,90,0.10) 0%, transparent 55%)' }} />
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-10 lg:pt-28">
-          <Link to="/work" className="flex w-fit items-center gap-2 text-xs tracking-[0.2em] uppercase mb-8 transition-colors hover:text-[#D4A843]" style={{ color: '#8C7B75' }}>
+          <Link to="/work" className="flex w-fit items-center gap-2 text-xs tracking-[0.2em] uppercase mb-8 transition-colors hover:text-[#C6A45A]" style={{ color: '#8C7B75' }}>
             <ArrowLeft className="w-3.5 h-3.5" /> {fr ? 'Réalisations' : 'Our work'}
           </Link>
-          <span className="block text-xs tracking-[0.35em] uppercase" style={{ color: '#D4A843' }}>{c.kicker}</span>
-          <h1 className="tracking-tight mt-5 mb-6" style={{ color: '#F8F9FA', fontFamily: 'var(--font-display)', fontSize: 'clamp(2.4rem, 6vw, 4.2rem)', lineHeight: 1.03 }}>{c.title}</h1>
+          <span className="block text-xs tracking-[0.35em] uppercase" style={{ color: '#C6A45A' }}>{c.kicker}</span>
+          <h1 className="tracking-tight mt-5 mb-6" style={{ color: '#FFFFFF', fontFamily: 'var(--font-display)', fontSize: 'clamp(2.4rem, 6vw, 4.2rem)', lineHeight: 1.03 }}>{c.title}</h1>
           <p className="text-lg leading-relaxed" style={{ color: '#E0E0E0', maxWidth: '62ch' }}>{c.overview}</p>
           <div className="mt-8 flex items-center gap-4" aria-label="Collaborators">
             <img src={logoBrock} alt="Brock University" className="h-11 w-auto object-contain" />
@@ -57,9 +60,53 @@ export function CaseStudyPage({ slug }: { slug: string }) {
         </div>
       </section>
 
+      {relatedGalleries.length > 0 && (
+        <section className="relative py-14 lg:py-20" aria-labelledby="case-study-galleries">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
+              <div>
+                <p className="text-xs tracking-[0.35em] uppercase mb-3" style={{ color: '#C6A45A' }}>
+                  {fr ? 'Galeries publiques liées' : 'Related public galleries'}
+                </p>
+                <h2 id="case-study-galleries" className="text-3xl sm:text-4xl" style={{ color: '#FFFFFF' }}>
+                  {fr ? 'Voir le travail dans son contexte' : 'See the work in context'}
+                </h2>
+              </div>
+              <p className="text-sm leading-relaxed max-w-md" style={{ color: '#CDBFAE' }}>
+                {fr
+                  ? 'Chaque image mène à la galerie publique originale de CREOVA sur Pixieset.'
+                  : 'Each cover links to the original public CREOVA gallery on Pixieset.'}
+              </p>
+            </div>
+            <div className="grid sm:grid-cols-2 gap-4">
+              {relatedGalleries.map((gallery) => (
+                <a
+                  key={gallery.id}
+                  href={gallery.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group relative overflow-hidden rounded-2xl"
+                  style={{ aspectRatio: '16 / 10', border: '1px solid rgba(198,164,90,0.2)' }}
+                >
+                  <img src={gallery.image} alt={gallery.title} loading="lazy" className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" style={{ objectPosition: gallery.objectPosition }} />
+                  <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(45,16,17,0.94), rgba(45,16,17,0.06) 70%)' }} />
+                  <div className="absolute inset-x-0 bottom-0 p-5">
+                    <p className="text-[10px] tracking-[0.25em] uppercase mb-2" style={{ color: '#CDBFAE' }}>{gallery.org}</p>
+                    <div className="flex items-end justify-between gap-4">
+                      <h3 className="text-xl" style={{ color: '#FFFFFF' }}>{gallery.title}</h3>
+                      <ExternalLink className="w-4 h-4 flex-shrink-0" style={{ color: '#C6A45A' }} />
+                    </div>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Cover */}
       <div ref={ref} className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div initial={{ opacity: 0, scale: 0.97 }} animate={inView ? { opacity: 1, scale: 1 } : {}} transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }} className="relative overflow-hidden rounded-2xl" style={{ aspectRatio: '16/9', border: '1px solid rgba(212,168,67,0.15)' }}>
+        <motion.div initial={{ opacity: 0, scale: 0.97 }} animate={inView ? { opacity: 1, scale: 1 } : {}} transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }} className="relative overflow-hidden rounded-2xl" style={{ aspectRatio: '16/9', border: '1px solid rgba(198,164,90,0.15)' }}>
           <img src={cs.cover} alt={`${cs.partner} — ${c.title}`} className="w-full h-full object-cover" style={{ objectPosition: 'center 40%' }} />
         </motion.div>
       </div>
@@ -67,11 +114,11 @@ export function CaseStudyPage({ slug }: { slug: string }) {
       {/* Scope */}
       <section className="relative py-16 lg:py-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="text-xs tracking-[0.4em] uppercase mb-8" style={{ color: '#D4A843' }}>{fr ? 'La portée' : 'The scope'}</p>
+          <p className="text-xs tracking-[0.4em] uppercase mb-8" style={{ color: '#C6A45A' }}>{fr ? 'La portée' : 'The scope'}</p>
           <div className="grid sm:grid-cols-2 gap-x-12 gap-y-8">
             {c.scope.map((s, i) => (
-              <div key={i} className="border-t pt-4" style={{ borderColor: 'rgba(212,168,67,0.2)' }}>
-                <h3 className="text-lg mb-1.5" style={{ color: '#F8F9FA', fontFamily: 'var(--font-display)' }}>{s.label}</h3>
+              <div key={i} className="border-t pt-4" style={{ borderColor: 'rgba(198,164,90,0.2)' }}>
+                <h3 className="text-lg mb-1.5" style={{ color: '#FFFFFF', fontFamily: 'var(--font-display)' }}>{s.label}</h3>
                 <p className="text-sm leading-relaxed" style={{ color: '#8C7B75' }}>{s.detail}</p>
               </div>
             ))}
@@ -88,12 +135,12 @@ export function CaseStudyPage({ slug }: { slug: string }) {
             ))}
           </div>
           <div className="lg:col-span-2">
-            <div className="relative overflow-hidden rounded-2xl" style={{ aspectRatio: '4/5', border: '1px solid rgba(212,168,67,0.15)' }}>
+            <div className="relative overflow-hidden rounded-2xl" style={{ aspectRatio: '4/5', border: '1px solid rgba(198,164,90,0.15)' }}>
               <img src={cs.featureImage} alt={cs.featureName} className="w-full h-full object-cover" style={{ objectPosition: 'center 20%' }} loading="lazy" />
-              <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(18,18,18,0.7) 0%, transparent 45%)' }} />
+              <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(45,16,17,0.7) 0%, transparent 45%)' }} />
               <div className="absolute bottom-4 left-5">
-                <p className="text-base" style={{ color: '#F8F9FA', fontFamily: 'var(--font-display)' }}>{cs.featureName}</p>
-                <p className="text-[11px] tracking-[0.15em] uppercase" style={{ color: '#D4A843' }}>{fr ? cs.featureRoleFr : cs.featureRoleEn}</p>
+                <p className="text-base" style={{ color: '#FFFFFF', fontFamily: 'var(--font-display)' }}>{cs.featureName}</p>
+                <p className="text-[11px] tracking-[0.15em] uppercase" style={{ color: '#C6A45A' }}>{fr ? cs.featureRoleFr : cs.featureRoleEn}</p>
               </div>
             </div>
           </div>
@@ -103,12 +150,12 @@ export function CaseStudyPage({ slug }: { slug: string }) {
       {evidence && (
         <section className="pb-16">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <p className="text-xs tracking-[0.35em] uppercase mb-4" style={{ color: '#D4A843' }}>
+            <p className="text-xs tracking-[0.35em] uppercase mb-4" style={{ color: '#C6A45A' }}>
               {fr ? 'Sources publiques' : 'Public sources'}
             </p>
             <div className="flex flex-wrap gap-3">
               {evidence.sources.map((source) => (
-                <a key={source.url} href={source.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs" style={{ color: '#E0E0E0', border: '1px solid rgba(212,168,67,0.25)' }}>
+                <a key={source.url} href={source.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs" style={{ color: '#E0E0E0', border: '1px solid rgba(198,164,90,0.25)' }}>
                   {source.label}<ExternalLink className="w-3 h-3" />
                 </a>
               ))}
@@ -121,18 +168,18 @@ export function CaseStudyPage({ slug }: { slug: string }) {
       {c.quote && (
         <section className="relative py-16">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <p className="italic" style={{ color: '#F8F9FA', fontFamily: 'var(--font-display)', fontSize: 'clamp(1.5rem, 3.6vw, 2.3rem)', lineHeight: 1.3 }}>“{c.quote.text}”</p>
-            <p className="mt-6 text-sm" style={{ color: '#D4A843' }}>{c.quote.name} · <span style={{ color: '#8C7B75' }}>{c.quote.role}</span></p>
+            <p className="italic" style={{ color: '#FFFFFF', fontFamily: 'var(--font-display)', fontSize: 'clamp(1.5rem, 3.6vw, 2.3rem)', lineHeight: 1.3 }}>“{c.quote.text}”</p>
+            <p className="mt-6 text-sm" style={{ color: '#C6A45A' }}>{c.quote.name} · <span style={{ color: '#8C7B75' }}>{c.quote.role}</span></p>
           </div>
         </section>
       )}
 
       {/* Result + CTA */}
-      <section className="relative py-16 lg:py-24 border-t" style={{ backgroundColor: '#0E0E0E', borderColor: 'rgba(248,249,250,0.06)' }}>
+      <section className="relative py-16 lg:py-24 border-t" style={{ backgroundColor: '#0E0E0E', borderColor: 'rgba(255,255,255,0.06)' }}>
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-xs tracking-[0.4em] uppercase mb-5" style={{ color: '#D4A843' }}>{c.resultLabel}</p>
-          <p className="text-xl lg:text-2xl leading-relaxed mb-10" style={{ color: '#F8F9FA', fontFamily: 'var(--font-display)' }}>{c.result}</p>
-          <Link to="/start-a-project" className="group inline-flex items-center gap-3 px-8 py-4 rounded-xl text-base font-semibold tracking-wide transition-all duration-300 hover:-translate-y-px hover:shadow-xl" style={{ backgroundColor: '#B1643B', color: '#F8F9FA' }}>
+          <p className="text-xs tracking-[0.4em] uppercase mb-5" style={{ color: '#C6A45A' }}>{c.resultLabel}</p>
+          <p className="text-xl lg:text-2xl leading-relaxed mb-10" style={{ color: '#FFFFFF', fontFamily: 'var(--font-display)' }}>{c.result}</p>
+          <Link to="/start-a-project" className="group inline-flex items-center gap-3 px-8 py-4 rounded-xl text-base font-semibold tracking-wide transition-all duration-300 hover:-translate-y-px hover:shadow-xl" style={{ backgroundColor: '#7D6D51', color: '#FFFFFF' }}>
             {fr ? 'Démarrer un projet' : 'Start a project'}
             <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
           </Link>

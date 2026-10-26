@@ -85,8 +85,8 @@ export function AdminSubmissionsPage() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'new': return '#B1643B';
-      case 'contacted': return '#D4A843';
+      case 'new': return '#887759';
+      case 'contacted': return '#C6A45A';
       case 'completed': return '#4CAF50';
       default: return '#777777';
     }
@@ -102,7 +102,7 @@ export function AdminSubmissionsPage() {
   };
 
   return (
-    <div style={{ backgroundColor: '#F8F9FA', minHeight: '100vh' }}>
+    <div style={{ backgroundColor: '#FFFFFF', minHeight: '100vh' }}>
       <PageSEO
         title="Admin Submissions"
         description="CREOVA staff admin dashboard."
@@ -110,11 +110,11 @@ export function AdminSubmissionsPage() {
         noIndex
       />
       {/* Header */}
-      <section className="py-16" style={{ backgroundColor: '#121212' }}>
+      <section className="py-16" style={{ backgroundColor: '#2D1011' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-4xl md:text-5xl mb-3" style={{ color: '#F8F9FA' }}>
+              <h1 className="text-4xl md:text-5xl mb-3" style={{ color: '#FFFFFF' }}>
                 Contact Submissions
               </h1>
               <p className="text-lg" style={{ color: '#E0E0E0' }}>
@@ -124,7 +124,7 @@ export function AdminSubmissionsPage() {
             <Button 
               onClick={fetchSubmissions}
               className="px-6 py-3 rounded-xl"
-              style={{ backgroundColor: '#B1643B', color: '#F8F9FA' }}
+              style={{ backgroundColor: '#7D6D51', color: '#FFFFFF' }}
             >
               <RefreshCw className="w-5 h-5 mr-2" />
               Refresh
@@ -134,7 +134,7 @@ export function AdminSubmissionsPage() {
       </section>
 
       {/* Filters & Stats */}
-      <section className="py-8" style={{ backgroundColor: '#121212', borderBottom: '1px solid #E0E0E0' }}>
+      <section className="py-8" style={{ backgroundColor: '#2D1011', borderBottom: '1px solid #E0E0E0' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-wrap items-center gap-4">
             {/* Type Filter */}
@@ -143,7 +143,7 @@ export function AdminSubmissionsPage() {
                 onClick={() => setFilter('all')}
                 variant={filter === 'all' ? 'default' : 'outline'}
                 className="rounded-xl"
-                style={filter === 'all' ? { backgroundColor: '#B1643B', color: '#F8F9FA' } : { color: '#F8F9FA', borderColor: '#E0E0E0' }}
+                style={filter === 'all' ? { backgroundColor: '#7D6D51', color: '#FFFFFF' } : { color: '#FFFFFF', borderColor: '#E0E0E0' }}
               >
                 All ({submissions.length})
               </Button>
@@ -151,7 +151,7 @@ export function AdminSubmissionsPage() {
                 onClick={() => setFilter('contact')}
                 variant={filter === 'contact' ? 'default' : 'outline'}
                 className="rounded-xl"
-                style={filter === 'contact' ? { backgroundColor: '#B1643B', color: '#F8F9FA' } : { color: '#F8F9FA', borderColor: '#E0E0E0' }}
+                style={filter === 'contact' ? { backgroundColor: '#7D6D51', color: '#FFFFFF' } : { color: '#FFFFFF', borderColor: '#E0E0E0' }}
               >
                 Contact ({submissions.filter(s => s.type === 'contact').length})
               </Button>
@@ -159,7 +159,7 @@ export function AdminSubmissionsPage() {
                 onClick={() => setFilter('collaboration')}
                 variant={filter === 'collaboration' ? 'default' : 'outline'}
                 className="rounded-xl"
-                style={filter === 'collaboration' ? { backgroundColor: '#B1643B', color: '#F8F9FA' } : { color: '#F8F9FA', borderColor: '#E0E0E0' }}
+                style={filter === 'collaboration' ? { backgroundColor: '#7D6D51', color: '#FFFFFF' } : { color: '#FFFFFF', borderColor: '#E0E0E0' }}
               >
                 Collaboration ({submissions.filter(s => s.type === 'collaboration').length})
               </Button>
@@ -171,7 +171,7 @@ export function AdminSubmissionsPage() {
                 onClick={() => setStatusFilter('all')}
                 variant={statusFilter === 'all' ? 'default' : 'outline'}
                 className="rounded-xl text-sm"
-                style={statusFilter === 'all' ? { backgroundColor: '#D4A843', color: '#F8F9FA' } : { color: '#F8F9FA', borderColor: '#E0E0E0' }}
+                style={statusFilter === 'all' ? { backgroundColor: '#C6A45A', color: '#FFFFFF' } : { color: '#FFFFFF', borderColor: '#E0E0E0' }}
               >
                 All Status
               </Button>
@@ -179,7 +179,7 @@ export function AdminSubmissionsPage() {
                 onClick={() => setStatusFilter('new')}
                 variant={statusFilter === 'new' ? 'default' : 'outline'}
                 className="rounded-xl text-sm"
-                style={statusFilter === 'new' ? { backgroundColor: '#D4A843', color: '#F8F9FA' } : { color: '#F8F9FA', borderColor: '#E0E0E0' }}
+                style={statusFilter === 'new' ? { backgroundColor: '#C6A45A', color: '#FFFFFF' } : { color: '#FFFFFF', borderColor: '#E0E0E0' }}
               >
                 New
               </Button>
@@ -187,7 +187,7 @@ export function AdminSubmissionsPage() {
                 onClick={() => setStatusFilter('contacted')}
                 variant={statusFilter === 'contacted' ? 'default' : 'outline'}
                 className="rounded-xl text-sm"
-                style={statusFilter === 'contacted' ? { backgroundColor: '#D4A843', color: '#F8F9FA' } : { color: '#F8F9FA', borderColor: '#E0E0E0' }}
+                style={statusFilter === 'contacted' ? { backgroundColor: '#C6A45A', color: '#FFFFFF' } : { color: '#FFFFFF', borderColor: '#E0E0E0' }}
               >
                 Contacted
               </Button>
@@ -195,7 +195,7 @@ export function AdminSubmissionsPage() {
                 onClick={() => setStatusFilter('completed')}
                 variant={statusFilter === 'completed' ? 'default' : 'outline'}
                 className="rounded-xl text-sm"
-                style={statusFilter === 'completed' ? { backgroundColor: '#D4A843', color: '#F8F9FA' } : { color: '#F8F9FA', borderColor: '#E0E0E0' }}
+                style={statusFilter === 'completed' ? { backgroundColor: '#C6A45A', color: '#FFFFFF' } : { color: '#FFFFFF', borderColor: '#E0E0E0' }}
               >
                 Completed
               </Button>
@@ -209,13 +209,13 @@ export function AdminSubmissionsPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {loading ? (
             <div className="text-center py-20">
-              <RefreshCw className="w-12 h-12 mx-auto mb-4 animate-spin" style={{ color: '#B1643B' }} />
-              <p style={{ color: '#121212' }}>Loading submissions...</p>
+              <RefreshCw className="w-12 h-12 mx-auto mb-4 animate-spin" style={{ color: '#887759' }} />
+              <p style={{ color: '#2D1011' }}>Loading submissions...</p>
             </div>
           ) : filteredSubmissions.length === 0 ? (
             <div className="text-center py-20">
               <FileText className="w-16 h-16 mx-auto mb-4" style={{ color: '#777777' }} />
-              <h3 className="text-2xl mb-2" style={{ color: '#121212' }}>No submissions found</h3>
+              <h3 className="text-2xl mb-2" style={{ color: '#2D1011' }}>No submissions found</h3>
               <p style={{ color: '#777777' }}>There are no submissions matching your filters</p>
             </div>
           ) : (
@@ -232,7 +232,7 @@ export function AdminSubmissionsPage() {
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-2">
-                        <h3 className="text-xl" style={{ color: '#121212' }}>{submission.name}</h3>
+                        <h3 className="text-xl" style={{ color: '#2D1011' }}>{submission.name}</h3>
                         <span 
                           className="px-3 py-1 rounded-full text-xs flex items-center gap-1"
                           style={{ backgroundColor: getStatusColor(submission.status) + '20', color: getStatusColor(submission.status) }}
@@ -242,7 +242,7 @@ export function AdminSubmissionsPage() {
                         </span>
                         <span 
                           className="px-3 py-1 rounded-full text-xs"
-                          style={{ backgroundColor: submission.type === 'contact' ? '#D4A84320' : '#B1643B20', color: submission.type === 'contact' ? '#D4A843' : '#B1643B' }}
+                          style={{ backgroundColor: submission.type === 'contact' ? '#C6A45A20' : '#88775920', color: submission.type === 'contact' ? '#C6A45A' : '#887759' }}
                         >
                           {submission.type.toUpperCase()}
                         </span>
@@ -276,35 +276,35 @@ export function AdminSubmissionsPage() {
                         <div className="space-y-2">
                           {submission.service && (
                             <div className="flex items-start gap-2">
-                              <Briefcase className="w-4 h-4 mt-1" style={{ color: '#D4A843' }} />
+                              <Briefcase className="w-4 h-4 mt-1" style={{ color: '#C6A45A' }} />
                               <div>
                                 <span className="text-sm" style={{ color: '#777777' }}>Service: </span>
-                                <span style={{ color: '#121212' }}>{submission.service}</span>
+                                <span style={{ color: '#2D1011' }}>{submission.service}</span>
                               </div>
                             </div>
                           )}
                           {submission.budget && (
                             <div className="flex items-start gap-2">
-                              <DollarSign className="w-4 h-4 mt-1" style={{ color: '#D4A843' }} />
+                              <DollarSign className="w-4 h-4 mt-1" style={{ color: '#C6A45A' }} />
                               <div>
                                 <span className="text-sm" style={{ color: '#777777' }}>Budget: </span>
-                                <span style={{ color: '#121212' }}>{submission.budget}</span>
+                                <span style={{ color: '#2D1011' }}>{submission.budget}</span>
                               </div>
                             </div>
                           )}
                           {submission.timeline && (
                             <div className="flex items-start gap-2">
-                              <Clock className="w-4 h-4 mt-1" style={{ color: '#D4A843' }} />
+                              <Clock className="w-4 h-4 mt-1" style={{ color: '#C6A45A' }} />
                               <div>
                                 <span className="text-sm" style={{ color: '#777777' }}>Timeline: </span>
-                                <span style={{ color: '#121212' }}>{submission.timeline}</span>
+                                <span style={{ color: '#2D1011' }}>{submission.timeline}</span>
                               </div>
                             </div>
                           )}
                           {submission.message && (
-                            <div className="mt-3 p-4 rounded-xl" style={{ backgroundColor: '#F8F9FA' }}>
+                            <div className="mt-3 p-4 rounded-xl" style={{ backgroundColor: '#FFFFFF' }}>
                               <p className="text-sm mb-1" style={{ color: '#777777' }}>Message:</p>
-                              <p style={{ color: '#121212' }}>{submission.message}</p>
+                              <p style={{ color: '#2D1011' }}>{submission.message}</p>
                             </div>
                           )}
                         </div>
@@ -315,44 +315,44 @@ export function AdminSubmissionsPage() {
                         <div className="space-y-2">
                           {submission.organization && (
                             <div className="flex items-start gap-2">
-                              <Briefcase className="w-4 h-4 mt-1" style={{ color: '#B1643B' }} />
+                              <Briefcase className="w-4 h-4 mt-1" style={{ color: '#887759' }} />
                               <div>
                                 <span className="text-sm" style={{ color: '#777777' }}>Organization: </span>
-                                <span style={{ color: '#121212' }}>{submission.organization}</span>
+                                <span style={{ color: '#2D1011' }}>{submission.organization}</span>
                               </div>
                             </div>
                           )}
                           {submission.collaborationType && (
                             <div className="flex items-start gap-2">
-                              <FileText className="w-4 h-4 mt-1" style={{ color: '#B1643B' }} />
+                              <FileText className="w-4 h-4 mt-1" style={{ color: '#887759' }} />
                               <div>
                                 <span className="text-sm" style={{ color: '#777777' }}>Type: </span>
-                                <span style={{ color: '#121212' }}>{submission.collaborationType}</span>
+                                <span style={{ color: '#2D1011' }}>{submission.collaborationType}</span>
                               </div>
                             </div>
                           )}
                           {submission.budget && (
                             <div className="flex items-start gap-2">
-                              <DollarSign className="w-4 h-4 mt-1" style={{ color: '#B1643B' }} />
+                              <DollarSign className="w-4 h-4 mt-1" style={{ color: '#887759' }} />
                               <div>
                                 <span className="text-sm" style={{ color: '#777777' }}>Budget: </span>
-                                <span style={{ color: '#121212' }}>{submission.budget}</span>
+                                <span style={{ color: '#2D1011' }}>{submission.budget}</span>
                               </div>
                             </div>
                           )}
                           {submission.timeline && (
                             <div className="flex items-start gap-2">
-                              <Clock className="w-4 h-4 mt-1" style={{ color: '#B1643B' }} />
+                              <Clock className="w-4 h-4 mt-1" style={{ color: '#887759' }} />
                               <div>
                                 <span className="text-sm" style={{ color: '#777777' }}>Timeline: </span>
-                                <span style={{ color: '#121212' }}>{submission.timeline}</span>
+                                <span style={{ color: '#2D1011' }}>{submission.timeline}</span>
                               </div>
                             </div>
                           )}
                           {submission.projectDescription && (
-                            <div className="mt-3 p-4 rounded-xl" style={{ backgroundColor: '#F8F9FA' }}>
+                            <div className="mt-3 p-4 rounded-xl" style={{ backgroundColor: '#FFFFFF' }}>
                               <p className="text-sm mb-1" style={{ color: '#777777' }}>Project Description:</p>
-                              <p style={{ color: '#121212' }}>{submission.projectDescription}</p>
+                              <p style={{ color: '#2D1011' }}>{submission.projectDescription}</p>
                             </div>
                           )}
                         </div>
@@ -368,7 +368,7 @@ export function AdminSubmissionsPage() {
                       variant="outline"
                       className="rounded-lg"
                       disabled={submission.status === 'new'}
-                      style={{ borderColor: '#E0E0E0', color: '#121212' }}
+                      style={{ borderColor: '#E0E0E0', color: '#2D1011' }}
                     >
                       Mark as New
                     </Button>
@@ -378,7 +378,7 @@ export function AdminSubmissionsPage() {
                       variant="outline"
                       className="rounded-lg"
                       disabled={submission.status === 'contacted'}
-                      style={{ borderColor: '#E0E0E0', color: '#121212' }}
+                      style={{ borderColor: '#E0E0E0', color: '#2D1011' }}
                     >
                       Mark as Contacted
                     </Button>
@@ -388,7 +388,7 @@ export function AdminSubmissionsPage() {
                       variant="outline"
                       className="rounded-lg"
                       disabled={submission.status === 'completed'}
-                      style={{ borderColor: '#E0E0E0', color: '#121212' }}
+                      style={{ borderColor: '#E0E0E0', color: '#2D1011' }}
                     >
                       Mark as Completed
                     </Button>

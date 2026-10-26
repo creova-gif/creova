@@ -12,23 +12,23 @@ export function Footer() {
     ? [['Récit d’événement', '/services#event-story'], ['Campagnes communautaires', '/services#campaign-story'], ['Partenariats continus', '/services#ongoing-partnership']]
     : [['Event storytelling', '/services#event-story'], ['Community campaigns', '/services#campaign-story'], ['Ongoing partnerships', '/services#ongoing-partnership']];
   const company = fr
-    ? [['Travail', '/work'], ['Communauté', '/community'], ['Projets', '/ventures'], ['À propos', '/about'], ['Journal', '/journal']]
-    : [['Work', '/work'], ['Community', '/community'], ['Ventures', '/ventures'], ['About', '/about'], ['Journal', '/journal']];
+    ? [['Travail', '/work'], ['Ressources', '/resources'], ['Communauté', '/community'], ['Nos marques', '/ventures'], ['À propos', '/about'], ['Journal', '/journal']]
+    : [['Work', '/work'], ['Resources', '/resources'], ['Community', '/community'], ['Our Brands', '/ventures'], ['About', '/about'], ['Journal', '/journal']];
 
   return (
-    <footer style={{ backgroundColor: '#121212', color: '#E0E0E0' }}>
+    <footer style={{ backgroundColor: '#2D1011', color: '#E0E0E0' }}>
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-20 lg:py-28">
-        <div className="grid lg:grid-cols-[1.25fr_.75fr] gap-14 lg:gap-24 pb-16 border-b" style={{ borderColor: 'rgba(248,249,250,.1)' }}>
+        <div className="grid lg:grid-cols-[1.25fr_.75fr] gap-14 lg:gap-24 pb-16 border-b" style={{ borderColor: 'rgba(255,255,255,.1)' }}>
           <div>
-            <p className="text-xs tracking-[.35em] uppercase mb-5" style={{ color: '#D4A843' }}>{fr ? 'Un récit utile commence ici' : 'A useful story starts here'}</p>
-            <h2 className="max-w-4xl font-light tracking-tight leading-[1.02]" style={{ color: '#F8F9FA', fontSize: 'clamp(2.8rem, 6vw, 6rem)' }}>{fr ? 'Transformons votre prochain moment en élan durable.' : 'Turn your next meaningful moment into lasting momentum.'}</h2>
+            <p className="text-xs tracking-[.35em] uppercase mb-5" style={{ color: '#C6A45A' }}>{fr ? 'Un récit utile commence ici' : 'A useful story starts here'}</p>
+            <h2 className="max-w-4xl font-light tracking-tight leading-[1.02]" style={{ color: '#FFFFFF', fontSize: 'clamp(2.8rem, 6vw, 6rem)' }}>{fr ? 'Transformons votre prochain moment en élan durable.' : 'Turn your next meaningful moment into lasting momentum.'}</h2>
             <div className="mt-9 flex flex-wrap gap-4">
-              <Link to="/start-a-project" className="inline-flex items-center gap-2 rounded-xl px-6 py-3.5 font-semibold" style={{ backgroundColor: '#C0392B', color: '#FFFFFF' }}>{fr ? 'Démarrer un projet' : 'Start a project'} <ArrowUpRight className="w-4 h-4" /></Link>
-              <a href="mailto:support@creova.one" className="inline-flex items-center gap-2 rounded-xl px-6 py-3.5 border" style={{ borderColor: 'rgba(248,249,250,.3)', color: '#F8F9FA' }}><Mail className="w-4 h-4" />support@creova.one</a>
+              <Link to="/start-a-project" className="inline-flex items-center gap-2 rounded-xl px-6 py-3.5 font-semibold" style={{ backgroundColor: '#7D6D51', color: '#FFFFFF' }}>{fr ? 'Démarrer un projet' : 'Start a project'} <ArrowUpRight className="w-4 h-4" /></Link>
+              <a href="mailto:support@creova.one" className="inline-flex items-center gap-2 rounded-xl px-6 py-3.5 border" style={{ borderColor: 'rgba(255,255,255,.3)', color: '#FFFFFF' }}><Mail className="w-4 h-4" />support@creova.one</a>
             </div>
           </div>
           <div className="flex flex-col justify-end gap-4 text-sm" style={{ color: '#B7BBC3' }}>
-            <p className="flex items-center gap-3"><MapPin className="w-4 h-4" style={{ color: '#D4A843' }} />{fr ? 'Ontario · Niagara, Hamilton et projets sélectionnés dans le GTA' : 'Ontario · Niagara, Hamilton, and select GTA projects'}</p>
+            <p className="flex items-center gap-3"><MapPin className="w-4 h-4" style={{ color: '#C6A45A' }} />{fr ? 'Ontario · Niagara, Hamilton et projets sélectionnés dans le GTA' : 'Ontario · Niagara, Hamilton, and select GTA projects'}</p>
             <p>{fr ? 'Collaboration en anglais et en français.' : 'English and French collaboration.'}</p>
           </div>
         </div>
@@ -37,14 +37,14 @@ export function Footer() {
           <FooterColumn title={fr ? 'Services' : 'Services'} links={offers} />
           <FooterColumn title={fr ? 'Entreprise' : 'Company'} links={company} />
           <div>
-            <p className="text-xs tracking-[.3em] uppercase mb-5" style={{ color: '#D4A843' }}>{fr ? 'Projets' : 'Ventures'}</p>
+            <p className="text-xs tracking-[.3em] uppercase mb-5" style={{ color: '#C6A45A' }}>{fr ? 'Nos marques' : 'Our Brands'}</p>
             <ul className="space-y-3 text-sm" style={{ color: '#9B9B9B' }}>
               <li>{VENTURE_URLS.seen ? <a href={VENTURE_URLS.seen} target="_blank" rel="noopener noreferrer" className="hover:text-white">SEEN <ArrowUpRight className="inline w-3 h-3" /></a> : <Link to="/ventures#seen" className="hover:text-white">SEEN · {fr ? 'en développement' : 'in development'}</Link>}</li>
               <li>{VENTURE_URLS.verse ? <a href={VENTURE_URLS.verse} target="_blank" rel="noopener noreferrer" className="hover:text-white">VERSE <ArrowUpRight className="inline w-3 h-3" /></a> : <Link to="/ventures#verse" className="hover:text-white">VERSE · {fr ? 'en incubation' : 'incubating'}</Link>}</li>
             </ul>
           </div>
           <div>
-            <p className="text-xs tracking-[.3em] uppercase mb-5" style={{ color: '#D4A843' }}>{fr ? 'Coordonnées' : 'Connect'}</p>
+            <p className="text-xs tracking-[.3em] uppercase mb-5" style={{ color: '#C6A45A' }}>{fr ? 'Coordonnées' : 'Connect'}</p>
             <ul className="space-y-3 text-sm" style={{ color: '#9B9B9B' }}>
               <li><a href="https://instagram.com/creativeinnovation__" target="_blank" rel="noopener noreferrer" className="hover:text-white">Instagram</a></li>
               <li><a href="https://www.linkedin.com/company/creovaspace/" target="_blank" rel="noopener noreferrer" className="hover:text-white">LinkedIn</a></li>
@@ -53,10 +53,10 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="py-8 border-y" style={{ borderColor: 'rgba(248,249,250,.08)' }}>
+        <div className="py-8 border-y" style={{ borderColor: 'rgba(255,255,255,.08)' }}>
           <p className="text-[10px] tracking-[.3em] uppercase mb-4" style={{ color: '#777' }}>{fr ? 'Zones de service' : 'Service areas'}</p>
           <div className="flex flex-wrap gap-x-6 gap-y-2">
-            {SERVICE_AREAS.map(area => <Link key={area.slug} to={`/${area.slug}`} className="text-xs hover:text-[#D4A843]" style={{ color: '#777' }}>{(fr ? area.fr : area.en).kicker}</Link>)}
+            {SERVICE_AREAS.map(area => <Link key={area.slug} to={`/${area.slug}`} className="text-xs hover:text-[#C6A45A]" style={{ color: '#777' }}>{(fr ? area.fr : area.en).kicker}</Link>)}
           </div>
         </div>
 
@@ -71,5 +71,5 @@ export function Footer() {
 }
 
 function FooterColumn({ title, links }: { title: string; links: string[][] }) {
-  return <div><p className="text-xs tracking-[.3em] uppercase mb-5" style={{ color: '#D4A843' }}>{title}</p><ul className="space-y-3">{links.map(([label, href]) => <li key={href}><Link to={href} className="text-sm hover:text-white" style={{ color: '#9B9B9B' }}>{label}</Link></li>)}</ul></div>;
+  return <div><p className="text-xs tracking-[.3em] uppercase mb-5" style={{ color: '#C6A45A' }}>{title}</p><ul className="space-y-3">{links.map(([label, href]) => <li key={href}><Link to={href} className="text-sm hover:text-white" style={{ color: '#9B9B9B' }}>{label}</Link></li>)}</ul></div>;
 }

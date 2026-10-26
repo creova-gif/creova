@@ -13,9 +13,9 @@ export function VenturesPage() {
   );
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#121212' }}>
+    <div className="min-h-screen" style={{ backgroundColor: '#2D1011' }}>
       <PageSEO
-        title={fr ? 'Produits et marques en développement' : 'Products and ventures in development'}
+        title={fr ? 'Produits et marques en développement' : 'Products and brands in development'}
         description={fr
           ? 'Découvrez SEEN et VERSE, les produits et marques développés par CREOVA.'
           : 'Meet SEEN and VERSE, the products and brands being developed by CREOVA.'}
@@ -23,13 +23,13 @@ export function VenturesPage() {
       />
 
       <section className="relative overflow-hidden px-6 py-24 lg:py-36">
-        <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(circle at 75% 20%, rgba(212,168,67,0.13), transparent 40%)' }} />
+        <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(circle at 75% 20%, rgba(198,164,90,0.13), transparent 40%)' }} />
         <div className="relative max-w-6xl mx-auto">
-          <p className="text-xs tracking-[0.45em] uppercase mb-6" style={{ color: '#D4A843' }}>
+          <p className="text-xs tracking-[0.45em] uppercase mb-6" style={{ color: '#C6A45A' }}>
             {fr ? 'Construit par CREOVA' : 'Built by CREOVA'}
           </p>
-          <h1 className="max-w-4xl font-light tracking-tight leading-[0.95]" style={{ color: '#F8F9FA', fontSize: 'clamp(3.5rem, 9vw, 8rem)' }}>
-            {fr ? 'Voyez ce que CREOVA construit — et où en est chaque projet.' : 'See what CREOVA is building—and how far each venture has progressed.'}
+          <h1 className="max-w-4xl font-light tracking-tight leading-[0.95]" style={{ color: '#FFFFFF', fontSize: 'clamp(3.5rem, 9vw, 8rem)' }}>
+            {fr ? 'Découvrez les produits et marques que CREOVA développe.' : 'Meet the products and brands CREOVA is building.'}
           </h1>
           <p className="max-w-2xl mt-8 text-lg leading-relaxed" style={{ color: '#9B9B9B' }}>
             {fr
@@ -55,15 +55,15 @@ export function VenturesPage() {
                 transition={{ delay: index * 0.08 }}
                 id={record.slug}
                 className="rounded-3xl p-8 md:p-10 flex flex-col min-h-[390px]"
-                style={{ backgroundColor: isSeen ? '#F8F9FA' : '#191919', border: `1px solid ${isSeen ? '#E0E0E0' : 'rgba(212,168,67,0.22)'}` }}
+                style={{ backgroundColor: isSeen ? '#FFFFFF' : '#191919', border: `1px solid ${isSeen ? '#E0E0E0' : 'rgba(198,164,90,0.22)'}` }}
               >
                 <div className="flex items-center justify-between gap-4 mb-16">
-                  <Icon className="w-6 h-6" style={{ color: isSeen ? '#B1643B' : '#D4A843' }} />
-                  <span className="text-[10px] tracking-[0.28em] uppercase rounded-full px-4 py-2" style={{ color: isSeen ? '#121212' : '#D4A843', border: `1px solid ${isSeen ? 'rgba(18,18,18,0.18)' : 'rgba(212,168,67,0.28)'}` }}>
+                  <Icon className="w-6 h-6" style={{ color: isSeen ? '#887759' : '#C6A45A' }} />
+                  <span className="text-[10px] tracking-[0.28em] uppercase rounded-full px-4 py-2" style={{ color: isSeen ? '#2D1011' : '#C6A45A', border: `1px solid ${isSeen ? 'rgba(45,16,17,0.18)' : 'rgba(198,164,90,0.28)'}` }}>
                     {copy.statusLabel}
                   </span>
                 </div>
-                <h2 className="text-5xl md:text-6xl font-light tracking-tight mb-5" style={{ color: isSeen ? '#121212' : '#F8F9FA' }}>{copy.title}</h2>
+                <h2 className="text-5xl md:text-6xl font-light tracking-tight mb-5" style={{ color: isSeen ? '#2D1011' : '#FFFFFF' }}>{copy.title}</h2>
                 <p className="leading-relaxed mb-8 flex-1" style={{ color: isSeen ? '#555' : '#9B9B9B' }}>{copy.summary}</p>
                 {website ? (
                   <a
@@ -71,7 +71,7 @@ export function VenturesPage() {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 text-sm font-medium"
-                    style={{ color: isSeen ? '#B1643B' : '#D4A843' }}
+                    style={{ color: isSeen ? '#887759' : '#C6A45A' }}
                   >
                     {fr ? `Visiter le site ${copy.title}` : `Visit the ${copy.title} website`}
                     <ArrowRight className="w-4 h-4" />

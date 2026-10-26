@@ -50,10 +50,10 @@ export const bookingConfirmationEN = (data: BookingEmailData): string => {
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
       line-height: 1.6;
-      color: #121212;
+      color: #2D1011;
       margin: 0;
       padding: 0;
-      background-color: #F8F9FA;
+      background-color: #FFFFFF;
     }
     .container {
       max-width: 600px;
@@ -61,8 +61,8 @@ export const bookingConfirmationEN = (data: BookingEmailData): string => {
       background-color: #ffffff;
     }
     .header {
-      background-color: #121212;
-      color: #F8F9FA;
+      background-color: #2D1011;
+      color: #FFFFFF;
       padding: 40px 30px;
       text-align: center;
     }
@@ -75,13 +75,13 @@ export const bookingConfirmationEN = (data: BookingEmailData): string => {
     .header p {
       margin: 0;
       font-size: 16px;
-      color: #D4A843;
+      color: #C6A45A;
     }
     .content {
       padding: 40px 30px;
     }
     .content h2 {
-      color: #121212;
+      color: #2D1011;
       font-size: 24px;
       margin: 0 0 20px 0;
     }
@@ -90,13 +90,13 @@ export const bookingConfirmationEN = (data: BookingEmailData): string => {
       margin: 0 0 20px 0;
     }
     .details-box {
-      background-color: #F8F9FA;
-      border-left: 4px solid #D4A843;
+      background-color: #FFFFFF;
+      border-left: 4px solid #C6A45A;
       padding: 20px;
       margin: 30px 0;
     }
     .details-box h3 {
-      color: #121212;
+      color: #2D1011;
       font-size: 18px;
       margin: 0 0 15px 0;
     }
@@ -114,17 +114,17 @@ export const bookingConfirmationEN = (data: BookingEmailData): string => {
       border-bottom: none;
     }
     .details-box strong {
-      color: #121212;
+      color: #2D1011;
       font-weight: 600;
     }
     .next-steps {
-      background-color: #F8F9FA;
+      background-color: #FFFFFF;
       padding: 20px;
       margin: 30px 0;
       border-radius: 4px;
     }
     .next-steps h3 {
-      color: #121212;
+      color: #2D1011;
       font-size: 18px;
       margin: 0 0 15px 0;
     }
@@ -138,8 +138,8 @@ export const bookingConfirmationEN = (data: BookingEmailData): string => {
     }
     .button {
       display: inline-block;
-      background-color: #D4A843;
-      color: #F8F9FA !important;
+      background-color: #C6A45A;
+      color: #FFFFFF !important;
       padding: 14px 32px;
       text-decoration: none;
       border-radius: 4px;
@@ -148,14 +148,14 @@ export const bookingConfirmationEN = (data: BookingEmailData): string => {
       text-align: center;
     }
     .footer {
-      background-color: #121212;
+      background-color: #2D1011;
       color: #E0E0E0;
       padding: 30px;
       text-align: center;
       font-size: 14px;
     }
     .footer a {
-      color: #D4A843;
+      color: #C6A45A;
       text-decoration: none;
     }
   </style>
@@ -168,11 +168,11 @@ export const bookingConfirmationEN = (data: BookingEmailData): string => {
     </div>
     
     <div class="content">
-      <h2>Thank you for choosing CREOVA! 🎬</h2>
+      <h2>Thank you for choosing CREOVA.</h2>
       <p>We've received your booking request and are excited to work with you. Our team will review your details and contact you within 24 hours to confirm the final arrangements.</p>
       
       <div class="details-box">
-        <h3>📋 Booking Details</h3>
+        <h3>Booking Details</h3>
         <ul>
           <li><strong>Service:</strong> ${escapeHtml(data.service)}</li>
           <li><strong>Package:</strong> ${escapeHtml(data.package)}</li>
@@ -186,13 +186,13 @@ export const bookingConfirmationEN = (data: BookingEmailData): string => {
       
       ${data.specialRequests ? `
       <div class="details-box">
-        <h3>💬 Special Requests</h3>
+        <h3>Special Requests</h3>
         <p style="margin: 0;">${escapeHtmlMultiline(data.specialRequests)}</p>
       </div>
       ` : ''}
       
       <div class="next-steps">
-        <h3>✅ Next Steps</h3>
+        <h3>Next Steps</h3>
         <ol>
           <li>Complete your 50% deposit payment to secure your booking</li>
           <li>Our team will contact you within 24 hours to confirm details</li>
@@ -201,7 +201,7 @@ export const bookingConfirmationEN = (data: BookingEmailData): string => {
         </ol>
       </div>
       
-      <p><strong>Questions?</strong> Reply to this email or contact <a href="mailto:support@creova.one" style="color: #D4A843;">support@creova.one</a>.</p>
+      <p><strong>Questions?</strong> Reply to this email or contact <a href="mailto:support@creova.one" style="color: #C6A45A;">support@creova.one</a>.</p>
       
       <p style="margin-top: 30px;">Best regards,<br><strong>The CREOVA Team</strong><br>Ontario, Canada</p>
     </div>
@@ -231,10 +231,10 @@ export const bookingConfirmationFR = (data: BookingEmailData): string => {
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
       line-height: 1.6;
-      color: #121212;
+      color: #2D1011;
       margin: 0;
       padding: 0;
-      background-color: #F8F9FA;
+      background-color: #FFFFFF;
     }
     .container {
       max-width: 600px;
@@ -242,8 +242,8 @@ export const bookingConfirmationFR = (data: BookingEmailData): string => {
       background-color: #ffffff;
     }
     .header {
-      background-color: #121212;
-      color: #F8F9FA;
+      background-color: #2D1011;
+      color: #FFFFFF;
       padding: 40px 30px;
       text-align: center;
     }
@@ -256,13 +256,13 @@ export const bookingConfirmationFR = (data: BookingEmailData): string => {
     .header p {
       margin: 0;
       font-size: 16px;
-      color: #D4A843;
+      color: #C6A45A;
     }
     .content {
       padding: 40px 30px;
     }
     .content h2 {
-      color: #121212;
+      color: #2D1011;
       font-size: 24px;
       margin: 0 0 20px 0;
     }
@@ -271,13 +271,13 @@ export const bookingConfirmationFR = (data: BookingEmailData): string => {
       margin: 0 0 20px 0;
     }
     .details-box {
-      background-color: #F8F9FA;
-      border-left: 4px solid #D4A843;
+      background-color: #FFFFFF;
+      border-left: 4px solid #C6A45A;
       padding: 20px;
       margin: 30px 0;
     }
     .details-box h3 {
-      color: #121212;
+      color: #2D1011;
       font-size: 18px;
       margin: 0 0 15px 0;
     }
@@ -295,17 +295,17 @@ export const bookingConfirmationFR = (data: BookingEmailData): string => {
       border-bottom: none;
     }
     .details-box strong {
-      color: #121212;
+      color: #2D1011;
       font-weight: 600;
     }
     .next-steps {
-      background-color: #F8F9FA;
+      background-color: #FFFFFF;
       padding: 20px;
       margin: 30px 0;
       border-radius: 4px;
     }
     .next-steps h3 {
-      color: #121212;
+      color: #2D1011;
       font-size: 18px;
       margin: 0 0 15px 0;
     }
@@ -319,8 +319,8 @@ export const bookingConfirmationFR = (data: BookingEmailData): string => {
     }
     .button {
       display: inline-block;
-      background-color: #D4A843;
-      color: #F8F9FA !important;
+      background-color: #C6A45A;
+      color: #FFFFFF !important;
       padding: 14px 32px;
       text-decoration: none;
       border-radius: 4px;
@@ -329,14 +329,14 @@ export const bookingConfirmationFR = (data: BookingEmailData): string => {
       text-align: center;
     }
     .footer {
-      background-color: #121212;
+      background-color: #2D1011;
       color: #E0E0E0;
       padding: 30px;
       text-align: center;
       font-size: 14px;
     }
     .footer a {
-      color: #D4A843;
+      color: #C6A45A;
       text-decoration: none;
     }
   </style>
@@ -349,11 +349,11 @@ export const bookingConfirmationFR = (data: BookingEmailData): string => {
     </div>
     
     <div class="content">
-      <h2>Merci d'avoir choisi CREOVA! 🎬</h2>
+      <h2>Merci d'avoir choisi CREOVA.</h2>
       <p>Nous avons reçu votre demande de réservation et sommes ravis de travailler avec vous. Notre équipe examinera vos détails et vous contactera dans les 24 heures pour confirmer les arrangements finaux.</p>
       
       <div class="details-box">
-        <h3>📋 Détails de la Réservation</h3>
+        <h3>Détails de la Réservation</h3>
         <ul>
           <li><strong>Service:</strong> ${escapeHtml(data.service)}</li>
           <li><strong>Forfait:</strong> ${escapeHtml(data.package)}</li>
@@ -367,13 +367,13 @@ export const bookingConfirmationFR = (data: BookingEmailData): string => {
       
       ${data.specialRequests ? `
       <div class="details-box">
-        <h3>💬 Demandes Spéciales</h3>
+        <h3>Demandes Spéciales</h3>
         <p style="margin: 0;">${escapeHtmlMultiline(data.specialRequests)}</p>
       </div>
       ` : ''}
       
       <div class="next-steps">
-        <h3>✅ Prochaines Étapes</h3>
+        <h3>Prochaines Étapes</h3>
         <ol>
           <li>Complétez votre paiement de dépôt de 50% pour sécuriser votre réservation</li>
           <li>Notre équipe vous contactera dans les 24 heures pour confirmer les détails</li>
@@ -382,7 +382,7 @@ export const bookingConfirmationFR = (data: BookingEmailData): string => {
         </ol>
       </div>
       
-      <p><strong>Des questions?</strong> Répondez à cet email ou écrivez à <a href="mailto:support@creova.one" style="color: #D4A843;">support@creova.one</a>.</p>
+      <p><strong>Des questions?</strong> Répondez à cet email ou écrivez à <a href="mailto:support@creova.one" style="color: #C6A45A;">support@creova.one</a>.</p>
       
       <p style="margin-top: 30px;">Cordialement,<br><strong>L'Équipe CREOVA</strong><br>Ontario, Canada</p>
     </div>
@@ -411,8 +411,8 @@ export const adminBookingNotification = (data: BookingEmailData): string => {
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
       line-height: 1.6;
-      color: #121212;
-      background-color: #F8F9FA;
+      color: #2D1011;
+      background-color: #FFFFFF;
       padding: 20px;
     }
     .container {
@@ -424,8 +424,8 @@ export const adminBookingNotification = (data: BookingEmailData): string => {
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
     .header {
-      background: linear-gradient(135deg, #121212 0%, #2A2A2A 100%);
-      color: #F8F9FA;
+      background: linear-gradient(135deg, #2D1011 0%, #2A2A2A 100%);
+      color: #FFFFFF;
       padding: 30px;
       text-align: center;
     }
@@ -438,7 +438,7 @@ export const adminBookingNotification = (data: BookingEmailData): string => {
     }
     .alert-box {
       background-color: #FFF4E6;
-      border-left: 4px solid #D4A843;
+      border-left: 4px solid #C6A45A;
       padding: 15px;
       margin: 20px 0;
     }
@@ -450,7 +450,7 @@ export const adminBookingNotification = (data: BookingEmailData): string => {
     }
     .info-label {
       font-weight: 600;
-      color: #121212;
+      color: #2D1011;
     }
     .info-value {
       color: #4A4A4A;
@@ -475,7 +475,7 @@ export const adminBookingNotification = (data: BookingEmailData): string => {
 <body>
   <div class="container">
     <div class="header">
-      <h1>🎬 New Booking Received</h1>
+      <h1>New Booking Received</h1>
     </div>
     
     <div class="content">
@@ -525,13 +525,13 @@ export const adminBookingNotification = (data: BookingEmailData): string => {
       
       ${data.specialRequests ? `
       <h2>Special Requests</h2>
-      <div style="background-color: #F8F9FA; padding: 15px; border-radius: 4px;">
+      <div style="background-color: #FFFFFF; padding: 15px; border-radius: 4px;">
         ${escapeHtmlMultiline(data.specialRequests)}
       </div>
       ` : ''}
       
       <div class="action-box">
-        <h3>✅ Action Checklist</h3>
+        <h3>Action Checklist</h3>
         <ul>
           <li>Contact customer within 24 hours</li>
           <li>Verify date/time availability in calendar</li>
@@ -543,7 +543,7 @@ export const adminBookingNotification = (data: BookingEmailData): string => {
       </div>
       
       <p style="text-align: center; margin-top: 30px;">
-        <a href="https://creova.one/admin/bookings" style="display: inline-block; background-color: #121212; color: #F8F9FA; padding: 12px 24px; text-decoration: none; border-radius: 4px; font-weight: 600;">View in Admin Dashboard</a>
+        <a href="https://creova.one/admin/bookings" style="display: inline-block; background-color: #2D1011; color: #FFFFFF; padding: 12px 24px; text-decoration: none; border-radius: 4px; font-weight: 600;">View in Admin Dashboard</a>
       </p>
     </div>
   </div>
@@ -563,8 +563,8 @@ export const adminContactNotification = (data: ContactEmailData): string => {
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
       line-height: 1.6;
-      color: #121212;
-      background-color: #F8F9FA;
+      color: #2D1011;
+      background-color: #FFFFFF;
       padding: 20px;
     }
     .container {
@@ -575,8 +575,8 @@ export const adminContactNotification = (data: ContactEmailData): string => {
       overflow: hidden;
     }
     .header {
-      background-color: #121212;
-      color: #F8F9FA;
+      background-color: #2D1011;
+      color: #FFFFFF;
       padding: 30px;
       text-align: center;
     }
@@ -591,10 +591,10 @@ export const adminContactNotification = (data: ContactEmailData): string => {
     }
     .info-label {
       font-weight: 600;
-      color: #121212;
+      color: #2D1011;
     }
     .message-box {
-      background-color: #F8F9FA;
+      background-color: #FFFFFF;
       padding: 20px;
       border-radius: 4px;
       margin: 20px 0;
@@ -604,7 +604,7 @@ export const adminContactNotification = (data: ContactEmailData): string => {
 <body>
   <div class="container">
     <div class="header">
-      <h1>📧 New Contact Form Submission</h1>
+      <h1>New Contact Form Submission</h1>
     </div>
     
     <div class="content">
@@ -661,8 +661,8 @@ export const adminCollaborationNotification = (data: CollaborationEmailData): st
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
       line-height: 1.6;
-      color: #121212;
-      background-color: #F8F9FA;
+      color: #2D1011;
+      background-color: #FFFFFF;
       padding: 20px;
     }
     .container {
@@ -673,8 +673,8 @@ export const adminCollaborationNotification = (data: CollaborationEmailData): st
       overflow: hidden;
     }
     .header {
-      background: linear-gradient(135deg, #D4A843 0%, #B1643B 100%);
-      color: #F8F9FA;
+      background: linear-gradient(135deg, #C6A45A 0%, #887759 100%);
+      color: #FFFFFF;
       padding: 30px;
       text-align: center;
     }
@@ -689,10 +689,10 @@ export const adminCollaborationNotification = (data: CollaborationEmailData): st
     }
     .info-label {
       font-weight: 600;
-      color: #121212;
+      color: #2D1011;
     }
     .message-box {
-      background-color: #F8F9FA;
+      background-color: #FFFFFF;
       padding: 20px;
       border-radius: 4px;
       margin: 20px 0;
@@ -702,7 +702,7 @@ export const adminCollaborationNotification = (data: CollaborationEmailData): st
 <body>
   <div class="container">
     <div class="header">
-      <h1>🤝 New Collaboration Request</h1>
+      <h1>New Collaboration Request</h1>
     </div>
     
     <div class="content">

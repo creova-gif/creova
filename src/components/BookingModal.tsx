@@ -134,8 +134,8 @@ export function BookingModal({ isOpen, onClose, service, package: packageName, p
     <Dialog open={isOpen} onOpenChange={(open) => { if (!open) closeModal(); }}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-3xl flex items-center gap-2" style={{ color: '#121212' }}>
-            <Calendar className="w-7 h-7" style={{ color: '#D4A843' }} />
+          <DialogTitle className="text-3xl flex items-center gap-2" style={{ color: '#2D1011' }}>
+            <Calendar className="w-7 h-7" style={{ color: '#C6A45A' }} />
             {isSubmitted ? t('booking.success.received') : t('booking.title')}
           </DialogTitle>
           <DialogDescription style={{ color: '#777777' }}>
@@ -145,16 +145,16 @@ export function BookingModal({ isOpen, onClose, service, package: packageName, p
 
         {isSubmitted ? (
           <div className="py-8 text-center space-y-4">
-            <div className="mx-auto w-14 h-14 rounded-full flex items-center justify-center" style={{ backgroundColor: '#F8F9FA' }}>
-              <Check className="w-7 h-7" style={{ color: '#D4A843' }} />
+            <div className="mx-auto w-14 h-14 rounded-full flex items-center justify-center" style={{ backgroundColor: '#FFFFFF' }}>
+              <Check className="w-7 h-7" style={{ color: '#C6A45A' }} />
             </div>
-            <p style={{ color: '#121212' }}>{t('booking.success.received')}</p>
+            <p style={{ color: '#2D1011' }}>{t('booking.success.received')}</p>
             <p className="text-sm" style={{ color: '#777777' }}>{t('booking.success.confirmed')}</p>
             <Button
               type="button"
               onClick={closeModal}
               className="rounded-xl py-6 px-8"
-              style={{ backgroundColor: '#121212', color: '#F8F9FA' }}
+              style={{ backgroundColor: '#2D1011', color: '#FFFFFF' }}
             >
               {t('booking.btn.close')}
             </Button>
@@ -163,8 +163,8 @@ export function BookingModal({ isOpen, onClose, service, package: packageName, p
         <form onSubmit={handleSubmit} className="space-y-6 mt-6">
           {/* Personal Information */}
           <div className="space-y-4">
-            <h3 className="flex items-center gap-2" style={{ color: '#121212' }}>
-              <User className="w-5 h-5" style={{ color: '#D4A843' }} />
+            <h3 className="flex items-center gap-2" style={{ color: '#2D1011' }}>
+              <User className="w-5 h-5" style={{ color: '#C6A45A' }} />
               {t('booking.info.personal')}
             </h3>
             
@@ -210,8 +210,8 @@ export function BookingModal({ isOpen, onClose, service, package: packageName, p
 
           {/* Service Details */}
           <div className="space-y-4">
-            <h3 className="flex items-center gap-2" style={{ color: '#121212' }}>
-              <Calendar className="w-5 h-5" style={{ color: '#D4A843' }} />
+            <h3 className="flex items-center gap-2" style={{ color: '#2D1011' }}>
+              <Calendar className="w-5 h-5" style={{ color: '#C6A45A' }} />
               {t('booking.info.service')}
             </h3>
 
@@ -232,8 +232,8 @@ export function BookingModal({ isOpen, onClose, service, package: packageName, p
             {formData.package && (
               <div>
                 <Label>{t('booking.label.package')}</Label>
-                <div className="mt-2 p-3 rounded-lg border-2" style={{ borderColor: '#D4A843', backgroundColor: '#F8F9FA' }}>
-                  <p style={{ color: '#121212' }}>{formData.package}</p>
+                <div className="mt-2 p-3 rounded-lg border-2" style={{ borderColor: '#C6A45A', backgroundColor: '#FFFFFF' }}>
+                  <p style={{ color: '#2D1011' }}>{formData.package}</p>
                   {price && (
                     <p className="text-sm mt-1" style={{ color: '#777777' }}>
                       {price.toLocaleString('en-CA', { style: 'currency', currency: 'CAD' })}
@@ -290,16 +290,16 @@ export function BookingModal({ isOpen, onClose, service, package: packageName, p
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             className="p-4 rounded-lg border-2"
-            style={{ backgroundColor: '#F8F9FA', borderColor: '#D4A843' }}
+            style={{ backgroundColor: '#FFFFFF', borderColor: '#C6A45A' }}
           >
-            <p className="text-sm mb-2" style={{ color: '#121212' }}>
+            <p className="text-sm mb-2" style={{ color: '#2D1011' }}>
               <strong>{t('booking.deposit.title')}</strong>
             </p>
             <p className="text-sm" style={{ color: '#777777' }}>
               {t('booking.deposit.desc')}
             </p>
             {price && (
-              <p className="text-lg mt-2" style={{ color: '#B1643B' }}>
+              <p className="text-lg mt-2" style={{ color: '#887759' }}>
                 <strong>
                   {t('booking.deposit.label')}
                   {(price * 0.5).toLocaleString('en-CA', { style: 'currency', currency: 'CAD' })}
@@ -330,7 +330,7 @@ export function BookingModal({ isOpen, onClose, service, package: packageName, p
               type="submit"
               disabled={isSubmitting}
               className="flex-1 rounded-xl py-6 group"
-              style={{ backgroundColor: '#121212', color: '#F8F9FA' }}
+              style={{ backgroundColor: '#2D1011', color: '#FFFFFF' }}
             >
               {t('booking.btn.continue')}
               <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />

@@ -85,9 +85,9 @@ function ProjectCard({
             <span
               className="text-[9px] tracking-[0.2em] uppercase px-2 py-1 rounded-full backdrop-blur-sm flex items-center gap-1"
               style={{
-                backgroundColor: 'rgba(18,18,18,0.6)',
-                color: 'rgba(248,249,250,0.7)',
-                border: '1px solid rgba(248,249,250,0.15)',
+                backgroundColor: 'rgba(45,16,17,0.6)',
+                color: 'rgba(255,255,255,0.7)',
+                border: '1px solid rgba(255,255,255,0.15)',
               }}
               title="This gallery is password-protected on Pixieset"
             >
@@ -100,11 +100,11 @@ function ProjectCard({
         {/* Item count + date — top right */}
         <div className="absolute top-4 right-4 text-right">
           {typeof project.itemCount === 'number' && project.itemCount > 0 && (
-            <div className="text-[10px] tracking-[0.25em]" style={{ color: 'rgba(248,249,250,0.55)' }}>
+            <div className="text-[10px] tracking-[0.25em]" style={{ color: 'rgba(255,255,255,0.55)' }}>
               {project.itemCount} {fr ? 'photos' : 'photos'}
             </div>
           )}
-          <div className="text-[9px] tracking-[0.3em]" style={{ color: 'rgba(248,249,250,0.35)' }}>
+          <div className="text-[9px] tracking-[0.3em]" style={{ color: 'rgba(255,255,255,0.35)' }}>
             {project.date ? formatShortDate(project.date) : project.year}
           </div>
         </div>
@@ -120,11 +120,11 @@ function ProjectCard({
               {project.org}
             </p>
           )}
-          <h2 className={`tracking-tight leading-tight mb-0.5 ${large ? 'text-2xl' : 'text-lg'}`} style={{ color: '#F8F9FA', fontWeight: 300 }}>
+          <h2 className={`tracking-tight leading-tight mb-0.5 ${large ? 'text-2xl' : 'text-lg'}`} style={{ color: '#FFFFFF', fontWeight: 300 }}>
             {project.title}
           </h2>
           {project.subtitle && (
-            <p className="text-sm mb-4" style={{ color: 'rgba(248,249,250,0.5)' }}>{project.subtitle}</p>
+            <p className="text-sm mb-4" style={{ color: 'rgba(255,255,255,0.5)' }}>{project.subtitle}</p>
           )}
 
           <div className="flex items-center gap-2 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-400">
@@ -155,12 +155,12 @@ function ScrollIndicator() {
       transition={{ duration: 0.3 }}
       className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 pointer-events-none"
     >
-      <span className="text-[9px] tracking-[0.5em] uppercase" style={{ color: 'rgba(248,249,250,0.35)' }}>{fr ? 'Défiler' : 'Scroll'}</span>
+      <span className="text-[9px] tracking-[0.5em] uppercase" style={{ color: 'rgba(255,255,255,0.35)' }}>{fr ? 'Défiler' : 'Scroll'}</span>
       <motion.div
         animate={prefersReduced ? {} : { y: [0, 6, 0] }}
         transition={prefersReduced ? undefined : { repeat: Infinity, duration: 1.5, ease: 'easeInOut' }}
       >
-        <ArrowDown className="w-3.5 h-3.5" style={{ color: 'rgba(248,249,250,0.35)' }} />
+        <ArrowDown className="w-3.5 h-3.5" style={{ color: 'rgba(255,255,255,0.35)' }} />
       </motion.div>
     </motion.div>
   );
@@ -218,14 +218,14 @@ export function WorkPage() {
 
   if (loading || galleries.length === 0) {
     return (
-      <div style={{ backgroundColor: '#121212', minHeight: '100vh' }} className="flex items-center justify-center px-4">
+      <div style={{ backgroundColor: '#2D1011', minHeight: '100vh' }} className="flex items-center justify-center px-4">
         <PageSEO
           title="Our Work"
           description="Explore verified CREOVA work documenting cultural events, community programs, and institutional stories in Ontario."
           path="/work"
         />
         {!loading && (
-          <p className="text-center" style={{ color: 'rgba(248,249,250,0.4)' }}>
+          <p className="text-center" style={{ color: 'rgba(255,255,255,0.4)' }}>
             {fr ? 'Notre portfolio est en cours de mise à jour — reviens bientôt.' : 'Our portfolio is being updated — check back shortly.'}
           </p>
         )}
@@ -234,7 +234,7 @@ export function WorkPage() {
   }
 
   return (
-    <div style={{ backgroundColor: '#121212' }}>
+    <div style={{ backgroundColor: '#2D1011' }}>
       <PageSEO
         title="Our Work"
         description="Explore verified CREOVA work documenting cultural events, community programs, and institutional stories in Ontario."
@@ -258,10 +258,10 @@ export function WorkPage() {
 
         {/* Layered gradient overlay */}
         <div className="absolute inset-0" style={{
-          background: 'linear-gradient(to top, #121212 0%, rgba(10,10,10,0.78) 45%, rgba(10,10,10,0.25) 100%)'
+          background: 'linear-gradient(to top, #2D1011 0%, rgba(10,10,10,0.78) 45%, rgba(10,10,10,0.25) 100%)'
         }} />
         <div className="absolute inset-0" style={{
-          background: 'radial-gradient(ellipse 80% 60% at 0% 100%, rgba(177,100,59,0.18) 0%, transparent 60%)'
+          background: 'radial-gradient(ellipse 80% 60% at 0% 100%, rgba(136,119,89,0.18) 0%, transparent 60%)'
         }} />
 
         {/* Subtle film-grain noise overlay */}
@@ -277,8 +277,8 @@ export function WorkPage() {
             transition={{ duration: 0.7, delay: 0.2 }}
             className="flex items-center gap-3"
           >
-            <div style={{ height: '1px', width: '32px', backgroundColor: '#D4A843' }} />
-            <span className="text-[10px] tracking-[0.55em] uppercase" style={{ color: '#D4A843' }}>{fr ? 'Travaux choisis' : 'Selected Work'}</span>
+            <div style={{ height: '1px', width: '32px', backgroundColor: '#C6A45A' }} />
+            <span className="text-[10px] tracking-[0.55em] uppercase" style={{ color: '#C6A45A' }}>{fr ? 'Travaux choisis' : 'Selected Work'}</span>
           </motion.div>
 
           <motion.div
@@ -287,7 +287,7 @@ export function WorkPage() {
             transition={{ duration: 0.7, delay: 0.2 }}
             className="hidden sm:flex items-center gap-2"
           >
-            <span className="text-[10px] tracking-[0.4em] uppercase" style={{ color: 'rgba(248,249,250,0.3)' }}>
+            <span className="text-[10px] tracking-[0.4em] uppercase" style={{ color: 'rgba(255,255,255,0.3)' }}>
               {fr ? 'Portfolio public' : 'Public Portfolio'}
             </span>
           </motion.div>
@@ -299,7 +299,7 @@ export function WorkPage() {
           style={{
             fontSize: 'clamp(200px, 28vw, 380px)',
             fontWeight: 700,
-            color: 'rgba(248,249,250,0.03)',
+            color: 'rgba(255,255,255,0.03)',
             lineHeight: 1,
             letterSpacing: '-0.05em',
             transform: 'translateX(8%)',
@@ -311,14 +311,14 @@ export function WorkPage() {
 
         {/* Vertical side text — editorial */}
         <div className="absolute right-8 top-1/2 -translate-y-1/2 hidden xl:flex flex-col items-center gap-2 pointer-events-none" aria-hidden="true">
-          <div style={{ height: '40px', width: '1px', backgroundColor: 'rgba(212,168,67,0.3)' }} />
+          <div style={{ height: '40px', width: '1px', backgroundColor: 'rgba(198,164,90,0.3)' }} />
           <span
             className="text-[9px] tracking-[0.6em] uppercase select-none"
-            style={{ color: 'rgba(248,249,250,0.2)', writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}
+            style={{ color: 'rgba(255,255,255,0.2)', writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}
           >
             Niagara · Ontario · Canada
           </span>
-          <div style={{ height: '40px', width: '1px', backgroundColor: 'rgba(212,168,67,0.3)' }} />
+          <div style={{ height: '40px', width: '1px', backgroundColor: 'rgba(198,164,90,0.3)' }} />
         </div>
 
         {/* Bottom content */}
@@ -333,7 +333,7 @@ export function WorkPage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.9, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
                 >
-                  <h1 className="max-w-6xl font-light tracking-tight leading-[0.96]" style={{ fontSize: 'clamp(3.4rem, 8vw, 7.8rem)', color: '#F8F9FA' }}>
+                  <h1 className="max-w-6xl font-light tracking-tight leading-[0.96]" style={{ fontSize: 'clamp(3.4rem, 8vw, 7.8rem)', color: '#FFFFFF' }}>
                     {fr ? 'Des histoires ancrées dans de vrais événements, personnes et programmes.' : 'Stories built from real events, people, and programs.'}
                   </h1>
                 </motion.div>
@@ -343,7 +343,7 @@ export function WorkPage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.7, delay: 0.55 }}
                   className="mt-6 text-lg leading-relaxed max-w-2xl"
-                  style={{ color: 'rgba(248,249,250,0.72)' }}
+                  style={{ color: 'rgba(255,255,255,0.72)' }}
                 >
                   {fr ? "Parcourez une sélection publique de photographies et de contenus créés pour des organisations, des événements culturels et des institutions communautaires de l'Ontario." : 'Explore public photography and content created for organizations, cultural events, and community institutions across Ontario.'}
                 </motion.p>
@@ -362,8 +362,8 @@ export function WorkPage() {
                   { n: 'ON', l: fr ? 'Basé en Ontario' : 'Ontario-Based' },
                 ].map((s) => (
                   <div key={s.l}>
-                    <div className="text-3xl font-light tracking-tight" style={{ color: '#D4A843' }}>{s.n}</div>
-                    <div className="text-[9px] tracking-[0.45em] uppercase mt-1.5" style={{ color: 'rgba(248,249,250,0.28)' }}>{s.l}</div>
+                    <div className="text-3xl font-light tracking-tight" style={{ color: '#C6A45A' }}>{s.n}</div>
+                    <div className="text-[9px] tracking-[0.45em] uppercase mt-1.5" style={{ color: 'rgba(255,255,255,0.28)' }}>{s.l}</div>
                   </div>
                 ))}
               </motion.div>
@@ -375,10 +375,10 @@ export function WorkPage() {
       </section>
 
       {source === 'fallback' && (
-        <div className="px-4 py-4 text-center" style={{ backgroundColor: '#0E0E0E', borderTop: '1px solid rgba(212,168,67,0.12)' }}>
-          <p className="text-xs leading-relaxed" style={{ color: 'rgba(248,249,250,0.55)' }}>
+        <div className="px-4 py-4 text-center" style={{ backgroundColor: '#0E0E0E', borderTop: '1px solid rgba(198,164,90,0.12)' }}>
+          <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.55)' }}>
             {fr ? 'Une sélection organisée du portfolio public de CREOVA.' : "A curated selection from CREOVA's public portfolio."}{' '}
-            <a href="https://creova.pixieset.com/" target="_blank" rel="noopener noreferrer" className="underline underline-offset-4" style={{ color: '#D4A843' }}>
+            <a href="https://creova.pixieset.com/" target="_blank" rel="noopener noreferrer" className="underline underline-offset-4" style={{ color: '#C6A45A' }}>
               {fr ? 'Voir les galeries sur Pixieset' : 'Browse the galleries on Pixieset'}
             </a>
           </p>
@@ -388,7 +388,7 @@ export function WorkPage() {
       {/* ── MARQUEE STRIP ── */}
       <div
         className="overflow-hidden py-3 border-y"
-        style={{ backgroundColor: '#121212', borderColor: 'rgba(212,168,67,0.12)' }}
+        style={{ backgroundColor: '#2D1011', borderColor: 'rgba(198,164,90,0.12)' }}
         aria-hidden="true"
       >
         <div ref={marqueeRef} className="flex whitespace-nowrap">
@@ -396,10 +396,10 @@ export function WorkPage() {
             <span
               key={i}
               className="inline-flex items-center gap-4 text-[9px] tracking-[0.5em] uppercase flex-shrink-0"
-              style={{ color: 'rgba(212,168,67,0.35)' }}
+              style={{ color: 'rgba(198,164,90,0.35)' }}
             >
               {item}
-              <span style={{ width: '3px', height: '3px', borderRadius: '50%', backgroundColor: 'rgba(212,168,67,0.25)', display: 'inline-block' }} />
+              <span style={{ width: '3px', height: '3px', borderRadius: '50%', backgroundColor: 'rgba(198,164,90,0.25)', display: 'inline-block' }} />
             </span>
           ))}
         </div>
@@ -414,18 +414,18 @@ export function WorkPage() {
             <Link
               to={`/work/${cs.slug}`}
               className="group grid sm:grid-cols-[minmax(0,1fr)_1.4fr] gap-0 overflow-hidden rounded-2xl"
-              style={{ backgroundColor: '#0E0E0E', border: '1px solid rgba(212,168,67,0.15)' }}
+              style={{ backgroundColor: '#0E0E0E', border: '1px solid rgba(198,164,90,0.15)' }}
             >
               <div className="relative overflow-hidden" style={{ minHeight: '200px', aspectRatio: '16/10' }}>
                 <img src={cs.cover} alt={c.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" style={{ objectPosition: 'center 40%' }} loading="lazy" />
               </div>
               <div className="flex flex-col justify-center p-7 lg:p-10">
-                <span className="text-[10px] tracking-[0.35em] uppercase mb-3" style={{ color: '#D4A843' }}>{fr ? 'Étude de cas en vedette' : 'Featured case study'}</span>
-                <h3 className="tracking-tight mb-3 transition-colors duration-200 group-hover:text-[#D4A843]" style={{ color: '#F8F9FA', fontFamily: 'var(--font-display)', fontSize: 'clamp(1.6rem, 3vw, 2.2rem)', lineHeight: 1.1 }}>{c.title}</h3>
+                <span className="text-[10px] tracking-[0.35em] uppercase mb-3" style={{ color: '#C6A45A' }}>{fr ? 'Étude de cas en vedette' : 'Featured case study'}</span>
+                <h3 className="tracking-tight mb-3 transition-colors duration-200 group-hover:text-[#C6A45A]" style={{ color: '#FFFFFF', fontFamily: 'var(--font-display)', fontSize: 'clamp(1.6rem, 3vw, 2.2rem)', lineHeight: 1.1 }}>{c.title}</h3>
                 <p className="text-sm leading-relaxed mb-5" style={{ color: '#8C7B75', maxWidth: '48ch' }}>{cs.partner} · {cs.org}</p>
                 <span className="inline-flex items-center gap-2 text-sm tracking-wide" style={{ color: '#E0E0E0' }}>
                   {fr ? 'Lire l’étude de cas' : 'Read the case study'}
-                  <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" style={{ color: '#D4A843' }} />
+                  <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" style={{ color: '#C6A45A' }} />
                 </span>
               </div>
             </Link>
@@ -438,8 +438,8 @@ export function WorkPage() {
         className="sticky z-40"
         style={{
           top: '64px',
-          backgroundColor: '#121212',
-          borderBottom: '1px solid rgba(212,168,67,0.12)',
+          backgroundColor: '#2D1011',
+          borderBottom: '1px solid rgba(198,164,90,0.12)',
         }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -451,17 +451,17 @@ export function WorkPage() {
                   onClick={() => setActiveTab(tab.id)}
                   className="flex items-center gap-2 px-4 py-2 rounded-full whitespace-nowrap transition-all duration-300 flex-shrink-0 text-xs tracking-wide"
                   style={{
-                    backgroundColor: activeTab === tab.id ? 'rgba(212,168,67,0.18)' : 'transparent',
-                    color: activeTab === tab.id ? '#D4A843' : 'rgba(248,249,250,0.3)',
-                    border: activeTab === tab.id ? '1px solid rgba(212,168,67,0.45)' : '1px solid transparent',
+                    backgroundColor: activeTab === tab.id ? 'rgba(198,164,90,0.18)' : 'transparent',
+                    color: activeTab === tab.id ? '#C6A45A' : 'rgba(255,255,255,0.3)',
+                    border: activeTab === tab.id ? '1px solid rgba(198,164,90,0.45)' : '1px solid transparent',
                   }}
                 >
                   {tab.label}
                   <span
                     className="text-[9px] px-1.5 min-w-[18px] h-[18px] rounded-full flex items-center justify-center"
                     style={{
-                      backgroundColor: activeTab === tab.id ? 'rgba(212,168,67,0.35)' : 'rgba(248,249,250,0.06)',
-                      color: activeTab === tab.id ? '#D4A843' : 'rgba(248,249,250,0.25)',
+                      backgroundColor: activeTab === tab.id ? 'rgba(198,164,90,0.35)' : 'rgba(255,255,255,0.06)',
+                      color: activeTab === tab.id ? '#C6A45A' : 'rgba(255,255,255,0.25)',
                     }}
                   >
                     {tab.count}
@@ -472,7 +472,7 @@ export function WorkPage() {
 
             {/* Search */}
             <div className="relative w-full md:w-72 flex-shrink-0">
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 pointer-events-none" style={{ color: 'rgba(212,168,67,0.55)' }} />
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 pointer-events-none" style={{ color: 'rgba(198,164,90,0.55)' }} />
               <Input
                 type="search"
                 value={query}
@@ -481,9 +481,9 @@ export function WorkPage() {
                 aria-label={fr ? 'Rechercher des galeries' : 'Search galleries'}
                 className="pl-10 pr-9 py-2 text-xs rounded-full border"
                 style={{
-                  backgroundColor: 'rgba(248,249,250,0.04)',
-                  borderColor: 'rgba(212,168,67,0.15)',
-                  color: '#F8F9FA',
+                  backgroundColor: 'rgba(255,255,255,0.04)',
+                  borderColor: 'rgba(198,164,90,0.15)',
+                  color: '#FFFFFF',
                 }}
               />
               {query && (
@@ -493,7 +493,7 @@ export function WorkPage() {
                   className="absolute right-3 top-1/2 -translate-y-1/2"
                   aria-label={fr ? 'Effacer la recherche' : 'Clear search'}
                 >
-                  <X className="w-3.5 h-3.5" style={{ color: 'rgba(248,249,250,0.4)' }} />
+                  <X className="w-3.5 h-3.5" style={{ color: 'rgba(255,255,255,0.4)' }} />
                 </button>
               )}
             </div>
@@ -506,13 +506,13 @@ export function WorkPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {filtered.length === 0 ? (
             <div className="text-center py-24">
-              <p className="text-sm mb-3" style={{ color: 'rgba(248,249,250,0.5)' }}>
+              <p className="text-sm mb-3" style={{ color: 'rgba(255,255,255,0.5)' }}>
                 {fr ? 'Aucune galerie ne correspond à ta recherche.' : 'No galleries match your search.'}
               </p>
               <button
                 onClick={() => { setQuery(''); setActiveTab('all'); }}
                 className="text-xs tracking-widest uppercase"
-                style={{ color: '#D4A843' }}
+                style={{ color: '#C6A45A' }}
               >
                 {fr ? 'Réinitialiser les filtres' : 'Reset filters'}
               </button>
@@ -548,23 +548,23 @@ export function WorkPage() {
       {/* ── CTA ── */}
       <section
         className="py-24 relative overflow-hidden"
-        style={{ borderTop: '1px solid rgba(212,168,67,0.12)' }}
+        style={{ borderTop: '1px solid rgba(198,164,90,0.12)' }}
       >
         <div className="absolute inset-0 pointer-events-none" style={{
-          background: 'radial-gradient(ellipse 50% 70% at 50% 50%, rgba(212,168,67,0.05) 0%, transparent 70%)'
+          background: 'radial-gradient(ellipse 50% 70% at 50% 50%, rgba(198,164,90,0.05) 0%, transparent 70%)'
         }} />
         <div className="relative max-w-3xl mx-auto px-4 text-center">
           <RevealOnScroll mode="3d">
             <div>
               <div className="flex items-center justify-center gap-4 mb-6">
-                <div style={{ height: '1px', width: '32px', backgroundColor: 'rgba(212,168,67,0.4)' }} />
-                <span className="text-[9px] tracking-[0.55em] uppercase" style={{ color: '#D4A843' }}>{fr ? 'Portfolio complet' : 'Full Portfolio'}</span>
-                <div style={{ height: '1px', width: '32px', backgroundColor: 'rgba(212,168,67,0.4)' }} />
+                <div style={{ height: '1px', width: '32px', backgroundColor: 'rgba(198,164,90,0.4)' }} />
+                <span className="text-[9px] tracking-[0.55em] uppercase" style={{ color: '#C6A45A' }}>{fr ? 'Portfolio complet' : 'Full Portfolio'}</span>
+                <div style={{ height: '1px', width: '32px', backgroundColor: 'rgba(198,164,90,0.4)' }} />
               </div>
-              <h3 className="text-3xl md:text-4xl font-light tracking-tight mb-4" style={{ color: '#F8F9FA' }}>
+              <h3 className="text-3xl md:text-4xl font-light tracking-tight mb-4" style={{ color: '#FFFFFF' }}>
                 {fr ? 'Chaque photo, pleine résolution' : 'Every photo, full resolution'}
               </h3>
-              <p className="text-base mb-10 leading-relaxed" style={{ color: 'rgba(248,249,250,0.4)' }}>
+              <p className="text-base mb-10 leading-relaxed" style={{ color: 'rgba(255,255,255,0.4)' }}>
                 {fr ? 'Toutes les galeries sont hébergées sur Pixieset avec téléchargements en pleine résolution.' : 'All galleries live on Pixieset with full-resolution downloads available.'}
               </p>
               <div className="flex flex-wrap gap-4 justify-center">
@@ -573,9 +573,9 @@ export function WorkPage() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-8 py-4 rounded-xl text-sm tracking-wide transition-all duration-300"
-                  style={{ backgroundColor: '#D4A843', color: '#121212' }}
-                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.backgroundColor = '#F8F9FA'; }}
-                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.backgroundColor = '#D4A843'; }}
+                  style={{ backgroundColor: '#C6A45A', color: '#2D1011' }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.backgroundColor = '#FFFFFF'; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.backgroundColor = '#C6A45A'; }}
                 >
                   {fr ? 'Voir le portfolio complet' : 'View Full Portfolio'}
                   <ExternalLink className="w-4 h-4" />
@@ -584,7 +584,7 @@ export function WorkPage() {
                   asChild
                   variant="outline"
                   className="px-8 py-4 rounded-xl text-sm tracking-wide border transition-all duration-300"
-                  style={{ backgroundColor: 'transparent', borderColor: 'rgba(212,168,67,0.35)', color: '#D4A843' }}
+                  style={{ backgroundColor: 'transparent', borderColor: 'rgba(198,164,90,0.35)', color: '#C6A45A' }}
                 >
                   <Link to="/start-a-project">
                     {fr ? 'Réserve une séance' : 'Book a Shoot'}

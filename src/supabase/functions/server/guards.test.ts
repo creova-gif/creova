@@ -229,8 +229,8 @@ test("admin email subjects use the text value, not the optionalText object", () 
   const service = optionalText("Brand film", 160);
   assert.equal(service.ok, true);
   if (!service.ok) return;
-  assert.equal(contactAdminSubject(service.value, "Ada\nLovelace"), "📧 New Contact: Brand film — Ada Lovelace");
-  assert.equal(contactAdminSubject(undefined, "Ada"), "📧 New Contact: General Inquiry — Ada");
+  assert.equal(contactAdminSubject(service.value, "Ada\nLovelace"), "New Contact: Brand film — Ada Lovelace");
+  assert.equal(contactAdminSubject(undefined, "Ada"), "New Contact: General Inquiry — Ada");
   assert.equal(oneLine(service).includes("[object Object]"), true);
   assert.equal(contactAdminSubject(service.value, "Ada").includes("[object Object]"), false);
 
@@ -239,9 +239,9 @@ test("admin email subjects use the text value, not the optionalText object", () 
   if (!organization.ok) return;
   assert.equal(
     collaborationAdminSubject(organization.value, "Ada"),
-    "🤝 New Collaboration Request: Studio",
+    "New Collaboration Request: Studio",
   );
-  assert.equal(collaborationAdminSubject(undefined, "Ada"), "🤝 New Collaboration Request: Ada");
+  assert.equal(collaborationAdminSubject(undefined, "Ada"), "New Collaboration Request: Ada");
   assert.equal(collaborationAdminSubject(organization.value, "Ada").includes("[object Object]"), false);
 });
 

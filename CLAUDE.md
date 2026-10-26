@@ -53,6 +53,13 @@ and /browse are available. Use /browse for all web browsing (Aside first, the bu
 Use the resolved install path above for gstack file paths
 (default: ~/.claude/skills/gstack).
 
+## Design System
+
+Read `DESIGN.md` before visual or UI work: it defines the fonts, colors,
+spacing, evidence boundaries, and aesthetic direction. Ask the user before
+departing from it. When reviewing or QA-ing UI, flag code that does not match
+`DESIGN.md`.
+
 ## Skill routing
 
 When the user's request matches an available skill, invoke it via the Skill tool. When in doubt, invoke the skill.
