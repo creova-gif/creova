@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { ArrowUpRight, Headphones, Play } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+import { Logo } from './Logo';
 
 const TRACKS = [
   { title: 'Passport', videoId: 'bqkemlkPcZg', duration: '2:59' },
@@ -29,13 +30,8 @@ export function CreovaMusicPlayer() {
               />
             ) : (
               <>
-                <img
-                  src={`https://i.ytimg.com/vi/${activeTrack.videoId}/maxresdefault.jpg`}
-                  alt="CREOVA Music release artwork"
-                  loading="lazy"
-                  className="absolute inset-0 h-full w-full object-cover opacity-70"
-                />
-                <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(45,16,17,.25), rgba(45,16,17,.92))' }} />
+                <div className="absolute inset-0" style={{ background: 'radial-gradient(circle at 22% 18%, rgba(198,164,90,.32), transparent 35%), radial-gradient(circle at 80% 78%, rgba(205,191,174,.2), transparent 38%), linear-gradient(135deg, #2D1011, #5A3028)' }} />
+                <Logo color="#CDBFAE" className="absolute left-8 top-8 h-14 w-auto opacity-70" interactive={false} />
                 <button
                   type="button"
                   onClick={() => setActiveVideo(activeTrack.videoId)}

@@ -3,21 +3,6 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script>
-      try {
-        if (!sessionStorage.getItem('creova-intro-shown') && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-          document.documentElement.classList.add('creova-intro-pending');
-          setTimeout(function () { document.documentElement.classList.remove('creova-intro-pending'); }, 2500);
-        }
-      } catch (_) {}
-    </script>
-    <style>
-      html.creova-intro-pending,
-      html.creova-intro-pending body { background: #2D1011; }
-      html.creova-intro-pending #root { visibility: hidden; }
-      html.creova-intro-pending [data-creova-intro] { visibility: visible; }
-    </style>
-
     <!--
       Primary SEO: title/description/OG/Twitter here are a fallback ONLY for
       the brief pre-hydration window and for crawlers that don't execute JS

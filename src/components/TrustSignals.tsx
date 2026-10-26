@@ -70,7 +70,7 @@ export function TrustSignals() {
         >
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6" style={{ backgroundColor: 'rgba(198,164,90, 0.1)', border: '1px solid rgba(198,164,90, 0.2)' }}>
             <Award className="w-4 h-4" style={{ color: '#C6A45A' }} />
-            <span className="text-sm tracking-wide font-medium" style={{ color: '#C6A45A' }}>{t('trust.badge')}</span>
+            <span className="text-sm tracking-wide font-medium" style={{ color: '#7D6D51' }}>{t('trust.badge')}</span>
           </div>
           <h2 className="text-4xl md:text-5xl mb-4" style={{ color: '#2D1011' }}>
             {t('trust.heading')}
@@ -108,7 +108,7 @@ export function TrustSignals() {
               <p className="text-sm mb-3" style={{ color: '#777777' }}>
                 {t(partner.descKey)}
               </p>
-              <div className="text-xs tracking-wide" style={{ color: '#C6A45A' }}>
+              <div className="text-xs tracking-wide" style={{ color: '#7D6D51' }}>
                 {t('trust.since')} {partner.year}
               </div>
             </motion.div>

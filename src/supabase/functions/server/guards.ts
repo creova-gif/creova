@@ -371,7 +371,7 @@ export function optionalText(
 
 /** Customer receipts. No submitter text: the address is chosen by the sender. */
 export function contactReceivedHtml(): string {
-  return `<div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#2D1011"><h2 style="color:#C6A45A">Thanks for reaching out</h2><p>We've received your message and will get back to you within 1–2 business days.</p><p style="color:#777777;font-size:14px">In the meantime, follow us on Instagram <a href="https://www.instagram.com/creativeinnovation__" style="color:#C6A45A">@creativeinnovation__</a></p><p>— The CREOVA Team</p></div>`;
+  return `<div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#2D1011"><h2 style="color:#C6A45A">Thanks for reaching out</h2><p>We've received your message and will get back to you within 1–2 business days.</p><p style="color:#777777;font-size:14px">In the meantime, follow us on Instagram <a href="https://www.instagram.com/creativeinnovation__" style="color:#7D6D51;text-decoration:underline">@creativeinnovation__</a></p><p>— The CREOVA Team</p></div>`;
 }
 
 export function bookingReceivedHtml(): string {

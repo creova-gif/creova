@@ -171,7 +171,7 @@ export function AdminSubmissionsPage() {
                 onClick={() => setStatusFilter('all')}
                 variant={statusFilter === 'all' ? 'default' : 'outline'}
                 className="rounded-xl text-sm"
-                style={statusFilter === 'all' ? { backgroundColor: '#C6A45A', color: '#FFFFFF' } : { color: '#FFFFFF', borderColor: '#E0E0E0' }}
+                style={statusFilter === 'all' ? { backgroundColor: '#C6A45A', color: '#2D1011' } : { color: '#FFFFFF', borderColor: '#E0E0E0' }}
               >
                 All Status
               </Button>
@@ -179,7 +179,7 @@ export function AdminSubmissionsPage() {
                 onClick={() => setStatusFilter('new')}
                 variant={statusFilter === 'new' ? 'default' : 'outline'}
                 className="rounded-xl text-sm"
-                style={statusFilter === 'new' ? { backgroundColor: '#C6A45A', color: '#FFFFFF' } : { color: '#FFFFFF', borderColor: '#E0E0E0' }}
+                style={statusFilter === 'new' ? { backgroundColor: '#C6A45A', color: '#2D1011' } : { color: '#FFFFFF', borderColor: '#E0E0E0' }}
               >
                 New
               </Button>
@@ -187,7 +187,7 @@ export function AdminSubmissionsPage() {
                 onClick={() => setStatusFilter('contacted')}
                 variant={statusFilter === 'contacted' ? 'default' : 'outline'}
                 className="rounded-xl text-sm"
-                style={statusFilter === 'contacted' ? { backgroundColor: '#C6A45A', color: '#FFFFFF' } : { color: '#FFFFFF', borderColor: '#E0E0E0' }}
+                style={statusFilter === 'contacted' ? { backgroundColor: '#C6A45A', color: '#2D1011' } : { color: '#FFFFFF', borderColor: '#E0E0E0' }}
               >
                 Contacted
               </Button>
@@ -195,7 +195,7 @@ export function AdminSubmissionsPage() {
                 onClick={() => setStatusFilter('completed')}
                 variant={statusFilter === 'completed' ? 'default' : 'outline'}
                 className="rounded-xl text-sm"
-                style={statusFilter === 'completed' ? { backgroundColor: '#C6A45A', color: '#FFFFFF' } : { color: '#FFFFFF', borderColor: '#E0E0E0' }}
+                style={statusFilter === 'completed' ? { backgroundColor: '#C6A45A', color: '#2D1011' } : { color: '#FFFFFF', borderColor: '#E0E0E0' }}
               >
                 Completed
               </Button>

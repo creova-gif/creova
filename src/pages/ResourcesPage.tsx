@@ -25,6 +25,11 @@ const DOWNLOADS = [
   },
 ] as const;
 
+const CATEGORY_FR: Record<string, string> = {
+  Guides: 'Guides pratiques',
+  Perspective: 'Perspective',
+};
+
 export function ResourcesPage() {
   const { language } = useLanguage();
   const fr = language === 'fr';
@@ -93,7 +98,7 @@ export function ResourcesPage() {
               const copy = fr ? article.fr : article.en;
               return (
                 <Link key={article.slug} to={`/journal/${article.slug}`} className="group rounded-2xl p-7 min-h-[300px] flex flex-col" style={{ backgroundColor: '#FFFFFF' }}>
-                  <p className="text-xs tracking-[.2em] uppercase" style={{ color: '#887759' }}>{article.category} · {article.readMins} min</p>
+                  <p className="text-xs tracking-[.2em] uppercase" style={{ color: '#887759' }}>{fr ? (CATEGORY_FR[article.category] ?? article.category) : article.category} · {article.readMins} min</p>
                   <h3 className="mt-10 text-2xl leading-tight group-hover:translate-x-1 transition-transform" style={{ color: '#2D1011' }}>{copy.title}</h3>
                   <p className="mt-4 text-sm leading-relaxed flex-1" style={{ color: '#555' }}>{copy.excerpt}</p>
                   <span className="mt-7 inline-flex items-center gap-2 text-sm" style={{ color: '#887759' }}>{fr ? 'Lire le guide' : 'Read the guide'} <ArrowRight className="w-4 h-4" /></span>

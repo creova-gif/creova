@@ -338,6 +338,7 @@ export function ContactPage() {
                     <option value="event-story">{language === 'fr' ? 'Récit d’événement et d’expérience' : 'Event and experience storytelling'}</option>
                     <option value="campaign-story">{language === 'fr' ? 'Campagne et récit communautaire' : 'Campaign and community narrative'}</option>
                     <option value="ongoing-partnership">{language === 'fr' ? 'Partenariat narratif continu' : 'Ongoing storytelling partnership'}</option>
+                    <option value="equipment-access">{language === 'fr' ? 'Accès à l’équipement de production' : 'Production equipment access'}</option>
                     <option value="partnership">{language === 'fr' ? 'Partenariat ou collaboration' : 'Partnership or collaboration'}</option>
                     <option value="other">{t('contact.form.opt.other')}</option>
                   </select>

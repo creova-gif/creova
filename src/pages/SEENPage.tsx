@@ -350,7 +350,7 @@ function AppPreview3D() {
                 animate={{ y: [0, -8, 0] }}
                 transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 1.2 }}
                 className="absolute -top-10 right-0 px-3 py-1.5 rounded-full text-xs tracking-widest uppercase backdrop-blur-sm"
-                style={{ backgroundColor: 'rgba(136,119,89,0.15)', border: '1px solid rgba(136,119,89,0.35)', color: '#887759' }}
+                style={{ backgroundColor: 'rgba(136,119,89,0.15)', border: '1px solid rgba(205,191,174,0.4)', color: '#CDBFAE' }}
               >
                 iOS · Android
               </motion.div>
@@ -726,7 +726,7 @@ export function SEENPage() {
             transition={{ duration: 1 }}
             viewport={{ once: true }}
           >
-            <p className="text-xs tracking-[0.4em] uppercase mb-6" style={{ color: '#887759' }}>{fr ? "Thèse de conception" : 'Design Thesis'}</p>
+            <p className="text-xs tracking-[0.4em] uppercase mb-6" style={{ color: '#CDBFAE' }}>{fr ? "Thèse de conception" : 'Design Thesis'}</p>
             <h2 className="text-3xl md:text-5xl mb-8 leading-tight" style={{ color: '#FFFFFF' }}>
               {fr ? "Le Canada abrite de nombreuses communautés culturelles et linguistiques." : 'Canada is home to many cultural and language communities.'}{' '}
               <span style={{ color: '#777777' }}>
@@ -810,7 +810,7 @@ export function SEENPage() {
             viewport={{ once: true }}
             className="text-center mb-20"
           >
-            <p className="text-xs tracking-[0.4em] uppercase mb-4" style={{ color: '#887759' }}>{fr ? 'Direction du produit' : 'Product Direction'}</p>
+            <p className="text-xs tracking-[0.4em] uppercase mb-4" style={{ color: '#CDBFAE' }}>{fr ? 'Direction du produit' : 'Product Direction'}</p>
             <h2 className="text-3xl md:text-5xl" style={{ color: '#FFFFFF' }}>
               {fr ? 'Conçu différemment. Par choix.' : 'Built different. By design.'}
             </h2>

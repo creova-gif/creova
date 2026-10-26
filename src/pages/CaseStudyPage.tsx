@@ -44,7 +44,7 @@ export function CaseStudyPage({ slug }: { slug: string }) {
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse 60% 50% at 20% 0%, rgba(198,164,90,0.10) 0%, transparent 55%)' }} />
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-10 lg:pt-28">
-          <Link to="/work" className="flex w-fit items-center gap-2 text-xs tracking-[0.2em] uppercase mb-8 transition-colors hover:text-[#C6A45A]" style={{ color: '#8C7B75' }}>
+          <Link to="/work" className="flex w-fit items-center gap-2 text-xs tracking-[0.2em] uppercase mb-8 transition-colors hover:text-[#FFFFFF]" style={{ color: '#CDBFAE' }}>
             <ArrowLeft className="w-3.5 h-3.5" /> {fr ? 'Réalisations' : 'Our work'}
           </Link>
           <span className="block text-xs tracking-[0.35em] uppercase" style={{ color: '#C6A45A' }}>{c.kicker}</span>
@@ -119,7 +119,7 @@ export function CaseStudyPage({ slug }: { slug: string }) {
             {c.scope.map((s, i) => (
               <div key={i} className="border-t pt-4" style={{ borderColor: 'rgba(198,164,90,0.2)' }}>
                 <h3 className="text-lg mb-1.5" style={{ color: '#FFFFFF', fontFamily: 'var(--font-display)' }}>{s.label}</h3>
-                <p className="text-sm leading-relaxed" style={{ color: '#8C7B75' }}>{s.detail}</p>
+                <p className="text-sm leading-relaxed" style={{ color: '#CDBFAE' }}>{s.detail}</p>
               </div>
             ))}
           </div>
