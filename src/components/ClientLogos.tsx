@@ -21,9 +21,9 @@ const TEXT_CLIENTS = [
 
 export function ClientLogos() {
   return (
-    <section className="py-20 relative overflow-hidden" style={{ backgroundColor: '#F8F9FA' }}>
+    <section className="py-20 relative overflow-hidden" style={{ backgroundColor: '#FFFFFF' }}>
       <div className="absolute inset-0 pointer-events-none" style={{
-        backgroundImage: 'radial-gradient(circle, rgba(212,168,67,0.04) 1px, transparent 1px)',
+        backgroundImage: 'radial-gradient(circle, rgba(198,164,90,0.04) 1px, transparent 1px)',
         backgroundSize: '28px 28px',
       }} />
 
@@ -36,9 +36,9 @@ export function ClientLogos() {
           className="text-center mb-12"
         >
           <div className="flex items-center justify-center gap-5 mb-4">
-            <div style={{ height: '1px', width: '40px', backgroundColor: 'rgba(18,18,18,0.15)' }} />
+            <div style={{ height: '1px', width: '40px', backgroundColor: 'rgba(45,16,17,0.15)' }} />
             <p className="text-xs tracking-[0.45em] uppercase" style={{ color: '#777777' }}>Trusted By</p>
-            <div style={{ height: '1px', width: '40px', backgroundColor: 'rgba(18,18,18,0.15)' }} />
+            <div style={{ height: '1px', width: '40px', backgroundColor: 'rgba(45,16,17,0.15)' }} />
           </div>
           <p className="text-sm" style={{ color: '#777777' }}>
             BIPOC organizations, student unions & community institutions across Ontario
@@ -74,9 +74,9 @@ export function ClientLogos() {
 
         {/* Divider */}
         <div className="flex items-center gap-4 mb-8">
-          <div className="flex-1" style={{ height: '1px', backgroundColor: 'rgba(18,18,18,0.08)' }} />
-          <span className="text-[10px] tracking-[0.35em] uppercase" style={{ color: 'rgba(18,18,18,0.25)' }}>And More</span>
-          <div className="flex-1" style={{ height: '1px', backgroundColor: 'rgba(18,18,18,0.08)' }} />
+          <div className="flex-1" style={{ height: '1px', backgroundColor: 'rgba(45,16,17,0.08)' }} />
+          <span className="text-[10px] tracking-[0.35em] uppercase" style={{ color: 'rgba(45,16,17,0.25)' }}>And More</span>
+          <div className="flex-1" style={{ height: '1px', backgroundColor: 'rgba(45,16,17,0.08)' }} />
         </div>
 
         {/* Text-badge clients — real, linked partners render as links;
@@ -97,17 +97,17 @@ export function ClientLogos() {
                 whileHover={{ scale: 1.05 }}
                 className="px-4 py-2 rounded-lg transition-all duration-300"
                 style={{
-                  border: '1px solid rgba(18,18,18,0.12)',
+                  border: '1px solid rgba(45,16,17,0.12)',
                   backgroundColor: 'rgba(255,255,255,0.6)',
                   color: '#777777',
                   cursor: isLinked ? 'pointer' : 'default',
                 }}
                 onMouseEnter={(e: React.MouseEvent<HTMLElement>) => {
-                  (e.currentTarget as HTMLElement).style.borderColor = 'rgba(212,168,67,0.4)';
-                  (e.currentTarget as HTMLElement).style.color = '#D4A843';
+                  (e.currentTarget as HTMLElement).style.borderColor = 'rgba(198,164,90,0.4)';
+                  (e.currentTarget as HTMLElement).style.color = '#C6A45A';
                 }}
                 onMouseLeave={(e: React.MouseEvent<HTMLElement>) => {
-                  (e.currentTarget as HTMLElement).style.borderColor = 'rgba(18,18,18,0.12)';
+                  (e.currentTarget as HTMLElement).style.borderColor = 'rgba(45,16,17,0.12)';
                   (e.currentTarget as HTMLElement).style.color = '#777777';
                 }}
                 title={client.name}

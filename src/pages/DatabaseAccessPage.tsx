@@ -41,14 +41,14 @@ export function DatabaseAccessPage() {
   ];
 
   const dataTypes = [
-    { prefix: 'contact_', type: 'Contact Forms', color: '#D4A843' },
-    { prefix: 'collaboration_', type: 'Collaboration Requests', color: '#B1643B' },
-    { prefix: 'booking_', type: 'Service Bookings', color: '#D4A843' },
-    { prefix: 'rental_', type: 'Equipment Rentals', color: '#B1643B' },
-    { prefix: 'gallery_', type: 'Work Galleries', color: '#D4A843' },
-    { prefix: 'notification_', type: 'Email Signups', color: '#B1643B' },
-    { prefix: 'lead_magnet_', type: 'Lead Magnets', color: '#D4A843' },
-    { prefix: 'event_interest_', type: 'Event Interest', color: '#B1643B' }
+    { prefix: 'contact_', type: 'Contact Forms', color: '#C6A45A' },
+    { prefix: 'collaboration_', type: 'Collaboration Requests', color: '#887759' },
+    { prefix: 'booking_', type: 'Service Bookings', color: '#C6A45A' },
+    { prefix: 'rental_', type: 'Equipment Rentals', color: '#887759' },
+    { prefix: 'gallery_', type: 'Work Galleries', color: '#C6A45A' },
+    { prefix: 'notification_', type: 'Email Signups', color: '#887759' },
+    { prefix: 'lead_magnet_', type: 'Lead Magnets', color: '#C6A45A' },
+    { prefix: 'event_interest_', type: 'Event Interest', color: '#887759' }
   ];
 
   return (
@@ -59,7 +59,7 @@ export function DatabaseAccessPage() {
         path="/admin/database"
         noIndex
       />
-      <div className="min-h-screen" style={{ backgroundColor: '#F8F9FA' }}>
+      <div className="min-h-screen" style={{ backgroundColor: '#FFFFFF' }}>
         {/* Header */}
         <div className="border-b" style={{ backgroundColor: '#FFFFFF', borderColor: '#E0E0E0' }}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -67,12 +67,12 @@ export function DatabaseAccessPage() {
               <div className="flex items-center gap-4">
                 <div 
                   className="w-16 h-16 rounded-2xl flex items-center justify-center"
-                  style={{ backgroundColor: 'rgba(212, 168, 67, 0.1)' }}
+                  style={{ backgroundColor: 'rgba(198,164,90, 0.1)' }}
                 >
-                  <Database className="w-8 h-8" style={{ color: '#D4A843' }} />
+                  <Database className="w-8 h-8" style={{ color: '#C6A45A' }} />
                 </div>
                 <div>
-                  <h1 className="text-3xl mb-1" style={{ color: '#121212' }}>
+                  <h1 className="text-3xl mb-1" style={{ color: '#2D1011' }}>
                     D1 database
                   </h1>
                   <p style={{ color: '#777777' }}>
@@ -83,7 +83,7 @@ export function DatabaseAccessPage() {
               <Button
                 onClick={() => copyToClipboard("npx wrangler d1 execute creova --remote --command \"SELECT key FROM kv LIMIT 5;\"", 'Command')}
                 className="flex items-center gap-2"
-                style={{ backgroundColor: '#121212' }}
+                style={{ backgroundColor: '#2D1011' }}
               >
                 Copy wrangler command
                 <Copy className="w-4 h-4" />
@@ -102,16 +102,16 @@ export function DatabaseAccessPage() {
             <Card style={{ backgroundColor: '#FFFFFF', borderColor: '#E0E0E0' }}>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <CheckCircle className="w-5 h-5" style={{ color: '#D4A843' }} />
+                  <CheckCircle className="w-5 h-5" style={{ color: '#C6A45A' }} />
                   Quick Access
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="grid md:grid-cols-2 gap-4">
-                  <div className="p-4 rounded-xl" style={{ backgroundColor: '#F8F9FA' }}>
+                  <div className="p-4 rounded-xl" style={{ backgroundColor: '#FFFFFF' }}>
                     <div className="text-sm mb-2" style={{ color: '#777777' }}>Database Table</div>
                     <div className="flex items-center justify-between gap-4">
-                      <code className="text-lg" style={{ color: '#121212' }}>kv</code>
+                      <code className="text-lg" style={{ color: '#2D1011' }}>kv</code>
                       <Button
                         size="sm"
                         variant="outline"
@@ -122,10 +122,10 @@ export function DatabaseAccessPage() {
                     </div>
                   </div>
 
-                  <div className="p-4 rounded-xl" style={{ backgroundColor: '#F8F9FA' }}>
+                  <div className="p-4 rounded-xl" style={{ backgroundColor: '#FFFFFF' }}>
                     <div className="text-sm mb-2" style={{ color: '#777777' }}>Database</div>
                     <div className="flex items-center justify-between gap-4">
-                      <div className="text-sm" style={{ color: '#121212' }}>D1 creova</div>
+                      <div className="text-sm" style={{ color: '#2D1011' }}>D1 creova</div>
                       <Button
                         size="sm"
                         variant="outline"
@@ -139,12 +139,12 @@ export function DatabaseAccessPage() {
 
                 <div 
                   className="p-4 rounded-xl border-l-4"
-                  style={{ backgroundColor: 'rgba(212, 168, 67, 0.1)', borderColor: '#D4A843' }}
+                  style={{ backgroundColor: 'rgba(198,164,90, 0.1)', borderColor: '#C6A45A' }}
                 >
                   <div className="flex items-start gap-3">
-                    <Database className="w-5 h-5 mt-0.5" style={{ color: '#D4A843' }} />
+                    <Database className="w-5 h-5 mt-0.5" style={{ color: '#C6A45A' }} />
                     <div>
-                      <div className="mb-1" style={{ color: '#121212' }}>How to Access:</div>
+                      <div className="mb-1" style={{ color: '#2D1011' }}>How to Access:</div>
                       <ol className="text-sm space-y-1 list-decimal list-inside" style={{ color: '#777777' }}>
                         <li>From workers/api, run npx wrangler login</li>
                         <li>Run npx wrangler d1 execute creova --remote --command "SELECT key FROM kv LIMIT 5;" (or use the copied command above)</li>
@@ -166,7 +166,7 @@ export function DatabaseAccessPage() {
             transition={{ delay: 0.1 }}
             className="mb-12"
           >
-            <h2 className="text-2xl mb-6" style={{ color: '#121212' }}>
+            <h2 className="text-2xl mb-6" style={{ color: '#2D1011' }}>
               Data Types in Your Database
             </h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -194,7 +194,7 @@ export function DatabaseAccessPage() {
                     </div>
                     <Copy className="w-4 h-4" style={{ color: '#777777' }} />
                   </div>
-                  <div className="mt-2" style={{ color: '#121212' }}>
+                  <div className="mt-2" style={{ color: '#2D1011' }}>
                     {item.type}
                   </div>
                 </motion.div>
@@ -208,7 +208,7 @@ export function DatabaseAccessPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
           >
-            <h2 className="text-2xl mb-6" style={{ color: '#121212' }}>
+            <h2 className="text-2xl mb-6" style={{ color: '#2D1011' }}>
               Ready-to-Use SQL Queries
             </h2>
             <div className="grid gap-6">
@@ -223,13 +223,13 @@ export function DatabaseAccessPage() {
                     <CardHeader>
                       <CardTitle className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                          <query.icon className="w-5 h-5" style={{ color: '#D4A843' }} />
+                          <query.icon className="w-5 h-5" style={{ color: '#C6A45A' }} />
                           {query.title}
                         </div>
                         <Button
                           size="sm"
                           onClick={() => copyToClipboard(query.sql, 'Query')}
-                          style={{ backgroundColor: '#121212' }}
+                          style={{ backgroundColor: '#2D1011' }}
                         >
                           <Copy className="w-4 h-4 mr-2" />
                           Copy Query
@@ -262,7 +262,7 @@ export function DatabaseAccessPage() {
             <Card style={{ backgroundColor: '#FFFFFF', borderColor: '#E0E0E0' }}>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <FileText className="w-5 h-5" style={{ color: '#D4A843' }} />
+                  <FileText className="w-5 h-5" style={{ color: '#C6A45A' }} />
                   Additional Resources
                 </CardTitle>
               </CardHeader>
@@ -275,8 +275,8 @@ export function DatabaseAccessPage() {
                     className="p-4 rounded-xl border-2 hover:shadow-md transition-all"
                     style={{ borderColor: '#E0E0E0' }}
                   >
-                    <Code className="w-6 h-6 mb-2" style={{ color: '#D4A843' }} />
-                    <div className="mb-1" style={{ color: '#121212' }}>D1 docs</div>
+                    <Code className="w-6 h-6 mb-2" style={{ color: '#C6A45A' }} />
+                    <div className="mb-1" style={{ color: '#2D1011' }}>D1 docs</div>
                     <div className="text-sm" style={{ color: '#777777' }}>
                       Cloudflare D1
                     </div>
@@ -289,8 +289,8 @@ export function DatabaseAccessPage() {
                     className="p-4 rounded-xl border-2 hover:shadow-md transition-all"
                     style={{ borderColor: '#E0E0E0' }}
                   >
-                    <Database className="w-6 h-6 mb-2" style={{ color: '#B1643B' }} />
-                    <div className="mb-1" style={{ color: '#121212' }}>Worker API</div>
+                    <Database className="w-6 h-6 mb-2" style={{ color: '#887759' }} />
+                    <div className="mb-1" style={{ color: '#2D1011' }}>Worker API</div>
                     <div className="text-sm" style={{ color: '#777777' }}>
                       Prepared statements
                     </div>
@@ -303,8 +303,8 @@ export function DatabaseAccessPage() {
                     className="p-4 rounded-xl border-2 hover:shadow-md transition-all"
                     style={{ borderColor: '#E0E0E0' }}
                   >
-                    <Download className="w-6 h-6 mb-2" style={{ color: '#D4A843' }} />
-                    <div className="mb-1" style={{ color: '#121212' }}>Free-tier limits</div>
+                    <Download className="w-6 h-6 mb-2" style={{ color: '#C6A45A' }} />
+                    <div className="mb-1" style={{ color: '#2D1011' }}>Free-tier limits</div>
                     <div className="text-sm" style={{ color: '#777777' }}>
                       Rows read and written
                     </div>

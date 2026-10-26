@@ -49,7 +49,7 @@ export function AboutPage() {
   ];
 
   return (
-    <div style={{ backgroundColor: '#121212' }}>
+    <div style={{ backgroundColor: '#2D1011' }}>
       <PageSEO
         title={fr ? 'À propos — L’histoire de CREOVA' : 'About — The CREOVA Story'}
         description={fr
@@ -63,11 +63,11 @@ export function AboutPage() {
       {/* Hero */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none" style={{
-          background: 'radial-gradient(ellipse 60% 50% at 20% 0%, rgba(212,168,67,0.10) 0%, transparent 55%)',
+          background: 'radial-gradient(ellipse 60% 50% at 20% 0%, rgba(198,164,90,0.10) 0%, transparent 55%)',
         }} />
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-10 lg:pt-32">
-          <span className="text-xs tracking-[0.4em] uppercase" style={{ color: '#D4A843' }}>{fr ? 'À propos de CREOVA' : 'About CREOVA'}</span>
-          <h1 className="tracking-tight mt-5" style={{ color: '#F8F9FA', fontFamily: 'var(--font-display)', fontSize: 'clamp(2.6rem, 7vw, 4.8rem)', lineHeight: 1.02 }}>
+          <span className="text-xs tracking-[0.4em] uppercase" style={{ color: '#C6A45A' }}>{fr ? 'À propos de CREOVA' : 'About CREOVA'}</span>
+          <h1 className="tracking-tight mt-5" style={{ color: '#FFFFFF', fontFamily: 'var(--font-display)', fontSize: 'clamp(2.6rem, 7vw, 4.8rem)', lineHeight: 1.02 }}>
             {fr ? 'Un studio conçu pour raconter la culture avec contexte et soin.' : 'A studio built to tell cultural stories with context and care.'}
           </h1>
         </div>
@@ -80,13 +80,13 @@ export function AboutPage() {
           animate={inView ? { opacity: 1, scale: 1 } : {}}
           transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
           className="relative overflow-hidden rounded-2xl"
-          style={{ aspectRatio: '16/9', border: '1px solid rgba(212,168,67,0.15)' }}
+          style={{ aspectRatio: '16/9', border: '1px solid rgba(198,164,90,0.15)' }}
         >
           <img src="/card-justin-panel.jpg" alt="Justin Mafie, founder of CREOVA, at the Brock LINC Innovation Showcase" className="w-full h-full object-cover" style={{ objectPosition: 'center 28%' }} />
-          <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(18,18,18,0.5) 0%, transparent 50%)' }} />
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(45,16,17,0.5) 0%, transparent 50%)' }} />
           <div className="absolute bottom-5 left-6">
-            <p className="text-lg" style={{ color: '#F8F9FA', fontFamily: 'var(--font-display)' }}>Justin Mafie</p>
-            <p className="text-xs tracking-[0.2em] uppercase" style={{ color: '#D4A843' }}>{fr ? 'Fondateur — CREOVA' : 'Founder — CREOVA'}</p>
+            <p className="text-lg" style={{ color: '#FFFFFF', fontFamily: 'var(--font-display)' }}>Justin Mafie</p>
+            <p className="text-xs tracking-[0.2em] uppercase" style={{ color: '#C6A45A' }}>{fr ? 'Fondateur — CREOVA' : 'Founder — CREOVA'}</p>
           </div>
         </motion.div>
       </div>
@@ -96,8 +96,8 @@ export function AboutPage() {
         <div className="space-y-6">
           {story.map((para, i) =>
             i === PULL ? (
-              <blockquote key={i} className="py-3 my-2 pl-6" style={{ borderLeft: '2px solid #B1643B' }}>
-                <p className="italic" style={{ color: '#F8F9FA', fontFamily: 'var(--font-display)', fontSize: 'clamp(1.5rem, 3.4vw, 2.1rem)', lineHeight: 1.28 }}>{para}</p>
+              <blockquote key={i} className="py-3 my-2 pl-6" style={{ borderLeft: '2px solid #887759' }}>
+                <p className="italic" style={{ color: '#FFFFFF', fontFamily: 'var(--font-display)', fontSize: 'clamp(1.5rem, 3.4vw, 2.1rem)', lineHeight: 1.28 }}>{para}</p>
               </blockquote>
             ) : (
               <p key={i} className="leading-relaxed" style={{ color: '#E0E0E0', fontSize: '1.1rem' }}>{para}</p>
@@ -112,12 +112,12 @@ export function AboutPage() {
           instead of being buried in a support-chat modal. */}
       <section className="relative py-16 lg:py-24 overflow-hidden" style={{ backgroundColor: '#0E0E0E' }}>
         <div className="absolute inset-0 pointer-events-none" style={{
-          background: 'radial-gradient(ellipse 50% 60% at 85% 20%, rgba(212,168,67,0.08) 0%, transparent 55%)',
+          background: 'radial-gradient(ellipse 50% 60% at 85% 20%, rgba(198,164,90,0.08) 0%, transparent 55%)',
         }} />
         <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-[1fr_1.3fr] gap-10 lg:gap-16 items-start">
             {/* Portrait */}
-            <div className="relative overflow-hidden rounded-2xl" style={{ aspectRatio: '4/5', border: '1px solid rgba(212,168,67,0.15)' }}>
+            <div className="relative overflow-hidden rounded-2xl" style={{ aspectRatio: '4/5', border: '1px solid rgba(198,164,90,0.15)' }}>
               <img
                 src="/sankofa-profile.jpg"
                 alt={fr ? 'Symbole Sankofa, un oiseau Adinkra regardant en arrière' : 'The Sankofa symbol, an Adinkra bird looking backward'}
@@ -129,8 +129,8 @@ export function AboutPage() {
 
             {/* Story */}
             <div>
-              <span className="text-xs tracking-[0.4em] uppercase" style={{ color: '#D4A843' }}>{fr ? 'La philosophie' : 'The Philosophy'}</span>
-              <h2 className="tracking-tight mt-4 mb-6" style={{ color: '#F8F9FA', fontFamily: 'var(--font-display)', fontSize: 'clamp(2rem, 4.5vw, 3rem)' }}>
+              <span className="text-xs tracking-[0.4em] uppercase" style={{ color: '#C6A45A' }}>{fr ? 'La philosophie' : 'The Philosophy'}</span>
+              <h2 className="tracking-tight mt-4 mb-6" style={{ color: '#FFFFFF', fontFamily: 'var(--font-display)', fontSize: 'clamp(2rem, 4.5vw, 3rem)' }}>
                 Sankofa
               </h2>
 
@@ -140,8 +140,8 @@ export function AboutPage() {
                   : 'The Sankofa symbol represents a bird looking backward while holding an egg in its beak — the importance of returning to the past to retrieve valuable knowledge and traditions for building a better future.'}
               </p>
 
-              <blockquote className="pl-5 mb-7" style={{ borderLeft: '2px solid #D4A843' }}>
-                <p className="italic" style={{ color: '#F8F9FA', fontFamily: 'var(--font-display)', fontSize: '1.2rem' }}>
+              <blockquote className="pl-5 mb-7" style={{ borderLeft: '2px solid #C6A45A' }}>
+                <p className="italic" style={{ color: '#FFFFFF', fontFamily: 'var(--font-display)', fontSize: '1.2rem' }}>
                   “Se wo were fi na wosankofa a yenkyi”
                 </p>
                 <p className="text-sm mt-1" style={{ color: '#8C7B75' }}>
@@ -157,20 +157,20 @@ export function AboutPage() {
 
               <div className="space-y-4 mb-7">
                 <p className="text-sm leading-relaxed" style={{ color: '#8C7B75' }}>
-                  <strong style={{ color: '#D4A843' }}>{fr ? 'Charte de Scarborough — ' : 'The Scarborough Charter — '}</strong>
+                  <strong style={{ color: '#C6A45A' }}>{fr ? 'Charte de Scarborough — ' : 'The Scarborough Charter — '}</strong>
                   {fr
                     ? 'reconnaître les injustices historiques et favoriser la responsabilité institutionnelle.'
                     : 'acknowledging historical injustices and fostering accountability in institutions.'}
                 </p>
                 <p className="text-sm leading-relaxed" style={{ color: '#8C7B75' }}>
-                  <strong style={{ color: '#D4A843' }}>Audre Lorde — </strong>
+                  <strong style={{ color: '#C6A45A' }}>Audre Lorde — </strong>
                   {fr
                     ? '« Il n’y a pas de lutte à un seul problème parce que nous ne vivons pas de vies à un seul problème. »'
                     : '“There is no such thing as a single-issue struggle because we do not live single-issue lives.”'}
                 </p>
               </div>
 
-              <p className="text-base leading-relaxed" style={{ color: '#F8F9FA' }}>
+              <p className="text-base leading-relaxed" style={{ color: '#FFFFFF' }}>
                 {fr
                   ? 'Sankofa représente l’engagement de CREOVA à honorer l’héritage culturel, à apprendre de l’histoire et à créer un avenir inclusif grâce à l’excellence créative.'
                   : 'Sankofa represents CREOVA’s commitment to honouring cultural heritage, learning from history, and creating an inclusive future through creative excellence.'}
@@ -182,9 +182,9 @@ export function AboutPage() {
 
       {/* Press — real Brock News coverage, original descriptions with direct
           outbound links (never reproducing the source articles' text). */}
-      <section className="relative py-16 lg:py-20" style={{ backgroundColor: '#121212' }}>
+      <section className="relative py-16 lg:py-20" style={{ backgroundColor: '#2D1011' }}>
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <span className="text-xs tracking-[0.4em] uppercase" style={{ color: '#D4A843' }}>
+          <span className="text-xs tracking-[0.4em] uppercase" style={{ color: '#C6A45A' }}>
             {fr ? 'Dans les médias' : 'As Featured In'}
           </span>
           <div className="grid sm:grid-cols-2 gap-4 mt-5">
@@ -218,17 +218,17 @@ export function AboutPage() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group block rounded-xl p-5 transition-all duration-300 hover:-translate-y-1"
-                style={{ backgroundColor: '#151515', border: '1px solid rgba(212,168,67,0.15)' }}
+                style={{ backgroundColor: '#151515', border: '1px solid rgba(198,164,90,0.15)' }}
               >
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-xs tracking-[0.15em] uppercase" style={{ color: '#8C7B75' }}>{item.outlet} · {item.date}</span>
-                  <ArrowUpRight className="w-4 h-4 flex-shrink-0 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" style={{ color: '#D4A843' }} />
+                  <ArrowUpRight className="w-4 h-4 flex-shrink-0 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" style={{ color: '#C6A45A' }} />
                 </div>
-                <p className="mb-2 transition-colors group-hover:text-[#D4A843]" style={{ color: '#F8F9FA', fontFamily: 'var(--font-display)', fontSize: '1.1rem', lineHeight: 1.3 }}>
+                <p className="mb-2 transition-colors group-hover:text-[#C6A45A]" style={{ color: '#FFFFFF', fontFamily: 'var(--font-display)', fontSize: '1.1rem', lineHeight: 1.3 }}>
                   {item.title}
                 </p>
                 <p className="text-sm leading-relaxed" style={{ color: '#8C7B75' }}>{item.desc}</p>
-                <span className="inline-block text-xs tracking-[0.15em] uppercase mt-3" style={{ color: '#D4A843' }}>
+                <span className="inline-block text-xs tracking-[0.15em] uppercase mt-3" style={{ color: '#C6A45A' }}>
                   {fr ? 'Lire l’article complet' : 'Read the full story'}
                 </span>
               </a>
@@ -240,7 +240,7 @@ export function AboutPage() {
       {/* One company, many brands */}
       <section className="relative py-16 lg:py-24" style={{ backgroundColor: '#0E0E0E' }}>
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="tracking-tight mb-6" style={{ color: '#F8F9FA', fontFamily: 'var(--font-display)', fontSize: 'clamp(1.8rem, 4vw, 2.6rem)' }}>
+          <h2 className="tracking-tight mb-6" style={{ color: '#FFFFFF', fontFamily: 'var(--font-display)', fontSize: 'clamp(1.8rem, 4vw, 2.6rem)' }}>
             {fr ? 'CREOVA aujourd’hui' : 'CREOVA today'}
           </h2>
           <p className="text-lg leading-relaxed mb-8" style={{ color: '#E0E0E0' }}>
@@ -255,13 +255,13 @@ export function AboutPage() {
               { name: 'SEEN', tag: fr ? 'Le produit numérique' : 'The digital product', to: VENTURE_URLS.seen ?? '/ventures#seen', external: Boolean(VENTURE_URLS.seen) },
             ].map((b) => (
               b.external ? (
-                <a key={b.name} href={b.to} target="_blank" rel="noopener noreferrer" className="group block rounded-xl p-5 transition-all duration-300 hover:-translate-y-1" style={{ backgroundColor: '#151515', border: '1px solid rgba(212,168,67,0.15)' }}>
-                  <p className="tracking-tight mb-1 transition-colors group-hover:text-[#D4A843]" style={{ color: '#F8F9FA', fontFamily: 'var(--font-display)', fontSize: '1.4rem' }}>{b.name}</p>
+                <a key={b.name} href={b.to} target="_blank" rel="noopener noreferrer" className="group block rounded-xl p-5 transition-all duration-300 hover:-translate-y-1" style={{ backgroundColor: '#151515', border: '1px solid rgba(198,164,90,0.15)' }}>
+                  <p className="tracking-tight mb-1 transition-colors group-hover:text-[#C6A45A]" style={{ color: '#FFFFFF', fontFamily: 'var(--font-display)', fontSize: '1.4rem' }}>{b.name}</p>
                   <p className="text-xs" style={{ color: '#8C7B75' }}>{b.tag}</p>
                 </a>
               ) : (
-                <Link key={b.name} to={b.to} className="group block rounded-xl p-5 transition-all duration-300 hover:-translate-y-1" style={{ backgroundColor: '#151515', border: '1px solid rgba(212,168,67,0.15)' }}>
-                  <p className="tracking-tight mb-1 transition-colors group-hover:text-[#D4A843]" style={{ color: '#F8F9FA', fontFamily: 'var(--font-display)', fontSize: '1.4rem' }}>{b.name}</p>
+                <Link key={b.name} to={b.to} className="group block rounded-xl p-5 transition-all duration-300 hover:-translate-y-1" style={{ backgroundColor: '#151515', border: '1px solid rgba(198,164,90,0.15)' }}>
+                  <p className="tracking-tight mb-1 transition-colors group-hover:text-[#C6A45A]" style={{ color: '#FFFFFF', fontFamily: 'var(--font-display)', fontSize: '1.4rem' }}>{b.name}</p>
                   <p className="text-xs" style={{ color: '#8C7B75' }}>{b.tag}</p>
                 </Link>
               )
@@ -271,12 +271,12 @@ export function AboutPage() {
       </section>
 
       {/* CTA */}
-      <section className="relative py-20 lg:py-28 text-center" style={{ backgroundColor: '#121212' }}>
+      <section className="relative py-20 lg:py-28 text-center" style={{ backgroundColor: '#2D1011' }}>
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="tracking-tight mb-6" style={{ color: '#F8F9FA', fontFamily: 'var(--font-display)', fontSize: 'clamp(2rem, 5vw, 3.2rem)', lineHeight: 1.06 }}>
+          <h2 className="tracking-tight mb-6" style={{ color: '#FFFFFF', fontFamily: 'var(--font-display)', fontSize: 'clamp(2rem, 5vw, 3.2rem)', lineHeight: 1.06 }}>
             {fr ? 'Une bonne idée à partager ?' : 'Have a story worth telling?'}
           </h2>
-          <Link to="/start-a-project" className="group inline-flex items-center gap-3 px-8 py-4 rounded-xl text-base font-semibold tracking-wide transition-all duration-300 hover:-translate-y-px hover:shadow-xl" style={{ backgroundColor: '#B1643B', color: '#F8F9FA' }}>
+          <Link to="/start-a-project" className="group inline-flex items-center gap-3 px-8 py-4 rounded-xl text-base font-semibold tracking-wide transition-all duration-300 hover:-translate-y-px hover:shadow-xl" style={{ backgroundColor: '#7D6D51', color: '#FFFFFF' }}>
             {fr ? 'Travaillons ensemble' : 'Let’s work together'}
             <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
           </Link>

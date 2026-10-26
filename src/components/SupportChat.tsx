@@ -106,7 +106,7 @@ export function SupportChat() {
       // English responses
       greeting: "Hello! How can I help you with CREOVA services today?",
       pricing: "Pricing is confirmed in a proposal after CREOVA understands the scope, intended use, timing, and deliverables. Start at /start-a-project for written scope and terms.",
-      services: "CREOVA offers photography, videography, brand and visual systems, campaigns, digital experiences, and event story/documentation. SEEN and VERSE are owned ventures at different development stages. Visit /services or start at /start-a-project.",
+      services: "CREOVA offers photography, videography, brand and visual systems, campaigns, digital experiences, and event story/documentation. SEEN and VERSE are CREOVA-owned projects at different development stages. Visit /services or start at /start-a-project.",
       booking: "To get started, submit the form at /start-a-project. CREOVA will confirm receipt, then scope, timing, and terms in writing.",
       seen: "SEEN is CREOVA's digital storytelling platform, currently in development, with a beta targeted for December 2026. Visit /ventures for its current status.",
       shop: "VERSE is CREOVA's lifestyle brand, currently incubating. The tech pack is ready, but there is no shop, preorder, or announced launch date. Visit /ventures for its current status.",
@@ -218,9 +218,9 @@ export function SupportChat() {
               aria-label={language === 'fr' ? 'Ouvrir le clavardage CREOVA Support' : 'Open CREOVA Support chat'}
               aria-expanded={isOpen}
               className="w-16 h-16 rounded-full shadow-2xl relative overflow-hidden group p-0"
-              style={{ backgroundColor: '#B1643B' }}
+              style={{ backgroundColor: '#887759' }}
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-[#D4A843] to-[#121212] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="absolute inset-0 bg-gradient-to-br from-[#C6A45A] to-[#2D1011] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <motion.img
                 src={logoWhite}
                 alt=""
@@ -231,7 +231,7 @@ export function SupportChat() {
               />
 
               {/* Pulse animation */}
-              <span className={`absolute inset-0 rounded-full opacity-20${prefersReduced ? '' : ' animate-ping'}`} style={{ backgroundColor: '#B1643B' }} />
+              <span className={`absolute inset-0 rounded-full opacity-20${prefersReduced ? '' : ' animate-ping'}`} style={{ backgroundColor: '#887759' }} />
             </Button>
           </motion.div>
         )}
@@ -255,8 +255,8 @@ export function SupportChat() {
             className="contents"
           >
             {/* Header */}
-            <div className="relative p-4 border-b" style={{ backgroundColor: '#121212', borderColor: '#2A2A2A' }}>
-              <div className="absolute inset-0 bg-gradient-to-br from-[#D4A843]/20 to-[#B1643B]/20" />
+            <div className="relative p-4 border-b" style={{ backgroundColor: '#2D1011', borderColor: '#2A2A2A' }}>
+              <div className="absolute inset-0 bg-gradient-to-br from-[#C6A45A]/20 to-[#887759]/20" />
               <div className="relative flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full flex items-center justify-center relative overflow-hidden p-1.5" style={{ backgroundColor: '#FFFFFF' }}>
@@ -266,10 +266,10 @@ export function SupportChat() {
                       aria-hidden="true"
                       className="w-full h-full object-contain"
                     />
-                    <span className="absolute -bottom-1 -right-1 w-3 h-3 rounded-full border-2" style={{ backgroundColor: '#D4A843', borderColor: '#121212' }} />
+                    <span className="absolute -bottom-1 -right-1 w-3 h-3 rounded-full border-2" style={{ backgroundColor: '#C6A45A', borderColor: '#2D1011' }} />
                   </div>
                   <div>
-                    <h3 className="font-semibold" style={{ color: '#F8F9FA' }}>CREOVA Support</h3>
+                    <h3 className="font-semibold" style={{ color: '#FFFFFF' }}>CREOVA Support</h3>
                     <p className="text-xs" style={{ color: '#E0E0E0' }}>
                       {language === 'fr' ? 'On répond généralement vite' : 'We usually reply fast'}
                     </p>
@@ -282,13 +282,13 @@ export function SupportChat() {
                   aria-label={language === 'fr' ? 'Fermer le clavardage' : 'Close chat'}
                   className="rounded-full hover:bg-white/10"
                 >
-                  <X className="w-5 h-5" style={{ color: '#F8F9FA' }} />
+                  <X className="w-5 h-5" style={{ color: '#FFFFFF' }} />
                 </Button>
               </div>
             </div>
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4" style={{ backgroundColor: '#F8F9FA' }}>
+            <div className="flex-1 overflow-y-auto p-4 space-y-4" style={{ backgroundColor: '#FFFFFF' }}>
               {messages.map((message) => (
                 <motion.div
                   key={message.id}
@@ -301,8 +301,8 @@ export function SupportChat() {
                       message.sender === 'user' ? 'rounded-tr-sm' : 'rounded-tl-sm'
                     }`}
                     style={{
-                      backgroundColor: message.sender === 'user' ? '#121212' : '#FFFFFF',
-                      color: message.sender === 'user' ? '#F8F9FA' : '#121212'
+                      backgroundColor: message.sender === 'user' ? '#2D1011' : '#FFFFFF',
+                      color: message.sender === 'user' ? '#FFFFFF' : '#2D1011'
                     }}
                   >
                     <p className="text-sm whitespace-pre-line leading-relaxed">{message.text}</p>
@@ -325,9 +325,9 @@ export function SupportChat() {
                 >
                   <div className="bg-white rounded-2xl rounded-tl-sm px-4 py-3">
                     <div className="flex gap-1">
-                      <span className="w-2 h-2 rounded-full animate-bounce" style={{ backgroundColor: '#D4A843', animationDelay: '0ms' }} />
-                      <span className="w-2 h-2 rounded-full animate-bounce" style={{ backgroundColor: '#D4A843', animationDelay: '150ms' }} />
-                      <span className="w-2 h-2 rounded-full animate-bounce" style={{ backgroundColor: '#D4A843', animationDelay: '300ms' }} />
+                      <span className="w-2 h-2 rounded-full animate-bounce" style={{ backgroundColor: '#C6A45A', animationDelay: '0ms' }} />
+                      <span className="w-2 h-2 rounded-full animate-bounce" style={{ backgroundColor: '#C6A45A', animationDelay: '150ms' }} />
+                      <span className="w-2 h-2 rounded-full animate-bounce" style={{ backgroundColor: '#C6A45A', animationDelay: '300ms' }} />
                     </div>
                   </div>
                 </motion.div>
@@ -348,9 +348,9 @@ export function SupportChat() {
                     }}
                     className="text-xs px-3 py-2 rounded-full whitespace-nowrap border hover:shadow-md transition-all duration-200 hover:scale-105"
                     style={{
-                      backgroundColor: '#F8F9FA',
-                      borderColor: '#D4A843',
-                      color: '#121212'
+                      backgroundColor: '#FFFFFF',
+                      borderColor: '#C6A45A',
+                      color: '#2D1011'
                     }}
                   >
                     {action.label}
@@ -374,7 +374,7 @@ export function SupportChat() {
                   onClick={handleSend}
                   disabled={!input.trim()}
                   className="rounded-xl px-4"
-                  style={{ backgroundColor: '#121212', color: '#F8F9FA' }}
+                  style={{ backgroundColor: '#2D1011', color: '#FFFFFF' }}
                 >
                   <Send className="w-4 h-4" />
                 </Button>

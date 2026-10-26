@@ -2,28 +2,35 @@
 
 :root {
   --font-size: 16px;
-  --font-display: 'Instrument Serif', Georgia, serif;
-  --font-body: 'General Sans', system-ui, sans-serif;
+  --font-display: 'quasimoda', 'Avenir Next', 'Century Gothic', 'General Sans', sans-serif;
+  --font-body: 'quasimoda', 'Avenir Next', 'General Sans', sans-serif;
+  --font-accent: 'Hiro', 'Instrument Serif', Georgia, serif;
+  --creova-cream: #CDBFAE;
+  --creova-olive: #887759;
+  --creova-olive-strong: #7D6D51;
+  --creova-oxblood: #2D1011;
+  --creova-white: #FFFFFF;
+  --creova-gold: #C6A45A;
   --background: #ffffff;
-  --foreground: oklch(0.145 0 0);
+  --foreground: #2D1011;
   --card: #ffffff;
-  --card-foreground: oklch(0.145 0 0);
+  --card-foreground: #2D1011;
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: #121212;
+  --primary: #2D1011;
   --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.95 0.0058 264.53);
-  --secondary-foreground: #121212;
-  --muted: #ececf0;
-  --muted-foreground: #717182;
-  --accent: #e9ebef;
-  --accent-foreground: #121212;
+  --secondary: #CDBFAE;
+  --secondary-foreground: #2D1011;
+  --muted: #F1ECE4;
+  --muted-foreground: #6F6252;
+  --accent: #887759;
+  --accent-foreground: #2D1011;
   --destructive: #d4183d;
   --destructive-foreground: #ffffff;
-  --border: rgba(0, 0, 0, 0.1);
+  --border: rgba(45, 16, 17, 0.14);
   --input: transparent;
-  --input-background: #f3f3f5;
-  --switch-background: #cbced4;
+  --input-background: #F7F2EB;
+  --switch-background: #CDBFAE;
   --font-weight-medium: 500;
   --font-weight-normal: 400;
   --ring: oklch(0.708 0 0);
@@ -44,19 +51,20 @@ html, body {
 
 h1, h2 {
   font-family: var(--font-display);
-  font-weight: 400;
+  font-weight: 700;
+  letter-spacing: -0.035em;
 }
 
 h3 {
   font-family: var(--font-display);
-  font-weight: 400;
-  letter-spacing: -0.015em;
+  font-weight: 700;
+  letter-spacing: -0.025em;
 }
 
 h4 {
   font-family: var(--font-display);
-  font-weight: 400;
-  letter-spacing: -0.01em;
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
 h5, h6 {
@@ -69,12 +77,15 @@ p, span, a, li, label, input, textarea, button {
   font-family: var(--font-body);
 }
 
+.font-accent {
+  font-family: var(--font-accent);
+  font-weight: 400;
+}
+
 /*
-  Inline elements *inside* a display heading must keep the heading (Instrument
-  Serif) font. The generic `span/a` rule above otherwise drags them back to the
-  body sans — which is why hero headings built from <span>s were rendering in
-  General Sans instead of the serif. Compound selectors (0,0,2) beat the plain
-  `span` rule (0,0,1) regardless of source order.
+  Inline elements inside a display heading must keep the heading face. The
+  generic `span/a` rule above otherwise drags them back to the body assignment.
+  Compound selectors beat the plain `span` rule regardless of source order.
 */
 h1 span, h1 a, h1 em, h1 i, h1 strong, h1 b,
 h2 span, h2 a, h2 em, h2 i, h2 strong, h2 b,
@@ -84,12 +95,8 @@ h4 span, h4 a, h4 em, h4 i, h4 strong, h4 b {
 }
 
 /*
-  Instrument Serif's italic glyphs overhang to the right and its descenders
-  drop well below a `leading-none` line box. Combined with
-  -webkit-background-clip:text (used for the gradient accent words), the
-  trailing glyph and descenders get shaved off. Give those clipped display
-  spans a little right/bottom room — they're the accent words in every page
-  hero — so nothing is cut. box-decoration-break keeps it clean if they wrap.
+  Fallback display glyphs can overhang a tight line box. Give clipped display
+  spans enough room that the trailing glyph and descenders are never shaved.
 */
 h1 span[style*="clip"], h2 span[style*="clip"],
 h3 span[style*="clip"], h4 span[style*="clip"] {
@@ -99,7 +106,8 @@ h3 span[style*="clip"], h4 span[style*="clip"] {
   box-decoration-break: clone;
 }
 
-/* Smooth scroll handled by Lenis */
+/* Native scrolling is intentional: it is more stable across devices and
+   avoids the positional jitter caused by transform-driven smooth scrolling. */
 
 /* Hide scrollbar for horizontal scroll */
 .scrollbar-hide {
@@ -112,8 +120,9 @@ h3 span[style*="clip"], h4 span[style*="clip"] {
 
 /* Improve focus visibility for accessibility */
 *:focus-visible {
-  outline: 2px solid #D4A843;
+  outline: 2px solid #C6A45A;
   outline-offset: 2px;
+  box-shadow: 0 0 0 4px #2D1011;
 }
 
 @keyframes fade-in {
@@ -192,9 +201,9 @@ h3 span[style*="clip"], h4 span[style*="clip"] {
 .animate-shimmer {
   background: linear-gradient(
     90deg,
-    rgba(212, 168, 67, 0.0) 0%,
-    rgba(212, 168, 67, 0.15) 50%,
-    rgba(212, 168, 67, 0.0) 100%
+    rgba(198,164,90, 0.0) 0%,
+    rgba(198,164,90, 0.15) 50%,
+    rgba(198,164,90, 0.0) 100%
   );
   background-size: 200% auto;
   animation: shimmer 2.5s linear infinite;

@@ -30,7 +30,7 @@ export function JournalPage() {
   };
 
   return (
-    <div style={{ backgroundColor: '#121212', minHeight: '100vh' }}>
+    <div style={{ backgroundColor: '#2D1011', minHeight: '100vh' }}>
       <PageSEO
         title={fr ? 'Journal — Guides et perspectives' : 'Journal — Guides & Perspective'}
         description={fr
@@ -43,13 +43,13 @@ export function JournalPage() {
       {/* Header */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none" style={{
-          background: 'radial-gradient(ellipse 60% 50% at 20% 0%, rgba(212,168,67,0.10) 0%, transparent 55%)',
+          background: 'radial-gradient(ellipse 60% 50% at 20% 0%, rgba(198,164,90,0.10) 0%, transparent 55%)',
         }} />
         <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-12 lg:pt-32">
-          <span className="text-xs tracking-[0.4em] uppercase" style={{ color: '#D4A843' }}>
+          <span className="text-xs tracking-[0.4em] uppercase" style={{ color: '#C6A45A' }}>
             {fr ? 'Le Journal' : 'The Journal'}
           </span>
-          <h1 className="tracking-tight mt-5 mb-5" style={{ color: '#F8F9FA', fontFamily: 'var(--font-display)', fontSize: 'clamp(2.6rem, 7vw, 4.6rem)', lineHeight: 1.02 }}>
+          <h1 className="tracking-tight mt-5 mb-5" style={{ color: '#FFFFFF', fontFamily: 'var(--font-display)', fontSize: 'clamp(2.6rem, 7vw, 4.6rem)', lineHeight: 1.02 }}>
             {fr ? 'Des conseils pratiques pour mieux raconter la culture.' : 'Practical guidance for better cultural storytelling.'}
           </h1>
           <p className="text-lg" style={{ color: '#8C7B75', maxWidth: '54ch' }}>
@@ -68,17 +68,17 @@ export function JournalPage() {
               const c = fr ? post.fr : post.en;
               return (
                 <Link key={post.slug} to={`/journal/${post.slug}`} className="group block">
-                  <article className="h-full flex flex-col overflow-hidden rounded-2xl transition-all duration-300 group-hover:-translate-y-1" style={{ backgroundColor: '#0E0E0E', border: '1px solid rgba(212,168,67,0.12)' }}>
+                  <article className="h-full flex flex-col overflow-hidden rounded-2xl transition-all duration-300 group-hover:-translate-y-1" style={{ backgroundColor: '#0E0E0E', border: '1px solid rgba(198,164,90,0.12)' }}>
                     <div className="relative overflow-hidden" style={{ aspectRatio: '16/10' }}>
                       <img src={post.cover} alt={c.title} loading="lazy" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" style={{ objectPosition: 'center 35%' }} />
                       <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(14,14,14,0.6) 0%, transparent 55%)' }} />
                     </div>
                     <div className="flex flex-col flex-1 p-6">
                       <div className="flex items-center gap-3 mb-3">
-                        <span className="text-[10px] tracking-[0.25em] uppercase px-2.5 py-1 rounded-full" style={{ color: '#D4A843', backgroundColor: 'rgba(212,168,67,0.12)' }}>{post.category}</span>
+                        <span className="text-[10px] tracking-[0.25em] uppercase px-2.5 py-1 rounded-full" style={{ color: '#C6A45A', backgroundColor: 'rgba(198,164,90,0.12)' }}>{post.category}</span>
                         <span className="text-xs" style={{ color: '#777777' }}>{fmt(post.date, fr)} · {post.readMins} {fr ? 'min' : 'min read'}</span>
                       </div>
-                      <h2 className="tracking-tight mb-3 transition-colors duration-200 group-hover:text-[#D4A843]" style={{ color: '#F8F9FA', fontFamily: 'var(--font-display)', fontSize: '1.5rem', lineHeight: 1.15 }}>{c.title}</h2>
+                      <h2 className="tracking-tight mb-3 transition-colors duration-200 group-hover:text-[#C6A45A]" style={{ color: '#FFFFFF', fontFamily: 'var(--font-display)', fontSize: '1.5rem', lineHeight: 1.15 }}>{c.title}</h2>
                       <p className="text-sm leading-relaxed" style={{ color: '#8C7B75' }}>{c.excerpt}</p>
                     </div>
                   </article>

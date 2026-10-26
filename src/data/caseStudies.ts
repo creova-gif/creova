@@ -27,6 +27,7 @@ export interface CaseStudy {
   featureName: string;
   featureRoleEn: string;
   featureRoleFr: string;
+  relatedGalleryIds?: string[];
   en: CaseStudyCopy;
   fr: CaseStudyCopy;
 }
@@ -36,11 +37,17 @@ export const CASE_STUDIES: CaseStudy[] = [
     slug: 'black-student-success-centre',
     partner: 'Black Student Success Centre',
     org: 'Brock University',
-    cover: '/card-bssc.jpg',
+    cover: 'https://images.pixieset.com/944970901/d4c567d59366203cb5ae2c9612e5fd1a-large.png',
     featureImage: '/photo-monique-bssc.jpg',
     featureName: 'Monique Beauregard',
     featureRoleEn: 'Black Student Success Centre',
     featureRoleFr: 'Black Student Success Centre',
+    relatedGalleryIds: [
+      'curated-community-bash',
+      'curated-afro-caribbean-night-part-2',
+      'curated-maslab-always-carnival',
+      'curated-wellness-and-work',
+    ],
     en: {
       title: 'Documenting Black student life at Brock',
       kicker: 'Case Study · BSSC × CREOVA',

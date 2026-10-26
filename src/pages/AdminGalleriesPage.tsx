@@ -19,7 +19,7 @@ const EMPTY_FORM = {
   image: '',
   objectPosition: 'center',
   url: '',
-  accent: '#D4A843',
+  accent: '#C6A45A',
   featured: false,
 };
 
@@ -105,7 +105,7 @@ export function AdminGalleriesPage() {
   };
 
   return (
-    <div style={{ backgroundColor: '#F8F9FA', minHeight: '100vh' }}>
+    <div style={{ backgroundColor: '#FFFFFF', minHeight: '100vh' }}>
       <PageSEO
         title="Manage Galleries"
         description="CREOVA staff admin dashboard."
@@ -113,17 +113,17 @@ export function AdminGalleriesPage() {
         noIndex
       />
 
-      <section className="py-12" style={{ backgroundColor: '#121212' }}>
+      <section className="py-12" style={{ backgroundColor: '#2D1011' }}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between flex-wrap gap-4">
           <div>
-            <h1 className="text-3xl md:text-4xl mb-2" style={{ color: '#F8F9FA' }}>
+            <h1 className="text-3xl md:text-4xl mb-2" style={{ color: '#FFFFFF' }}>
               Work Portfolio
             </h1>
-            <p className="text-sm" style={{ color: '#D4A843' }}>
+            <p className="text-sm" style={{ color: '#C6A45A' }}>
               Add, edit, or remove galleries shown on /work and the homepage
             </p>
           </div>
-          <Button onClick={openCreateForm} style={{ backgroundColor: '#D4A843', color: '#121212' }}>
+          <Button onClick={openCreateForm} style={{ backgroundColor: '#C6A45A', color: '#2D1011' }}>
             <ImagePlus className="w-4 h-4 mr-2" />
             Add Gallery
           </Button>
@@ -140,7 +140,7 @@ export function AdminGalleriesPage() {
               style={{ borderColor: '#E0E0E0' }}
             >
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl" style={{ color: '#121212' }}>
+                <h2 className="text-xl" style={{ color: '#2D1011' }}>
                   {editingId ? 'Edit Gallery' : 'New Gallery'}
                 </h2>
                 <button onClick={closeForm} style={{ color: '#777777' }}>
@@ -150,15 +150,15 @@ export function AdminGalleriesPage() {
 
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm mb-1" style={{ color: '#121212' }}>Title *</label>
+                  <label className="block text-sm mb-1" style={{ color: '#2D1011' }}>Title *</label>
                   <Input value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} placeholder="e.g. Afro Caribbean Night" />
                 </div>
                 <div>
-                  <label className="block text-sm mb-1" style={{ color: '#121212' }}>Subtitle</label>
+                  <label className="block text-sm mb-1" style={{ color: '#2D1011' }}>Subtitle</label>
                   <Input value={form.subtitle} onChange={e => setForm({ ...form, subtitle: e.target.value })} placeholder="e.g. Part II" />
                 </div>
                 <div>
-                  <label className="block text-sm mb-1" style={{ color: '#121212' }}>Category</label>
+                  <label className="block text-sm mb-1" style={{ color: '#2D1011' }}>Category</label>
                   <select
                     value={form.category}
                     onChange={e => setForm({ ...form, category: e.target.value as GalleryCategory })}
@@ -171,39 +171,39 @@ export function AdminGalleriesPage() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm mb-1" style={{ color: '#121212' }}>Organization</label>
+                  <label className="block text-sm mb-1" style={{ color: '#2D1011' }}>Organization</label>
                   <Input value={form.org} onChange={e => setForm({ ...form, org: e.target.value })} placeholder="e.g. BSSC · Brock University" />
                 </div>
                 <div>
-                  <label className="block text-sm mb-1" style={{ color: '#121212' }}>Year</label>
+                  <label className="block text-sm mb-1" style={{ color: '#2D1011' }}>Year</label>
                   <Input value={form.year} onChange={e => setForm({ ...form, year: e.target.value })} placeholder="2026" />
                 </div>
                 <div>
-                  <label className="block text-sm mb-1" style={{ color: '#121212' }}>Accent color</label>
-                  <Input value={form.accent} onChange={e => setForm({ ...form, accent: e.target.value })} placeholder="#D4A843" />
+                  <label className="block text-sm mb-1" style={{ color: '#2D1011' }}>Accent color</label>
+                  <Input value={form.accent} onChange={e => setForm({ ...form, accent: e.target.value })} placeholder="#C6A45A" />
                 </div>
                 <div>
-                  <label className="block text-sm mb-1" style={{ color: '#121212' }}>
+                  <label className="block text-sm mb-1" style={{ color: '#2D1011' }}>
                     Cover image path *
                   </label>
                   <Input value={form.image} onChange={e => setForm({ ...form, image: e.target.value })} placeholder="/card-example.jpg" />
                 </div>
                 <div>
-                  <label className="block text-sm mb-1" style={{ color: '#121212' }}>Image position</label>
+                  <label className="block text-sm mb-1" style={{ color: '#2D1011' }}>Image position</label>
                   <Input value={form.objectPosition} onChange={e => setForm({ ...form, objectPosition: e.target.value })} placeholder="center 30%" />
                 </div>
                 <div className="md:col-span-2">
-                  <label className="block text-sm mb-1" style={{ color: '#121212' }}>Pixieset gallery URL *</label>
+                  <label className="block text-sm mb-1" style={{ color: '#2D1011' }}>Pixieset gallery URL *</label>
                   <Input value={form.url} onChange={e => setForm({ ...form, url: e.target.value })} placeholder="https://creova.pixieset.com/..." />
                 </div>
-                <label className="flex items-center gap-2 md:col-span-2 text-sm" style={{ color: '#121212' }}>
+                <label className="flex items-center gap-2 md:col-span-2 text-sm" style={{ color: '#2D1011' }}>
                   <input type="checkbox" checked={form.featured} onChange={e => setForm({ ...form, featured: e.target.checked })} />
                   Featured (appears larger in the "All Work" grid)
                 </label>
               </div>
 
               <div className="flex gap-3 mt-6">
-                <Button onClick={handleSave} disabled={saving} style={{ backgroundColor: '#121212', color: '#F8F9FA' }}>
+                <Button onClick={handleSave} disabled={saving} style={{ backgroundColor: '#2D1011', color: '#FFFFFF' }}>
                   {saving ? 'Saving...' : editingId ? 'Save Changes' : 'Add Gallery'}
                 </Button>
                 <Button variant="outline" onClick={closeForm}>Cancel</Button>
@@ -222,21 +222,21 @@ export function AdminGalleriesPage() {
                   <div className="relative" style={{ aspectRatio: '4/3', backgroundColor: '#111' }}>
                     <img src={gallery.image} alt={gallery.title} className="w-full h-full object-cover" style={{ objectPosition: gallery.objectPosition }} />
                     {gallery.featured && (
-                      <div className="absolute top-2 left-2 px-2 py-1 rounded-full flex items-center gap-1 text-[10px] uppercase" style={{ backgroundColor: 'rgba(212,168,67,0.9)', color: '#121212' }}>
+                      <div className="absolute top-2 left-2 px-2 py-1 rounded-full flex items-center gap-1 text-[10px] uppercase" style={{ backgroundColor: 'rgba(198,164,90,0.9)', color: '#2D1011' }}>
                         <Star className="w-3 h-3" /> Featured
                       </div>
                     )}
                   </div>
                   <div className="p-4">
                     <p className="text-[10px] uppercase tracking-widest mb-1" style={{ color: gallery.accent }}>{gallery.org}</p>
-                    <h3 className="text-lg mb-1" style={{ color: '#121212' }}>{gallery.title}</h3>
+                    <h3 className="text-lg mb-1" style={{ color: '#2D1011' }}>{gallery.title}</h3>
                     <p className="text-sm mb-3" style={{ color: '#777777' }}>{gallery.subtitle} · {gallery.category} · {gallery.year}</p>
                     <div className="flex items-center gap-2">
                       <Button size="sm" variant="outline" onClick={() => openEditForm(gallery)}>
                         <Pencil className="w-3.5 h-3.5 mr-1.5" /> Edit
                       </Button>
                       <Button size="sm" variant="outline" onClick={() => handleDelete(gallery.id, gallery.title)}>
-                        <Trash2 className="w-3.5 h-3.5 mr-1.5" style={{ color: '#B1643B' }} />
+                        <Trash2 className="w-3.5 h-3.5 mr-1.5" style={{ color: '#887759' }} />
                       </Button>
                       <a href={gallery.url} target="_blank" rel="noopener noreferrer" className="ml-auto">
                         <ExternalLink className="w-4 h-4" style={{ color: '#777777' }} />

@@ -22,7 +22,7 @@ export function TrustSignals() {
       descKey: 'trust.partner2.desc',
       logo: logoBSSC,
       logoAlt: 'BSSC — Black Student Success Centre',
-      logoBg: '#121212',
+      logoBg: '#2D1011',
       year: '2025',
     },
     {
@@ -58,7 +58,7 @@ export function TrustSignals() {
 
 
   return (
-    <section className="py-20" style={{ backgroundColor: '#F8F9FA' }}>
+    <section className="py-20" style={{ backgroundColor: '#FFFFFF' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Trusted By Section */}
         <motion.div
@@ -68,11 +68,11 @@ export function TrustSignals() {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6" style={{ backgroundColor: 'rgba(212, 168, 67, 0.1)', border: '1px solid rgba(212, 168, 67, 0.2)' }}>
-            <Award className="w-4 h-4" style={{ color: '#D4A843' }} />
-            <span className="text-sm tracking-wide font-medium" style={{ color: '#D4A843' }}>{t('trust.badge')}</span>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6" style={{ backgroundColor: 'rgba(198,164,90, 0.1)', border: '1px solid rgba(198,164,90, 0.2)' }}>
+            <Award className="w-4 h-4" style={{ color: '#C6A45A' }} />
+            <span className="text-sm tracking-wide font-medium" style={{ color: '#7D6D51' }}>{t('trust.badge')}</span>
           </div>
-          <h2 className="text-4xl md:text-5xl mb-4" style={{ color: '#121212' }}>
+          <h2 className="text-4xl md:text-5xl mb-4" style={{ color: '#2D1011' }}>
             {t('trust.heading')}
           </h2>
           <p className="text-lg max-w-2xl mx-auto" style={{ color: '#777777' }}>
@@ -102,13 +102,13 @@ export function TrustSignals() {
                   className="w-full h-full object-contain p-2"
                 />
               </div>
-              <h3 className="text-xl font-semibold mb-2" style={{ color: '#121212' }}>
+              <h3 className="text-xl font-semibold mb-2" style={{ color: '#2D1011' }}>
                 {t(partner.nameKey)}
               </h3>
               <p className="text-sm mb-3" style={{ color: '#777777' }}>
                 {t(partner.descKey)}
               </p>
-              <div className="text-xs tracking-wide" style={{ color: '#D4A843' }}>
+              <div className="text-xs tracking-wide" style={{ color: '#7D6D51' }}>
                 {t('trust.since')} {partner.year}
               </div>
             </motion.div>
@@ -123,11 +123,11 @@ export function TrustSignals() {
           transition={{ duration: 0.8 }}
           className="text-center mb-12"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6" style={{ backgroundColor: 'rgba(177, 100, 59, 0.1)', border: '1px solid rgba(177, 100, 59, 0.2)' }}>
-            <Star className="w-4 h-4" style={{ color: '#B1643B' }} />
-            <span className="text-sm tracking-wide font-medium" style={{ color: '#B1643B' }}>{t('trust.testimonials.badge')}</span>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6" style={{ backgroundColor: 'rgba(136,119,89, 0.1)', border: '1px solid rgba(136,119,89, 0.2)' }}>
+            <Star className="w-4 h-4" style={{ color: '#887759' }} />
+            <span className="text-sm tracking-wide font-medium" style={{ color: '#887759' }}>{t('trust.testimonials.badge')}</span>
           </div>
-          <h2 className="text-4xl md:text-5xl mb-4" style={{ color: '#121212' }}>
+          <h2 className="text-4xl md:text-5xl mb-4" style={{ color: '#2D1011' }}>
             {t('trust.testimonials.heading')}
           </h2>
         </motion.div>
@@ -146,14 +146,14 @@ export function TrustSignals() {
             >
               <div className="flex gap-1 mb-4">
                 {[...Array(testimonial.rating)].map((_, i) => (
-                  <Star key={i} className="w-5 h-5 fill-current" style={{ color: '#D4A843' }} />
+                  <Star key={i} className="w-5 h-5 fill-current" style={{ color: '#C6A45A' }} />
                 ))}
               </div>
               <p className="text-lg mb-6 italic leading-relaxed" style={{ color: '#777777' }}>
                 "{t(testimonial.quoteKey)}"
               </p>
               <div className="border-t pt-4" style={{ borderColor: '#E0E0E0' }}>
-                <p className="font-semibold mb-1" style={{ color: '#121212' }}>
+                <p className="font-semibold mb-1" style={{ color: '#2D1011' }}>
                   {t(testimonial.authorKey)}
                 </p>
                 <p className="text-sm" style={{ color: '#777777' }}>

@@ -44,8 +44,8 @@ export function BackToTop() {
             size="icon"
             className="h-12 w-12 rounded-full shadow-lg transition-all hover:scale-110"
             style={{
-              backgroundColor: '#121212',
-              color: '#F8F9FA',
+              backgroundColor: '#2D1011',
+              color: '#FFFFFF',
             }}
             aria-label={t('a11y.back.top')}
           >

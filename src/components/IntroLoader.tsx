@@ -1,20 +1,17 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import logoRed from '../assets/logo-mark-red.png';
-import logoBlue from '../assets/logo-mark-blue.png';
-import logoWhite from '../assets/logo-mark-white.png';
+import { Logo } from './Logo';
 
 const SESSION_KEY = 'creova-intro-shown';
 
-// The mark flashes through its brand-colour identities, then locks on the
-// white variant. Navy is left out on purpose — it's near-invisible on the
-// #121212 backdrop. The last entry is the resting colour.
+// A short brand-board sequence. Content loads underneath it, so this is a
+// reveal rather than a loading dependency.
 const CYCLE = [
-  { src: logoRed, glow: 'rgba(177,100,59,0.35)' },
-  { src: logoBlue, glow: 'rgba(46,64,87,0.45)' },
-  { src: logoWhite, glow: 'rgba(212,168,67,0.30)' },
+  { color: '#CDBFAE', glow: 'rgba(205,191,174,0.28)' },
+  { color: '#887759', glow: 'rgba(136,119,89,0.32)' },
+  { color: '#FFFFFF', glow: 'rgba(198,164,90,0.26)' },
 ];
-const STEP_MS = 300;
+const STEP_MS = 240;
 
 /**
  * Plays once per browser tab session, on the very first page load — not on
@@ -33,6 +30,7 @@ export function IntroLoader() {
 
     if (alreadyShown || reduceMotion) {
       sessionStorage.setItem(SESSION_KEY, '1');
+      document.documentElement.classList.remove('creova-intro-pending');
       setPhase('done');
       return;
     }
@@ -51,45 +49,45 @@ export function IntroLoader() {
       });
     }, STEP_MS);
 
-    const hold = STEP_MS * (CYCLE.length - 1) + 550; // reach white, then linger
-    const timer = setTimeout(() => setPhase('done'), hold + 500);
+    const hold = STEP_MS * (CYCLE.length - 1) + 380;
+    const timer = setTimeout(() => {
+      setPhase('done');
+      document.documentElement.classList.remove('creova-intro-pending');
+    }, hold + 320);
 
     return () => {
       clearInterval(stepper);
       clearTimeout(timer);
+      document.documentElement.classList.remove('creova-intro-pending');
     };
   }, []);
-
-  if (phase !== 'playing') return null;
 
   const current = CYCLE[step];
   const isFinal = step === CYCLE.length - 1;
 
   return (
     <AnimatePresence>
-      <motion.div
+      {phase === 'playing' && <motion.div
         key="intro"
+        data-creova-intro
         className="fixed inset-0 z-[300] flex items-center justify-center pointer-events-none overflow-hidden"
-        style={{ backgroundColor: '#121212' }}
+        style={{ backgroundColor: '#2D1011' }}
         initial={{ opacity: 1 }}
         animate={{ opacity: 1 }}
-        exit={{ opacity: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.05 } }}
+        exit={{ opacity: 0, transition: { duration: 0.32, ease: [0.22, 1, 0.36, 1] } }}
       >
-        {/* Colour-matched glow pulse behind the mark */}
+        <div className="absolute inset-x-0 top-0 h-1" style={{ backgroundColor: '#C6A45A' }} />
         <motion.div
           className="absolute rounded-full pointer-events-none"
-          style={{ width: 520, height: 520, background: `radial-gradient(circle, ${current.glow} 0%, transparent 65%)` }}
+          style={{ width: 420, height: 420, background: `radial-gradient(circle, ${current.glow} 0%, transparent 68%)` }}
           animate={{ scale: isFinal ? [1, 1.15] : 1, opacity: isFinal ? [0.8, 0.4] : 1 }}
           transition={{ duration: isFinal ? 0.7 : 0.3, ease: 'easeOut' }}
         />
 
         <AnimatePresence mode="popLayout">
-          <motion.img
+          <motion.div
             key={step}
-            src={current.src}
-            alt=""
-            aria-hidden="true"
-            className="relative h-16 sm:h-20 w-auto"
+            className="relative flex flex-col items-center gap-5"
             initial={{ opacity: 0, scale: 0.82, rotate: -6 }}
             animate={{
               opacity: 1,
@@ -98,9 +96,17 @@ export function IntroLoader() {
             }}
             exit={{ opacity: 0, scale: 1.12, transition: { duration: 0.18 } }}
             transition={{ duration: isFinal ? 0.6 : 0.26, ease: [0.22, 1, 0.36, 1] }}
-          />
+          >
+            <Logo color={current.color} className="h-16 sm:h-20 w-auto" interactive={false} />
+            {isFinal && (
+              <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="text-center">
+                <div className="text-xl sm:text-2xl font-bold tracking-[0.28em]" style={{ color: '#FFFFFF' }}>CREOVA</div>
+                <div className="mt-1 text-[9px] uppercase tracking-[0.42em]" style={{ color: '#CDBFAE' }}>Creative Studio</div>
+              </motion.div>
+            )}
+          </motion.div>
         </AnimatePresence>
-      </motion.div>
+      </motion.div>}
     </AnimatePresence>
   );
 }

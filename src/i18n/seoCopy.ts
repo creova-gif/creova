@@ -38,6 +38,11 @@ export const SEO_FR: Record<string, SeoCopy> = {
     description:
       "Mandater CREOVA, proposer une collaboration ou discuter d'un partenariat communautaire avec des attentes claires.",
   },
+  '/resources': {
+    title: 'Ressources créatives gratuites',
+    description:
+      'Des modèles, listes de contrôle et guides pratiques de CREOVA pour mieux préparer les projets créatifs et culturels.',
+  },
   '/ventures': {
     title: 'Produits et marques en développement',
     description:

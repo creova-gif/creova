@@ -164,7 +164,7 @@ export function ContactPage() {
   };
 
   return (
-    <div style={{ backgroundColor: '#F8F9FA' }}>
+    <div style={{ backgroundColor: '#FFFFFF' }}>
       <PageSEO
         title="Start a Project"
         description={language === 'fr' ? 'Parlez à CREOVA de votre événement, campagne, programme communautaire ou partenariat narratif.' : 'Tell CREOVA about your event, campaign, community program, or ongoing storytelling partnership.'}
@@ -173,10 +173,10 @@ export function ContactPage() {
       {/* Hero — full-width dark with large email CTA treatment */}
       <section
         className="relative overflow-hidden"
-        style={{ backgroundColor: '#121212', borderBottom: '1px solid rgba(212,168,67,0.15)' }}
+        style={{ backgroundColor: '#2D1011', borderBottom: '1px solid rgba(198,164,90,0.15)' }}
       >
         {/* Top accent stripe */}
-        <div style={{ height: '2px', background: 'linear-gradient(90deg, #D4A843, #B1643B, transparent)' }} />
+        <div style={{ height: '2px', background: 'linear-gradient(90deg, #C6A45A, #887759, transparent)' }} />
 
         <div className="relative max-w-7xl mx-auto px-6 lg:px-12 py-20 lg:py-28">
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-10">
@@ -188,8 +188,8 @@ export function ContactPage() {
                 transition={{ duration: 0.6 }}
                 className="flex items-center gap-3 mb-8"
               >
-                <div style={{ width: '32px', height: '1px', backgroundColor: '#D4A843' }} />
-                <span className="text-[10px] tracking-[0.5em] uppercase" style={{ color: '#D4A843' }}>
+                <div style={{ width: '32px', height: '1px', backgroundColor: '#C6A45A' }} />
+                <span className="text-[10px] tracking-[0.5em] uppercase" style={{ color: '#C6A45A' }}>
                   {t('contact.badge.getintouch')}
                 </span>
               </motion.div>
@@ -199,7 +199,7 @@ export function ContactPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
               >
-                <h1 className="font-light tracking-tight leading-[0.96] max-w-5xl" style={{ fontSize: 'clamp(3.4rem, 9vw, 8rem)', color: '#F8F9FA' }}>
+                <h1 className="font-light tracking-tight leading-[0.96] max-w-5xl" style={{ fontSize: 'clamp(3.4rem, 9vw, 8rem)', color: '#FFFFFF' }}>
                   {language === 'fr' ? 'Parlez-nous de ce que vous préparez.' : 'Tell us what you’re planning.'}
                 </h1>
               </motion.div>
@@ -209,7 +209,7 @@ export function ContactPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.35 }}
                 className="mt-6 text-lg leading-relaxed max-w-2xl"
-                style={{ color: 'rgba(248,249,250,0.72)' }}
+                style={{ color: 'rgba(255,255,255,0.72)' }}
               >
                 {language === 'fr'
                   ? 'Décrivez l’événement, le programme ou la campagne, le public à rejoindre et ce que le travail doit accomplir.'
@@ -221,7 +221,7 @@ export function ContactPage() {
       </section>
 
       {/* Contact Form & Info */}
-      <section className="py-16" style={{ backgroundColor: '#F8F9FA' }}>
+      <section className="py-16" style={{ backgroundColor: '#FFFFFF' }}>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -229,10 +229,10 @@ export function ContactPage() {
             transition={{ duration: 0.8, delay: 0.2 }}
           >
             {/* Intake promise — dark card */}
-            <div className="rounded-2xl p-6 mb-8 overflow-hidden" style={{ backgroundColor: '#121212', border: '1px solid rgba(212,168,67,0.25)' }}>
+            <div className="rounded-2xl p-6 mb-8 overflow-hidden" style={{ backgroundColor: '#2D1011', border: '1px solid rgba(198,164,90,0.25)' }}>
               <div className="flex items-start gap-4">
                 <div className="flex-1">
-                  <h2 className="text-lg mb-1 tracking-tight" style={{ color: '#F8F9FA' }}>
+                  <h2 className="text-lg mb-1 tracking-tight" style={{ color: '#FFFFFF' }}>
                     {language === 'fr' ? 'Parlez-nous du projet.' : 'Tell us about the project.'}
                   </h2>
                   <p className="text-sm mb-4" style={{ color: '#777777' }}>
@@ -240,7 +240,7 @@ export function ContactPage() {
                       ? 'Nous enregistrons d’abord votre demande, puis nous affichons son identifiant de suivi.'
                       : 'We persist your request first, then show its tracking ID.'}
                   </p>
-                  <p className="text-xs tracking-wide" style={{ color: '#D4A843' }}>
+                  <p className="text-xs tracking-wide" style={{ color: '#C6A45A' }}>
                     {language === 'fr' ? 'Du lundi au vendredi · heure de Toronto' : 'Monday–Friday · Toronto time'}
                   </p>
                 </div>
@@ -249,16 +249,16 @@ export function ContactPage() {
 
             {/* Divider */}
             <div className="flex items-center gap-4 mb-8">
-              <div style={{ flex: 1, height: '1px', backgroundColor: 'rgba(18,18,18,0.1)' }} />
+              <div style={{ flex: 1, height: '1px', backgroundColor: 'rgba(45,16,17,0.1)' }} />
               <p className="text-xs tracking-widest uppercase" style={{ color: '#777777' }}>{language === 'fr' ? 'Démarrer un projet' : 'Start a project'}</p>
-              <div style={{ flex: 1, height: '1px', backgroundColor: 'rgba(18,18,18,0.1)' }} />
+              <div style={{ flex: 1, height: '1px', backgroundColor: 'rgba(45,16,17,0.1)' }} />
             </div>
 
-            <div className="rounded-2xl p-8 md:p-12" style={{ backgroundColor: '#FFFFFF', border: '1px solid rgba(18,18,18,0.1)' }}>
+            <div className="rounded-2xl p-8 md:p-12" style={{ backgroundColor: '#FFFFFF', border: '1px solid rgba(45,16,17,0.1)' }}>
               <h2 className="text-2xl mb-6">{t('contact.form.title')}</h2>
 
               {receipt && (
-                <div className="mb-8 rounded-xl p-5" role="status" style={{ backgroundColor: 'rgba(212,168,67,0.1)', border: '1px solid rgba(212,168,67,0.3)' }}>
+                <div className="mb-8 rounded-xl p-5" role="status" style={{ backgroundColor: 'rgba(198,164,90,0.1)', border: '1px solid rgba(198,164,90,0.3)' }}>
                   <p className="font-medium mb-2">{language === 'fr' ? 'Demande enregistrée' : 'Request received'}</p>
                   <p className="text-sm break-all" style={{ color: '#555' }}>{language === 'fr' ? 'Identifiant' : 'Request ID'}: {receipt.requestId}</p>
                   {receipt.responseDueAt && (
@@ -338,6 +338,7 @@ export function ContactPage() {
                     <option value="event-story">{language === 'fr' ? 'Récit d’événement et d’expérience' : 'Event and experience storytelling'}</option>
                     <option value="campaign-story">{language === 'fr' ? 'Campagne et récit communautaire' : 'Campaign and community narrative'}</option>
                     <option value="ongoing-partnership">{language === 'fr' ? 'Partenariat narratif continu' : 'Ongoing storytelling partnership'}</option>
+                    <option value="equipment-access">{language === 'fr' ? 'Accès à l’équipement de production' : 'Production equipment access'}</option>
                     <option value="partnership">{language === 'fr' ? 'Partenariat ou collaboration' : 'Partnership or collaboration'}</option>
                     <option value="other">{t('contact.form.opt.other')}</option>
                   </select>
@@ -405,7 +406,7 @@ export function ContactPage() {
 
                 {/* CAPTCHA Verification */}
                 <div className="border-t pt-6" style={{ borderColor: '#E0E0E0' }}>
-                  <h3 className="text-lg mb-2" style={{ color: '#121212' }}>{t('contact.form.security')}</h3>
+                  <h3 className="text-lg mb-2" style={{ color: '#2D1011' }}>{t('contact.form.security')}</h3>
                   <p className="text-xs mb-4" style={{ color: '#777777' }}>
                     {t('contact.captcha.security')}
                   </p>
@@ -432,19 +433,19 @@ export function ContactPage() {
       </section>
 
       {/* FAQ Section */}
-      <section id="faq-section" className="py-20 relative overflow-hidden" style={{ backgroundColor: '#121212' }}>
-        <div className="absolute top-0 left-0 right-0" style={{ height: '1px', backgroundColor: 'rgba(212,168,67,0.3)' }} />
+      <section id="faq-section" className="py-20 relative overflow-hidden" style={{ backgroundColor: '#2D1011' }}>
+        <div className="absolute top-0 left-0 right-0" style={{ height: '1px', backgroundColor: 'rgba(198,164,90,0.3)' }} />
         <div className="absolute inset-0 pointer-events-none" style={{
-          background: 'radial-gradient(ellipse 50% 60% at 50% 100%, rgba(212,168,67,0.06) 0%, transparent 65%)'
+          background: 'radial-gradient(ellipse 50% 60% at 50% 100%, rgba(198,164,90,0.06) 0%, transparent 65%)'
         }} />
 
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-12">
             <div className="flex items-center gap-5 mb-3">
-              <div style={{ height: '1px', width: '40px', backgroundColor: 'rgba(212,168,67,0.5)' }} />
-              <p className="text-xs tracking-[0.5em] uppercase" style={{ color: '#D4A843' }}>{t('contact.faq.badge')}</p>
+              <div style={{ height: '1px', width: '40px', backgroundColor: 'rgba(198,164,90,0.5)' }} />
+              <p className="text-xs tracking-[0.5em] uppercase" style={{ color: '#C6A45A' }}>{t('contact.faq.badge')}</p>
             </div>
-            <h2 className="text-4xl font-light tracking-tight" style={{ color: '#F8F9FA' }}>{t('contact.faq.title')}</h2>
+            <h2 className="text-4xl font-light tracking-tight" style={{ color: '#FFFFFF' }}>{t('contact.faq.title')}</h2>
           </div>
           
           <Accordion 
@@ -475,10 +476,10 @@ export function ContactPage() {
                 key={i}
                 value={`item-${i + 1}`}
                 className="px-6 rounded-xl"
-                style={{ border: '1px solid rgba(212,168,67,0.18)', backgroundColor: 'rgba(212,168,67,0.04)' }}
+                style={{ border: '1px solid rgba(198,164,90,0.18)', backgroundColor: 'rgba(198,164,90,0.04)' }}
               >
                 <AccordionTrigger className="hover:no-underline py-5">
-                  <span className="text-base text-left" style={{ color: '#F8F9FA' }}>{item.q}</span>
+                  <span className="text-base text-left" style={{ color: '#FFFFFF' }}>{item.q}</span>
                 </AccordionTrigger>
                 <AccordionContent>
                   <p className="leading-relaxed pb-4 text-sm" style={{ color: '#777777' }}>{item.a}</p>
@@ -490,15 +491,15 @@ export function ContactPage() {
       </section>
 
       {/* Leave-a-review CTA */}
-      <section className="py-16" style={{ backgroundColor: '#121212' }}>
+      <section className="py-16" style={{ backgroundColor: '#2D1011' }}>
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-6 rounded-2xl p-8" style={{ backgroundColor: 'rgba(212,168,67,0.06)', border: '1px solid rgba(212,168,67,0.18)' }}>
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-6 rounded-2xl p-8" style={{ backgroundColor: 'rgba(198,164,90,0.06)', border: '1px solid rgba(198,164,90,0.18)' }}>
             <div className="flex items-center gap-4 text-center sm:text-left">
-              <span className="flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center" style={{ backgroundColor: 'rgba(212,168,67,0.15)' }}>
-                <Star className="w-6 h-6" style={{ color: '#D4A843' }} />
+              <span className="flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center" style={{ backgroundColor: 'rgba(198,164,90,0.15)' }}>
+                <Star className="w-6 h-6" style={{ color: '#C6A45A' }} />
               </span>
               <div>
-                <p className="text-base font-medium mb-1" style={{ color: '#F8F9FA' }}>{t('home.review.title')}</p>
+                <p className="text-base font-medium mb-1" style={{ color: '#FFFFFF' }}>{t('home.review.title')}</p>
                 <p className="text-sm" style={{ color: '#8C7B75' }}>{t('home.review.sub')}</p>
               </div>
             </div>
@@ -507,7 +508,7 @@ export function ContactPage() {
               target="_blank"
               rel="noopener noreferrer"
               className="flex-shrink-0 inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold tracking-wide transition-all duration-300 hover:-translate-y-px hover:shadow-lg"
-              style={{ backgroundColor: '#B1643B', color: '#F8F9FA' }}
+              style={{ backgroundColor: '#7D6D51', color: '#FFFFFF' }}
             >
               {t('home.review.cta')}
             </a>

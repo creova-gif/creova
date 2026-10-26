@@ -11,7 +11,7 @@ import { FallDropTeaser } from '../components/FallDropTeaser';
 import { DigitalProductsPage } from './DigitalProductsPage';
 import { productListSchema } from '../utils/structuredData';
 
-const warmGradient = 'linear-gradient(135deg, #D4A843 0%, #B1643B 100%)';
+const warmGradient = 'linear-gradient(135deg, #C6A45A 0%, #887759 100%)';
 
 export function ShopPage() {
   const { t } = useLanguage();
@@ -40,8 +40,8 @@ export function ShopPage() {
     'Ocean Blue': '#1E5F74',
     'Mustard Gold': '#D4A02F',
     'Mocha Brown': '#7B5E57',
-    'Earth Clay': '#B1643B',
-    'Olive Gold': '#D4A843'
+    'Earth Clay': '#887759',
+    'Olive Gold': '#C6A45A'
   };
 
   const products = [
@@ -92,7 +92,7 @@ export function ShopPage() {
   ];
 
   return (
-    <div style={{ backgroundColor: '#F8F9FA' }}>
+    <div style={{ backgroundColor: '#FFFFFF' }}>
       {activeCollection === 'apparel' && (
         <PageSEO
           title="Shop — VERSE Fall/Winter Capsule"
@@ -117,15 +117,15 @@ export function ShopPage() {
       </motion.div>
 
       {/* Hero — editorial asymmetric split */}
-      <section className="relative overflow-hidden" style={{ backgroundColor: '#121212', minHeight: '440px' }}>
+      <section className="relative overflow-hidden" style={{ backgroundColor: '#2D1011', minHeight: '440px' }}>
         {/* Subtle ambient glow */}
         <div className="absolute inset-0 pointer-events-none" style={{
-          background: `radial-gradient(ellipse 50% 80% at 0% 50%, rgba(212,168,67,0.07) 0%, transparent 60%),
-                       radial-gradient(ellipse 35% 55% at 100% 30%, rgba(177,100,59,0.05) 0%, transparent 60%)`
+          background: `radial-gradient(ellipse 50% 80% at 0% 50%, rgba(198,164,90,0.07) 0%, transparent 60%),
+                       radial-gradient(ellipse 35% 55% at 100% 30%, rgba(136,119,89,0.05) 0%, transparent 60%)`
         }} />
         {/* Left accent stripe */}
         <div className="absolute left-0 top-0 bottom-0 w-1" style={{ background: warmGradient }} />
-        <div className="absolute bottom-0 left-0 right-0" style={{ height: '1px', backgroundColor: 'rgba(212,168,67,0.2)' }} />
+        <div className="absolute bottom-0 left-0 right-0" style={{ height: '1px', backgroundColor: 'rgba(198,164,90,0.2)' }} />
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-[1fr_auto] gap-0 items-center py-16 sm:py-24">
@@ -138,8 +138,8 @@ export function ShopPage() {
                 transition={{ duration: 0.6 }}
                 className="flex items-center gap-3 mb-6"
               >
-                <div style={{ height: '1px', width: '32px', backgroundColor: 'rgba(212,168,67,0.5)' }} />
-                <span className="text-[10px] tracking-[0.5em] uppercase" style={{ color: '#D4A843' }}>VERSE by CREOVA</span>
+                <div style={{ height: '1px', width: '32px', backgroundColor: 'rgba(198,164,90,0.5)' }} />
+                <span className="text-[10px] tracking-[0.5em] uppercase" style={{ color: '#C6A45A' }}>VERSE by CREOVA</span>
               </motion.div>
 
               {/* MASSIVE "VERSE." */}
@@ -148,7 +148,7 @@ export function ShopPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.1 }}
                 className="font-light leading-none tracking-tighter"
-                style={{ fontSize: 'clamp(80px, 16vw, 200px)', color: '#F8F9FA', letterSpacing: '-0.04em' }}
+                style={{ fontSize: 'clamp(80px, 16vw, 200px)', color: '#FFFFFF', letterSpacing: '-0.04em' }}
               >
                 VERSE.
               </motion.h1>
@@ -175,7 +175,7 @@ export function ShopPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
                 className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-xs tracking-widest"
-                style={{ backgroundColor: 'rgba(212,168,67,0.1)', border: '1px solid rgba(212,168,67,0.3)', color: '#D4A843' }}
+                style={{ backgroundColor: 'rgba(198,164,90,0.1)', border: '1px solid rgba(198,164,90,0.3)', color: '#C6A45A' }}
               >
                 <Calendar className="w-3.5 h-3.5" />
                 Pre-Order · FW Capsule · Ships November 2026
@@ -190,9 +190,9 @@ export function ShopPage() {
               className="hidden md:flex flex-col gap-3 w-60 ml-16"
             >
               {[
-                { icon: Shirt, label: 'Apparel', count: '12+', desc: 'Tees · Hoodies · Hats', color: '#D4A843' },
-                { icon: Tag, label: 'Limited Drops', count: '3', desc: 'Seasonal collections', color: '#B1643B' },
-                { icon: Sparkles, label: 'Collaborations', count: '5+', desc: 'Artist partnerships', color: '#D4A843' },
+                { icon: Shirt, label: 'Apparel', count: '12+', desc: 'Tees · Hoodies · Hats', color: '#C6A45A' },
+                { icon: Tag, label: 'Limited Drops', count: '3', desc: 'Seasonal collections', color: '#887759' },
+                { icon: Sparkles, label: 'Collaborations', count: '5+', desc: 'Artist partnerships', color: '#C6A45A' },
               ].map((cat, i) => (
                 <motion.div
                   key={cat.label}
@@ -201,26 +201,26 @@ export function ShopPage() {
                   transition={{ delay: 0.4 + i * 0.1 }}
                   className="flex items-center gap-4 px-5 py-4 rounded-xl"
                   style={{
-                    backgroundColor: 'rgba(248,249,250,0.04)',
-                    border: '1px solid rgba(212,168,67,0.12)',
+                    backgroundColor: 'rgba(255,255,255,0.04)',
+                    border: '1px solid rgba(198,164,90,0.12)',
                   }}
                 >
                   <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
-                    style={{ backgroundColor: 'rgba(212,168,67,0.1)', border: `1px solid ${cat.color}30` }}>
+                    style={{ backgroundColor: 'rgba(198,164,90,0.1)', border: `1px solid ${cat.color}30` }}>
                     <cat.icon className="w-4 h-4" style={{ color: cat.color }} />
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between gap-2">
-                      <span className="text-sm font-medium" style={{ color: '#F8F9FA' }}>{cat.label}</span>
+                      <span className="text-sm font-medium" style={{ color: '#FFFFFF' }}>{cat.label}</span>
                       <span className="text-xs font-semibold" style={{ color: cat.color }}>{cat.count}</span>
                     </div>
-                    <p className="text-[11px] mt-0.5" style={{ color: 'rgba(248,249,250,0.3)' }}>{cat.desc}</p>
+                    <p className="text-[11px] mt-0.5" style={{ color: 'rgba(255,255,255,0.3)' }}>{cat.desc}</p>
                   </div>
                 </motion.div>
               ))}
               <div className="mt-1 flex items-center gap-2 px-1">
-                <span className="w-1.5 h-1.5 rounded-full animate-pulse flex-shrink-0" style={{ backgroundColor: '#D4A843' }} />
-                <span className="text-[10px] tracking-wide" style={{ color: 'rgba(248,249,250,0.25)' }}>FW Capsule · Vol. 01 · Fall 2026</span>
+                <span className="w-1.5 h-1.5 rounded-full animate-pulse flex-shrink-0" style={{ backgroundColor: '#C6A45A' }} />
+                <span className="text-[10px] tracking-wide" style={{ color: 'rgba(255,255,255,0.25)' }}>FW Capsule · Vol. 01 · Fall 2026</span>
               </div>
             </motion.div>
           </div>
@@ -231,7 +231,7 @@ export function ShopPage() {
       <nav
         aria-label="Shop collections"
         className="border-b"
-        style={{ backgroundColor: '#121212', borderColor: 'rgba(212,168,67,0.2)' }}
+        style={{ backgroundColor: '#2D1011', borderColor: 'rgba(198,164,90,0.2)' }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex gap-1">
           {([
@@ -245,7 +245,7 @@ export function ShopPage() {
                 to={to}
                 aria-current={active ? 'page' : undefined}
                 className="relative flex items-center gap-2 px-5 py-4 text-xs tracking-[0.3em] uppercase transition-colors duration-200"
-                style={{ color: active ? '#F8F9FA' : '#777777' }}
+                style={{ color: active ? '#FFFFFF' : '#777777' }}
               >
                 <Icon className="w-3.5 h-3.5" />
                 {label}
@@ -265,7 +265,7 @@ export function ShopPage() {
       <FallDropTeaser />
 
       {/* Dark filter bar */}
-      <section className="sticky z-40 py-0" style={{ top: '64px', backgroundColor: '#121212', borderBottom: '1px solid rgba(212,168,67,0.15)' }}>
+      <section className="sticky z-40 py-0" style={{ top: '64px', backgroundColor: '#2D1011', borderBottom: '1px solid rgba(198,164,90,0.15)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             <div className="flex overflow-x-auto scrollbar-hide">
@@ -274,7 +274,7 @@ export function ShopPage() {
                   key={item.value}
                   onClick={() => setFilter(item.value)}
                   className="px-5 py-4 text-xs tracking-[0.35em] whitespace-nowrap transition-all duration-200 relative"
-                  style={{ color: filter === item.value ? '#F8F9FA' : '#777777' }}
+                  style={{ color: filter === item.value ? '#FFFFFF' : '#777777' }}
                 >
                   {item.label}
                   {filter === item.value && (
@@ -292,7 +292,7 @@ export function ShopPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {filteredProducts.length === 0 && (
             <div className="py-20 text-center">
-              <p className="text-lg mb-2" style={{ color: '#121212' }}>No items in this category yet</p>
+              <p className="text-lg mb-2" style={{ color: '#2D1011' }}>No items in this category yet</p>
               <p className="text-sm" style={{ color: '#777777' }}>Check back soon — new drops coming.</p>
             </div>
           )}
@@ -308,7 +308,7 @@ export function ShopPage() {
                 onMouseLeave={() => setHoveredProduct(null)}
               >
                 {/* Image area */}
-                <div className="relative aspect-[3/4] mb-3 overflow-hidden" style={{ backgroundColor: '#F8F9FA' }}>
+                <div className="relative aspect-[3/4] mb-3 overflow-hidden" style={{ backgroundColor: '#FFFFFF' }}>
                   <img
                     src={product.image}
                     alt={product.name}
@@ -329,14 +329,14 @@ export function ShopPage() {
                     <div className="px-5 py-2 text-[9px] tracking-[0.4em] text-center mb-2" style={{ background: warmGradient, color: '#FFFFFF' }}>
                       COMING NOVEMBER 2026
                     </div>
-                    <p className="text-[9px] tracking-wider" style={{ color: 'rgba(248,249,250,0.55)' }}>Pre-Order Available Soon</p>
+                    <p className="text-[9px] tracking-wider" style={{ color: 'rgba(255,255,255,0.55)' }}>Pre-Order Available Soon</p>
                   </div>
 
                   {/* Badge */}
                   {product.badge && (
                     <div className="absolute top-2 left-2 px-2 py-0.5 text-[8px] tracking-widest z-10"
                       style={{
-                        backgroundColor: product.badge === 'PREMIUM' ? 'rgba(212,168,67,0.9)' : product.badge === 'LIMITED' ? 'rgba(177,100,59,0.9)' : 'rgba(18,18,18,0.85)',
+                        backgroundColor: product.badge === 'PREMIUM' ? 'rgba(198,164,90,0.9)' : product.badge === 'LIMITED' ? 'rgba(136,119,89,0.9)' : 'rgba(45,16,17,0.85)',
                         color: '#FFFFFF'
                       }}>
                       {product.badge}
@@ -346,8 +346,8 @@ export function ShopPage() {
 
                 {/* Product info */}
                 <div className="space-y-1">
-                  <h3 className="text-[10px] tracking-wider leading-snug" style={{ color: '#121212' }}>{product.name}</h3>
-                  <p className="text-sm" style={{ color: '#121212' }}>${product.price} CAD</p>
+                  <h3 className="text-[10px] tracking-wider leading-snug" style={{ color: '#2D1011' }}>{product.name}</h3>
+                  <p className="text-sm" style={{ color: '#2D1011' }}>${product.price} CAD</p>
 
                   {/* Size hover */}
                   {hoveredProduct === product.id && product.sizes.length > 1 && (
@@ -358,7 +358,7 @@ export function ShopPage() {
                           type="button"
                           onClick={() => setSizeGuideOpen(true)}
                           className="text-[9px] tracking-wide underline underline-offset-2 transition-colors hover:no-underline"
-                          style={{ color: '#D4A843' }}
+                          style={{ color: '#C6A45A' }}
                         >
                           {t('product.size.guide')}
                         </button>
@@ -368,9 +368,9 @@ export function ShopPage() {
                           <button key={size} onClick={() => setSelectedSizes(prev => ({ ...prev, [product.id]: size }))}
                             className="px-1.5 py-0.5 text-[9px] tracking-wide border transition-colors"
                             style={{
-                              borderColor: selectedSizes[product.id] === size ? '#121212' : '#E0E0E0',
-                              backgroundColor: selectedSizes[product.id] === size ? '#121212' : '#FFFFFF',
-                              color: selectedSizes[product.id] === size ? '#FFFFFF' : '#121212'
+                              borderColor: selectedSizes[product.id] === size ? '#2D1011' : '#E0E0E0',
+                              backgroundColor: selectedSizes[product.id] === size ? '#2D1011' : '#FFFFFF',
+                              color: selectedSizes[product.id] === size ? '#FFFFFF' : '#2D1011'
                             }}>
                             {size}
                           </button>
@@ -390,7 +390,7 @@ export function ShopPage() {
                             className="w-4 h-4 rounded-full border-2 transition-all"
                             style={{
                               backgroundColor: colorPalette[color as keyof typeof colorPalette],
-                              borderColor: selectedColors[product.id]?.name === color ? '#121212' : '#E0E0E0',
+                              borderColor: selectedColors[product.id]?.name === color ? '#2D1011' : '#E0E0E0',
                               transform: selectedColors[product.id]?.name === color ? 'scale(1.15)' : 'scale(1)'
                             }}
                             title={color}
@@ -407,18 +407,18 @@ export function ShopPage() {
       </section>
 
       {/* Brand Statement — dark editorial */}
-      <section className="py-20 relative overflow-hidden" style={{ backgroundColor: '#121212' }}>
-        <div className="absolute top-0 left-0 right-0" style={{ height: '1px', backgroundColor: 'rgba(212,168,67,0.3)' }} />
-        <div className="absolute bottom-0 left-0 right-0" style={{ height: '1px', backgroundColor: 'rgba(212,168,67,0.3)' }} />
+      <section className="py-20 relative overflow-hidden" style={{ backgroundColor: '#2D1011' }}>
+        <div className="absolute top-0 left-0 right-0" style={{ height: '1px', backgroundColor: 'rgba(198,164,90,0.3)' }} />
+        <div className="absolute bottom-0 left-0 right-0" style={{ height: '1px', backgroundColor: 'rgba(198,164,90,0.3)' }} />
         <div className="absolute inset-0 pointer-events-none" style={{
-          background: 'radial-gradient(ellipse 50% 70% at 50% 50%, rgba(212,168,67,0.05) 0%, transparent 65%)'
+          background: 'radial-gradient(ellipse 50% 70% at 50% 50%, rgba(198,164,90,0.05) 0%, transparent 65%)'
         }} />
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
             <div className="flex items-center justify-center gap-5 mb-8">
-              <div style={{ height: '1px', width: '50px', backgroundColor: 'rgba(212,168,67,0.4)' }} />
-              <p className="text-xs tracking-[0.5em] uppercase" style={{ color: '#D4A843' }}>The VERSE Manifesto</p>
-              <div style={{ height: '1px', width: '50px', backgroundColor: 'rgba(212,168,67,0.4)' }} />
+              <div style={{ height: '1px', width: '50px', backgroundColor: 'rgba(198,164,90,0.4)' }} />
+              <p className="text-xs tracking-[0.5em] uppercase" style={{ color: '#C6A45A' }}>The VERSE Manifesto</p>
+              <div style={{ height: '1px', width: '50px', backgroundColor: 'rgba(198,164,90,0.4)' }} />
             </div>
             <p className="text-lg md:text-2xl font-light leading-relaxed mb-6 italic" style={{ color: '#E0E0E0' }}>
               "We design for visibility, softness, and resistance.<br />
@@ -432,7 +432,7 @@ export function ShopPage() {
       </section>
 
       {/* Info bar — cream editorial */}
-      <section className="py-16" style={{ backgroundColor: '#F8F9FA', borderTop: '1px solid rgba(18,18,18,0.08)' }}>
+      <section className="py-16" style={{ backgroundColor: '#FFFFFF', borderTop: '1px solid rgba(45,16,17,0.08)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-3 gap-10 text-center mb-10">
             {[
@@ -442,13 +442,13 @@ export function ShopPage() {
             ].map((item, i) => (
               <div key={i}>
                 <div style={{ height: '2px', width: '24px', background: warmGradient, margin: '0 auto 12px' }} />
-                <h3 className="text-[10px] tracking-[0.4em] mb-2 uppercase" style={{ color: '#121212' }}>{item.title}</h3>
+                <h3 className="text-[10px] tracking-[0.4em] mb-2 uppercase" style={{ color: '#2D1011' }}>{item.title}</h3>
                 <p className="text-xs" style={{ color: '#777777' }}>{item.desc}</p>
               </div>
             ))}
           </div>
 
-          <div className="text-center pt-4" style={{ borderTop: '1px solid rgba(18,18,18,0.08)' }}>
+          <div className="text-center pt-4" style={{ borderTop: '1px solid rgba(45,16,17,0.08)' }}>
             <p className="text-xs tracking-wide mb-1" style={{ color: '#777777' }}>
               All pieces available in multiple colorways from our signature age-inclusive palette (5–90 years)
             </p>

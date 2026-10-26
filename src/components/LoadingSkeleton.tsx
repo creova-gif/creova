@@ -37,7 +37,7 @@ export function ProductCardSkeleton() {
 
 export function PageLoadingSkeleton() {
   return (
-    <div className="py-20" style={{ backgroundColor: '#F8F9FA' }}>
+    <div className="py-20" style={{ backgroundColor: '#FFFFFF' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           animate={{

@@ -137,7 +137,7 @@ export function oneLine(value: unknown, max = 200): string {
 
 /** Admin contact subject. Pass the string from optionalText().value, not the result object. */
 export function contactAdminSubject(service: string | undefined, name: string): string {
-  return `📧 New Contact: ${oneLine(service || "General Inquiry")} — ${oneLine(name)}`;
+  return `New Contact: ${oneLine(service || "General Inquiry")} — ${oneLine(name)}`;
 }
 
 function torontoDateParts(now: Date): { year: number; month: number; day: number } {
@@ -183,7 +183,7 @@ export function contactResponseDueAt(now: Date): string {
 
 /** Admin collaboration subject. Pass optionalText().value, not the result object. */
 export function collaborationAdminSubject(organization: string | undefined, name: string): string {
-  return `🤝 New Collaboration Request: ${oneLine(organization || name)}`;
+  return `New Collaboration Request: ${oneLine(organization || name)}`;
 }
 
 export function escapeHtmlAttr(value: unknown): string {
@@ -371,11 +371,11 @@ export function optionalText(
 
 /** Customer receipts. No submitter text: the address is chosen by the sender. */
 export function contactReceivedHtml(): string {
-  return `<div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#121212"><h2 style="color:#D4A843">Thanks for reaching out</h2><p>We've received your message and will get back to you within 1–2 business days.</p><p style="color:#777777;font-size:14px">In the meantime, follow us on Instagram <a href="https://www.instagram.com/creativeinnovation__" style="color:#D4A843">@creativeinnovation__</a></p><p>— The CREOVA Team</p></div>`;
+  return `<div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#2D1011"><h2 style="color:#C6A45A">Thanks for reaching out</h2><p>We've received your message and will get back to you within 1–2 business days.</p><p style="color:#777777;font-size:14px">In the meantime, follow us on Instagram <a href="https://www.instagram.com/creativeinnovation__" style="color:#7D6D51;text-decoration:underline">@creativeinnovation__</a></p><p>— The CREOVA Team</p></div>`;
 }
 
 export function bookingReceivedHtml(): string {
-  return `<div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#121212"><h2 style="color:#D4A843">We received your booking request</h2><p>Thanks for contacting CREOVA. We'll reply to this email address within 1–2 business days.</p><p>— The CREOVA Team</p></div>`;
+  return `<div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#2D1011"><h2 style="color:#C6A45A">We received your booking request</h2><p>Thanks for contacting CREOVA. We'll reply to this email address within 1–2 business days.</p><p>— The CREOVA Team</p></div>`;
 }
 
 export function parseEmailAddress(value: unknown): string | null {

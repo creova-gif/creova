@@ -11,14 +11,14 @@ export function PrivacyPolicyPage() {
   const fr = useLanguage().language === 'fr';
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#F8F9FA' }}>
+    <div className="min-h-screen" style={{ backgroundColor: '#FFFFFF' }}>
       <PageSEO
         title="Privacy Policy"
         description="CREOVA's privacy policy — how we collect, use, and protect your personal information across our website and services."
         path="/privacy-policy"
       />
       {/* Hero */}
-      <section className="relative py-16 overflow-hidden" style={{ backgroundColor: '#121212' }}>
+      <section className="relative py-16 overflow-hidden" style={{ backgroundColor: '#2D1011' }}>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <Button
             variant="ghost"
@@ -36,12 +36,12 @@ export function PrivacyPolicyPage() {
             transition={{ duration: 0.8 }}
             className="text-center"
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6" style={{ backgroundColor: 'rgba(212, 168, 67, 0.1)', border: '1px solid #D4A843' }}>
-              <Shield className="w-4 h-4" style={{ color: '#D4A843' }} />
-              <span className="text-sm tracking-wide" style={{ color: '#D4A843' }}>{fr ? 'Votre vie privée compte' : 'Your Privacy Matters'}</span>
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6" style={{ backgroundColor: 'rgba(198,164,90, 0.1)', border: '1px solid #C6A45A' }}>
+              <Shield className="w-4 h-4" style={{ color: '#C6A45A' }} />
+              <span className="text-sm tracking-wide" style={{ color: '#C6A45A' }}>{fr ? 'Votre vie privée compte' : 'Your Privacy Matters'}</span>
             </div>
 
-            <h1 className="text-4xl md:text-5xl mb-4" style={{ color: '#F8F9FA' }}>
+            <h1 className="text-4xl md:text-5xl mb-4" style={{ color: '#FFFFFF' }}>
               {fr ? 'Politique de confidentialité' : 'Privacy Policy'}
             </h1>
             <p className="text-lg max-w-2xl mx-auto" style={{ color: '#E0E0E0' }}>
@@ -62,7 +62,7 @@ export function PrivacyPolicyPage() {
           >
             {/* Introduction */}
             <div>
-              <h2 className="text-2xl mb-4" style={{ color: '#121212' }}>{fr ? 'Introduction' : 'Introduction'}</h2>
+              <h2 className="text-2xl mb-4" style={{ color: '#2D1011' }}>{fr ? 'Introduction' : 'Introduction'}</h2>
               <p style={{ color: '#777777' }}>
                 {fr ? "CREOVA (« nous », « notre ») s'engage à protéger votre vie privée et à assurer la sécurité de vos renseignements personnels. La présente politique de confidentialité explique comment nous recueillons, utilisons, divulguons et protégeons vos renseignements lorsque vous utilisez notre site web, nos services et effectuez des achats." : 'CREOVA ("we", "us", "our") is committed to protecting your privacy and ensuring the security of your personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our website, services, and make purchases.'}
               </p>
@@ -71,11 +71,11 @@ export function PrivacyPolicyPage() {
             {/* 1. Information We Collect */}
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <CheckCircle2 className="w-6 h-6" style={{ color: '#D4A843' }} />
-                <h2 className="text-2xl" style={{ color: '#121212' }}>{fr ? '1. Renseignements que nous recueillons' : '1. Information We Collect'}</h2>
+                <CheckCircle2 className="w-6 h-6" style={{ color: '#C6A45A' }} />
+                <h2 className="text-2xl" style={{ color: '#2D1011' }}>{fr ? '1. Renseignements que nous recueillons' : '1. Information We Collect'}</h2>
               </div>
               <div className="space-y-3" style={{ color: '#777777' }}>
-                <p><strong style={{ color: '#121212' }}>{fr ? 'Renseignements personnels :' : 'Personal Information:'}</strong></p>
+                <p><strong style={{ color: '#2D1011' }}>{fr ? 'Renseignements personnels :' : 'Personal Information:'}</strong></p>
                 <ul className="list-disc pl-6 space-y-2">
                   {(fr ? [
                     'Nom, adresse courriel et numéro de téléphone',
@@ -92,7 +92,7 @@ export function PrivacyPolicyPage() {
                   ]).map((li, i) => <li key={i}>{li}</li>)}
                 </ul>
 
-                <p className="pt-3"><strong style={{ color: '#121212' }}>{fr ? 'Renseignements liés aux services :' : 'Service-Related Information:'}</strong></p>
+                <p className="pt-3"><strong style={{ color: '#2D1011' }}>{fr ? 'Renseignements liés aux services :' : 'Service-Related Information:'}</strong></p>
                 <ul className="list-disc pl-6 space-y-2">
                   {(fr ? [
                     'Détails de réservation et préférences de service',
@@ -107,7 +107,7 @@ export function PrivacyPolicyPage() {
                   ]).map((li, i) => <li key={i}>{li}</li>)}
                 </ul>
 
-                <p className="pt-3"><strong style={{ color: '#121212' }}>{fr ? 'Renseignements techniques :' : 'Technical Information:'}</strong></p>
+                <p className="pt-3"><strong style={{ color: '#2D1011' }}>{fr ? 'Renseignements techniques :' : 'Technical Information:'}</strong></p>
                 <ul className="list-disc pl-6 space-y-2">
                   {(fr ? [
                     "Adresse IP et informations sur l'appareil",
@@ -127,8 +127,8 @@ export function PrivacyPolicyPage() {
             {/* 2. How We Use Your Information */}
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <CheckCircle2 className="w-6 h-6" style={{ color: '#D4A843' }} />
-                <h2 className="text-2xl" style={{ color: '#121212' }}>{fr ? '2. Comment nous utilisons vos renseignements' : '2. How We Use Your Information'}</h2>
+                <CheckCircle2 className="w-6 h-6" style={{ color: '#C6A45A' }} />
+                <h2 className="text-2xl" style={{ color: '#2D1011' }}>{fr ? '2. Comment nous utilisons vos renseignements' : '2. How We Use Your Information'}</h2>
               </div>
               <div className="space-y-3" style={{ color: '#777777' }}>
                 <p>{fr ? 'Nous utilisons vos renseignements pour :' : 'We use your information to:'}</p>
@@ -165,13 +165,13 @@ export function PrivacyPolicyPage() {
             {/* 3. How We Share Your Information */}
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <CheckCircle2 className="w-6 h-6" style={{ color: '#D4A843' }} />
-                <h2 className="text-2xl" style={{ color: '#121212' }}>{fr ? '3. Comment nous partageons vos renseignements' : '3. How We Share Your Information'}</h2>
+                <CheckCircle2 className="w-6 h-6" style={{ color: '#C6A45A' }} />
+                <h2 className="text-2xl" style={{ color: '#2D1011' }}>{fr ? '3. Comment nous partageons vos renseignements' : '3. How We Share Your Information'}</h2>
               </div>
               <div className="space-y-3" style={{ color: '#777777' }}>
                 <p>{fr ? 'Nous pouvons partager vos renseignements avec :' : 'We may share your information with:'}</p>
 
-                <p className="pt-3"><strong style={{ color: '#121212' }}>{fr ? 'Fournisseurs de services :' : 'Service Providers:'}</strong></p>
+                <p className="pt-3"><strong style={{ color: '#2D1011' }}>{fr ? 'Fournisseurs de services :' : 'Service Providers:'}</strong></p>
                 <ul className="list-disc pl-6 space-y-2">
                   {(fr ? [
                     <><strong>Stripe :</strong> Traitement des paiements (assujetti à la politique de confidentialité de Stripe)</>,
@@ -186,7 +186,7 @@ export function PrivacyPolicyPage() {
                   ]).map((li, i) => <li key={i}>{li}</li>)}
                 </ul>
 
-                <p className="pt-3"><strong style={{ color: '#121212' }}>{fr ? 'Exigences légales :' : 'Legal Requirements:'}</strong></p>
+                <p className="pt-3"><strong style={{ color: '#2D1011' }}>{fr ? 'Exigences légales :' : 'Legal Requirements:'}</strong></p>
                 <ul className="list-disc pl-6 space-y-2">
                   {(fr ? [
                     'Lorsque la loi ou une procédure judiciaire l\'exige',
@@ -199,18 +199,18 @@ export function PrivacyPolicyPage() {
                   ]).map((li, i) => <li key={i}>{li}</li>)}
                 </ul>
 
-                <p className="pt-3"><strong style={{ color: '#121212' }}>{fr ? "Transferts d'entreprise :" : 'Business Transfers:'}</strong></p>
+                <p className="pt-3"><strong style={{ color: '#2D1011' }}>{fr ? "Transferts d'entreprise :" : 'Business Transfers:'}</strong></p>
                 <p>{fr ? "En cas de fusion, d'acquisition ou de vente d'actifs, vos renseignements peuvent être transférés au nouveau propriétaire." : 'In the event of a merger, acquisition, or sale of assets, your information may be transferred to the new owner.'}</p>
 
-                <p className="pt-3" style={{ color: '#121212' }}><strong>{fr ? 'Nous ne vendons pas vos renseignements personnels à des tiers.' : 'We do not sell your personal information to third parties.'}</strong></p>
+                <p className="pt-3" style={{ color: '#2D1011' }}><strong>{fr ? 'Nous ne vendons pas vos renseignements personnels à des tiers.' : 'We do not sell your personal information to third parties.'}</strong></p>
               </div>
             </div>
 
             {/* 4. Cookies and Tracking */}
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <CheckCircle2 className="w-6 h-6" style={{ color: '#D4A843' }} />
-                <h2 className="text-2xl" style={{ color: '#121212' }}>{fr ? '4. Témoins et technologies de suivi' : '4. Cookies and Tracking Technologies'}</h2>
+                <CheckCircle2 className="w-6 h-6" style={{ color: '#C6A45A' }} />
+                <h2 className="text-2xl" style={{ color: '#2D1011' }}>{fr ? '4. Témoins et technologies de suivi' : '4. Cookies and Tracking Technologies'}</h2>
               </div>
               <div className="space-y-3" style={{ color: '#777777' }}>
                 <p>{fr ? 'Nous utilisons des témoins et des technologies similaires pour :' : 'We use cookies and similar technologies to:'}</p>
@@ -236,8 +236,8 @@ export function PrivacyPolicyPage() {
             {/* 5. Data Security */}
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <CheckCircle2 className="w-6 h-6" style={{ color: '#D4A843' }} />
-                <h2 className="text-2xl" style={{ color: '#121212' }}>{fr ? '5. Sécurité des données' : '5. Data Security'}</h2>
+                <CheckCircle2 className="w-6 h-6" style={{ color: '#C6A45A' }} />
+                <h2 className="text-2xl" style={{ color: '#2D1011' }}>{fr ? '5. Sécurité des données' : '5. Data Security'}</h2>
               </div>
               <div className="space-y-3" style={{ color: '#777777' }}>
                 <p>{fr ? 'Nous mettons en place des mesures de sécurité appropriées pour protéger vos renseignements :' : 'We implement appropriate security measures to protect your information:'}</p>
@@ -263,8 +263,8 @@ export function PrivacyPolicyPage() {
             {/* 6. Data Retention */}
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <CheckCircle2 className="w-6 h-6" style={{ color: '#D4A843' }} />
-                <h2 className="text-2xl" style={{ color: '#121212' }}>{fr ? '6. Conservation des données' : '6. Data Retention'}</h2>
+                <CheckCircle2 className="w-6 h-6" style={{ color: '#C6A45A' }} />
+                <h2 className="text-2xl" style={{ color: '#2D1011' }}>{fr ? '6. Conservation des données' : '6. Data Retention'}</h2>
               </div>
               <div className="space-y-3" style={{ color: '#777777' }}>
                 <p>{fr ? 'Nous conservons vos renseignements aussi longtemps que nécessaire pour :' : 'We retain your information for as long as necessary to:'}</p>
@@ -290,26 +290,26 @@ export function PrivacyPolicyPage() {
             {/* 7. Your Rights and Choices */}
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <CheckCircle2 className="w-6 h-6" style={{ color: '#D4A843' }} />
-                <h2 className="text-2xl" style={{ color: '#121212' }}>{fr ? '7. Vos droits et choix' : '7. Your Rights and Choices'}</h2>
+                <CheckCircle2 className="w-6 h-6" style={{ color: '#C6A45A' }} />
+                <h2 className="text-2xl" style={{ color: '#2D1011' }}>{fr ? '7. Vos droits et choix' : '7. Your Rights and Choices'}</h2>
               </div>
               <div className="space-y-3" style={{ color: '#777777' }}>
                 <p>{fr ? 'Vous avez le droit de :' : 'You have the right to:'}</p>
                 <ul className="list-disc pl-6 space-y-2">
                   {(fr ? [
-                    <><strong style={{ color: '#121212' }}>Accès :</strong> Demander une copie de vos renseignements personnels</>,
-                    <><strong style={{ color: '#121212' }}>Correction :</strong> Demander la correction de renseignements inexacts</>,
-                    <><strong style={{ color: '#121212' }}>Suppression :</strong> Demander la suppression de vos renseignements personnels (sous réserve des exigences légales de conservation)</>,
-                    <><strong style={{ color: '#121212' }}>Retrait :</strong> Vous désabonner des communications marketing (cliquez sur « se désabonner » dans les courriels)</>,
-                    <><strong style={{ color: '#121212' }}>Portabilité des données :</strong> Demander vos données dans un format portable</>,
-                    <><strong style={{ color: '#121212' }}>Opposition :</strong> Vous opposer au traitement de vos renseignements</>,
+                    <><strong style={{ color: '#2D1011' }}>Accès :</strong> Demander une copie de vos renseignements personnels</>,
+                    <><strong style={{ color: '#2D1011' }}>Correction :</strong> Demander la correction de renseignements inexacts</>,
+                    <><strong style={{ color: '#2D1011' }}>Suppression :</strong> Demander la suppression de vos renseignements personnels (sous réserve des exigences légales de conservation)</>,
+                    <><strong style={{ color: '#2D1011' }}>Retrait :</strong> Vous désabonner des communications marketing (cliquez sur « se désabonner » dans les courriels)</>,
+                    <><strong style={{ color: '#2D1011' }}>Portabilité des données :</strong> Demander vos données dans un format portable</>,
+                    <><strong style={{ color: '#2D1011' }}>Opposition :</strong> Vous opposer au traitement de vos renseignements</>,
                   ] : [
-                    <><strong style={{ color: '#121212' }}>Access:</strong> Request a copy of your personal information</>,
-                    <><strong style={{ color: '#121212' }}>Correction:</strong> Request correction of inaccurate information</>,
-                    <><strong style={{ color: '#121212' }}>Deletion:</strong> Request deletion of your personal information (subject to legal retention requirements)</>,
-                    <><strong style={{ color: '#121212' }}>Opt-out:</strong> Unsubscribe from marketing communications (click "unsubscribe" in emails)</>,
-                    <><strong style={{ color: '#121212' }}>Data Portability:</strong> Request your data in a portable format</>,
-                    <><strong style={{ color: '#121212' }}>Object:</strong> Object to processing of your information</>,
+                    <><strong style={{ color: '#2D1011' }}>Access:</strong> Request a copy of your personal information</>,
+                    <><strong style={{ color: '#2D1011' }}>Correction:</strong> Request correction of inaccurate information</>,
+                    <><strong style={{ color: '#2D1011' }}>Deletion:</strong> Request deletion of your personal information (subject to legal retention requirements)</>,
+                    <><strong style={{ color: '#2D1011' }}>Opt-out:</strong> Unsubscribe from marketing communications (click "unsubscribe" in emails)</>,
+                    <><strong style={{ color: '#2D1011' }}>Data Portability:</strong> Request your data in a portable format</>,
+                    <><strong style={{ color: '#2D1011' }}>Object:</strong> Object to processing of your information</>,
                   ]).map((li, i) => <li key={i}>{li}</li>)}
                 </ul>
                 <p className="pt-3">{fr ? 'Pour exercer ces droits, joignez-nous à support@creova.one. Nous répondrons dans un délai de 30 jours.' : 'To exercise these rights, contact us at support@creova.one. We will respond within 30 days.'}</p>
@@ -319,8 +319,8 @@ export function PrivacyPolicyPage() {
             {/* 8. Marketing Communications */}
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <CheckCircle2 className="w-6 h-6" style={{ color: '#D4A843' }} />
-                <h2 className="text-2xl" style={{ color: '#121212' }}>{fr ? '8. Communications marketing' : '8. Marketing Communications'}</h2>
+                <CheckCircle2 className="w-6 h-6" style={{ color: '#C6A45A' }} />
+                <h2 className="text-2xl" style={{ color: '#2D1011' }}>{fr ? '8. Communications marketing' : '8. Marketing Communications'}</h2>
               </div>
               <div className="space-y-3" style={{ color: '#777777' }}>
                 <p>{fr ? 'Avec votre consentement, nous pouvons vous envoyer :' : 'With your consent, we may send you:'}</p>
@@ -344,8 +344,8 @@ export function PrivacyPolicyPage() {
             {/* 9. Third-Party Links */}
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <CheckCircle2 className="w-6 h-6" style={{ color: '#D4A843' }} />
-                <h2 className="text-2xl" style={{ color: '#121212' }}>{fr ? '9. Liens et services de tiers' : '9. Third-Party Links and Services'}</h2>
+                <CheckCircle2 className="w-6 h-6" style={{ color: '#C6A45A' }} />
+                <h2 className="text-2xl" style={{ color: '#2D1011' }}>{fr ? '9. Liens et services de tiers' : '9. Third-Party Links and Services'}</h2>
               </div>
               <div className="space-y-3" style={{ color: '#777777' }}>
                 <p>{fr ? "Notre site web peut contenir des liens vers des sites web et services de tiers (p. ex. des plateformes de médias sociaux). Nous ne sommes pas responsables des pratiques de confidentialité de ces tiers. Nous vous encourageons à consulter leurs politiques de confidentialité avant de fournir tout renseignement personnel." : 'Our website may contain links to third-party websites and services (e.g., social media platforms). We are not responsible for the privacy practices of these third parties. We encourage you to review their privacy policies before providing any personal information.'}</p>
@@ -355,8 +355,8 @@ export function PrivacyPolicyPage() {
             {/* 10. Children's Privacy */}
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <CheckCircle2 className="w-6 h-6" style={{ color: '#D4A843' }} />
-                <h2 className="text-2xl" style={{ color: '#121212' }}>{fr ? '10. Vie privée des enfants' : "10. Children's Privacy"}</h2>
+                <CheckCircle2 className="w-6 h-6" style={{ color: '#C6A45A' }} />
+                <h2 className="text-2xl" style={{ color: '#2D1011' }}>{fr ? '10. Vie privée des enfants' : "10. Children's Privacy"}</h2>
               </div>
               <div className="space-y-3" style={{ color: '#777777' }}>
                 <p>{fr ? "Nos services ne s'adressent pas aux enfants de moins de 13 ans. Nous ne recueillons pas sciemment de renseignements personnels auprès d'enfants. Si vous êtes un parent ou un tuteur et croyez que votre enfant nous a fourni des renseignements personnels, veuillez nous joindre pour les faire retirer." : 'Our services are not directed to children under 13 years of age. We do not knowingly collect personal information from children. If you are a parent or guardian and believe your child has provided us with personal information, please contact us to have it removed.'}</p>
@@ -366,8 +366,8 @@ export function PrivacyPolicyPage() {
             {/* 11. International Data Transfers */}
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <CheckCircle2 className="w-6 h-6" style={{ color: '#D4A843' }} />
-                <h2 className="text-2xl" style={{ color: '#121212' }}>{fr ? '11. Transferts internationaux de données' : '11. International Data Transfers'}</h2>
+                <CheckCircle2 className="w-6 h-6" style={{ color: '#C6A45A' }} />
+                <h2 className="text-2xl" style={{ color: '#2D1011' }}>{fr ? '11. Transferts internationaux de données' : '11. International Data Transfers'}</h2>
               </div>
               <div className="space-y-3" style={{ color: '#777777' }}>
                 <p>{fr ? "CREOVA est basée en Ontario, au Canada. Si vous accédez à nos services depuis l'extérieur du Canada, vos renseignements peuvent être transférés et traités au Canada ou dans d'autres pays où nos fournisseurs de services exercent leurs activités. En utilisant nos services, vous consentez à de tels transferts." : 'CREOVA is based in Ontario, Canada. If you access our services from outside Canada, your information may be transferred to and processed in Canada or other countries where our service providers operate. By using our services, you consent to such transfers.'}</p>
@@ -377,8 +377,8 @@ export function PrivacyPolicyPage() {
             {/* 12. Changes to Privacy Policy */}
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <CheckCircle2 className="w-6 h-6" style={{ color: '#D4A843' }} />
-                <h2 className="text-2xl" style={{ color: '#121212' }}>{fr ? '12. Modifications de la présente politique' : '12. Changes to This Privacy Policy'}</h2>
+                <CheckCircle2 className="w-6 h-6" style={{ color: '#C6A45A' }} />
+                <h2 className="text-2xl" style={{ color: '#2D1011' }}>{fr ? '12. Modifications de la présente politique' : '12. Changes to This Privacy Policy'}</h2>
               </div>
               <div className="space-y-3" style={{ color: '#777777' }}>
                 <p>{fr ? 'Nous pouvons mettre à jour la présente politique de confidentialité de temps à autre. Nous vous informerons des changements importants en :' : 'We may update this Privacy Policy from time to time. We will notify you of significant changes by:'}</p>
@@ -399,20 +399,20 @@ export function PrivacyPolicyPage() {
 
             {/* Contact Information */}
             <div className="border-t pt-8" style={{ borderColor: '#E0E0E0' }}>
-              <h2 className="text-2xl mb-4" style={{ color: '#121212' }}>{fr ? 'Nous joindre au sujet de la confidentialité' : 'Contact Us About Privacy'}</h2>
+              <h2 className="text-2xl mb-4" style={{ color: '#2D1011' }}>{fr ? 'Nous joindre au sujet de la confidentialité' : 'Contact Us About Privacy'}</h2>
               <p style={{ color: '#777777' }}>
                 {fr ? 'Si vous avez des questions ou des préoccupations concernant la présente politique de confidentialité ou nos pratiques en matière de données :' : 'If you have questions or concerns about this Privacy Policy or our data practices:'}
               </p>
               <ul className="mt-3 space-y-2" style={{ color: '#777777' }}>
-                <li><strong style={{ color: '#121212' }}>{fr ? 'Courriel :' : 'Email:'}</strong> support@creova.one</li>
-                <li><strong style={{ color: '#121212' }}>{fr ? 'Objet :' : 'Subject Line:'}</strong> {fr ? '« Demande de confidentialité »' : '"Privacy Inquiry"'}</li>
-                <li><strong style={{ color: '#121212' }}>{fr ? 'Lieu :' : 'Location:'}</strong> Ontario, Canada</li>
+                <li><strong style={{ color: '#2D1011' }}>{fr ? 'Courriel :' : 'Email:'}</strong> support@creova.one</li>
+                <li><strong style={{ color: '#2D1011' }}>{fr ? 'Objet :' : 'Subject Line:'}</strong> {fr ? '« Demande de confidentialité »' : '"Privacy Inquiry"'}</li>
+                <li><strong style={{ color: '#2D1011' }}>{fr ? 'Lieu :' : 'Location:'}</strong> Ontario, Canada</li>
               </ul>
             </div>
 
             {/* Canadian Privacy Compliance */}
             <div className="border-t pt-8" style={{ borderColor: '#E0E0E0' }}>
-              <h2 className="text-2xl mb-4" style={{ color: '#121212' }}>{fr ? 'Conformité à la législation canadienne sur la vie privée' : 'Canadian Privacy Compliance'}</h2>
+              <h2 className="text-2xl mb-4" style={{ color: '#2D1011' }}>{fr ? 'Conformité à la législation canadienne sur la vie privée' : 'Canadian Privacy Compliance'}</h2>
               <p style={{ color: '#777777' }}>
                 {fr ? "CREOVA se conforme à la Loi sur la protection des renseignements personnels et les documents électroniques (LPRPDE) ainsi qu'aux lois provinciales applicables en matière de vie privée au Canada. Nous nous engageons à protéger vos droits à la vie privée en vertu du droit canadien." : 'CREOVA complies with the Personal Information Protection and Electronic Documents Act (PIPEDA) and applicable provincial privacy legislation in Canada. We are committed to protecting your privacy rights under Canadian law.'}
               </p>
@@ -420,8 +420,8 @@ export function PrivacyPolicyPage() {
 
             {/* Agreement Statement */}
             <div className="border-t pt-8" style={{ borderColor: '#E0E0E0' }}>
-              <div className="p-6 rounded-xl" style={{ backgroundColor: 'rgba(212, 168, 67, 0.1)' }}>
-                <p className="text-sm" style={{ color: '#121212' }}>
+              <div className="p-6 rounded-xl" style={{ backgroundColor: 'rgba(198,164,90, 0.1)' }}>
+                <p className="text-sm" style={{ color: '#2D1011' }}>
                   {fr ? "En utilisant les services de CREOVA, vous reconnaissez avoir lu et compris la présente politique de confidentialité et acceptez la collecte, l'utilisation et la divulgation de vos renseignements telles que décrites dans les présentes." : 'By using CREOVA\'s services, you acknowledge that you have read and understood this Privacy Policy and agree to the collection, use, and disclosure of your information as described herein.'}
                 </p>
               </div>

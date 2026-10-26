@@ -64,11 +64,11 @@ export function InfiniteMarquee({
           <span
             key={i}
             className="inline-flex items-center gap-6 px-6 text-sm tracking-[0.3em] uppercase font-light"
-            style={{ color: 'rgba(212,168,67,0.6)' }}
+            style={{ color: 'rgba(198,164,90,0.6)' }}
           >
             {item}
             {i < doubled.length - 1 && (
-              <span style={{ color: 'rgba(212,168,67,0.3)' }}>{separator}</span>
+              <span style={{ color: 'rgba(198,164,90,0.3)' }}>{separator}</span>
             )}
           </span>
         ))}

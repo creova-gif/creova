@@ -39,8 +39,18 @@
         "owner": "institution"
       },
       {
-        "label": "CREOVA portfolio",
-        "url": "https://creova.pixieset.com/",
+        "label": "CREOVA Community Bash gallery",
+        "url": "https://creova.pixieset.com/communitybashblackhistorymonth/",
+        "owner": "creova"
+      },
+      {
+        "label": "CREOVA Afro-Caribbean Night gallery",
+        "url": "https://creova.pixieset.com/afrocaribbeannightpart2/",
+        "owner": "creova"
+      },
+      {
+        "label": "CREOVA Mas Lab gallery",
+        "url": "https://creova.pixieset.com/maslabbsscxalwayscarnival/",
         "owner": "creova"
       }
     ]
@@ -101,7 +111,7 @@
     },
     "sources": [
       {
-        "label": "CREOVA ventures page",
+        "label": "CREOVA products and brands page",
         "url": "https://www.creova.one/ventures/",
         "owner": "creova"
       }

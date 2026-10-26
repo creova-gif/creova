@@ -140,7 +140,7 @@ export function LeadMagnetModal({ isOpen, onClose, leadMagnet }: LeadMagnetModal
                 style={{ backgroundColor: 'rgba(0,0,0,0.05)' }}
                 aria-label="Close"
               >
-                <X className="w-5 h-5" style={{ color: '#121212' }} />
+                <X className="w-5 h-5" style={{ color: '#2D1011' }} />
               </button>
             </DialogPrimitive.Close>
 
@@ -152,13 +152,13 @@ export function LeadMagnetModal({ isOpen, onClose, leadMagnet }: LeadMagnetModal
                   animate={{ scale: 1 }}
                   transition={{ type: 'spring', stiffness: 200, damping: 15 }}
                   className="inline-flex items-center justify-center w-20 h-20 rounded-full mb-6"
-                  style={{ backgroundColor: 'rgba(212, 168, 67, 0.1)' }}
+                  style={{ backgroundColor: 'rgba(198,164,90, 0.1)' }}
                 >
-                  <CheckCircle2 className="w-10 h-10" style={{ color: '#D4A843' }} />
+                  <CheckCircle2 className="w-10 h-10" style={{ color: '#C6A45A' }} />
                 </motion.div>
 
                 <DialogPrimitive.Title asChild>
-                  <h3 className="text-2xl mb-3" style={{ color: '#121212' }}>
+                  <h3 className="text-2xl mb-3" style={{ color: '#2D1011' }}>
                     {t('leadmagnet.success.heading')}
                   </h3>
                 </DialogPrimitive.Title>
@@ -169,26 +169,26 @@ export function LeadMagnetModal({ isOpen, onClose, leadMagnet }: LeadMagnetModal
             ) : (
               <>
                 {/* Header */}
-                <div className="p-8 pb-6 text-center" style={{ backgroundColor: '#F8F9FA' }}>
-                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-full mb-4" style={{ backgroundColor: 'rgba(212, 168, 67, 0.2)' }}>
-                    <Gift className="w-8 h-8" style={{ color: '#D4A843' }} />
+                <div className="p-8 pb-6 text-center" style={{ backgroundColor: '#FFFFFF' }}>
+                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-full mb-4" style={{ backgroundColor: 'rgba(198,164,90, 0.2)' }}>
+                    <Gift className="w-8 h-8" style={{ color: '#C6A45A' }} />
                   </div>
 
                   <DialogPrimitive.Title asChild>
-                    <h2 className="text-2xl mb-2" style={{ color: '#121212' }}>
+                    <h2 className="text-2xl mb-2" style={{ color: '#2D1011' }}>
                       {t('leadmagnet.get.free')}{leadMagnet.fileType}
                     </h2>
                   </DialogPrimitive.Title>
-                  <p className="text-lg mb-3" style={{ color: '#121212' }}>
+                  <p className="text-lg mb-3" style={{ color: '#2D1011' }}>
                     {leadMagnet.title}
                   </p>
                   <p className="text-sm" style={{ color: '#777777' }}>
                     {leadMagnet.description}
                   </p>
                   
-                  <div className="inline-flex items-center gap-2 mt-4 px-4 py-2 rounded-full" style={{ backgroundColor: 'rgba(212, 168, 67, 0.1)', border: '1px solid #D4A843' }}>
-                    <Star className="w-4 h-4" style={{ color: '#D4A843' }} />
-                    <span className="text-sm" style={{ color: '#D4A843' }}>
+                  <div className="inline-flex items-center gap-2 mt-4 px-4 py-2 rounded-full" style={{ backgroundColor: 'rgba(198,164,90, 0.1)', border: '1px solid #C6A45A' }}>
+                    <Star className="w-4 h-4" style={{ color: '#C6A45A' }} />
+                    <span className="text-sm" style={{ color: '#C6A45A' }}>
                       {t('leadmagnet.value')}{leadMagnet.value}{t('leadmagnet.yours.free')}
                     </span>
                   </div>
@@ -198,7 +198,7 @@ export function LeadMagnetModal({ isOpen, onClose, leadMagnet }: LeadMagnetModal
                 <form onSubmit={handleSubmit} className="p-8 pt-6">
                   <div className="space-y-4">
                     <div>
-                      <Label htmlFor="name" className="mb-2 block" style={{ color: '#121212' }}>
+                      <Label htmlFor="name" className="mb-2 block" style={{ color: '#2D1011' }}>
                         {t('leadmagnet.label.name')}
                       </Label>
                       <Input
@@ -213,7 +213,7 @@ export function LeadMagnetModal({ isOpen, onClose, leadMagnet }: LeadMagnetModal
                     </div>
 
                     <div>
-                      <Label htmlFor="email" className="mb-2 block" style={{ color: '#121212' }}>
+                      <Label htmlFor="email" className="mb-2 block" style={{ color: '#2D1011' }}>
                         {t('leadmagnet.label.email')}
                       </Label>
                       <Input
@@ -239,7 +239,7 @@ export function LeadMagnetModal({ isOpen, onClose, leadMagnet }: LeadMagnetModal
                       type="submit"
                       disabled={isSubmitting}
                       className="w-full h-12 text-base group"
-                      style={{ backgroundColor: '#121212' }}
+                      style={{ backgroundColor: '#2D1011' }}
                     >
                       {isSubmitting ? (
                         <>

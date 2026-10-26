@@ -15,7 +15,7 @@ export function AdminHubPage() {
       description: 'View and manage all contact form submissions and collaboration requests',
       icon: Mail,
       path: '/admin/submissions',
-      color: '#B1643B',
+      color: '#887759',
       stats: 'Manage inquiries'
     },
     {
@@ -23,7 +23,7 @@ export function AdminHubPage() {
       description: 'Track visitor behavior, traffic sources, and website performance metrics',
       icon: BarChart3,
       path: '/analytics/dashboard',
-      color: '#D4A843',
+      color: '#C6A45A',
       stats: 'View insights'
     },
     {
@@ -31,7 +31,7 @@ export function AdminHubPage() {
       description: 'Process full and partial refunds for customer payments via Stripe',
       icon: DollarSign,
       path: '/admin/refunds',
-      color: '#D4A843',
+      color: '#C6A45A',
       stats: 'Process refunds'
     },
     {
@@ -39,7 +39,7 @@ export function AdminHubPage() {
       description: 'Direct access to Supabase database with ready-to-use SQL queries',
       icon: Database,
       path: '/admin/database',
-      color: '#D4A843',
+      color: '#C6A45A',
       stats: 'View data'
     },
     {
@@ -47,13 +47,13 @@ export function AdminHubPage() {
       description: 'Add, edit, or remove galleries shown on /work and the homepage',
       icon: Image,
       path: '/admin/galleries',
-      color: '#B1643B',
+      color: '#887759',
       stats: 'Manage galleries'
     }
   ];
 
   return (
-    <div style={{ backgroundColor: '#F8F9FA', minHeight: '100vh' }}>
+    <div style={{ backgroundColor: '#FFFFFF', minHeight: '100vh' }}>
       <PageSEO
         title="Admin Hub"
         description="CREOVA staff admin dashboard."
@@ -61,23 +61,23 @@ export function AdminHubPage() {
         noIndex
       />
       {/* Header */}
-      <section className="py-16" style={{ backgroundColor: '#121212' }}>
+      <section className="py-16" style={{ backgroundColor: '#2D1011' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               className="inline-flex items-center justify-center w-20 h-20 rounded-2xl mb-6"
-              style={{ backgroundColor: 'rgba(177, 100, 59, 0.2)' }}
+              style={{ backgroundColor: 'rgba(136,119,89, 0.2)' }}
             >
-              <Shield className="w-10 h-10" style={{ color: '#B1643B' }} />
+              <Shield className="w-10 h-10" style={{ color: '#887759' }} />
             </motion.div>
             
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               className="text-4xl md:text-6xl mb-4"
-              style={{ color: '#F8F9FA' }}
+              style={{ color: '#FFFFFF' }}
             >
               Admin Dashboard
             </motion.h1>
@@ -116,7 +116,7 @@ export function AdminHubPage() {
                   <tool.icon className="w-8 h-8" style={{ color: tool.color }} />
                 </div>
 
-                <h3 className="text-2xl mb-3" style={{ color: '#121212' }}>
+                <h3 className="text-2xl mb-3" style={{ color: '#2D1011' }}>
                   {tool.title}
                 </h3>
 
@@ -146,8 +146,8 @@ export function AdminHubPage() {
             style={{ borderColor: '#E0E0E0' }}
           >
             <div className="flex items-center gap-3 mb-6">
-              <Activity className="w-6 h-6" style={{ color: '#B1643B' }} />
-              <h3 className="text-2xl" style={{ color: '#121212' }}>
+              <Activity className="w-6 h-6" style={{ color: '#887759' }} />
+              <h3 className="text-2xl" style={{ color: '#2D1011' }}>
                 Admin Information
               </h3>
             </div>
@@ -155,19 +155,19 @@ export function AdminHubPage() {
             <div className="grid md:grid-cols-2 gap-6">
               <div>
                 <h4 className="text-sm mb-3" style={{ color: '#777777' }}>
-                  🔐 Security
+                  Security
                 </h4>
-                <ul className="space-y-2 text-sm" style={{ color: '#121212' }}>
+                <ul className="space-y-2 text-sm" style={{ color: '#2D1011' }}>
                   <li className="flex items-start gap-2">
-                    <span style={{ color: '#B1643B' }}>•</span>
+                    <span style={{ color: '#887759' }}>•</span>
                     <span>All admin pages are password-protected</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span style={{ color: '#B1643B' }}>•</span>
+                    <span style={{ color: '#887759' }}>•</span>
                     <span>Sessions expire after 4 hours of inactivity</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span style={{ color: '#B1643B' }}>•</span>
+                    <span style={{ color: '#887759' }}>•</span>
                     <span>Automatic logout for security</span>
                   </li>
                 </ul>
@@ -175,19 +175,19 @@ export function AdminHubPage() {
 
               <div>
                 <h4 className="text-sm mb-3" style={{ color: '#777777' }}>
-                  📊 Features
+                  Features
                 </h4>
-                <ul className="space-y-2 text-sm" style={{ color: '#121212' }}>
+                <ul className="space-y-2 text-sm" style={{ color: '#2D1011' }}>
                   <li className="flex items-start gap-2">
-                    <span style={{ color: '#B1643B' }}>•</span>
+                    <span style={{ color: '#887759' }}>•</span>
                     <span>Real-time visitor tracking and analytics</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span style={{ color: '#B1643B' }}>•</span>
+                    <span style={{ color: '#887759' }}>•</span>
                     <span>Contact form submission management</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span style={{ color: '#B1643B' }}>•</span>
+                    <span style={{ color: '#887759' }}>•</span>
                     <span>Full and partial refund processing</span>
                   </li>
                 </ul>
@@ -196,12 +196,12 @@ export function AdminHubPage() {
 
             <div 
               className="mt-6 p-4 rounded-xl border"
-              style={{ backgroundColor: 'rgba(212,168,67,0.08)', borderColor: 'rgba(212,168,67,0.3)' }}
+              style={{ backgroundColor: 'rgba(198,164,90,0.08)', borderColor: 'rgba(198,164,90,0.3)' }}
             >
               <div className="flex items-start gap-3">
-                <Lock className="w-5 h-5 mt-0.5" style={{ color: '#D4A843' }} />
+                <Lock className="w-5 h-5 mt-0.5" style={{ color: '#C6A45A' }} />
                 <div>
-                  <p className="text-sm mb-1" style={{ color: '#121212' }}>
+                  <p className="text-sm mb-1" style={{ color: '#2D1011' }}>
                     <strong>Admin Password</strong>
                   </p>
                   <p className="text-xs" style={{ color: '#777777' }}>
@@ -223,14 +223,14 @@ export function AdminHubPage() {
               className="bg-white rounded-2xl p-6 shadow-lg border"
               style={{ borderColor: '#E0E0E0' }}
             >
-              <h4 className="text-lg mb-3 flex items-center gap-2" style={{ color: '#121212' }}>
-                <BarChart3 className="w-5 h-5" style={{ color: '#B1643B' }} />
+              <h4 className="text-lg mb-3 flex items-center gap-2" style={{ color: '#2D1011' }}>
+                <BarChart3 className="w-5 h-5" style={{ color: '#887759' }} />
                 Analytics Guide
               </h4>
               <p className="text-sm mb-4" style={{ color: '#777777' }}>
                 Learn how to read visitor data, track campaigns, and understand user behavior
               </p>
-              <code className="text-xs bg-gray-100 px-2 py-1 rounded" style={{ color: '#121212' }}>
+              <code className="text-xs bg-gray-100 px-2 py-1 rounded" style={{ color: '#2D1011' }}>
                 /ANALYTICS_SYSTEM_GUIDE.md
               </code>
             </div>
@@ -239,14 +239,14 @@ export function AdminHubPage() {
               className="bg-white rounded-2xl p-6 shadow-lg border"
               style={{ borderColor: '#E0E0E0' }}
             >
-              <h4 className="text-lg mb-3 flex items-center gap-2" style={{ color: '#121212' }}>
-                <Shield className="w-5 h-5" style={{ color: '#B1643B' }} />
+              <h4 className="text-lg mb-3 flex items-center gap-2" style={{ color: '#2D1011' }}>
+                <Shield className="w-5 h-5" style={{ color: '#887759' }} />
                 Security & Refund Guide
               </h4>
               <p className="text-sm mb-4" style={{ color: '#777777' }}>
                 Complete documentation for security features and refund processing
               </p>
-              <code className="text-xs bg-gray-100 px-2 py-1 rounded" style={{ color: '#121212' }}>
+              <code className="text-xs bg-gray-100 px-2 py-1 rounded" style={{ color: '#2D1011' }}>
                 /SECURITY_AND_REFUND_GUIDE.md
               </code>
             </div>

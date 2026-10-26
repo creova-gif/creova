@@ -31,20 +31,20 @@ export function LanguageSwitcher({ variant = 'desktop' }: LanguageSwitcherProps)
     return (
       <div className="flex items-center gap-3">
         <span className="text-xs tracking-[0.3em] uppercase" style={{ color: '#777777' }}>
-          Language
+          {isFR ? 'Langue' : 'Language'}
         </span>
         <div
           className="relative flex rounded-xl overflow-hidden"
           style={{
-            backgroundColor: 'rgba(18,18,18,0.06)',
-            border: '1px solid rgba(212,168,67,0.2)',
+            backgroundColor: 'rgba(45,16,17,0.06)',
+            border: '1px solid rgba(198,164,90,0.2)',
             padding: '3px',
           }}
         >
           {/* Sliding pill */}
           <motion.div
             className="absolute top-[3px] bottom-[3px] rounded-lg"
-            style={{ backgroundColor: '#121212', width: 'calc(50% - 3px)' }}
+            style={{ backgroundColor: '#2D1011', width: 'calc(50% - 3px)' }}
             animate={{ x: isFR ? 'calc(100% + 3px)' : 0 }}
             transition={{ type: 'spring', stiffness: 500, damping: 38, mass: 0.6 }}
           />
@@ -53,7 +53,7 @@ export function LanguageSwitcher({ variant = 'desktop' }: LanguageSwitcherProps)
               key={lang}
               onClick={(e) => handleClick(e, lang)}
               className="relative z-10 px-5 py-2 rounded-lg text-sm font-semibold tracking-wider transition-colors duration-200 min-w-[52px] overflow-hidden"
-              style={{ color: language === lang ? '#F8F9FA' : '#777777' }}
+              style={{ color: language === lang ? '#FFFFFF' : '#777777' }}
             >
               {lang.toUpperCase()}
             </button>
@@ -73,8 +73,8 @@ export function LanguageSwitcher({ variant = 'desktop' }: LanguageSwitcherProps)
       <div
         className="relative flex items-center rounded-full overflow-hidden select-none"
         style={{
-          backgroundColor: 'rgba(18,18,18,0.05)',
-          border: '1px solid rgba(212,168,67,0.22)',
+          backgroundColor: 'rgba(45,16,17,0.05)',
+          border: '1px solid rgba(198,164,90,0.22)',
           padding: '3px',
           backdropFilter: 'blur(8px)',
         }}
@@ -83,7 +83,7 @@ export function LanguageSwitcher({ variant = 'desktop' }: LanguageSwitcherProps)
         <motion.div
           className="absolute top-[3px] bottom-[3px] rounded-full"
           style={{
-            backgroundColor: '#121212',
+            backgroundColor: '#2D1011',
             width: 'calc(50% - 3px)',
             boxShadow: '0 2px 8px rgba(0,0,0,0.18)',
           }}
@@ -97,17 +97,9 @@ export function LanguageSwitcher({ variant = 'desktop' }: LanguageSwitcherProps)
             onClick={(e) => handleClick(e, lang)}
             aria-pressed={language === lang}
             aria-label={lang === 'en' ? 'Switch to English' : 'Passer en français'}
-            className="relative z-10 overflow-hidden rounded-full flex items-center gap-1.5 px-3.5 py-1.5 text-[11px] font-bold tracking-[0.14em] transition-colors duration-200"
-            style={{ color: language === lang ? '#F8F9FA' : '#777777', minWidth: '44px' }}
+            className="relative z-10 overflow-hidden rounded-full flex items-center justify-center px-3.5 py-1.5 text-[11px] font-bold tracking-[0.14em] transition-colors duration-200"
+            style={{ color: language === lang ? '#FFFFFF' : '#777777', minWidth: '44px' }}
           >
-            {/* Flag */}
-            <span
-              className="text-[10px] leading-none"
-              style={{ filter: language === lang ? 'none' : 'grayscale(1) opacity(0.5)' }}
-            >
-              {lang === 'en' ? '🇨🇦' : '🇫🇷'}
-            </span>
-
             {/* Label with crossfade */}
             <AnimatePresence mode="wait" initial={false}>
               <motion.span
@@ -130,7 +122,7 @@ export function LanguageSwitcher({ variant = 'desktop' }: LanguageSwitcherProps)
                   top: ripple.y - 20,
                   width: 40,
                   height: 40,
-                  backgroundColor: 'rgba(212,168,67,0.3)',
+                  backgroundColor: 'rgba(198,164,90,0.3)',
                 }}
                 initial={{ scale: 0, opacity: 1 }}
                 animate={{ scale: 4, opacity: 0 }}

@@ -4,13 +4,13 @@ import { Home, Mail, ArrowRight } from 'lucide-react';
 import { PageSEO } from '../components/PageSEO';
 import { useLanguage } from '../context/LanguageContext';
 
-const warmGradient = 'linear-gradient(135deg, #D4A843 0%, #B1643B 100%)';
+const warmGradient = 'linear-gradient(135deg, #C6A45A 0%, #887759 100%)';
 
 export function NotFoundPage() {
   // Transactional/utility page → vous register.
   const fr = useLanguage().language === 'fr';
   return (
-    <div className="min-h-screen flex items-center justify-center px-6 py-24 overflow-hidden" style={{ backgroundColor: '#121212' }}>
+    <div className="min-h-screen flex items-center justify-center px-6 py-24 overflow-hidden" style={{ backgroundColor: '#2D1011' }}>
       <PageSEO
         title="Page Not Found"
         description="The page you're looking for doesn't exist or has moved."
@@ -19,7 +19,7 @@ export function NotFoundPage() {
       />
       {/* Ambient glow */}
       <div className="absolute inset-0 pointer-events-none" style={{
-        background: `radial-gradient(ellipse 60% 60% at 50% 50%, rgba(212,168,67,0.06) 0%, transparent 70%)`
+        background: `radial-gradient(ellipse 60% 60% at 50% 50%, rgba(198,164,90,0.06) 0%, transparent 70%)`
       }} />
 
       <div className="relative max-w-2xl mx-auto">
@@ -31,7 +31,7 @@ export function NotFoundPage() {
           className="flex items-center gap-3 mb-8"
         >
           <div style={{ height: '1px', width: '32px', background: warmGradient }} />
-          <span className="text-[10px] tracking-[0.5em] uppercase" style={{ color: '#D4A843' }}>{fr ? 'CREOVA · Erreur' : 'CREOVA · Error'}</span>
+          <span className="text-[10px] tracking-[0.5em] uppercase" style={{ color: '#C6A45A' }}>{fr ? 'CREOVA · Erreur' : 'CREOVA · Error'}</span>
         </motion.div>
 
         {/* Giant "404" scale contrast */}
@@ -40,7 +40,7 @@ export function NotFoundPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           className="font-light leading-none tracking-tighter"
-          style={{ fontSize: 'clamp(100px, 22vw, 280px)', color: '#F8F9FA' }}
+          style={{ fontSize: 'clamp(100px, 22vw, 280px)', color: '#FFFFFF' }}
           aria-label="404"
         >
           404
@@ -68,7 +68,7 @@ export function NotFoundPage() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.35 }}
           className="text-sm font-light leading-relaxed mb-10 max-w-xs"
-          style={{ color: 'rgba(248,249,250,0.35)' }}
+          style={{ color: 'rgba(255,255,255,0.35)' }}
         >
           {fr ? "La page que vous cherchez a été déplacée ou n'a jamais existé. Ramenons-vous en terrain connu." : "The page you're looking for has moved or never existed. Let's get you somewhere real."}
         </motion.p>
@@ -83,7 +83,7 @@ export function NotFoundPage() {
           <Link
             to="/"
             className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm tracking-wide font-medium transition-all duration-300 hover:opacity-90 hover:-translate-y-px"
-            style={{ background: warmGradient, color: '#F8F9FA' }}
+            style={{ background: warmGradient, color: '#FFFFFF' }}
           >
             <Home size={14} />
             {fr ? "Accueil" : 'Go Home'}
@@ -91,7 +91,7 @@ export function NotFoundPage() {
           <Link
             to="/start-a-project"
             className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm tracking-wide transition-all duration-300 hover:opacity-70"
-            style={{ border: '1px solid rgba(212,168,67,0.3)', color: '#D4A843' }}
+            style={{ border: '1px solid rgba(198,164,90,0.3)', color: '#C6A45A' }}
           >
             <Mail size={14} />
             {fr ? 'Nous joindre' : 'Contact Us'}

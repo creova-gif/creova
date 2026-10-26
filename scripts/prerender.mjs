@@ -23,6 +23,7 @@ const BASE_ROUTES = [
   '/work',
   '/services',
   '/community',
+  '/resources',
   '/ventures',
   '/start-a-project',
   '/terms-of-service',
@@ -77,7 +78,7 @@ const ROUTES = [
 // Priority hints for the generated sitemap. Anything unlisted defaults to 0.7.
 const SITEMAP_PRIORITY = {
   '/': '1.0', '/services': '0.9', '/work': '0.8',
-  '/start-a-project': '0.8', '/ventures': '0.8', '/community': '0.8',
+  '/start-a-project': '0.8', '/ventures': '0.8', '/community': '0.8', '/resources': '0.8',
   '/terms-of-service': '0.3', '/privacy-policy': '0.3',
 };
 
