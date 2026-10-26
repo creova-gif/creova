@@ -35,6 +35,7 @@ const STORY_FR = [
 ];
 const PULL = 3; // "I realized there was a gap — not in talent or quality, but in representation and visibility."
 
+/** Presents CREOVA's founder story, Sankofa philosophy, press, and brand structure. */
 export function AboutPage() {
   const fr = useLanguage().language === 'fr';
   const story = fr ? STORY_FR : STORY_EN;
