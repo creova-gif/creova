@@ -3,6 +3,7 @@ import { motion, useInView } from 'motion/react';
 import { ArrowRight, ArrowUpRight } from 'lucide-react';
 import { Link } from '../i18n/LocaleLink';
 import { PageSEO } from '../components/PageSEO';
+import { Logo } from '../components/Logo';
 import { useLanguage } from '../context/LanguageContext';
 import { absoluteUrl } from '../i18n/locale';
 import { VENTURE_URLS } from '../config';
@@ -34,6 +35,7 @@ const STORY_FR = [
 ];
 const PULL = 3; // "I realized there was a gap — not in talent or quality, but in representation and visibility."
 
+/** Presents CREOVA's founder story, Sankofa philosophy, press, and brand structure. */
 export function AboutPage() {
   const fr = useLanguage().language === 'fr';
   const story = fr ? STORY_FR : STORY_EN;
@@ -107,24 +109,21 @@ export function AboutPage() {
         <p className="mt-10 text-sm tracking-[0.2em] uppercase" style={{ color: '#8C7B75' }}>— Justin Mafie, {fr ? 'Fondateur' : 'Founder'}</p>
       </article>
 
-      {/* Sankofa — the philosophy behind the work. Previously lived inside the
-          chat widget's info popup; moved here so it gets a real page section
-          instead of being buried in a support-chat modal. */}
-      <section className="relative py-16 lg:py-24 overflow-hidden" style={{ backgroundColor: '#0E0E0E' }}>
+      {/* Sankofa — expressed in CREOVA's own visual language, without using a
+          third-party illustration of the Adinkra symbol. */}
+      <section id="philosophy" className="relative scroll-mt-24 py-16 lg:py-24 overflow-hidden" style={{ backgroundColor: '#0E0E0E' }}>
         <div className="absolute inset-0 pointer-events-none" style={{
           background: 'radial-gradient(ellipse 50% 60% at 85% 20%, rgba(198,164,90,0.08) 0%, transparent 55%)',
         }} />
         <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-[1fr_1.3fr] gap-10 lg:gap-16 items-start">
-            {/* Portrait */}
-            <div className="relative overflow-hidden rounded-2xl" style={{ aspectRatio: '4/5', border: '1px solid rgba(198,164,90,0.15)' }}>
-              <img
-                src="/sankofa-profile.jpg"
-                alt={fr ? 'Symbole Sankofa, un oiseau Adinkra regardant en arrière' : 'The Sankofa symbol, an Adinkra bird looking backward'}
-                className="w-full h-full object-cover"
-                loading="lazy"
-              />
-              <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(14,14,14,0.55) 0%, transparent 45%)' }} />
+          <div className="grid lg:grid-cols-[.85fr_1.3fr] gap-10 lg:gap-16 items-start">
+            <div className="relative overflow-hidden rounded-2xl min-h-[380px] lg:min-h-[560px] p-8 md:p-10 flex flex-col justify-between" style={{ background: 'linear-gradient(145deg, #2D1011 0%, #5A3028 100%)', border: '1px solid rgba(198,164,90,0.22)' }}>
+              <Logo color="#CDBFAE" className="h-16 w-auto opacity-60" interactive={false} />
+              <div>
+                <p className="text-xs tracking-[.34em] uppercase mb-5" style={{ color: '#C6A45A' }}>{fr ? 'Revenir. Retrouver. Avancer.' : 'Return. Retrieve. Build forward.'}</p>
+                <p className="leading-none" style={{ color: '#FFFFFF', fontSize: 'clamp(2.65rem, 3.2vw, 3.35rem)', letterSpacing: '-0.045em' }}>Sankofa</p>
+                <p className="mt-7 max-w-sm leading-relaxed" style={{ color: '#CDBFAE' }}>{fr ? 'Une philosophie de mémoire, de responsabilité et de création tournée vers l’avenir.' : 'A philosophy of memory, responsibility, and future-facing creation.'}</p>
+              </div>
             </div>
 
             {/* Story */}
