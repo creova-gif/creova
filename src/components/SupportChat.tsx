@@ -5,8 +5,7 @@ import { Input } from './ui/input';
 import { X, Send } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useLanguage } from '../context/LanguageContext';
-import logoWhite from '../assets/logo-mark-white.png';
-import logoNavy from '../assets/logo-mark-navy.png';
+import { Logo } from './Logo';
 
 interface Message {
   id: string;
@@ -221,14 +220,7 @@ export function SupportChat() {
               style={{ backgroundColor: '#887759' }}
             >
               <div className="absolute inset-0 bg-gradient-to-br from-[#C6A45A] to-[#2D1011] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              <motion.img
-                src={logoWhite}
-                alt=""
-                aria-hidden="true"
-                className="relative z-10 w-8 h-auto mx-auto"
-                whileHover={{ scale: 1.08, rotate: -4 }}
-                transition={{ type: 'spring', stiffness: 300, damping: 15 }}
-              />
+              <Logo color="#FFFFFF" className="relative z-10 h-8 w-auto mx-auto" />
 
               {/* Pulse animation */}
               <span className={`absolute inset-0 rounded-full opacity-20${prefersReduced ? '' : ' animate-ping'}`} style={{ backgroundColor: '#887759' }} />
@@ -260,12 +252,7 @@ export function SupportChat() {
               <div className="relative flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full flex items-center justify-center relative overflow-hidden p-1.5" style={{ backgroundColor: '#FFFFFF' }}>
-                    <img
-                      src={logoNavy}
-                      alt=""
-                      aria-hidden="true"
-                      className="w-full h-full object-contain"
-                    />
+                    <Logo color="#2D1011" className="h-full w-auto" interactive={false} />
                     <span className="absolute -bottom-1 -right-1 w-3 h-3 rounded-full border-2" style={{ backgroundColor: '#C6A45A', borderColor: '#2D1011' }} />
                   </div>
                   <div>
