@@ -18,6 +18,7 @@ interface LogoProps {
   interactive?: boolean;
 }
 
+/** Renders the official CREOVA mark as a responsive, colour-aware vector. */
 export function Logo({ variant = 'navy', color, className = 'h-12 w-auto', animateIn = false, interactive = true }: LogoProps) {
   return (
     <motion.svg

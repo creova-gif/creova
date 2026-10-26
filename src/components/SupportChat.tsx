@@ -252,7 +252,7 @@ export function SupportChat() {
               <div className="relative flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full flex items-center justify-center relative overflow-hidden p-1.5" style={{ backgroundColor: '#FFFFFF' }}>
-                    <Logo color="#2D1011" className="h-full w-auto" interactive={false} />
+                    <Logo color="#2D1011" className="w-full h-auto" interactive={false} />
                     <span className="absolute -bottom-1 -right-1 w-3 h-3 rounded-full border-2" style={{ backgroundColor: '#C6A45A', borderColor: '#2D1011' }} />
                   </div>
                   <div>
