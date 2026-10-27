@@ -86,6 +86,7 @@
     "dev": "vite",
     "build": "npm run validate:content && vite build && cp build/index.html build/404.html && npm run build:ssr && npm run prerender",
     "build:ssr": "vite build --ssr src/entry-server.tsx --outDir .ssr",
+    "build:resources": "node scripts/build-resource-pdfs.mjs",
     "prerender": "node scripts/prerender.mjs",
     "build:client-only": "vite build && cp build/index.html build/404.html",
     "typecheck": "tsc --noEmit && npm --prefix workers/api run typecheck",
