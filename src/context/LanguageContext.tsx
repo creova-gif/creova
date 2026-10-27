@@ -682,7 +682,7 @@ const translations = {
     'home.seen.f3.label': 'Culture-First',
     'home.seen.f3.desc': 'Authentic stories, not algorithmic noise.',
     'home.seen.f4.label': 'In Development',
-    'home.seen.f4.desc': 'Beta launching end of 2026.',
+    'home.seen.f4.desc': 'Beta targeted for January 2027.',
 
     // Services Section
     'home.services.badge': 'What We Do',
@@ -1423,7 +1423,7 @@ const translations = {
     'home.seen.f3.label': 'La culture d\'abord',
     'home.seen.f3.desc': 'Des histoires authentiques, pas du bruit algorithmique.',
     'home.seen.f4.label': 'En développement',
-    'home.seen.f4.desc': 'Bêta lancée fin 2026.',
+    'home.seen.f4.desc': 'Bêta visée pour janvier 2027.',
 
     // Services Section
     'home.services.badge': 'Ce Que Nous Faisons',

@@ -69,12 +69,12 @@
     "copy": {
       "en": {
         "title": "SEEN",
-        "summary": "A CREOVA digital storytelling product with an existing product design and working codebase. It is in development toward a December 2026 beta target.",
+        "summary": "A CREOVA digital storytelling product with an existing product design and working codebase. It is in development toward a January 2027 beta target.",
         "statusLabel": "In development"
       },
       "fr": {
         "title": "SEEN",
-        "summary": "Un produit numérique de narration de CREOVA doté d'une conception de produit et d'une base de code fonctionnelle. Son développement vise une version bêta en décembre 2026.",
+        "summary": "Un produit numérique de narration de CREOVA doté d'une conception de produit et d'une base de code fonctionnelle. Son développement vise une version bêta en janvier 2027.",
         "statusLabel": "En développement"
       }
     },
