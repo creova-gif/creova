@@ -1,83 +1,145 @@
-import { useState } from 'react';
-import { ArrowUpRight, Headphones, Play } from 'lucide-react';
+import { useRef, useState } from 'react';
+import { ArrowUpRight, Headphones, Play, X } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { Logo } from './Logo';
 
+// A deliberately varied sampler: one track per release rather than several
+// consecutive tracks from the same album.
 const TRACKS = [
-  { title: 'Passport', videoId: 'bqkemlkPcZg', duration: '2:59' },
-  { title: 'Ca Va Vraiment', videoId: 'FIznaoVZLWI', duration: '3:08' },
-  { title: 'The Ones Who Stayed', videoId: '4sF1CnIupvI', duration: '3:32' },
+  { title: 'Passport', release: 'Geen Tijd', videoId: 'bqkemlkPcZg', duration: '2:59' },
+  { title: 'Roots', release: 'Duality & Roots', videoId: 'eQhJhDZePyE', duration: '1:53' },
+  { title: 'Home', release: 'Home', videoId: 'eqAszxFzvsc', duration: '2:57' },
+  { title: 'Altar Rail', release: 'PAPER DREAMS', videoId: '7Ar6ilSqFzY', duration: '5:33' },
+  { title: 'Counting Bodies', release: 'Counting Bodies', videoId: 'y2_p81GXlZM', duration: '3:47' },
 ] as const;
 
+/** Renders a compact, user-initiated sampler spanning multiple CREOVA Music releases. */
 export function CreovaMusicPlayer() {
   const { language } = useLanguage();
   const fr = language === 'fr';
-  const [activeVideo, setActiveVideo] = useState<string | null>(null);
-  const activeTrack = TRACKS.find((track) => track.videoId === activeVideo) ?? TRACKS[0];
+  const [selectedId, setSelectedId] = useState<string>(TRACKS[0].videoId);
+  const [playingId, setPlayingId] = useState<string | null>(null);
+  const playButtonRef = useRef<HTMLButtonElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const selectedTrack = TRACKS.find((track) => track.videoId === selectedId) ?? TRACKS[0];
+
+  const focusCloseButton = () => requestAnimationFrame(() => closeButtonRef.current?.focus());
+
+  const selectTrack = (videoId: string) => {
+    setSelectedId(videoId);
+    setPlayingId(videoId);
+    focusCloseButton();
+  };
+
+  const playSelectedTrack = () => {
+    setPlayingId(selectedTrack.videoId);
+    focusCloseButton();
+  };
+
+  const closePlayer = () => {
+    setPlayingId(null);
+    requestAnimationFrame(() => playButtonRef.current?.focus());
+  };
 
   return (
-    <section className="py-24 lg:py-32" style={{ backgroundColor: '#CDBFAE' }}>
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="grid lg:grid-cols-[1.05fr_.95fr] gap-10 lg:gap-16 items-stretch">
-          <div className="rounded-3xl overflow-hidden min-h-[420px] relative" style={{ backgroundColor: '#2D1011' }}>
-            {activeVideo ? (
-              <iframe
-                className="absolute inset-0 h-full w-full"
-                src={`https://www.youtube-nocookie.com/embed/${activeVideo}?autoplay=1&rel=0`}
-                title={`${activeTrack.title} by CREOVA Music`}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowFullScreen
-              />
-            ) : (
-              <>
-                <div className="absolute inset-0" style={{ background: 'radial-gradient(circle at 22% 18%, rgba(198,164,90,.32), transparent 35%), radial-gradient(circle at 80% 78%, rgba(205,191,174,.2), transparent 38%), linear-gradient(135deg, #2D1011, #5A3028)' }} />
-                <Logo color="#CDBFAE" className="absolute left-8 top-8 h-14 w-auto opacity-70" interactive={false} />
-                <button
-                  type="button"
-                  onClick={() => setActiveVideo(activeTrack.videoId)}
-                  className="absolute inset-0 flex flex-col items-center justify-center gap-5 text-center p-8 group"
-                  aria-label={`${fr ? 'Écouter' : 'Play'} ${activeTrack.title}`}
-                >
-                  <span className="w-16 h-16 rounded-full flex items-center justify-center transition-transform group-hover:scale-105" style={{ backgroundColor: '#FFFFFF', color: '#2D1011' }}>
-                    <Play className="w-6 h-6 ml-1" fill="currentColor" />
-                  </span>
-                  <span className="text-xs tracking-[.3em] uppercase" style={{ color: '#C6A45A' }}>{fr ? 'Écouter maintenant' : 'Listen now'}</span>
-                  <span className="text-3xl md:text-4xl" style={{ color: '#FFFFFF' }}>{activeTrack.title}</span>
-                </button>
-              </>
-            )}
+    <section className="py-12 lg:py-16" style={{ backgroundColor: '#CDBFAE' }}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="overflow-hidden rounded-[2rem]" style={{ backgroundColor: '#0E0E0E', border: '1px solid rgba(45,16,17,.12)', boxShadow: '0 22px 60px rgba(45,16,17,.14)' }}>
+          <div className="flex flex-col gap-4 border-b px-5 py-5 sm:flex-row sm:items-center sm:justify-between md:px-7" style={{ borderColor: 'rgba(205,191,174,.14)' }}>
+            <div className="flex items-center gap-4">
+              <span className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full" style={{ backgroundColor: '#2D1011' }}>
+                <Headphones className="h-5 w-5" style={{ color: '#C6A45A' }} />
+              </span>
+              <div>
+                <p className="text-[10px] uppercase tracking-[.34em]" style={{ color: '#C6A45A' }}>CREOVA Music</p>
+                <h2 className="mt-1 text-xl tracking-tight sm:text-2xl" style={{ color: '#FFFFFF' }}>
+                  {fr ? 'Cinq sorties. Une écoute en mouvement.' : 'Five releases. One moving listen.'}
+                </h2>
+              </div>
+            </div>
+            <a href="https://www.youtube.com/@CREOVAMusic" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 self-start text-xs font-medium sm:self-auto" style={{ color: '#CDBFAE' }}>
+              {fr ? 'Catalogue complet' : 'Full catalogue'} <ArrowUpRight className="h-3.5 w-3.5" />
+            </a>
           </div>
 
-          <div className="rounded-3xl p-7 md:p-10 flex flex-col" style={{ backgroundColor: '#FFFFFF' }}>
-            <div className="flex items-center gap-3 text-xs tracking-[.3em] uppercase" style={{ color: '#887759' }}>
-              <Headphones className="w-4 h-4" /> CREOVA Music
-            </div>
-            <h2 className="mt-7 text-4xl md:text-6xl tracking-tight leading-[1.02]" style={{ color: '#2D1011' }}>
-              {fr ? 'Une autre façon de raconter.' : 'Another way we tell stories.'}
-            </h2>
-            <p className="mt-5 leading-relaxed" style={{ color: '#555' }}>
-              {fr
-                ? 'Des sorties originales qui prolongent la pratique narrative de CREOVA par le son. La lecture commence seulement lorsque vous la choisissez.'
-                : 'Original releases that extend CREOVA’s storytelling practice through sound. Playback starts only when you choose it.'}
-            </p>
-            <div className="mt-9 border-t" style={{ borderColor: '#E5DED5' }}>
-              {TRACKS.map((track, index) => (
+          <div className="grid gap-5 p-5 md:p-7 lg:grid-cols-[minmax(280px,.88fr)_minmax(0,1.12fr)] lg:items-center">
+            <div className="relative aspect-video overflow-hidden rounded-2xl" style={{ background: 'radial-gradient(circle at 18% 20%, rgba(198,164,90,.34), transparent 33%), radial-gradient(circle at 82% 78%, rgba(205,191,174,.18), transparent 36%), linear-gradient(135deg, #2D1011, #5A3028)' }}>
+              {playingId ? (
+                <>
+                  <iframe
+                    className="absolute inset-0 h-full w-full"
+                    src={`https://www.youtube-nocookie.com/embed/${playingId}?autoplay=1&rel=0`}
+                    title={`${selectedTrack.title} by CREOVA Music`}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                  />
+                  <button
+                    ref={closeButtonRef}
+                    type="button"
+                    onClick={closePlayer}
+                    className="absolute right-2 top-2 z-10 flex h-8 w-8 items-center justify-center rounded-full backdrop-blur-sm transition-transform hover:scale-105"
+                    style={{ backgroundColor: 'rgba(14,14,14,.76)', color: '#FFFFFF' }}
+                    aria-label={fr ? 'Fermer le lecteur vidéo' : 'Close video player'}
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </>
+              ) : (
                 <button
-                  key={track.videoId}
+                  ref={playButtonRef}
                   type="button"
-                  onClick={() => setActiveVideo(track.videoId)}
-                  className="w-full grid grid-cols-[auto_1fr_auto] items-center gap-4 py-4 text-left border-b group"
-                  style={{ borderColor: '#E5DED5' }}
+                  onClick={playSelectedTrack}
+                  className="absolute inset-0 flex items-center gap-5 p-6 text-left group"
+                  aria-label={`${fr ? 'Écouter' : 'Play'} ${selectedTrack.title}`}
                 >
-                  <span className="text-xs" style={{ color: '#887759' }}>0{index + 1}</span>
-                  <span className="group-hover:translate-x-1 transition-transform" style={{ color: '#2D1011' }}>{track.title}</span>
-                  <span className="text-xs" style={{ color: '#777' }}>{track.duration}</span>
+                  <Logo color="#CDBFAE" className="absolute right-5 top-5 h-9 w-auto opacity-50" interactive={false} />
+                  <span className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-full transition-transform group-hover:scale-105" style={{ backgroundColor: '#FFFFFF', color: '#2D1011' }}>
+                    <Play className="h-5 w-5 ml-0.5" fill="currentColor" />
+                  </span>
+                  <span className="min-w-0 self-end pb-1">
+                    <span className="block text-[9px] uppercase tracking-[.3em]" style={{ color: '#C6A45A' }}>{fr ? 'Sélection actuelle' : 'Current selection'}</span>
+                    <span className="mt-1 block truncate text-2xl" style={{ color: '#FFFFFF' }}>{selectedTrack.title}</span>
+                    <span className="mt-0.5 block truncate text-xs" style={{ color: '#CDBFAE' }}>{selectedTrack.release}</span>
+                  </span>
                 </button>
-              ))}
+              )}
             </div>
-            <a href="https://www.youtube.com/@CREOVAMusic" target="_blank" rel="noopener noreferrer" className="mt-8 inline-flex items-center gap-2 text-sm font-medium" style={{ color: '#887759' }}>
-              {fr ? 'Toutes les sorties sur YouTube' : 'All releases on YouTube'} <ArrowUpRight className="w-4 h-4" />
-            </a>
+
+            <div className="min-w-0">
+              <div className="mb-4 flex items-end justify-between gap-4">
+                <p className="max-w-md text-sm leading-relaxed" style={{ color: '#B9B0AA' }}>
+                  {fr
+                    ? 'Une sélection transversale de sorties — choisie pour le contraste, pas pour suivre l’ordre d’un album.'
+                    : 'A cross-release sampler chosen for contrast, not album order.'}
+                </p>
+                <span className="hidden text-[9px] uppercase tracking-[.28em] sm:block" style={{ color: '#706966' }}>{fr ? 'Choisir une piste' : 'Choose a track'}</span>
+              </div>
+
+              <div className="-mx-5 flex snap-x gap-2 overflow-x-auto px-5 pb-2 sm:mx-0 sm:grid sm:grid-cols-2 sm:px-0 lg:grid-cols-1" style={{ scrollbarWidth: 'thin', scrollbarColor: '#5A3028 transparent' }}>
+                {TRACKS.map((track, index) => {
+                  const selected = track.videoId === selectedId;
+                  return (
+                    <button
+                      key={track.videoId}
+                      type="button"
+                      onClick={() => selectTrack(track.videoId)}
+                      className="group grid min-w-[235px] snap-start grid-cols-[auto_1fr_auto] items-center gap-3 rounded-xl px-3.5 py-3 text-left transition-colors sm:min-w-0"
+                      style={{ backgroundColor: selected ? '#2D1011' : '#171717', border: `1px solid ${selected ? 'rgba(198,164,90,.48)' : 'rgba(205,191,174,.1)'}` }}
+                      aria-pressed={selected}
+                    >
+                      <span className="flex h-7 w-7 items-center justify-center rounded-full text-[10px]" style={{ backgroundColor: selected ? '#C6A45A' : '#252525', color: selected ? '#2D1011' : '#887759' }}>
+                        {selected ? <Play className="h-3 w-3" fill="currentColor" /> : String(index + 1).padStart(2, '0')}
+                      </span>
+                      <span className="min-w-0">
+                        <span className="block truncate text-sm" style={{ color: '#FFFFFF' }}>{track.title}</span>
+                        <span className="mt-0.5 block truncate text-[10px] uppercase tracking-[.16em]" style={{ color: '#887759' }}>{track.release}</span>
+                      </span>
+                      <span className="text-[10px]" style={{ color: '#B9B0AA' }}>{track.duration}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
           </div>
         </div>
       </div>
