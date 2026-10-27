@@ -255,8 +255,8 @@ export function HomePage() {
             <h2 className="text-4xl md:text-6xl font-light tracking-tight max-w-4xl" style={{ color: '#FFFFFF' }}>{fr ? 'Le travail client finance l’expertise. Les produits doivent mériter leur prochaine étape.' : 'Client work builds the craft. Products must earn their next stage.'}</h2>
             <p className="mt-6 max-w-3xl leading-relaxed" style={{ color: '#9B9B9B' }}>
               {fr
-                ? 'SEEN est en développement vers une cible bêta en décembre 2026. VERSE est en incubation; son dossier technique est prêt, mais aucun lancement ni précommande n’est annoncé.'
-                : 'SEEN is in development toward a December 2026 beta target. VERSE is incubating; its tech pack is ready, but no launch or preorder is being announced.'}
+                ? 'SEEN est en développement vers une cible bêta en janvier 2027. VERSE est en incubation; son dossier technique est prêt, mais aucun lancement ni précommande n’est annoncé.'
+                : 'SEEN is in development toward a January 2027 beta target. VERSE is incubating; its tech pack is ready, but no launch or preorder is being announced.'}
             </p>
           </div>
           <div className="flex flex-wrap lg:flex-col gap-3">

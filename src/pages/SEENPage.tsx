@@ -130,7 +130,7 @@ function AppPreview3D() {
     >
       <PageSEO
         title="SEEN — Multilingual Storytelling Platform"
-        description="SEEN is a CREOVA product in development. Its current design explores multilingual audio and text storytelling, with a beta targeted for December 2026."
+        description="SEEN is a CREOVA product in development. Its current design explores multilingual audio and text storytelling, with a beta targeted for January 2027."
         path="/seen"
       />
       {/* Floating particles */}
@@ -400,7 +400,7 @@ export function SEENPage() {
   const faqs = fr ? [
     {
       q: "Quand SEEN sera-t-il lancé ?",
-      a: "SEEN est présentement en développement. Nous visons une version bêta en décembre 2026. Cette cible peut évoluer à mesure que le produit est testé."
+      a: "SEEN est présentement en développement. Nous visons une version bêta en janvier 2027. Cette cible peut évoluer à mesure que le produit est testé."
     },
     {
       q: "Puis-je publier mes propres histoires sur SEEN ?",
@@ -421,7 +421,7 @@ export function SEENPage() {
   ] : [
     {
       q: "When does SEEN launch?",
-      a: "SEEN is currently in development. We are targeting a beta in December 2026. That target may change as the product is tested."
+      a: "SEEN is currently in development. We are targeting a beta in January 2027. That target may change as the product is tested."
     },
     {
       q: "Can I publish my own stories on SEEN?",
@@ -663,7 +663,7 @@ export function SEENPage() {
               {fr ? 'En développement' : 'In Development'}
             </span>
             <span className="text-xs" style={{ color: 'rgba(204,255,238,0.45)' }}>
-              {fr ? 'Cible actuelle : bêta en décembre 2026' : 'Current target: beta in December 2026'}
+              {fr ? 'Cible actuelle : bêta en janvier 2027' : 'Current target: beta in January 2027'}
             </span>
           </motion.div>
 
@@ -985,7 +985,7 @@ export function SEENPage() {
 
             <div className="flex flex-wrap items-center justify-center gap-6 mb-12">
               {[
-                { icon: Award, text: fr ? 'Bêta fin 2026' : 'Beta Late 2026' },
+                { icon: Award, text: fr ? 'Bêta janvier 2027' : 'Beta January 2027' },
                 { icon: Globe, text: fr ? 'Produit en développement' : 'Product in Development' },
                 { icon: Shield, text: fr ? 'Dirigé par des BIPOC' : 'BIPOC Led' }
               ].map((badge, i) => (
