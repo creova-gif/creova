@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { ArrowUpRight, Headphones, Play, X } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { Logo } from './Logo';
@@ -19,11 +19,26 @@ export function CreovaMusicPlayer() {
   const fr = language === 'fr';
   const [selectedId, setSelectedId] = useState<string>(TRACKS[0].videoId);
   const [playingId, setPlayingId] = useState<string | null>(null);
+  const playButtonRef = useRef<HTMLButtonElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
   const selectedTrack = TRACKS.find((track) => track.videoId === selectedId) ?? TRACKS[0];
+
+  const focusCloseButton = () => requestAnimationFrame(() => closeButtonRef.current?.focus());
 
   const selectTrack = (videoId: string) => {
     setSelectedId(videoId);
     setPlayingId(videoId);
+    focusCloseButton();
+  };
+
+  const playSelectedTrack = () => {
+    setPlayingId(selectedTrack.videoId);
+    focusCloseButton();
+  };
+
+  const closePlayer = () => {
+    setPlayingId(null);
+    requestAnimationFrame(() => playButtonRef.current?.focus());
   };
 
   return (
@@ -59,8 +74,9 @@ export function CreovaMusicPlayer() {
                     allowFullScreen
                   />
                   <button
+                    ref={closeButtonRef}
                     type="button"
-                    onClick={() => setPlayingId(null)}
+                    onClick={closePlayer}
                     className="absolute right-2 top-2 z-10 flex h-8 w-8 items-center justify-center rounded-full backdrop-blur-sm transition-transform hover:scale-105"
                     style={{ backgroundColor: 'rgba(14,14,14,.76)', color: '#FFFFFF' }}
                     aria-label={fr ? 'Fermer le lecteur vidéo' : 'Close video player'}
@@ -70,8 +86,9 @@ export function CreovaMusicPlayer() {
                 </>
               ) : (
                 <button
+                  ref={playButtonRef}
                   type="button"
-                  onClick={() => setPlayingId(selectedTrack.videoId)}
+                  onClick={playSelectedTrack}
                   className="absolute inset-0 flex items-center gap-5 p-6 text-left group"
                   aria-label={`${fr ? 'Écouter' : 'Play'} ${selectedTrack.title}`}
                 >
@@ -117,7 +134,7 @@ export function CreovaMusicPlayer() {
                         <span className="block truncate text-sm" style={{ color: '#FFFFFF' }}>{track.title}</span>
                         <span className="mt-0.5 block truncate text-[10px] uppercase tracking-[.16em]" style={{ color: '#887759' }}>{track.release}</span>
                       </span>
-                      <span className="text-[10px]" style={{ color: '#706966' }}>{track.duration}</span>
+                      <span className="text-[10px]" style={{ color: '#B9B0AA' }}>{track.duration}</span>
                     </button>
                   );
                 })}
