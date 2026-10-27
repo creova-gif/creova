@@ -1,4 +1,4 @@
-import { mkdirSync, writeFileSync, existsSync } from 'node:fs';
+import { mkdirSync, readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
@@ -87,6 +87,13 @@ const documents = [
   },
 ];
 
+/** Remove Chrome's run timestamp so identical source produces identical PDFs. */
+function normalizePdfMetadata(pdfPath) {
+  const source = readFileSync(pdfPath).toString('latin1');
+  const normalized = source.replace(/D:\d{14}\+00'00'/g, "D:20261027000000+00'00'");
+  writeFileSync(pdfPath, Buffer.from(normalized, 'latin1'));
+}
+
 const css = `
   @page { size: Letter; margin: 0; }
   * { box-sizing: border-box; }
@@ -137,5 +144,6 @@ for (const document of documents) {
   if (result.status !== 0) {
     throw new Error(`Failed to build ${document.file}: ${result.stderr || result.stdout}`);
   }
+  normalizePdfMetadata(outputPath);
   console.log(`Built ${document.file}`);
 }
