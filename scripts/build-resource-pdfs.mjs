@@ -15,8 +15,13 @@ if (!existsSync(chrome)) {
 mkdirSync(workDir, { recursive: true });
 mkdirSync(outputDir, { recursive: true });
 
+/** Render a labelled write-in field, with optional helper text. */
 const line = (label, hint = '') => `<div class="field"><span>${label}</span>${hint ? `<small>${hint}</small>` : ''}</div>`;
+
+/** Render a compact set of printable checkbox options. */
 const check = (items) => `<div class="checks">${items.map((item) => `<span>□ ${item}</span>`).join('')}</div>`;
+
+/** Place resource fragments in one of the document grid layouts. */
 const rows = (items, columns) => `<div class="table ${columns}">${items.map((item) => `<div>${item}</div>`).join('')}</div>`;
 
 const documents = [
@@ -117,6 +122,7 @@ const css = `
   footer { position: absolute; left: .68in; right: .68in; bottom: .34in; display: flex; justify-content: space-between; color: #887759; font-size: 6.8px; text-transform: uppercase; letter-spacing: .13em; }
 `;
 
+/** Render one localized, letter-sized resource page. */
 function page(document, language, pageNumber) {
   const copy = document[language];
   const label = language === 'en' ? 'Community resource · EN' : 'Ressource communautaire · FR';
