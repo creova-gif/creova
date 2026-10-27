@@ -5,12 +5,12 @@ import { Input } from '../components/ui/input';
 import { Textarea } from '../components/ui/textarea';
 import { Label } from '../components/ui/label';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '../components/ui/accordion';
-import { Captcha } from '../components/Captcha';
+import { Captcha, isCaptchaConfigured } from '../components/Captcha';
 import { Star } from 'lucide-react';
 import { GOOGLE_REVIEW_URL } from '../config';
 import { motion } from 'motion/react';
 import { toast } from 'sonner';
-import { apiUrl } from '../utils/api';
+import { apiBaseUrl, apiUrl } from '../utils/api';
 import { useLanguage } from '../context/LanguageContext';
 import { logger } from '../utils/logger';
 import { publicFormStatusMessage } from '../utils/publicFormStatus';
@@ -35,6 +35,7 @@ export function ContactPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const [captchaReset, setCaptchaReset] = useState(0);
+  const onlineFormAvailable = Boolean(apiBaseUrl()) && isCaptchaConfigured();
 
   const handleCaptchaVerify = (token: string) => {
     setCaptchaToken(token);
@@ -49,15 +50,20 @@ export function ContactPage() {
 
   const handleCaptchaError = (error: string) => {
     setCaptchaToken(null);
-    if (window.location.hostname === 'creova.one') {
-      toast.error(t('contact.toast.captcha.issue'), {
-        description: error || t('contact.toast.captcha.desc')
-      });
-    }
+    toast.error(t('contact.toast.captcha.issue'), {
+      description: error || t('contact.toast.captcha.desc')
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!onlineFormAvailable) {
+      toast.error(language === 'fr' ? 'Le formulaire en ligne est temporairement indisponible.' : 'The online form is temporarily unavailable.', {
+        description: language === 'fr' ? 'Écrivez-nous à support@creova.one.' : 'Email us at support@creova.one.'
+      });
+      return;
+    }
 
     // CAPTCHA validation
     if (!captchaToken) {
@@ -236,9 +242,13 @@ export function ContactPage() {
                     {language === 'fr' ? 'Parlez-nous du projet.' : 'Tell us about the project.'}
                   </h2>
                   <p className="text-sm mb-4" style={{ color: '#777777' }}>
-                    {language === 'fr'
-                      ? 'Nous enregistrons d’abord votre demande, puis nous affichons son identifiant de suivi.'
-                      : 'We persist your request first, then show its tracking ID.'}
+                    {onlineFormAvailable
+                      ? language === 'fr'
+                        ? 'Nous enregistrons d’abord votre demande, puis nous affichons son identifiant de suivi.'
+                        : 'We save your request first, then show its tracking ID.'
+                      : language === 'fr'
+                        ? 'Écrivez-nous directement et nous vous répondrons avec les prochaines étapes.'
+                        : 'Email us directly and we’ll reply with the next steps.'}
                   </p>
                   <p className="text-xs tracking-wide" style={{ color: '#C6A45A' }}>
                     {language === 'fr' ? 'Du lundi au vendredi · heure de Toronto' : 'Monday–Friday · Toronto time'}
@@ -256,6 +266,16 @@ export function ContactPage() {
 
             <div className="rounded-2xl p-8 md:p-12" style={{ backgroundColor: '#FFFFFF', border: '1px solid rgba(45,16,17,0.1)' }}>
               <h2 className="text-2xl mb-6">{t('contact.form.title')}</h2>
+
+              {!onlineFormAvailable && (
+                <div className="mb-8 rounded-xl p-5" role="alert" style={{ backgroundColor: '#FFF7E6', border: '1px solid #C6A45A' }}>
+                  <p className="font-medium mb-2" style={{ color: '#2D1011' }}>{language === 'fr' ? 'Soumission en ligne temporairement indisponible' : 'Online submission temporarily unavailable'}</p>
+                  <p className="text-sm" style={{ color: '#555' }}>
+                    {language === 'fr' ? 'Vous pouvez tout de même démarrer votre projet en écrivant à ' : 'You can still start your project by emailing '}
+                    <a href="mailto:support@creova.one" className="underline underline-offset-2" style={{ color: '#7D6D51' }}>support@creova.one</a>.
+                  </p>
+                </div>
+              )}
 
               {receipt && (
                 <div className="mb-8 rounded-xl p-5" role="status" style={{ backgroundColor: 'rgba(198,164,90,0.1)', border: '1px solid rgba(198,164,90,0.3)' }}>
@@ -405,27 +425,31 @@ export function ContactPage() {
                 </div>
 
                 {/* CAPTCHA Verification */}
-                <div className="border-t pt-6" style={{ borderColor: '#E0E0E0' }}>
-                  <h3 className="text-lg mb-2" style={{ color: '#2D1011' }}>{t('contact.form.security')}</h3>
-                  <p className="text-xs mb-4" style={{ color: '#777777' }}>
-                    {t('contact.captcha.security')}
-                  </p>
-                  <Captcha 
-                    action="contact"
-                    resetNonce={captchaReset}
-                    onVerify={handleCaptchaVerify} 
-                    onExpire={handleCaptchaExpire} 
-                    onError={handleCaptchaError} 
-                  />
-                </div>
+                {onlineFormAvailable && (
+                  <div className="border-t pt-6" style={{ borderColor: '#E0E0E0' }}>
+                    <h3 className="text-lg mb-2" style={{ color: '#2D1011' }}>{t('contact.form.security')}</h3>
+                    <p className="text-xs mb-4" style={{ color: '#777777' }}>
+                      {t('contact.captcha.security')}
+                    </p>
+                    <Captcha
+                      action="contact"
+                      resetNonce={captchaReset}
+                      onVerify={handleCaptchaVerify}
+                      onExpire={handleCaptchaExpire}
+                      onError={handleCaptchaError}
+                    />
+                  </div>
+                )}
 
-                <Button type="submit" size="lg" className="w-full" disabled={isSubmitting}>
+                <Button type="submit" size="lg" className="w-full" disabled={isSubmitting || !onlineFormAvailable}>
                   {isSubmitting ? t('contact.form.btn.sending') : t('contact.form.btn.send')}
                 </Button>
 
-                <p className="text-sm text-neutral-500 text-center">
-                  {t('contact.form.disclaimer')}
-                </p>
+                {onlineFormAvailable && (
+                  <p className="text-sm text-neutral-500 text-center">
+                    {t('contact.form.disclaimer')}
+                  </p>
+                )}
               </form>
             </div>
           </motion.div>

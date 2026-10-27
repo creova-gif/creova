@@ -38,8 +38,13 @@ export function Captcha({
   const containerRef = useRef<HTMLDivElement>(null);
   const widgetIdRef = useRef<string | null>(null);
   const isMountedRef = useRef(true);
+  const onErrorRef = useRef(onError);
   const [scriptReady, setScriptReady] = useState(isScriptLoaded);
   const seenResetNonce = useRef(resetNonce);
+
+  useEffect(() => {
+    onErrorRef.current = onError;
+  }, [onError]);
 
   // Load the Turnstile script once
   useEffect(() => {
@@ -93,11 +98,21 @@ export function Captcha({
         } else if (attempts > 50) {
           clearInterval(interval);
           isScriptLoading = false;
+          if (isMountedRef.current && onErrorRef.current) {
+            onErrorRef.current('Security verification could not finish loading. Please refresh and try again.');
+          }
+          scriptCallbacks.length = 0;
         }
       }, 100);
     };
 
-    script.onerror = () => { isScriptLoading = false; };
+    script.onerror = () => {
+      isScriptLoading = false;
+      if (isMountedRef.current && onErrorRef.current) {
+        onErrorRef.current('Security verification could not load. Please check your connection and try again.');
+      }
+      scriptCallbacks.length = 0;
+    };
     document.body.appendChild(script);
 
     return () => { isMountedRef.current = false; };
@@ -131,7 +146,7 @@ export function Captcha({
 
     return () => {
       if (widgetIdRef.current && window.turnstile) {
-        try { window.turnstile.remove(widgetIdRef.current); } catch (_) {}
+        try { window.turnstile.remove(widgetIdRef.current); } catch {}
         widgetIdRef.current = null;
       }
     };
@@ -158,6 +173,11 @@ export function Captcha({
       <div ref={containerRef} />
     </div>
   );
+}
+
+/** Whether the current build has a Turnstile site key available. */
+export function isCaptchaConfigured(): boolean {
+  return Boolean(DEFAULT_SITE_KEY);
 }
 
 // Turnstile global type declarations

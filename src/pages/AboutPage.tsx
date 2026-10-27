@@ -3,10 +3,10 @@ import { motion, useInView } from 'motion/react';
 import { ArrowRight, ArrowUpRight } from 'lucide-react';
 import { Link } from '../i18n/LocaleLink';
 import { PageSEO } from '../components/PageSEO';
-import { Logo } from '../components/Logo';
 import { useLanguage } from '../context/LanguageContext';
 import { absoluteUrl } from '../i18n/locale';
 import { VENTURE_URLS } from '../config';
+import sankofaSymbol from '../assets/sankofa-symbol.webp';
 
 const SITE_URL = 'https://www.creova.one';
 
@@ -109,17 +109,20 @@ export function AboutPage() {
         <p className="mt-10 text-sm tracking-[0.2em] uppercase" style={{ color: '#8C7B75' }}>— Justin Mafie, {fr ? 'Fondateur' : 'Founder'}</p>
       </article>
 
-      {/* Sankofa — expressed in CREOVA's own visual language, without using a
-          third-party illustration of the Adinkra symbol. */}
+      {/* Sankofa — the symbol is presented as a quiet, layered visual rather
+          than a separate white image tile. */}
       <section id="philosophy" className="relative scroll-mt-24 py-16 lg:py-24 overflow-hidden" style={{ backgroundColor: '#0E0E0E' }}>
         <div className="absolute inset-0 pointer-events-none" style={{
           background: 'radial-gradient(ellipse 50% 60% at 85% 20%, rgba(198,164,90,0.08) 0%, transparent 55%)',
         }} />
         <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-[.85fr_1.3fr] gap-10 lg:gap-16 items-start">
-            <div className="relative overflow-hidden rounded-2xl min-h-[380px] lg:min-h-[560px] p-8 md:p-10 flex flex-col justify-between" style={{ background: 'linear-gradient(145deg, #2D1011 0%, #5A3028 100%)', border: '1px solid rgba(198,164,90,0.22)' }}>
-              <Logo color="#CDBFAE" className="h-16 w-auto opacity-60" interactive={false} />
-              <div>
+            <div className="relative isolate overflow-hidden rounded-2xl min-h-[420px] lg:min-h-[560px] p-8 md:p-10 flex flex-col justify-end" style={{ background: 'linear-gradient(145deg, #2D1011 0%, #5A3028 100%)', border: '1px solid rgba(198,164,90,0.22)' }}>
+              <div className="absolute inset-x-4 top-2 h-[68%] flex items-center justify-center pointer-events-none" aria-hidden="true">
+                <img src={sankofaSymbol} alt="" loading="lazy" decoding="async" className="w-full h-full object-contain opacity-80 mix-blend-screen" />
+              </div>
+              <div className="absolute inset-0 -z-10" style={{ background: 'radial-gradient(circle at 50% 28%, rgba(198,164,90,0.18), transparent 48%)' }} />
+              <div className="relative z-10 pt-56 lg:pt-64">
                 <p className="text-xs tracking-[.34em] uppercase mb-5" style={{ color: '#C6A45A' }}>{fr ? 'Revenir. Retrouver. Avancer.' : 'Return. Retrieve. Build forward.'}</p>
                 <p className="leading-none" style={{ color: '#FFFFFF', fontSize: 'clamp(2.65rem, 3.2vw, 3.35rem)', letterSpacing: '-0.045em' }}>Sankofa</p>
                 <p className="mt-7 max-w-sm leading-relaxed" style={{ color: '#CDBFAE' }}>{fr ? 'Une philosophie de mémoire, de responsabilité et de création tournée vers l’avenir.' : 'A philosophy of memory, responsibility, and future-facing creation.'}</p>
