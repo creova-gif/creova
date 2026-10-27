@@ -20,11 +20,8 @@ workers_dev = true
 [[d1_databases]]
 binding = "DB"
 database_name = "creova"
-database_id = "00000000-0000-0000-0000-000000000000"
+database_id = "16bd0673-d5aa-4a2d-b28c-e1eb0fce66a7"
 migrations_dir = "migrations"
 
-# Workers Analytics Engine is included on the Workers Free plan
-# (100,000 data points/day). https://developers.cloudflare.com/analytics/analytics-engine/pricing/
-[[analytics_engine_datasets]]
-binding = "ANALYTICS"
-dataset = "creova_analytics"
+# Analytics Engine remains optional in the Worker runtime. Re-add the binding
+# after Cloudflare finishes activating Analytics Engine for this account.
