@@ -23,6 +23,33 @@ const DOWNLOADS = [
     meta: 'Bilingual PDF · 2 pages',
     metaFr: 'PDF bilingue · 2 pages',
   },
+  {
+    title: 'Event Story Run of Show',
+    titleFr: 'Déroulé narratif d’événement',
+    description: 'A bilingual timeline for coordinating story beats, access, interviews, priority moments, handoffs, and the people responsible on event day.',
+    descriptionFr: 'Un échéancier bilingue pour coordonner les temps forts, les accès, les entrevues, les moments prioritaires, les transferts et les responsables le jour de l’événement.',
+    href: '/resources/creova-event-story-run-of-show.pdf',
+    meta: 'Bilingual PDF · 2 pages',
+    metaFr: 'PDF bilingue · 2 pages',
+  },
+  {
+    title: 'Consent & Content Rights Planner',
+    titleFr: 'Planificateur de consentement et de droits',
+    description: 'A bilingual preparation tool for mapping participants, permissions, cultural care, music and archive rights, usage terms, and access needs.',
+    descriptionFr: 'Un outil bilingue pour planifier les participants, les permissions, le respect culturel, les droits musicaux et d’archives, les usages et les besoins d’accès.',
+    href: '/resources/creova-consent-content-rights-planner.pdf',
+    meta: 'Bilingual PDF · 2 pages',
+    metaFr: 'PDF bilingue · 2 pages',
+  },
+  {
+    title: 'Community Story Interview Guide',
+    titleFr: 'Guide d’entrevue pour les récits communautaires',
+    description: 'A bilingual conversation guide with warm-up, context, change, reflection, and closing prompts for more thoughtful community interviews.',
+    descriptionFr: 'Un guide bilingue avec des questions d’accueil, de contexte, de changement, de réflexion et de clôture pour des entrevues communautaires plus humaines.',
+    href: '/resources/creova-community-story-interview-guide.pdf',
+    meta: 'Bilingual PDF · 2 pages',
+    metaFr: 'PDF bilingue · 2 pages',
+  },
 ] as const;
 
 const CATEGORY_FR: Record<string, string> = {
