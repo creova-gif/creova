@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion } from 'motion/react';
 import { 
   Users, Eye, MousePointer, Clock, TrendingUp, Globe, 
   Monitor, RefreshCw, Calendar,
-  BarChart3, PieChart, Activity, ExternalLink
+  BarChart3, PieChart, Activity, ExternalLink, type LucideIcon
 } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { toast } from 'sonner';
@@ -39,37 +39,18 @@ interface AnalyticsData {
   }>;
 }
 
-export function AnalyticsDashboardPage() {
-  const [analytics, setAnalytics] = useState<AnalyticsData | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [period, setPeriod] = useState(30); // Default: last 30 days
+const COLORS = ['#887759', '#C6A45A', '#C6A45A', '#E0E0E0', '#2D1011'];
 
-  const COLORS = ['#887759', '#C6A45A', '#C6A45A', '#E0E0E0', '#2D1011'];
+interface StatCardProps {
+  icon: LucideIcon;
+  label: string;
+  value: string | number;
+  change?: string;
+  color: string;
+}
 
-  const fetchAnalytics = async () => {
-    setLoading(true);
-    try {
-      const response = await adminFetch(`/analytics?days=${period}`);
-
-      const data = await response.json();
-
-      if (response.ok) {
-        setAnalytics(data);
-      } else {
-        throw new Error(data.error || 'Failed to fetch analytics');
-      }
-    } catch {
-      toast.error('Failed to load analytics');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchAnalytics();
-  }, [period]);
-
-  const StatCard = ({ icon: Icon, label, value, change, color }: any) => (
+function StatCard({ icon: Icon, label, value, change, color }: StatCardProps) {
+  return (
     <motion.div
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
@@ -77,7 +58,7 @@ export function AnalyticsDashboardPage() {
       style={{ borderColor: '#E0E0E0' }}
     >
       <div className="flex items-start justify-between mb-4">
-        <div 
+        <div
           className="w-12 h-12 rounded-xl flex items-center justify-center"
           style={{ backgroundColor: `${color}20` }}
         >
@@ -94,6 +75,35 @@ export function AnalyticsDashboardPage() {
       <div className="text-sm" style={{ color: '#777777' }}>{label}</div>
     </motion.div>
   );
+}
+
+export function AnalyticsDashboardPage() {
+  const [analytics, setAnalytics] = useState<AnalyticsData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [period, setPeriod] = useState(30); // Default: last 30 days
+
+  const fetchAnalytics = useCallback(async () => {
+    setLoading(true);
+    try {
+      const response = await adminFetch(`/analytics?days=${period}`);
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setAnalytics(data);
+      } else {
+        throw new Error(data.error || 'Failed to fetch analytics');
+      }
+    } catch {
+      toast.error('Failed to load analytics');
+    } finally {
+      setLoading(false);
+    }
+  }, [period]);
+
+  useEffect(() => {
+    queueMicrotask(fetchAnalytics);
+  }, [fetchAnalytics]);
 
   if (loading) {
     return (

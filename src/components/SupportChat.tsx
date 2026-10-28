@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { useLocation } from 'react-router';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -36,6 +36,18 @@ export function SupportChat() {
   const { language } = useLanguage();
   const { pathname } = useLocation();
 
+  const openChat = useCallback(() => {
+    setMessages((current) => current.length > 0 ? current : [{
+      id: Date.now().toString(),
+      text: language === 'fr'
+        ? "Bonjour! Je suis le soutien CREOVA. Comment puis-je vous aider aujourd'hui?"
+        : "Hello! I'm CREOVA Support. How can I help you today?",
+      sender: 'bot',
+      timestamp: new Date(),
+    }]);
+    setIsOpen(true);
+  }, [language]);
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -45,14 +57,14 @@ export function SupportChat() {
   }, [messages]);
 
   useEffect(() => {
-    const handleOpen = () => setIsOpen(true);
-    window.addEventListener('support-chat:open', handleOpen);
-    return () => window.removeEventListener('support-chat:open', handleOpen);
-  }, []);
+    window.addEventListener('support-chat:open', openChat);
+    return () => window.removeEventListener('support-chat:open', openChat);
+  }, [openChat]);
 
   // Move focus into the panel on open, close on Escape, restore focus to the toggle on close
   useEffect(() => {
     if (!isOpen) return;
+    const toggleButton = toggleButtonRef.current;
     chatWindowRef.current?.querySelector<HTMLInputElement>('input')?.focus();
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') setIsOpen(false);
@@ -60,23 +72,8 @@ export function SupportChat() {
     document.addEventListener('keydown', handleKeyDown);
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
-      toggleButtonRef.current?.focus();
+      toggleButton?.focus();
     };
-  }, [isOpen]);
-
-  useEffect(() => {
-    if (isOpen && messages.length === 0) {
-      // Welcome message when first opened
-      const welcomeMsg: Message = {
-        id: Date.now().toString(),
-        text: language === 'fr'
-          ? "Bonjour! Je suis le soutien CREOVA. Comment puis-je vous aider aujourd'hui?"
-          : "Hello! I'm CREOVA Support. How can I help you today?",
-        sender: 'bot',
-        timestamp: new Date()
-      };
-      setMessages([welcomeMsg]);
-    }
   }, [isOpen]);
 
   // Hide on homepage — all hooks must be called before any early return
@@ -213,7 +210,7 @@ export function SupportChat() {
           >
             <Button
               ref={toggleButtonRef}
-              onClick={() => setIsOpen(true)}
+              onClick={openChat}
               aria-label={language === 'fr' ? 'Ouvrir le clavardage CREOVA Support' : 'Open CREOVA Support chat'}
               aria-expanded={isOpen}
               className="w-16 h-16 rounded-full shadow-2xl relative overflow-hidden group p-0"

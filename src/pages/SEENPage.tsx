@@ -62,6 +62,21 @@ const pillars = (fr: boolean) => [
   }
 ];
 
+function seededValue(index: number, salt: number): number {
+  const value = Math.sin(index * 12.9898 + salt * 78.233) * 43758.5453;
+  return value - Math.floor(value);
+}
+
+const APP_PREVIEW_PARTICLES = Array.from({ length: 22 }, (_, index) => ({
+  id: index,
+  size: seededValue(index, 1) * 3 + 1,
+  x: seededValue(index, 2) * 100,
+  y: seededValue(index, 3) * 100,
+  dur: seededValue(index, 4) * 6 + 5,
+  delay: seededValue(index, 5) * 4,
+  opacity: seededValue(index, 6) * 0.4 + 0.1,
+}));
+
 function AppPreview3D() {
   const fr = useLanguage().language === 'fr';
   const stageRef = useRef<HTMLDivElement>(null);
@@ -110,16 +125,6 @@ function AppPreview3D() {
     }
   }, [prefersReduced, rawX, rawY, springX, springY]);
 
-  const particles = Array.from({ length: 22 }, (_, i) => ({
-    id: i,
-    size: Math.random() * 3 + 1,
-    x: Math.random() * 100,
-    y: Math.random() * 100,
-    dur: Math.random() * 6 + 5,
-    delay: Math.random() * 4,
-    opacity: Math.random() * 0.4 + 0.1,
-  }));
-
   return (
     <section
       ref={stageRef}
@@ -135,7 +140,7 @@ function AppPreview3D() {
       />
       {/* Floating particles */}
       <div className="absolute inset-0 pointer-events-none">
-        {particles.map(p => (
+        {APP_PREVIEW_PARTICLES.map(p => (
           <motion.div
             key={p.id}
             className="absolute rounded-full"

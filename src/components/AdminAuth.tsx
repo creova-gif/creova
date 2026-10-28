@@ -24,17 +24,25 @@ export function AdminAuth({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
 
   useEffect(() => {
+    let cancelled = false;
     const token = getAdminToken();
     const authTime = sessionStorage.getItem(AUTH_TIME_KEY);
+    const authenticated = Boolean(
+      token && authTime && Date.now() - parseInt(authTime, 10) < SESSION_TTL_MS,
+    );
 
-    if (token && authTime && Date.now() - parseInt(authTime, 10) < SESSION_TTL_MS) {
-      setIsAuthenticated(true);
-    } else {
+    if (!authenticated) {
       clearAdminToken();
       sessionStorage.removeItem(AUTH_TIME_KEY);
     }
 
-    setLoading(false);
+    queueMicrotask(() => {
+      if (cancelled) return;
+      setIsAuthenticated(authenticated);
+      setLoading(false);
+    });
+
+    return () => { cancelled = true; };
   }, []);
 
   const handleLogin = async (e: React.FormEvent) => {

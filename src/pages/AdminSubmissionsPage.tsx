@@ -74,7 +74,7 @@ export function AdminSubmissionsPage() {
   };
 
   useEffect(() => {
-    fetchSubmissions();
+    queueMicrotask(fetchSubmissions);
   }, []);
 
   const filteredSubmissions = submissions.filter(sub => {
