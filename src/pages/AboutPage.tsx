@@ -117,13 +117,13 @@ export function AboutPage() {
         }} />
         <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-[.85fr_1.3fr] gap-10 lg:gap-16 items-start">
-            <div className="relative isolate overflow-hidden rounded-2xl min-h-[420px] lg:min-h-[560px] p-8 md:p-10 flex flex-col justify-end" style={{ background: 'linear-gradient(145deg, #2D1011 0%, #5A3028 100%)', border: '1px solid rgba(198,164,90,0.22)' }}>
-              <div className="absolute inset-x-4 top-2 h-[68%] flex items-center justify-center pointer-events-none" aria-hidden="true">
+            <div className="relative isolate overflow-hidden rounded-2xl" style={{ background: 'linear-gradient(145deg, #2D1011 0%, #5A3028 100%)', border: '1px solid rgba(198,164,90,0.22)' }}>
+              <div className="absolute inset-0 -z-10" aria-hidden="true" style={{ background: 'radial-gradient(circle at 50% 25%, rgba(198,164,90,0.18), transparent 48%)' }} />
+              <div className="relative h-64 sm:h-72 lg:h-80 px-6 pt-6 md:px-8 md:pt-8 flex items-center justify-center" aria-hidden="true">
                 <img src={sankofaSymbol} alt="" loading="lazy" decoding="async" className="w-full h-full object-contain opacity-80 mix-blend-screen" />
               </div>
-              <div className="absolute inset-0 -z-10" style={{ background: 'radial-gradient(circle at 50% 28%, rgba(198,164,90,0.18), transparent 48%)' }} />
-              <div className="relative z-10 pt-56 lg:pt-64">
-                <p className="text-xs tracking-[.34em] uppercase mb-5" style={{ color: '#C6A45A' }}>{fr ? 'Revenir. Retrouver. Avancer.' : 'Return. Retrieve. Build forward.'}</p>
+              <div className="relative z-10 p-8 pt-5 md:p-10 md:pt-6">
+                <p className="text-xs tracking-[.24em] sm:tracking-[.34em] uppercase mb-5" style={{ color: '#C6A45A' }}>{fr ? 'Revenir. Retrouver. Avancer.' : 'Return. Retrieve. Build forward.'}</p>
                 <p className="leading-none" style={{ color: '#FFFFFF', fontSize: 'clamp(2.65rem, 3.2vw, 3.35rem)', letterSpacing: '-0.045em' }}>Sankofa</p>
                 <p className="mt-7 max-w-sm leading-relaxed" style={{ color: '#CDBFAE' }}>{fr ? 'Une philosophie de mémoire, de responsabilité et de création tournée vers l’avenir.' : 'A philosophy of memory, responsibility, and future-facing creation.'}</p>
               </div>
