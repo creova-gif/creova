@@ -931,10 +931,10 @@ export function SEENPage() {
               {fr ? 'Deux projets, des étapes différentes' : 'Two CREOVA Projects, Different Stages'}
             </p>
             <h2 className="text-3xl md:text-5xl mb-6" style={{ color: '#FFFFFF' }}>
-              {fr ? 'SEEN est en développement. VERSE est en incubation.' : 'SEEN is in development. VERSE is incubating.'}
+              {fr ? 'SEEN est en développement. Le site VERSE est en ligne.' : 'SEEN is in development. The VERSE website is live.'}
             </h2>
             <p className="text-base max-w-xl mx-auto mb-10" style={{ color: '#777777' }}>
-              {fr ? "Le dossier technique de VERSE est prêt, mais aucun lancement, magasin ou précommande n'est annoncé. CREOVA se concentre d'abord sur SEEN et ses services." : 'The VERSE tech pack is ready, but no launch, shop, or preorder is being announced. CREOVA is focusing first on SEEN and its services.'}
+              {fr ? "VERSE reste en développement. Son site public présente le processus, mais aucun lancement, magasin ou précommande n'est annoncé." : 'VERSE remains in development. Its public website shares the process, but no launch, shop, or preorder is being announced.'}
             </p>
             {VENTURE_URLS.verse ? (
               <a

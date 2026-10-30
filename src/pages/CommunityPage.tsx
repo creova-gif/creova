@@ -39,26 +39,29 @@ export function CommunityPage() {
         path="/community"
       />
 
-      <section className="relative min-h-[70vh] flex items-end overflow-hidden" style={{ backgroundColor: '#2D1011' }}>
-        <img src={communityImage} alt="People in conversation at a community gathering" className="absolute inset-0 w-full h-full object-cover" />
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(90deg, rgba(45,16,17,.97), rgba(45,16,17,.62) 70%, rgba(45,16,17,.38))' }} />
-        <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .7 }} className="relative max-w-7xl mx-auto w-full px-6 lg:px-8 py-20 lg:py-28">
-          <p className="text-xs tracking-[.35em] uppercase mb-6" style={{ color: '#C6A45A' }}>{fr ? 'Communauté' : 'Community'}</p>
-          <h1 className="max-w-5xl font-light tracking-tight leading-[.98]" style={{ color: '#FFFFFF', fontSize: 'clamp(3.1rem, 8vw, 7.2rem)' }}>{fr ? 'Mandater, collaborer ou soutenir — avec des rôles clairs dès le départ.' : 'Commission, collaborate, or partner—with clear roles from the start.'}</h1>
-          <p className="max-w-3xl mt-7 text-lg md:text-xl leading-relaxed" style={{ color: '#E0E0E0' }}>{fr ? 'Choisissez la relation qui correspond à votre objectif. Nous clarifions le rôle de chacun, la valeur échangée et le résultat avant de commencer.' : 'Choose the relationship that matches your goal. We clarify roles, value exchange, and the intended outcome before work begins.'}</p>
-        </motion.div>
+      <section className="overflow-hidden" style={{ backgroundColor: '#2D1011' }}>
+        <div className="max-w-[1440px] mx-auto grid lg:grid-cols-[1.08fr_.92fr] min-h-[70vh]">
+          <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .7 }} className="px-6 lg:pl-12 xl:pl-20 lg:pr-12 pt-28 pb-16 lg:py-28 flex flex-col justify-center">
+            <p className="text-xs tracking-[.35em] uppercase mb-6" style={{ color: '#C6A45A' }}>{fr ? 'Communauté' : 'Community'}</p>
+            <h1 className="font-light tracking-tight leading-[.98]" style={{ color: '#FFFFFF', fontSize: 'clamp(3.1rem, 7vw, 6.5rem)' }}>{fr ? 'Mandater, collaborer ou soutenir — avec des rôles clairs dès le départ.' : 'Commission, collaborate, or partner—with clear roles from the start.'}</h1>
+            <p className="max-w-3xl mt-7 text-lg md:text-xl leading-relaxed" style={{ color: '#E0E0E0' }}>{fr ? 'Choisissez la relation qui correspond à votre objectif. Nous clarifions le rôle de chacun, la valeur échangée et le résultat avant de commencer.' : 'Choose the relationship that matches your goal. We clarify roles, value exchange, and the intended outcome before work begins.'}</p>
+          </motion.div>
+          <div className="relative min-h-[420px] lg:min-h-full overflow-hidden" role="img" aria-label={fr ? 'Conversation lors d’un rassemblement communautaire' : 'People in conversation at a community gathering'}>
+            <img src={communityImage} alt="" aria-hidden="true" className="absolute inset-0 w-full h-full object-cover" width="1600" height="1066" fetchPriority="high" />
+          </div>
+        </div>
       </section>
 
       <section className="py-20 lg:py-28">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="max-w-3xl mb-12"><p className="text-xs tracking-[.35em] uppercase mb-4" style={{ color: '#887759' }}>{fr ? 'Choisissez votre voie' : 'Choose your route'}</p><h2 className="text-4xl md:text-6xl font-light tracking-tight" style={{ color: '#2D1011' }}>{fr ? 'Trois relations. Trois prochaines étapes.' : 'Three relationships. Three next steps.'}</h2></div>
+          <div className="max-w-3xl mb-12"><p className="text-xs tracking-[.35em] uppercase mb-4" style={{ color: '#7D6D51' }}>{fr ? 'Choisissez votre voie' : 'Choose your route'}</p><h2 className="text-4xl md:text-6xl font-light tracking-tight" style={{ color: '#2D1011' }}>{fr ? 'Trois relations. Trois prochaines étapes.' : 'Three relationships. Three next steps.'}</h2></div>
           <div className="grid lg:grid-cols-3 gap-6">
             {routes.map(({ id, icon: Icon, title, text, cta, to }) => (
               <article id={id} key={id} className="scroll-mt-36 rounded-3xl p-7 md:p-9 flex flex-col min-h-[390px]" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E0E0E0' }}>
-                <Icon className="w-7 h-7" style={{ color: '#887759' }} />
+                <Icon className="w-7 h-7" style={{ color: '#7D6D51' }} />
                 <h2 className="text-3xl font-light tracking-tight mt-14 mb-5" style={{ color: '#2D1011' }}>{title}</h2>
                 <p className="leading-relaxed flex-1" style={{ color: '#555' }}>{text}</p>
-                {to.startsWith('mailto:') ? <a href={to} className="inline-flex items-center gap-2 text-sm font-medium mt-8" style={{ color: '#887759' }}>{cta}<ArrowRight className="w-4 h-4" /></a> : <Link to={to} className="inline-flex items-center gap-2 text-sm font-medium mt-8" style={{ color: '#887759' }}>{cta}<ArrowRight className="w-4 h-4" /></Link>}
+                {to.startsWith('mailto:') ? <a href={to} className="inline-flex items-center gap-2 text-sm font-medium mt-8" style={{ color: '#7D6D51' }}>{cta}<ArrowRight className="w-4 h-4" /></a> : <Link to={to} className="inline-flex items-center gap-2 text-sm font-medium mt-8" style={{ color: '#7D6D51' }}>{cta}<ArrowRight className="w-4 h-4" /></Link>}
               </article>
             ))}
           </div>
@@ -76,7 +79,7 @@ export function CommunityPage() {
 
       <section className="py-24">
         <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
-          <Sparkles className="w-7 h-7 mx-auto mb-6" style={{ color: '#887759' }} />
+          <Sparkles className="w-7 h-7 mx-auto mb-6" style={{ color: '#7D6D51' }} />
           <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-6" style={{ color: '#2D1011' }}>{fr ? 'Vous avez une proposition précise?' : 'Have a specific proposal?'}</h2>
           <p className="max-w-2xl mx-auto leading-relaxed mb-9" style={{ color: '#555' }}>{fr ? 'Présentez le contexte, les personnes concernées, le résultat recherché, le calendrier et ce que chaque partie apporte.' : 'Share the context, who is involved, the intended outcome, timing, and what each party brings.'}</p>
           <a href="mailto:support@creova.one?subject=Community%20proposal" className="inline-flex items-center gap-2 rounded-xl px-7 py-4 font-semibold" style={{ backgroundColor: '#7D6D51', color: '#FFFFFF' }}>{fr ? 'Écrire à CREOVA' : 'Email CREOVA'} <ArrowRight className="w-4 h-4" /></a>

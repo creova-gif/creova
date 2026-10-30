@@ -46,7 +46,7 @@ export const SEO_FR: Record<string, SeoCopy> = {
   '/ventures': {
     title: 'Produits et marques en développement',
     description:
-      'Découvrez SEEN, le produit numérique en développement de CREOVA, et VERSE, une marque lifestyle actuellement en incubation.',
+      'Découvrez SEEN, le produit numérique en développement de CREOVA, et le site public de VERSE, une marque lifestyle en développement.',
   },
   '/start-a-project': {
     title: 'Démarrer un projet',

@@ -125,10 +125,11 @@ export function ServiceAreaPage({ slug }: { slug: string }) {
             <p className="text-xs tracking-[0.4em] uppercase mb-8" style={{ color: '#C6A45A' }}>{fr ? 'Travaux récents' : 'Recent work'}</p>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {related.map((g) => (
-                <a key={g.id} href={g.url} target="_blank" rel="noopener noreferrer" className="group relative block overflow-hidden rounded-2xl" style={{ aspectRatio: '4/3', backgroundColor: '#0E0E0E' }}>
-                  <img src={g.image} alt={`${g.title} — ${g.subtitle}`} loading="lazy" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" style={{ objectPosition: g.objectPosition }} />
-                  <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(8,8,8,0.9) 0%, transparent 60%)' }} />
-                  <div className="absolute bottom-0 left-0 right-0 p-5">
+                <a key={g.id} href={g.url} target="_blank" rel="noopener noreferrer" className="group block overflow-hidden rounded-2xl" style={{ backgroundColor: '#0E0E0E', border: '1px solid rgba(198,164,90,0.14)' }}>
+                  <div className="relative overflow-hidden" style={{ aspectRatio: '4/3' }}>
+                    <img src={g.image} alt={`${g.title} — ${g.subtitle}`} loading="lazy" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" style={{ objectPosition: g.objectPosition }} width="1600" height="1200" />
+                  </div>
+                  <div className="p-5">
                     {g.org && <p className="text-[10px] tracking-[0.3em] uppercase mb-1" style={{ color: '#C6A45A' }}>{g.org}</p>}
                     <h3 className="text-lg tracking-tight" style={{ color: '#FFFFFF', fontWeight: 300 }}>{g.title}</h3>
                   </div>

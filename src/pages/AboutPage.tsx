@@ -81,12 +81,13 @@ export function AboutPage() {
           initial={{ opacity: 0, scale: 0.97 }}
           animate={inView ? { opacity: 1, scale: 1 } : {}}
           transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-          className="relative overflow-hidden rounded-2xl"
-          style={{ aspectRatio: '16/9', border: '1px solid rgba(198,164,90,0.15)' }}
+          className="overflow-hidden rounded-2xl"
+          style={{ backgroundColor: '#0E0E0E', border: '1px solid rgba(198,164,90,0.15)' }}
         >
-          <img src="/card-justin-panel.jpg" alt="Justin Mafie, founder of CREOVA, at the Brock LINC Innovation Showcase" className="w-full h-full object-cover" style={{ objectPosition: 'center 28%' }} />
-          <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(45,16,17,0.5) 0%, transparent 50%)' }} />
-          <div className="absolute bottom-5 left-6">
+          <div className="relative overflow-hidden" style={{ aspectRatio: '16/9' }}>
+            <img src="/card-justin-panel.jpg" alt="Justin Mafie, founder of CREOVA, at the Brock LINC Innovation Showcase" className="w-full h-full object-cover" style={{ objectPosition: 'center 28%' }} width="1600" height="1201" />
+          </div>
+          <div className="px-6 py-4">
             <p className="text-lg" style={{ color: '#FFFFFF', fontFamily: 'var(--font-display)' }}>Justin Mafie</p>
             <p className="text-xs tracking-[0.2em] uppercase" style={{ color: '#C6A45A' }}>{fr ? 'Fondateur — CREOVA' : 'Founder — CREOVA'}</p>
           </div>
@@ -247,13 +248,13 @@ export function AboutPage() {
           </h2>
           <p className="text-lg leading-relaxed mb-8" style={{ color: '#E0E0E0' }}>
             {fr
-              ? 'CREOVA est une entreprise créative centrée sur la narration culturelle. Le studio réalise le travail client; SEEN est en développement et VERSE reste en incubation. Une entreprise, des étapes clairement nommées.'
-              : 'CREOVA is a creative company centered on cultural storytelling. The studio delivers client work; SEEN is in development and VERSE remains in incubation. One company, with each stage named clearly.'}
+              ? 'CREOVA est une entreprise créative centrée sur la narration culturelle. Le studio réalise le travail client; SEEN est en développement et VERSE dispose maintenant d’un site public tout en restant en développement. Une entreprise, des étapes clairement nommées.'
+              : 'CREOVA is a creative company centered on cultural storytelling. The studio delivers client work; SEEN is in development, and VERSE now has a public website while the imprint remains in development. One company, with each stage named clearly.'}
           </p>
           <div className="grid sm:grid-cols-3 gap-4">
             {[
               { name: 'CREOVA', tag: fr ? 'Le studio de narration culturelle' : 'The cultural storytelling studio', to: '/services' },
-              { name: 'VERSE', tag: fr ? 'La marque lifestyle en incubation' : 'The lifestyle brand in incubation', to: VENTURE_URLS.verse ?? '/ventures#verse', external: Boolean(VENTURE_URLS.verse) },
+              { name: 'VERSE', tag: fr ? 'Le site public de la marque en développement' : 'The developing imprint’s public website', to: VENTURE_URLS.verse ?? '/ventures#verse', external: Boolean(VENTURE_URLS.verse) },
               { name: 'SEEN', tag: fr ? 'Le produit numérique' : 'The digital product', to: VENTURE_URLS.seen ?? '/ventures#seen', external: Boolean(VENTURE_URLS.seen) },
             ].map((b) => (
               b.external ? (
