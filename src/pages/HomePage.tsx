@@ -5,9 +5,12 @@ import { PageSEO } from '../components/PageSEO';
 import { useLanguage } from '../context/LanguageContext';
 import { VENTURE_URLS } from '../config';
 import { organizationSchema } from '../utils/structuredData';
-import heroImage from '../assets/photo-community-celebration.jpg';
-import communityImage from '../assets/photo-community-convo.jpg';
-import founderImage from '../assets/photo-team-atrium.jpg';
+import heroImageSmall from '../assets/photo-community-celebration-800.webp';
+import heroImageLarge from '../assets/photo-community-celebration-1400.webp';
+import communityImageSmall from '../assets/photo-community-convo-800.webp';
+import communityImageLarge from '../assets/photo-community-convo-1400.webp';
+import founderImageSmall from '../assets/photo-team-atrium-640.webp';
+import founderImageLarge from '../assets/photo-team-atrium-1066.webp';
 import logoBrock from '../assets/logo-brock-university.webp';
 import logoBSSC from '../assets/logo-bssc.png';
 import { CreovaMusicPlayer } from '../components/CreovaMusicPlayer';
@@ -107,14 +110,17 @@ export function HomePage() {
           </motion.div>
           <div className="relative min-h-[420px] lg:min-h-full overflow-hidden" aria-label={fr ? 'Rassemblement communautaire documenté par CREOVA' : 'A community gathering documented by CREOVA'} role="img">
             <img
-              src={heroImage}
+              src={heroImageLarge}
+              srcSet={`${heroImageSmall} 800w, ${heroImageLarge} 1400w`}
+              sizes="(min-width: 1024px) 46vw, 100vw"
               alt=""
               aria-hidden="true"
               className="absolute inset-0 h-full w-full object-cover"
               style={{ objectPosition: 'center 42%' }}
               fetchPriority="high"
-              width="1600"
-              height="1200"
+              decoding="async"
+              width="1400"
+              height="1050"
             />
           </div>
         </div>
@@ -189,7 +195,7 @@ export function HomePage() {
         <div className="max-w-7xl mx-auto px-6 lg:px-8 grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           <div className="overflow-hidden rounded-3xl" style={{ border: '1px solid #E0E0E0' }}>
             <div className="relative min-h-[420px]">
-              <img src={communityImage} alt="Community programming documented by CREOVA" loading="lazy" className="absolute inset-0 w-full h-full object-cover" width="1600" height="1066" />
+              <img src={communityImageLarge} srcSet={`${communityImageSmall} 800w, ${communityImageLarge} 1400w`} sizes="(min-width: 1024px) 46vw, 100vw" alt="Community programming documented by CREOVA" loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover" width="1400" height="933" />
             </div>
             <div className="p-6" style={{ backgroundColor: '#2D1011' }}>
               <p className="text-xs tracking-[0.3em] uppercase" style={{ color: '#CDBFAE' }}>BSSC × CREOVA</p>
@@ -234,7 +240,7 @@ export function HomePage() {
 
       <section className="py-24" style={{ backgroundColor: '#FFFFFF' }}>
         <div className="max-w-7xl mx-auto px-6 lg:px-8 grid lg:grid-cols-[.8fr_1.2fr] gap-12 items-center">
-          <img src={founderImage} alt="Justin Mafie working with the CREOVA community" decoding="async" loading="lazy" className="w-full rounded-3xl object-cover aspect-[4/5]" width="1066" height="1600" />
+          <img src={founderImageLarge} srcSet={`${founderImageSmall} 640w, ${founderImageLarge} 1066w`} sizes="(min-width: 1024px) 46vw, 100vw" alt="Justin Mafie working with the CREOVA community" decoding="async" loading="lazy" className="w-full rounded-3xl object-cover aspect-[4/5]" width="1066" height="1600" />
           <div>
             <p className="text-xs tracking-[0.35em] uppercase mb-5" style={{ color: '#7D6D51' }}>{fr ? 'Approche fondée par Justin Mafie' : 'Founder-led by Justin Mafie'}</p>
             <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-6" style={{ color: '#2D1011' }}>{fr ? 'La culture n’est pas une couche décorative.' : 'Culture is not a decorative layer.'}</h2>

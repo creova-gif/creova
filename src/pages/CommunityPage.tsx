@@ -3,7 +3,8 @@ import { motion } from 'motion/react';
 import { Link } from '../i18n/LocaleLink';
 import { PageSEO } from '../components/PageSEO';
 import { useLanguage } from '../context/LanguageContext';
-import communityImage from '../assets/photo-community-convo.jpg';
+import communityImageSmall from '../assets/photo-community-convo-800.webp';
+import communityImageLarge from '../assets/photo-community-convo-1400.webp';
 
 export function CommunityPage() {
   const { language } = useLanguage();
@@ -47,7 +48,7 @@ export function CommunityPage() {
             <p className="max-w-3xl mt-7 text-lg md:text-xl leading-relaxed" style={{ color: '#E0E0E0' }}>{fr ? 'Choisissez la relation qui correspond à votre objectif. Nous clarifions le rôle de chacun, la valeur échangée et le résultat avant de commencer.' : 'Choose the relationship that matches your goal. We clarify roles, value exchange, and the intended outcome before work begins.'}</p>
           </motion.div>
           <div className="relative min-h-[420px] lg:min-h-full overflow-hidden" role="img" aria-label={fr ? 'Conversation lors d’un rassemblement communautaire' : 'People in conversation at a community gathering'}>
-            <img src={communityImage} alt="" aria-hidden="true" className="absolute inset-0 w-full h-full object-cover" width="1600" height="1066" fetchPriority="high" />
+            <img src={communityImageLarge} srcSet={`${communityImageSmall} 800w, ${communityImageLarge} 1400w`} sizes="(min-width: 1024px) 46vw, 100vw" alt="" aria-hidden="true" className="absolute inset-0 w-full h-full object-cover" width="1400" height="933" fetchPriority="high" decoding="async" />
           </div>
         </div>
       </section>
