@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { useLocation } from 'react-router';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -36,6 +36,18 @@ export function SupportChat() {
   const { language } = useLanguage();
   const { pathname } = useLocation();
 
+  const openChat = useCallback(() => {
+    setMessages((current) => current.length > 0 ? current : [{
+      id: Date.now().toString(),
+      text: language === 'fr'
+        ? "Bonjour! Je suis le soutien CREOVA. Comment puis-je vous aider aujourd'hui?"
+        : "Hello! I'm CREOVA Support. How can I help you today?",
+      sender: 'bot',
+      timestamp: new Date(),
+    }]);
+    setIsOpen(true);
+  }, [language]);
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -45,14 +57,14 @@ export function SupportChat() {
   }, [messages]);
 
   useEffect(() => {
-    const handleOpen = () => setIsOpen(true);
-    window.addEventListener('support-chat:open', handleOpen);
-    return () => window.removeEventListener('support-chat:open', handleOpen);
-  }, []);
+    window.addEventListener('support-chat:open', openChat);
+    return () => window.removeEventListener('support-chat:open', openChat);
+  }, [openChat]);
 
   // Move focus into the panel on open, close on Escape, restore focus to the toggle on close
   useEffect(() => {
     if (!isOpen) return;
+    const toggleButton = toggleButtonRef.current;
     chatWindowRef.current?.querySelector<HTMLInputElement>('input')?.focus();
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') setIsOpen(false);
@@ -60,23 +72,8 @@ export function SupportChat() {
     document.addEventListener('keydown', handleKeyDown);
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
-      toggleButtonRef.current?.focus();
+      toggleButton?.focus();
     };
-  }, [isOpen]);
-
-  useEffect(() => {
-    if (isOpen && messages.length === 0) {
-      // Welcome message when first opened
-      const welcomeMsg: Message = {
-        id: Date.now().toString(),
-        text: language === 'fr'
-          ? "Bonjour! Je suis le soutien CREOVA. Comment puis-je vous aider aujourd'hui?"
-          : "Hello! I'm CREOVA Support. How can I help you today?",
-        sender: 'bot',
-        timestamp: new Date()
-      };
-      setMessages([welcomeMsg]);
-    }
   }, [isOpen]);
 
   // Hide on homepage — all hooks must be called before any early return
@@ -93,7 +90,7 @@ export function SupportChat() {
       services: "CREOVA offre la photographie, la vidéo, les systèmes de marque et visuels, les campagnes, les expériences numériques ainsi que le récit et la documentation d'événements. SEEN et VERSE sont des projets internes à différentes étapes. Consultez /services ou /start-a-project.",
       booking: "Pour démarrer, remplissez le formulaire à /start-a-project. CREOVA confirmera la réception, puis la portée, l'échéancier et les conditions par écrit.",
       seen: "SEEN est la plateforme de narration numérique de CREOVA, actuellement en développement, avec une bêta visée pour janvier 2027. Consultez /ventures pour son état actuel.",
-      shop: "VERSE est la marque lifestyle de CREOVA, actuellement en incubation. Le dossier technique est prêt, mais il n'y a ni boutique, ni précommande, ni date de lancement annoncée. Consultez /ventures pour voir son état actuel.",
+      shop: "VERSE est la marque lifestyle de CREOVA. Son site public est maintenant en ligne, mais la marque reste en développement : il n'y a ni boutique, ni précommande, ni date de lancement annoncée. Consultez verse.creova.one pour suivre le processus.",
       digital: "CREOVA développe ses propres produits numériques, dont SEEN. Consultez /ventures pour leur état actuel ou /start-a-project pour discuter d'un projet client.",
       booth: "La vidéo 360 peut être intégrée à certains projets événementiels. Décrivez l'événement à /start-a-project pour confirmer la disponibilité, la portée et les conditions.",
       rental: "La location autonome n'est pas offerte dans le parcours public actuel. Décrivez vos besoins à /start-a-project pour vérifier si l'équipement peut faire partie d'un projet CREOVA.",
@@ -108,7 +105,7 @@ export function SupportChat() {
       services: "CREOVA offers photography, videography, brand and visual systems, campaigns, digital experiences, and event story/documentation. SEEN and VERSE are CREOVA-owned projects at different development stages. Visit /services or start at /start-a-project.",
       booking: "To get started, submit the form at /start-a-project. CREOVA will confirm receipt, then scope, timing, and terms in writing.",
       seen: "SEEN is CREOVA's digital storytelling platform, currently in development, with a beta targeted for January 2027. Visit /ventures for its current status.",
-      shop: "VERSE is CREOVA's lifestyle brand, currently incubating. The tech pack is ready, but there is no shop, preorder, or announced launch date. Visit /ventures for its current status.",
+      shop: "VERSE is CREOVA's lifestyle imprint. Its public website is now live, but the imprint remains in development: there is no shop, preorder, or announced release date. Visit verse.creova.one to follow the process.",
       digital: "CREOVA is developing owned digital products, including SEEN. Visit /ventures for their current status or /start-a-project to discuss client work.",
       booth: "360 video can be included in selected event projects. Describe the event at /start-a-project to confirm availability, scope, and terms.",
       rental: "Standalone rental is not offered in the current public journey. Describe your needs at /start-a-project to ask whether equipment can be included in a CREOVA project.",
@@ -213,7 +210,7 @@ export function SupportChat() {
           >
             <Button
               ref={toggleButtonRef}
-              onClick={() => setIsOpen(true)}
+              onClick={openChat}
               aria-label={language === 'fr' ? 'Ouvrir le clavardage CREOVA Support' : 'Open CREOVA Support chat'}
               aria-expanded={isOpen}
               className="w-16 h-16 rounded-full shadow-2xl relative overflow-hidden group p-0"

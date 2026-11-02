@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useSearchParams } from 'react-router';
 import { useNavigate } from '../i18n/LocaleLink';
 import { motion } from 'motion/react';
@@ -12,8 +12,10 @@ export function OrderConfirmationPage() {
   const navigate = useNavigate();
   const fr = useLanguage().language === 'fr';
   const [searchParams] = useSearchParams();
-  const [orderDetails, setOrderDetails] = useState<any>(null);
   const paymentIntentId = searchParams.get('payment_intent');
+  const orderDetails = paymentIntentId
+    ? { orderId: paymentIntentId.slice(-8).toUpperCase(), status: 'confirmed' }
+    : null;
 
   useEffect(() => {
     if (!paymentIntentId) {
@@ -21,12 +23,6 @@ export function OrderConfirmationPage() {
       return;
     }
 
-    // In a real implementation, you would fetch order details from your backend
-    // For now, we'll show a success message
-    setOrderDetails({
-      orderId: paymentIntentId.slice(-8).toUpperCase(),
-      status: 'confirmed'
-    });
   }, [paymentIntentId, navigate]);
 
   if (!orderDetails) {

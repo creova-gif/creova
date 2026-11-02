@@ -87,7 +87,7 @@
     ]
   },
   {
-    "id": "verse-incubation",
+    "id": "verse-development",
     "slug": "verse",
     "kind": "venture",
     "publicationStatus": "published",
@@ -100,19 +100,19 @@
     "copy": {
       "en": {
         "title": "VERSE",
-        "summary": "A CREOVA lifestyle brand in incubation. The tech pack is ready; product development and an organic launch will follow only after SEEN and CREOVA's services are stronger.",
-        "statusLabel": "Incubating"
+        "summary": "CREOVA’s lifestyle imprint now has a public field-note website. The first body of work remains in development, with nothing for sale and no announced release date.",
+        "statusLabel": "Website live · in development"
       },
       "fr": {
         "title": "VERSE",
-        "summary": "Une marque lifestyle de CREOVA en incubation. Le dossier technique est prêt; le développement du produit et un lancement organique suivront seulement lorsque SEEN et les services de CREOVA seront plus solides.",
-        "statusLabel": "En incubation"
+        "summary": "La marque lifestyle de CREOVA dispose maintenant d’un site public de notes de terrain. Le premier corpus reste en développement, sans vente ni date de lancement annoncée.",
+        "statusLabel": "Site en ligne · en développement"
       }
     },
     "sources": [
       {
-        "label": "CREOVA products and brands page",
-        "url": "https://www.creova.one/ventures/",
+        "label": "Official VERSE field-note website",
+        "url": "https://verse.creova.one/",
         "owner": "creova"
       }
     ]

@@ -52,7 +52,9 @@ export function Captcha({
     isMountedRef.current = true;
 
     if (isScriptLoaded) {
-      setScriptReady(true);
+      queueMicrotask(() => {
+        if (isMountedRef.current) setScriptReady(true);
+      });
       return;
     }
 

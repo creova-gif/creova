@@ -5,9 +5,12 @@ import { PageSEO } from '../components/PageSEO';
 import { useLanguage } from '../context/LanguageContext';
 import { VENTURE_URLS } from '../config';
 import { organizationSchema } from '../utils/structuredData';
-import heroImage from '../assets/photo-community-celebration.jpg';
-import communityImage from '../assets/photo-community-convo.jpg';
-import founderImage from '../assets/photo-team-atrium.jpg';
+import heroImageSmall from '../assets/photo-community-celebration-800.webp';
+import heroImageLarge from '../assets/photo-community-celebration-1400.webp';
+import communityImageSmall from '../assets/photo-community-convo-800.webp';
+import communityImageLarge from '../assets/photo-community-convo-1400.webp';
+import founderImageSmall from '../assets/photo-team-atrium-640.webp';
+import founderImageLarge from '../assets/photo-team-atrium-1066.webp';
 import logoBrock from '../assets/logo-brock-university.webp';
 import logoBSSC from '../assets/logo-bssc.png';
 import { CreovaMusicPlayer } from '../components/CreovaMusicPlayer';
@@ -77,19 +80,9 @@ export function HomePage() {
         jsonLd={organizationSchema}
       />
 
-      <section className="relative min-h-[82vh] flex items-end overflow-hidden" style={{ backgroundColor: '#2D1011' }}>
-        <img
-          src={heroImage}
-          alt="A community gathering documented by CREOVA"
-          className="absolute inset-0 h-full w-full object-cover"
-          style={{ objectPosition: 'center 42%' }}
-          fetchPriority="high"
-        />
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(90deg, rgba(45,16,17,.98) 0%, rgba(45,16,17,.9) 45%, rgba(45,16,17,.34) 100%)' }} />
-        <div className="absolute inset-x-0 bottom-0 h-40" style={{ background: 'linear-gradient(transparent, rgba(45,16,17,.92))' }} />
-
-        <div className="relative z-10 max-w-7xl mx-auto w-full px-6 lg:px-8 pt-32 pb-20">
-          <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.75 }} className="max-w-4xl">
+      <section style={{ backgroundColor: '#2D1011' }}>
+        <div className="max-w-[1440px] mx-auto grid lg:grid-cols-[1.08fr_.92fr] min-h-[82vh]">
+          <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.75 }} className="px-6 lg:pl-12 xl:pl-20 lg:pr-12 pt-32 pb-16 lg:py-32 flex flex-col justify-center">
             <p className="text-xs tracking-[0.34em] uppercase mb-6" style={{ color: '#C6A45A' }}>
               {fr ? 'Studio de narration culturelle · Ontario' : 'Cultural storytelling studio · Ontario'}
             </p>
@@ -115,6 +108,21 @@ export function HomePage() {
               <span className="inline-flex items-center gap-2"><CalendarDays className="w-4 h-4" style={{ color: '#C6A45A' }} />Niagara · Hamilton · GTA</span>
             </div>
           </motion.div>
+          <div className="relative min-h-[420px] lg:min-h-full overflow-hidden" aria-label={fr ? 'Rassemblement communautaire documenté par CREOVA' : 'A community gathering documented by CREOVA'} role="img">
+            <img
+              src={heroImageLarge}
+              srcSet={`${heroImageSmall} 800w, ${heroImageLarge} 1400w`}
+              sizes="(min-width: 1024px) 46vw, 100vw"
+              alt=""
+              aria-hidden="true"
+              className="absolute inset-0 h-full w-full object-cover"
+              style={{ objectPosition: 'center 42%' }}
+              fetchPriority="high"
+              decoding="async"
+              width="1400"
+              height="1050"
+            />
+          </div>
         </div>
       </section>
 
@@ -126,8 +134,8 @@ export function HomePage() {
               : 'Verified public work: Black History Month and community-program documentation connected with Brock University’s Black Student Success Centre.'}
           </p>
           <div className="flex items-center gap-5" aria-label="Verified collaborators">
-            <img src={logoBrock} alt="Brock University" className="h-11 w-auto object-contain" />
-            <img src={logoBSSC} alt="Black Student Success Centre" className="h-11 w-11 object-contain" />
+            <img src={logoBrock} alt="Brock University" className="h-11 w-auto object-contain" width="1188" height="720" />
+            <img src={logoBSSC} alt="Black Student Success Centre" className="h-11 w-11 object-contain" width="1070" height="1074" />
           </div>
         </div>
       </section>
@@ -136,7 +144,7 @@ export function HomePage() {
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid lg:grid-cols-[.9fr_1.1fr] gap-14 lg:gap-24">
             <div>
-              <p className="text-xs tracking-[0.35em] uppercase mb-5" style={{ color: '#887759' }}>{fr ? 'Le problème' : 'The problem'}</p>
+              <p className="text-xs tracking-[0.35em] uppercase mb-5" style={{ color: '#7D6D51' }}>{fr ? 'Le problème' : 'The problem'}</p>
               <h2 className="font-light tracking-tight leading-tight" style={{ color: '#2D1011', fontSize: 'clamp(2.5rem, 5vw, 4.8rem)' }}>
                 {fr ? 'L’événement se termine. Sa valeur ne devrait pas disparaître.' : 'The event ends. Its value should not.'}
               </h2>
@@ -152,7 +160,7 @@ export function HomePage() {
                 ['Carry the story forward', 'Rapid assets, a useful archive, and an editorial path for reporting, promotion, and the next program.'],
               ]).map(([title, text], index) => (
                 <div key={title} className="grid grid-cols-[auto_1fr] gap-5 rounded-2xl p-6" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E0E0E0' }}>
-                  <span className="text-xs pt-1" style={{ color: '#887759' }}>0{index + 1}</span>
+                  <span className="text-xs pt-1" style={{ color: '#7D6D51' }}>0{index + 1}</span>
                   <div><h3 className="text-xl mb-2" style={{ color: '#2D1011' }}>{title}</h3><p className="leading-relaxed" style={{ color: '#555' }}>{text}</p></div>
                 </div>
               ))}
@@ -185,16 +193,16 @@ export function HomePage() {
 
       <section className="py-24 lg:py-32">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-          <div className="relative overflow-hidden rounded-3xl min-h-[480px]">
-            <img src={communityImage} alt="Community programming documented by CREOVA" loading="lazy" className="absolute inset-0 w-full h-full object-cover" />
-            <div className="absolute inset-0" style={{ background: 'linear-gradient(transparent 40%, rgba(45,16,17,.85))' }} />
-            <div className="absolute bottom-0 p-7 md:p-9">
-              <p className="text-xs tracking-[0.3em] uppercase mb-3" style={{ color: '#C6A45A' }}>BSSC × CREOVA</p>
-              <h2 className="text-3xl md:text-4xl font-light" style={{ color: '#FFFFFF' }}>{fr ? 'Documenter la vie étudiante noire à Brock' : 'Documenting Black student life at Brock'}</h2>
+          <div className="overflow-hidden rounded-3xl" style={{ border: '1px solid #E0E0E0' }}>
+            <div className="relative min-h-[420px]">
+              <img src={communityImageLarge} srcSet={`${communityImageSmall} 800w, ${communityImageLarge} 1400w`} sizes="(min-width: 1024px) 46vw, 100vw" alt="Community programming documented by CREOVA" loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover" width="1400" height="933" />
+            </div>
+            <div className="p-6" style={{ backgroundColor: '#2D1011' }}>
+              <p className="text-xs tracking-[0.3em] uppercase" style={{ color: '#CDBFAE' }}>BSSC × CREOVA</p>
             </div>
           </div>
           <div>
-            <p className="text-xs tracking-[0.35em] uppercase mb-5" style={{ color: '#887759' }}>{fr ? 'Étude de cas' : 'Featured case study'}</p>
+            <p className="text-xs tracking-[0.35em] uppercase mb-5" style={{ color: '#7D6D51' }}>{fr ? 'Étude de cas' : 'Featured case study'}</p>
             <h2 className="text-4xl md:text-5xl font-light tracking-tight mb-6" style={{ color: '#2D1011' }}>{fr ? 'Conçu pour le moment. Utile longtemps après.' : 'Made for the moment. Useful long after it.'}</h2>
             <p className="text-lg leading-relaxed mb-5" style={{ color: '#555' }}>
               {fr
@@ -206,7 +214,7 @@ export function HomePage() {
                 ? 'Une sélection du travail continue de soutenir les communications sociales, promotionnelles, communautaires et institutionnelles. Aucun résultat ni témoignage non vérifié n’est ajouté.'
                 : 'Selected work continues to support social, promotional, community, and institutional communications. No unverified result or testimonial is added.'}
             </p>
-            <Link to="/work/black-student-success-centre" className="inline-flex items-center gap-2 font-medium" style={{ color: '#887759' }}>{fr ? 'Lire l’étude de cas' : 'Read the case study'} <ArrowRight className="w-4 h-4" /></Link>
+            <Link to="/work/black-student-success-centre" className="inline-flex items-center gap-2 font-medium" style={{ color: '#7D6D51' }}>{fr ? 'Lire l’étude de cas' : 'Read the case study'} <ArrowRight className="w-4 h-4" /></Link>
           </div>
         </div>
       </section>
@@ -214,16 +222,16 @@ export function HomePage() {
       <section className="py-24" style={{ backgroundColor: '#FFFFFF' }}>
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="max-w-3xl mb-12">
-            <p className="text-xs tracking-[0.35em] uppercase mb-4" style={{ color: '#887759' }}>{fr ? 'Choisissez votre voie' : 'Choose the right route'}</p>
+            <p className="text-xs tracking-[0.35em] uppercase mb-4" style={{ color: '#7D6D51' }}>{fr ? 'Choisissez votre voie' : 'Choose the right route'}</p>
             <h2 className="text-4xl md:text-6xl font-light tracking-tight" style={{ color: '#2D1011' }}>{fr ? 'Une relation claire dès le départ.' : 'A clear relationship from the start.'}</h2>
           </div>
           <div className="grid md:grid-cols-3 gap-5">
             {routes.map(({ icon: Icon, title, text, to, cta }) => (
               <article key={title} className="rounded-2xl p-7" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E0E0E0' }}>
-                <Icon className="w-6 h-6 mb-8" style={{ color: '#887759' }} />
+                <Icon className="w-6 h-6 mb-8" style={{ color: '#7D6D51' }} />
                 <h3 className="text-2xl mb-3" style={{ color: '#2D1011' }}>{title}</h3>
                 <p className="leading-relaxed min-h-[96px]" style={{ color: '#555' }}>{text}</p>
-                <Link to={to} className="inline-flex items-center gap-2 text-sm mt-6" style={{ color: '#887759' }}>{cta} <ArrowRight className="w-4 h-4" /></Link>
+                <Link to={to} className="inline-flex items-center gap-2 text-sm mt-6" style={{ color: '#7D6D51' }}>{cta} <ArrowRight className="w-4 h-4" /></Link>
               </article>
             ))}
           </div>
@@ -232,16 +240,16 @@ export function HomePage() {
 
       <section className="py-24" style={{ backgroundColor: '#FFFFFF' }}>
         <div className="max-w-7xl mx-auto px-6 lg:px-8 grid lg:grid-cols-[.8fr_1.2fr] gap-12 items-center">
-          <img src={founderImage} alt="Justin Mafie working with the CREOVA community" decoding="async" className="w-full rounded-3xl object-cover aspect-[4/5]" />
+          <img src={founderImageLarge} srcSet={`${founderImageSmall} 640w, ${founderImageLarge} 1066w`} sizes="(min-width: 1024px) 46vw, 100vw" alt="Justin Mafie working with the CREOVA community" decoding="async" loading="lazy" className="w-full rounded-3xl object-cover aspect-[4/5]" width="1066" height="1600" />
           <div>
-            <p className="text-xs tracking-[0.35em] uppercase mb-5" style={{ color: '#887759' }}>{fr ? 'Approche fondée par Justin Mafie' : 'Founder-led by Justin Mafie'}</p>
+            <p className="text-xs tracking-[0.35em] uppercase mb-5" style={{ color: '#7D6D51' }}>{fr ? 'Approche fondée par Justin Mafie' : 'Founder-led by Justin Mafie'}</p>
             <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-6" style={{ color: '#2D1011' }}>{fr ? 'La culture n’est pas une couche décorative.' : 'Culture is not a decorative layer.'}</h2>
             <p className="text-lg leading-relaxed mb-8" style={{ color: '#555' }}>
               {fr
                 ? 'Elle influence l’auteur du récit, les personnes qui en bénéficient, la manière dont les gens sont représentés et l’usage des images après la remise. CREOVA intègre ces décisions à la stratégie et à la production.'
                 : 'It shapes who authors the story, who benefits, how people are represented, and how the work can be used after delivery. CREOVA brings those decisions into strategy and production.'}
             </p>
-            <Link to="/about" className="inline-flex items-center gap-2 font-medium" style={{ color: '#887759' }}>{fr ? 'À propos de CREOVA' : 'About CREOVA'} <ArrowRight className="w-4 h-4" /></Link>
+            <Link to="/about" className="inline-flex items-center gap-2 font-medium" style={{ color: '#7D6D51' }}>{fr ? 'À propos de CREOVA' : 'About CREOVA'} <ArrowRight className="w-4 h-4" /></Link>
           </div>
         </div>
       </section>
@@ -255,8 +263,8 @@ export function HomePage() {
             <h2 className="text-4xl md:text-6xl font-light tracking-tight max-w-4xl" style={{ color: '#FFFFFF' }}>{fr ? 'Le travail client finance l’expertise. Les produits doivent mériter leur prochaine étape.' : 'Client work builds the craft. Products must earn their next stage.'}</h2>
             <p className="mt-6 max-w-3xl leading-relaxed" style={{ color: '#9B9B9B' }}>
               {fr
-                ? 'SEEN est en développement vers une cible bêta en janvier 2027. VERSE est en incubation; son dossier technique est prêt, mais aucun lancement ni précommande n’est annoncé.'
-                : 'SEEN is in development toward a January 2027 beta target. VERSE is incubating; its tech pack is ready, but no launch or preorder is being announced.'}
+                ? 'SEEN est en développement vers une cible bêta en janvier 2027. Le site de notes de terrain de VERSE est en ligne; la marque reste en développement, sans vente ni date de lancement annoncée.'
+                : 'SEEN is in development toward a January 2027 beta target. VERSE’s field-note site is live; the imprint remains in development, with nothing for sale and no announced release date.'}
             </p>
           </div>
           <div className="flex flex-wrap lg:flex-col gap-3">

@@ -92,7 +92,7 @@ export function RefundManagementPage() {
   };
 
   useEffect(() => {
-    fetchData();
+    queueMicrotask(fetchData);
   }, []);
 
   const handleRefund = async () => {

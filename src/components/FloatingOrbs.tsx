@@ -1,6 +1,6 @@
 import { motion } from 'motion/react';
-import { useEffect, useState } from 'react';
 import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion';
+import { useMediaQuery } from '../hooks/useMediaQuery';
 
 interface OrbConfig {
   size: number;
@@ -53,15 +53,7 @@ const orbs: OrbConfig[] = [
 
 export function FloatingOrbs() {
   const prefersReduced = usePrefersReducedMotion();
-  const [enabled, setEnabled] = useState(false);
-
-  useEffect(() => {
-    const mq = window.matchMedia('(min-width: 1024px)');
-    setEnabled(mq.matches);
-    const handler = (e: MediaQueryListEvent) => setEnabled(e.matches);
-    mq.addEventListener('change', handler);
-    return () => mq.removeEventListener('change', handler);
-  }, []);
+  const enabled = useMediaQuery('(min-width: 1024px)');
 
   // Ambient orbs are purely decorative. Skip them on tablets/phones and for
   // users who prefer reduced motion — large blurred, animating layers are the

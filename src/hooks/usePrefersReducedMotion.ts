@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useMediaQuery } from './useMediaQuery';
 
 const QUERY = '(prefers-reduced-motion: reduce)';
 
@@ -10,17 +10,5 @@ const QUERY = '(prefers-reduced-motion: reduce)';
  * without reloading the page.
  */
 export function usePrefersReducedMotion(): boolean {
-  const [prefersReduced, setPrefersReduced] = useState(
-    () => typeof window !== 'undefined' && window.matchMedia(QUERY).matches
-  );
-
-  useEffect(() => {
-    const mql = window.matchMedia(QUERY);
-    const onChange = () => setPrefersReduced(mql.matches);
-    onChange();
-    mql.addEventListener('change', onChange);
-    return () => mql.removeEventListener('change', onChange);
-  }, []);
-
-  return prefersReduced;
+  return useMediaQuery(QUERY);
 }

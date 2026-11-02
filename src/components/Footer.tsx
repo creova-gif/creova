@@ -40,7 +40,7 @@ export function Footer() {
             <p className="text-xs tracking-[.3em] uppercase mb-5" style={{ color: '#C6A45A' }}>{fr ? 'Nos marques' : 'Our Brands'}</p>
             <ul className="space-y-3 text-sm" style={{ color: '#9B9B9B' }}>
               <li>{VENTURE_URLS.seen ? <a href={VENTURE_URLS.seen} target="_blank" rel="noopener noreferrer" className="hover:text-white">SEEN <ArrowUpRight className="inline w-3 h-3" /></a> : <Link to="/ventures#seen" className="hover:text-white">SEEN · {fr ? 'en développement' : 'in development'}</Link>}</li>
-              <li>{VENTURE_URLS.verse ? <a href={VENTURE_URLS.verse} target="_blank" rel="noopener noreferrer" className="hover:text-white">VERSE <ArrowUpRight className="inline w-3 h-3" /></a> : <Link to="/ventures#verse" className="hover:text-white">VERSE · {fr ? 'en incubation' : 'incubating'}</Link>}</li>
+              <li>{VENTURE_URLS.verse ? <a href={VENTURE_URLS.verse} target="_blank" rel="noopener noreferrer" className="hover:text-white">VERSE · {fr ? 'en développement' : 'in development'} <ArrowUpRight className="inline w-3 h-3" /></a> : <Link to="/ventures#verse" className="hover:text-white">VERSE · {fr ? 'en développement' : 'in development'}</Link>}</li>
             </ul>
           </div>
           <div>

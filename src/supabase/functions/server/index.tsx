@@ -1098,10 +1098,9 @@ app.get("/make-server-feacf0d8/analytics", requireAdmin, async (c) => {
     const startDate = new Date(now.getTime() - (days * 24 * 60 * 60 * 1000));
 
     // Fetch all data
-    const [pageviews, sessions, visitors, events] = await Promise.all([
+    const [pageviews, sessions, events] = await Promise.all([
       kv.getByPrefix("pageview_"),
       kv.getByPrefix("session_"),
-      kv.getByPrefix("visitor_"),
       kv.getByPrefix("event_")
     ]);
 

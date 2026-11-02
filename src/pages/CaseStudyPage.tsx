@@ -51,10 +51,10 @@ export function CaseStudyPage({ slug }: { slug: string }) {
           <h1 className="tracking-tight mt-5 mb-6" style={{ color: '#FFFFFF', fontFamily: 'var(--font-display)', fontSize: 'clamp(2.4rem, 6vw, 4.2rem)', lineHeight: 1.03 }}>{c.title}</h1>
           <p className="text-lg leading-relaxed" style={{ color: '#E0E0E0', maxWidth: '62ch' }}>{c.overview}</p>
           <div className="mt-8 flex items-center gap-4" aria-label="Collaborators">
-            <img src={logoBrock} alt="Brock University" className="h-11 w-auto object-contain" />
+            <img src={logoBrock} alt="Brock University" className="h-11 w-auto object-contain" width="1188" height="720" />
             <span className="text-sm" style={{ color: '#777' }}>×</span>
             <span className="rounded-md bg-white p-1.5">
-              <img src={logoBSSC} alt="Black Student Success Centre" className="h-8 w-8 object-contain" />
+              <img src={logoBSSC} alt="Black Student Success Centre" className="h-8 w-8 object-contain" width="1070" height="1074" />
             </span>
           </div>
         </div>
@@ -85,12 +85,13 @@ export function CaseStudyPage({ slug }: { slug: string }) {
                   href={gallery.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group relative overflow-hidden rounded-2xl"
-                  style={{ aspectRatio: '16 / 10', border: '1px solid rgba(198,164,90,0.2)' }}
+                  className="group overflow-hidden rounded-2xl"
+                  style={{ backgroundColor: '#0E0E0E', border: '1px solid rgba(198,164,90,0.2)' }}
                 >
-                  <img src={gallery.image} alt={gallery.title} loading="lazy" className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" style={{ objectPosition: gallery.objectPosition }} />
-                  <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(45,16,17,0.94), rgba(45,16,17,0.06) 70%)' }} />
-                  <div className="absolute inset-x-0 bottom-0 p-5">
+                  <div className="relative overflow-hidden" style={{ aspectRatio: '16 / 10' }}>
+                    <img src={gallery.image} alt={gallery.title} loading="lazy" className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" style={{ objectPosition: gallery.objectPosition }} width="1600" height="1200" />
+                  </div>
+                  <div className="p-5">
                     <p className="text-[10px] tracking-[0.25em] uppercase mb-2" style={{ color: '#CDBFAE' }}>{gallery.org}</p>
                     <div className="flex items-end justify-between gap-4">
                       <h3 className="text-xl" style={{ color: '#FFFFFF' }}>{gallery.title}</h3>
@@ -107,7 +108,7 @@ export function CaseStudyPage({ slug }: { slug: string }) {
       {/* Cover */}
       <div ref={ref} className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div initial={{ opacity: 0, scale: 0.97 }} animate={inView ? { opacity: 1, scale: 1 } : {}} transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }} className="relative overflow-hidden rounded-2xl" style={{ aspectRatio: '16/9', border: '1px solid rgba(198,164,90,0.15)' }}>
-          <img src={cs.cover} alt={`${cs.partner} — ${c.title}`} className="w-full h-full object-cover" style={{ objectPosition: 'center 40%' }} />
+          <img src={cs.cover} alt={`${cs.partner} — ${c.title}`} className="w-full h-full object-cover" style={{ objectPosition: 'center 40%' }} width="1600" height="1200" />
         </motion.div>
       </div>
 
@@ -135,10 +136,11 @@ export function CaseStudyPage({ slug }: { slug: string }) {
             ))}
           </div>
           <div className="lg:col-span-2">
-            <div className="relative overflow-hidden rounded-2xl" style={{ aspectRatio: '4/5', border: '1px solid rgba(198,164,90,0.15)' }}>
-              <img src={cs.featureImage} alt={cs.featureName} className="w-full h-full object-cover" style={{ objectPosition: 'center 20%' }} loading="lazy" />
-              <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(45,16,17,0.7) 0%, transparent 45%)' }} />
-              <div className="absolute bottom-4 left-5">
+            <div className="overflow-hidden rounded-2xl" style={{ backgroundColor: '#0E0E0E', border: '1px solid rgba(198,164,90,0.15)' }}>
+              <div className="relative overflow-hidden" style={{ aspectRatio: '4/5' }}>
+                <img src={cs.featureImage} alt={cs.featureName} className="w-full h-full object-cover" style={{ objectPosition: 'center 20%' }} loading="lazy" width="1200" height="1500" />
+              </div>
+              <div className="px-5 py-4">
                 <p className="text-base" style={{ color: '#FFFFFF', fontFamily: 'var(--font-display)' }}>{cs.featureName}</p>
                 <p className="text-[11px] tracking-[0.15em] uppercase" style={{ color: '#C6A45A' }}>{fr ? cs.featureRoleFr : cs.featureRoleEn}</p>
               </div>

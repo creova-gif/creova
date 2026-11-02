@@ -91,7 +91,7 @@
     "build:client-only": "vite build && cp build/index.html build/404.html",
     "typecheck": "tsc --noEmit && npm --prefix workers/api run typecheck",
     "test": "node --experimental-strip-types --test src/supabase/functions/server/guards.test.ts && npm --prefix workers/api test",
-    "lint": "eslint .",
+    "lint": "eslint . --max-warnings=0",
     "validate:content": "node scripts/validate-public-content.mjs"
   }
 }

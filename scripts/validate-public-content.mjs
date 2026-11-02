@@ -12,6 +12,7 @@ const allowedHosts = new Set([
   'creova.pixieset.com',
   'www.creova.one',
   'creova.one',
+  'verse.creova.one',
 ]);
 const kinds = new Set(['client-work', 'product', 'venture']);
 const publicationStatuses = new Set(['published', 'draft', 'archived']);

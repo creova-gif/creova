@@ -25,17 +25,22 @@ export function IntroLoader() {
   const [step, setStep] = useState(0);
 
   useEffect(() => {
+    let cancelled = false;
     const alreadyShown = sessionStorage.getItem(SESSION_KEY);
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     if (alreadyShown || reduceMotion) {
       sessionStorage.setItem(SESSION_KEY, '1');
       document.documentElement.classList.remove('creova-intro-pending');
-      setPhase('done');
-      return;
+      queueMicrotask(() => {
+        if (!cancelled) setPhase('done');
+      });
+      return () => { cancelled = true; };
     }
 
-    setPhase('playing');
+    queueMicrotask(() => {
+      if (!cancelled) setPhase('playing');
+    });
     sessionStorage.setItem(SESSION_KEY, '1');
 
     // Advance through the colour cycle, then hold on the final (white) frame.
@@ -56,6 +61,7 @@ export function IntroLoader() {
     }, hold + 320);
 
     return () => {
+      cancelled = true;
       clearInterval(stepper);
       clearTimeout(timer);
       document.documentElement.classList.remove('creova-intro-pending');

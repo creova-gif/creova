@@ -40,7 +40,6 @@ export function TiltCard({
     if (prefersReduced) {
       springRotX.jump(0);
       springRotY.jump(0);
-      setSpotVisible(false);
     }
   }, [prefersReduced, springRotX, springRotY]);
 
@@ -89,7 +88,7 @@ export function TiltCard({
             left: spotPos.x - 140,
             top: spotPos.y - 140,
             background: `radial-gradient(circle, ${spotlightColor} 0%, transparent 65%)`,
-            opacity: spotVisible ? 1 : 0,
+            opacity: spotVisible && !prefersReduced ? 1 : 0,
             zIndex: 2,
           }}
         />

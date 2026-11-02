@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, useSyncExternalStore } from 'react';
 import { motion } from 'motion/react';
 import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion';
 
@@ -22,7 +22,11 @@ export function VideoHero({
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoFailed, setVideoFailed] = useState(false);
   const [videoReady, setVideoReady] = useState(false);
-  const [hasMounted, setHasMounted] = useState(false);
+  const hasMounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
   const prefersReduced = usePrefersReducedMotion();
 
   // The prerendered static HTML is generated once, server-side, with no way
@@ -33,10 +37,6 @@ export function VideoHero({
   // ever true client-side, after this effect runs) keeps the initial/server
   // render on the plain poster image unconditionally, and only swaps in the
   // real <video> element once we can actually check prefersReduced.
-  useEffect(() => {
-    setHasMounted(true);
-  }, []);
-
   const attemptVideo = hasMounted && !prefersReduced && !!videoSrc;
   const showVideo = attemptVideo && !videoFailed;
 

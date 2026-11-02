@@ -8,7 +8,7 @@ import { motion } from 'motion/react';
 let SENTRY_DSN: string | undefined;
 try {
   SENTRY_DSN = import.meta.env?.VITE_SENTRY_DSN;
-} catch (e) {
+} catch {
   SENTRY_DSN = undefined;
 }
 

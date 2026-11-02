@@ -9,8 +9,8 @@ before it asks anyone to inquire.
 - **CREOVA Studio** is the active client-services business.
 - **SEEN** is a CREOVA-owned product in development. Product previews are
   evidence of direction, not proof of a released platform.
-- **VERSE** is incubating. A tech pack exists; there is no public shop,
-  preorder, product inventory, or launch date.
+- **VERSE** has a live public field-note website and remains in development.
+  There is no public shop, preorder, product inventory, or launch date.
 - CREOVA is the portfolio and venture-status hub. SEEN and VERSE use separate
   websites when their confirmed HTTPS destinations are ready; their domains
   are deployment configuration and must never be guessed from the brand name.
