@@ -116,7 +116,7 @@ export function HomePage() {
               alt=""
               aria-hidden="true"
               className="absolute inset-0 h-full w-full object-cover"
-              style={{ objectPosition: 'center 42%' }}
+              style={{ objectPosition: 'center 42%', background: 'radial-gradient(circle at 42% 52%, rgba(198,164,90,.15), transparent 50%)' }}
               fetchPriority="high"
               decoding="async"
               width="1400"

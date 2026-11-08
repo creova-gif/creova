@@ -48,7 +48,7 @@ export function CommunityPage() {
             <p className="max-w-3xl mt-7 text-lg md:text-xl leading-relaxed" style={{ color: '#E0E0E0' }}>{fr ? 'Choisissez la relation qui correspond à votre objectif. Nous clarifions le rôle de chacun, la valeur échangée et le résultat avant de commencer.' : 'Choose the relationship that matches your goal. We clarify roles, value exchange, and the intended outcome before work begins.'}</p>
           </motion.div>
           <div className="relative min-h-[420px] lg:min-h-full overflow-hidden" role="img" aria-label={fr ? 'Conversation lors d’un rassemblement communautaire' : 'People in conversation at a community gathering'}>
-            <img src={communityImageLarge} srcSet={`${communityImageSmall} 800w, ${communityImageLarge} 1400w`} sizes="(min-width: 1024px) 46vw, 100vw" alt="" aria-hidden="true" className="absolute inset-0 w-full h-full object-cover" width="1400" height="933" fetchPriority="high" decoding="async" />
+            <img src={communityImageLarge} srcSet={`${communityImageSmall} 800w, ${communityImageLarge} 1400w`} sizes="(min-width: 1024px) 46vw, 100vw" alt="" aria-hidden="true" className="absolute inset-0 w-full h-full object-cover" style={{ objectPosition: 'center 42%' }} width="1400" height="933" fetchPriority="high" decoding="async" />
           </div>
         </div>
       </section>

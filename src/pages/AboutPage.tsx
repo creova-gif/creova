@@ -65,7 +65,7 @@ export function AboutPage() {
       {/* Hero */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none" style={{
-          background: 'radial-gradient(ellipse 60% 50% at 20% 0%, rgba(198,164,90,0.10) 0%, transparent 55%)',
+          background: 'radial-gradient(ellipse 60% 50% at center 42%, rgba(198,164,90,0.10) 0%, transparent 55%)',
         }} />
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-10 lg:pt-32">
           <span className="text-xs tracking-[0.4em] uppercase" style={{ color: '#C6A45A' }}>{fr ? 'À propos de CREOVA' : 'About CREOVA'}</span>
@@ -114,7 +114,7 @@ export function AboutPage() {
           than a separate white image tile. */}
       <section id="philosophy" className="relative scroll-mt-24 py-16 lg:py-24 overflow-hidden" style={{ backgroundColor: '#0E0E0E' }}>
         <div className="absolute inset-0 pointer-events-none" style={{
-          background: 'radial-gradient(ellipse 50% 60% at 85% 20%, rgba(198,164,90,0.08) 0%, transparent 55%)',
+          background: 'radial-gradient(ellipse 50% 60% at center 42%, rgba(198,164,90,0.08) 0%, transparent 55%)',
         }} />
         <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-[.85fr_1.3fr] gap-10 lg:gap-16 items-start">

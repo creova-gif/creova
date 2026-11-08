@@ -107,7 +107,7 @@ export function ServicesPage() {
       />
 
       <section className="relative overflow-hidden py-24 lg:py-36" style={{ backgroundColor: '#2D1011' }}>
-        <div className="absolute inset-0 opacity-60" style={{ background: 'radial-gradient(circle at 85% 20%, rgba(198,164,90,.18), transparent 38%)' }} />
+        <div className="absolute inset-0" style={{ background: 'radial-gradient(circle at 42% 52%, rgba(198,164,90,.15), transparent 50%)' }} />
         <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .7 }} className="relative max-w-7xl mx-auto px-6 lg:px-8">
           <p className="text-xs tracking-[.35em] uppercase mb-6" style={{ color: '#C6A45A' }}>{fr ? 'Services' : 'What we do'}</p>
           <h1 className="max-w-5xl font-light tracking-tight leading-[.98]" style={{ color: '#FFFFFF', fontSize: 'clamp(3.2rem, 8vw, 7.5rem)' }}>
