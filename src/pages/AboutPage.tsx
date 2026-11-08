@@ -3,10 +3,13 @@ import { motion, useInView } from 'motion/react';
 import { ArrowRight, ArrowUpRight } from 'lucide-react';
 import { Link } from '../i18n/LocaleLink';
 import { PageSEO } from '../components/PageSEO';
+import { EditorialHeroImage } from '../components/EditorialHeroImage';
 import { useLanguage } from '../context/LanguageContext';
 import { absoluteUrl } from '../i18n/locale';
 import { VENTURE_URLS } from '../config';
 import sankofaSymbol from '../assets/sankofa-symbol.webp';
+import aboutHero from '../assets/photo-about-hero.webp';
+import aboutDetail from '../assets/photo-collage-4.jpg';
 
 const SITE_URL = 'https://www.creova.one';
 
@@ -63,11 +66,15 @@ export function AboutPage() {
       />
 
       {/* Hero */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none" style={{
-          background: 'radial-gradient(ellipse 60% 50% at 20% 0%, rgba(198,164,90,0.10) 0%, transparent 55%)',
-        }} />
-        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-10 lg:pt-32">
+      <section className="relative overflow-hidden min-h-[68vh] flex items-end">
+        <EditorialHeroImage
+          src={aboutHero}
+          objectPosition="56% 48%"
+          secondarySrc={aboutDetail}
+          secondaryObjectPosition="center 24%"
+          folio={fr ? 'ORIGINE / 05' : 'ORIGIN / 05'}
+        />
+        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16 lg:pt-32 lg:pb-20 w-full">
           <span className="text-xs tracking-[0.4em] uppercase" style={{ color: '#C6A45A' }}>{fr ? 'À propos de CREOVA' : 'About CREOVA'}</span>
           <h1 className="tracking-tight mt-5" style={{ color: '#FFFFFF', fontFamily: 'var(--font-display)', fontSize: 'clamp(2.6rem, 7vw, 4.8rem)', lineHeight: 1.02 }}>
             {fr ? 'Un studio conçu pour raconter la culture avec contexte et soin.' : 'A studio built to tell cultural stories with context and care.'}
@@ -81,13 +88,12 @@ export function AboutPage() {
           initial={{ opacity: 0, scale: 0.97 }}
           animate={inView ? { opacity: 1, scale: 1 } : {}}
           transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-          className="overflow-hidden rounded-2xl"
-          style={{ backgroundColor: '#0E0E0E', border: '1px solid rgba(198,164,90,0.15)' }}
+          className="relative overflow-hidden rounded-2xl"
+          style={{ aspectRatio: '16/9', border: '1px solid rgba(198,164,90,0.15)' }}
         >
-          <div className="relative overflow-hidden" style={{ aspectRatio: '16/9' }}>
-            <img src="/card-justin-panel.jpg" alt="Justin Mafie, founder of CREOVA, at the Brock LINC Innovation Showcase" className="w-full h-full object-cover" style={{ objectPosition: 'center 28%' }} width="1600" height="1201" />
-          </div>
-          <div className="px-6 py-4">
+          <img src="/card-justin-panel.jpg" alt="Justin Mafie, founder of CREOVA, at the Brock LINC Innovation Showcase" className="w-full h-full object-cover" style={{ objectPosition: 'center 28%' }} width="1600" height="1201" />
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(45,16,17,0.62) 0%, transparent 55%)' }} />
+          <div className="absolute bottom-5 left-6">
             <p className="text-lg" style={{ color: '#FFFFFF', fontFamily: 'var(--font-display)' }}>Justin Mafie</p>
             <p className="text-xs tracking-[0.2em] uppercase" style={{ color: '#C6A45A' }}>{fr ? 'Fondateur — CREOVA' : 'Founder — CREOVA'}</p>
           </div>

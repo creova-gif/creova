@@ -1,8 +1,7 @@
-import { useRef } from 'react';
-import { motion, useInView } from 'motion/react';
 import { ArrowLeft, ArrowRight, ExternalLink } from 'lucide-react';
 import { Link } from '../i18n/LocaleLink';
 import { PageSEO } from '../components/PageSEO';
+import { EditorialHeroImage } from '../components/EditorialHeroImage';
 import { useLanguage } from '../context/LanguageContext';
 import { getCaseStudy } from '../data/caseStudies';
 import { absoluteUrl } from '../i18n/locale';
@@ -16,8 +15,6 @@ const SITE_URL = 'https://www.creova.one';
 export function CaseStudyPage({ slug }: { slug: string }) {
   const fr = useLanguage().language === 'fr';
   const cs = getCaseStudy(slug);
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: '-12% 0px' });
   const evidence = getPublishedEvidenceBySlug(slug);
   if (!cs || !evidence) return null;
   const c = fr ? cs.fr : cs.en;
@@ -41,9 +38,16 @@ export function CaseStudyPage({ slug }: { slug: string }) {
       <PageSEO title={c.title} description={c.metaDescription} path={`/work/${slug}`} ogImage={coverUrl} jsonLd={jsonLd} />
 
       {/* Hero */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse 60% 50% at 20% 0%, rgba(198,164,90,0.10) 0%, transparent 55%)' }} />
-        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-10 lg:pt-28">
+      <section className="relative overflow-hidden min-h-[76vh] flex items-end">
+        <EditorialHeroImage
+          src={cs.cover}
+          objectPosition="center 40%"
+          secondarySrc={cs.featureImage}
+          secondaryObjectPosition="center 22%"
+          folio={fr ? 'ÉTUDE DE CAS' : 'CASE STUDY'}
+          deep
+        />
+        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16 lg:pt-28 lg:pb-20 w-full">
           <Link to="/work" className="flex w-fit items-center gap-2 text-xs tracking-[0.2em] uppercase mb-8 transition-colors hover:text-[#FFFFFF]" style={{ color: '#CDBFAE' }}>
             <ArrowLeft className="w-3.5 h-3.5" /> {fr ? 'Réalisations' : 'Our work'}
           </Link>
@@ -85,13 +89,12 @@ export function CaseStudyPage({ slug }: { slug: string }) {
                   href={gallery.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group overflow-hidden rounded-2xl"
-                  style={{ backgroundColor: '#0E0E0E', border: '1px solid rgba(198,164,90,0.2)' }}
+                  className="group relative overflow-hidden rounded-2xl"
+                  style={{ aspectRatio: '16 / 10', border: '1px solid rgba(198,164,90,0.2)' }}
                 >
-                  <div className="relative overflow-hidden" style={{ aspectRatio: '16 / 10' }}>
-                    <img src={gallery.image} alt={gallery.title} loading="lazy" className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" style={{ objectPosition: gallery.objectPosition }} width="1600" height="1200" />
-                  </div>
-                  <div className="p-5">
+                  <img src={gallery.image} alt={gallery.title} loading="lazy" className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" style={{ objectPosition: gallery.objectPosition }} width="1600" height="1200" />
+                  <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(45,16,17,0.94), rgba(45,16,17,0.06) 70%)' }} />
+                  <div className="absolute inset-x-0 bottom-0 p-5">
                     <p className="text-[10px] tracking-[0.25em] uppercase mb-2" style={{ color: '#CDBFAE' }}>{gallery.org}</p>
                     <div className="flex items-end justify-between gap-4">
                       <h3 className="text-xl" style={{ color: '#FFFFFF' }}>{gallery.title}</h3>
@@ -104,13 +107,6 @@ export function CaseStudyPage({ slug }: { slug: string }) {
           </div>
         </section>
       )}
-
-      {/* Cover */}
-      <div ref={ref} className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div initial={{ opacity: 0, scale: 0.97 }} animate={inView ? { opacity: 1, scale: 1 } : {}} transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }} className="relative overflow-hidden rounded-2xl" style={{ aspectRatio: '16/9', border: '1px solid rgba(198,164,90,0.15)' }}>
-          <img src={cs.cover} alt={`${cs.partner} — ${c.title}`} className="w-full h-full object-cover" style={{ objectPosition: 'center 40%' }} width="1600" height="1200" />
-        </motion.div>
-      </div>
 
       {/* Scope */}
       <section className="relative py-16 lg:py-20">
@@ -136,11 +132,10 @@ export function CaseStudyPage({ slug }: { slug: string }) {
             ))}
           </div>
           <div className="lg:col-span-2">
-            <div className="overflow-hidden rounded-2xl" style={{ backgroundColor: '#0E0E0E', border: '1px solid rgba(198,164,90,0.15)' }}>
-              <div className="relative overflow-hidden" style={{ aspectRatio: '4/5' }}>
-                <img src={cs.featureImage} alt={cs.featureName} className="w-full h-full object-cover" style={{ objectPosition: 'center 20%' }} loading="lazy" width="1200" height="1500" />
-              </div>
-              <div className="px-5 py-4">
+            <div className="relative overflow-hidden rounded-2xl" style={{ aspectRatio: '4/5', border: '1px solid rgba(198,164,90,0.15)' }}>
+              <img src={cs.featureImage} alt={cs.featureName} className="w-full h-full object-cover" style={{ objectPosition: 'center 20%' }} loading="lazy" width="1200" height="1500" />
+              <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(45,16,17,0.7) 0%, transparent 45%)' }} />
+              <div className="absolute bottom-4 left-5">
                 <p className="text-base" style={{ color: '#FFFFFF', fontFamily: 'var(--font-display)' }}>{cs.featureName}</p>
                 <p className="text-[11px] tracking-[0.15em] uppercase" style={{ color: '#C6A45A' }}>{fr ? cs.featureRoleFr : cs.featureRoleEn}</p>
               </div>

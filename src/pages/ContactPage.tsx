@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { PageSEO } from '../components/PageSEO';
+import { EditorialHeroImage } from '../components/EditorialHeroImage';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Textarea } from '../components/ui/textarea';
@@ -12,6 +13,8 @@ import { motion } from 'motion/react';
 import { toast } from 'sonner';
 import { apiBaseUrl, apiUrl } from '../utils/api';
 import { useLanguage } from '../context/LanguageContext';
+import contactHero from '../assets/photo-event-networking.jpg';
+import contactDetail from '../assets/photo-duo-portrait.jpg';
 import { logger } from '../utils/logger';
 import { publicFormStatusMessage } from '../utils/publicFormStatus';
 import { createRequestId, isIntakeReceipt, type IntakeReceipt } from '../contracts/intake';
@@ -178,13 +181,20 @@ export function ContactPage() {
       />
       {/* Hero — full-width dark with large email CTA treatment */}
       <section
-        className="relative overflow-hidden"
+        className="relative overflow-hidden min-h-[72vh] flex items-end"
         style={{ backgroundColor: '#2D1011', borderBottom: '1px solid rgba(198,164,90,0.15)' }}
       >
+        <EditorialHeroImage
+          src={contactHero}
+          objectPosition="center 38%"
+          secondarySrc={contactDetail}
+          secondaryObjectPosition="center 28%"
+          folio={language === 'fr' ? 'COMMENCER / 04' : 'BEGIN / 04'}
+        />
         {/* Top accent stripe */}
-        <div style={{ height: '2px', background: 'linear-gradient(90deg, #C6A45A, #887759, transparent)' }} />
+        <div className="absolute inset-x-0 top-0 z-10" style={{ height: '2px', background: 'linear-gradient(90deg, #C6A45A, #887759, transparent)' }} />
 
-        <div className="relative max-w-7xl mx-auto px-6 lg:px-12 py-20 lg:py-28">
+        <div className="relative max-w-7xl mx-auto px-6 lg:px-12 py-20 lg:py-28 w-full">
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-10">
             {/* Left: headline */}
             <div>

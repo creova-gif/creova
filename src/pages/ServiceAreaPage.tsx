@@ -3,11 +3,25 @@ import { motion, useInView } from 'motion/react';
 import { ArrowRight, Check, MapPin } from 'lucide-react';
 import { Link } from '../i18n/LocaleLink';
 import { PageSEO } from '../components/PageSEO';
+import { EditorialHeroImage } from '../components/EditorialHeroImage';
 import { useLanguage } from '../context/LanguageContext';
 import { useGalleries } from '../hooks/useGalleries';
 import { getServiceArea, SERVICE_AREAS } from '../data/serviceAreas';
+import eventHero from '../assets/photo-service-events.jpg';
+import videoHero from '../assets/photo-service-videography.jpg';
+import brandHero from '../assets/photo-monique.jpg';
+import agencyHero from '../assets/photo-event-networking.jpg';
+import graduationHero from '../assets/photo-welcome-bash.jpg';
 
 const SITE_URL = 'https://www.creova.one';
+
+const SERVICE_HEROES: Record<string, { src: string; position: string; secondary: string; secondaryPosition: string }> = {
+  'event-photography-niagara': { src: eventHero, position: 'center 46%', secondary: brandHero, secondaryPosition: 'center 38%' },
+  'videography-niagara': { src: videoHero, position: 'center 42%', secondary: eventHero, secondaryPosition: 'center 45%' },
+  'brand-photography-st-catharines': { src: brandHero, position: 'center 36%', secondary: graduationHero, secondaryPosition: 'center 34%' },
+  'bipoc-creative-agency-ontario': { src: agencyHero, position: 'center 42%', secondary: brandHero, secondaryPosition: 'center 36%' },
+  'graduation-photography-brock-university': { src: graduationHero, position: 'center 36%', secondary: videoHero, secondaryPosition: 'center 40%' },
+};
 
 export function ServiceAreaPage({ slug }: { slug: string }) {
   const { language } = useLanguage();
@@ -19,6 +33,7 @@ export function ServiceAreaPage({ slug }: { slug: string }) {
 
   if (!area) return null;
   const copy = fr ? area.fr : area.en;
+  const hero = SERVICE_HEROES[slug] ?? SERVICE_HEROES['event-photography-niagara'];
 
   // Real portfolio, filtered to this service's category.
   const related = area.galleryCategory
@@ -61,11 +76,16 @@ export function ServiceAreaPage({ slug }: { slug: string }) {
       <PageSEO title={copy.title} description={copy.description} path={`/${slug}`} jsonLd={jsonLd} />
 
       {/* Hero */}
-      <section className="relative overflow-hidden" style={{ backgroundColor: '#2D1011' }}>
-        <div className="absolute inset-0 pointer-events-none" style={{
-          background: 'radial-gradient(ellipse 60% 50% at 15% 0%, rgba(198,164,90,0.10) 0%, transparent 55%), radial-gradient(ellipse 50% 50% at 90% 100%, rgba(136,119,89,0.07) 0%, transparent 55%)',
-        }} />
-        <div ref={ref} className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16 lg:pt-32">
+      <section className="relative overflow-hidden min-h-[72vh] flex items-end" style={{ backgroundColor: '#2D1011' }}>
+        <EditorialHeroImage
+          src={hero.src}
+          objectPosition={hero.position}
+          secondarySrc={hero.secondary}
+          secondaryObjectPosition={hero.secondaryPosition}
+          folio="NIAGARA / SERVICE"
+          deep
+        />
+        <div ref={ref} className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16 lg:pt-32 lg:pb-20 w-full">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}>
             <div className="flex items-center gap-2.5 mb-6">
               <MapPin className="w-4 h-4" style={{ color: '#C6A45A' }} />
@@ -125,11 +145,10 @@ export function ServiceAreaPage({ slug }: { slug: string }) {
             <p className="text-xs tracking-[0.4em] uppercase mb-8" style={{ color: '#C6A45A' }}>{fr ? 'Travaux récents' : 'Recent work'}</p>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {related.map((g) => (
-                <a key={g.id} href={g.url} target="_blank" rel="noopener noreferrer" className="group block overflow-hidden rounded-2xl" style={{ backgroundColor: '#0E0E0E', border: '1px solid rgba(198,164,90,0.14)' }}>
-                  <div className="relative overflow-hidden" style={{ aspectRatio: '4/3' }}>
-                    <img src={g.image} alt={`${g.title} — ${g.subtitle}`} loading="lazy" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" style={{ objectPosition: g.objectPosition }} width="1600" height="1200" />
-                  </div>
-                  <div className="p-5">
+                <a key={g.id} href={g.url} target="_blank" rel="noopener noreferrer" className="group relative block overflow-hidden rounded-2xl" style={{ aspectRatio: '4/3', backgroundColor: '#0E0E0E' }}>
+                  <img src={g.image} alt={`${g.title} — ${g.subtitle}`} loading="lazy" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" style={{ objectPosition: g.objectPosition }} width="1600" height="1200" />
+                  <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(8,8,8,0.92) 0%, transparent 62%)' }} />
+                  <div className="absolute bottom-0 left-0 right-0 p-5">
                     {g.org && <p className="text-[10px] tracking-[0.3em] uppercase mb-1" style={{ color: '#C6A45A' }}>{g.org}</p>}
                     <h3 className="text-lg tracking-tight" style={{ color: '#FFFFFF', fontWeight: 300 }}>{g.title}</h3>
                   </div>

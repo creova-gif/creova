@@ -2,11 +2,13 @@ import { ArrowRight, Building2, CalendarDays, CheckCircle2, Globe2, HeartHandsha
 import { motion } from 'motion/react';
 import { Link } from '../i18n/LocaleLink';
 import { PageSEO } from '../components/PageSEO';
+import { EditorialHeroImage } from '../components/EditorialHeroImage';
 import { useLanguage } from '../context/LanguageContext';
 import { VENTURE_URLS } from '../config';
 import { organizationSchema } from '../utils/structuredData';
 import heroImageSmall from '../assets/photo-community-celebration-800.webp';
 import heroImageLarge from '../assets/photo-community-celebration-1400.webp';
+import homeDetail from '../assets/photo-carnival-portrait.jpg';
 import communityImageSmall from '../assets/photo-community-convo-800.webp';
 import communityImageLarge from '../assets/photo-community-convo-1400.webp';
 import founderImageSmall from '../assets/photo-team-atrium-640.webp';
@@ -80,9 +82,17 @@ export function HomePage() {
         jsonLd={organizationSchema}
       />
 
-      <section style={{ backgroundColor: '#2D1011' }}>
-        <div className="max-w-[1440px] mx-auto grid lg:grid-cols-[1.08fr_.92fr] min-h-[82vh]">
-          <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.75 }} className="px-6 lg:pl-12 xl:pl-20 lg:pr-12 pt-32 pb-16 lg:py-32 flex flex-col justify-center">
+      <section className="relative min-h-[82vh] flex items-end overflow-hidden" style={{ backgroundColor: '#2D1011' }}>
+        <EditorialHeroImage
+          src={heroImageLarge}
+          srcSet={`${heroImageSmall} 800w, ${heroImageLarge} 1400w`}
+          objectPosition="center 42%"
+          secondarySrc={homeDetail}
+          secondaryObjectPosition="center 30%"
+          folio={fr ? 'MÉMOIRE VIVANTE / 00' : 'LIVING MEMORY / 00'}
+        />
+        <div className="relative z-10 max-w-7xl mx-auto w-full px-6 lg:px-8 pt-32 pb-20">
+          <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.75 }} className="max-w-4xl">
             <p className="text-xs tracking-[0.34em] uppercase mb-6" style={{ color: '#C6A45A' }}>
               {fr ? 'Studio de narration culturelle · Ontario' : 'Cultural storytelling studio · Ontario'}
             </p>
@@ -108,21 +118,6 @@ export function HomePage() {
               <span className="inline-flex items-center gap-2"><CalendarDays className="w-4 h-4" style={{ color: '#C6A45A' }} />Niagara · Hamilton · GTA</span>
             </div>
           </motion.div>
-          <div className="relative min-h-[420px] lg:min-h-full overflow-hidden" aria-label={fr ? 'Rassemblement communautaire documenté par CREOVA' : 'A community gathering documented by CREOVA'} role="img">
-            <img
-              src={heroImageLarge}
-              srcSet={`${heroImageSmall} 800w, ${heroImageLarge} 1400w`}
-              sizes="(min-width: 1024px) 46vw, 100vw"
-              alt=""
-              aria-hidden="true"
-              className="absolute inset-0 h-full w-full object-cover"
-              style={{ objectPosition: 'center 42%' }}
-              fetchPriority="high"
-              decoding="async"
-              width="1400"
-              height="1050"
-            />
-          </div>
         </div>
       </section>
 

@@ -2,7 +2,10 @@ import { ArrowRight, Camera, Check, Compass, FileStack, HeartHandshake, Repeat2 
 import { motion } from 'motion/react';
 import { Link } from '../i18n/LocaleLink';
 import { PageSEO } from '../components/PageSEO';
+import { EditorialHeroImage } from '../components/EditorialHeroImage';
 import { useLanguage } from '../context/LanguageContext';
+import servicesHero from '../assets/photo-service-videography.jpg';
+import servicesDetail from '../assets/photo-event-market.jpg';
 
 type Offer = {
   id: string;
@@ -106,9 +109,15 @@ export function ServicesPage() {
         path="/services"
       />
 
-      <section className="relative overflow-hidden py-24 lg:py-36" style={{ backgroundColor: '#2D1011' }}>
-        <div className="absolute inset-0 opacity-60" style={{ background: 'radial-gradient(circle at 85% 20%, rgba(198,164,90,.18), transparent 38%)' }} />
-        <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .7 }} className="relative max-w-7xl mx-auto px-6 lg:px-8">
+      <section className="relative overflow-hidden py-24 lg:py-36 min-h-[72vh] flex items-end" style={{ backgroundColor: '#2D1011' }}>
+        <EditorialHeroImage
+          src={servicesHero}
+          objectPosition="center 42%"
+          secondarySrc={servicesDetail}
+          secondaryObjectPosition="center 32%"
+          folio={fr ? 'PROCESSUS / 01' : 'PROCESS / 01'}
+        />
+        <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .7 }} className="relative max-w-7xl mx-auto px-6 lg:px-8 w-full">
           <p className="text-xs tracking-[.35em] uppercase mb-6" style={{ color: '#C6A45A' }}>{fr ? 'Services' : 'What we do'}</p>
           <h1 className="max-w-5xl font-light tracking-tight leading-[.98]" style={{ color: '#FFFFFF', fontSize: 'clamp(3.2rem, 8vw, 7.5rem)' }}>
             {fr ? 'Un système narratif pour le moment, le public et la suite.' : 'One story system for the moment, the audience, and what comes next.'}

@@ -3,7 +3,9 @@ import { Button } from '../components/ui/button';
 import { motion } from 'motion/react';
 import { ArrowLeft, FileText, CheckCircle2 } from 'lucide-react';
 import { PageSEO } from '../components/PageSEO';
+import { EditorialHeroImage } from '../components/EditorialHeroImage';
 import { useLanguage } from '../context/LanguageContext';
+import legalHero from '../assets/photo-collage-2.jpg';
 
 export function TermsOfServicePage() {
   const navigate = useNavigate();
@@ -18,8 +20,9 @@ export function TermsOfServicePage() {
         path="/terms-of-service"
       />
       {/* Hero */}
-      <section className="relative py-16 overflow-hidden" style={{ backgroundColor: '#2D1011' }}>
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="relative py-16 overflow-hidden min-h-[54vh] flex items-end" style={{ backgroundColor: '#2D1011' }}>
+        <EditorialHeroImage src={legalHero} objectPosition="center 45%" deep />
+        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <Button
             variant="ghost"
             onClick={() => navigate(-1)}

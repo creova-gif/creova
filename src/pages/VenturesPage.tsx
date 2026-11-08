@@ -1,9 +1,12 @@
 import { ArrowRight, Code2, PackageCheck, Sparkles } from 'lucide-react';
 import { motion } from 'motion/react';
 import { PageSEO } from '../components/PageSEO';
+import { EditorialHeroImage } from '../components/EditorialHeroImage';
 import { getPublishedEvidence } from '../content/publicEvidence';
 import { useLanguage } from '../context/LanguageContext';
 import { VENTURE_URLS } from '../config';
+import venturesHero from '../assets/photo-duo-bench.jpg';
+import venturesDetail from '../assets/seen-foryou.jpg';
 
 export function VenturesPage() {
   const { language } = useLanguage();
@@ -22,9 +25,15 @@ export function VenturesPage() {
         path="/ventures"
       />
 
-      <section className="relative overflow-hidden px-6 py-24 lg:py-36">
-        <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(circle at 75% 20%, rgba(198,164,90,0.13), transparent 40%)' }} />
-        <div className="relative max-w-6xl mx-auto">
+      <section className="relative overflow-hidden px-6 py-24 lg:py-36 min-h-[76vh] flex items-end">
+        <EditorialHeroImage
+          src={venturesHero}
+          objectPosition="center 38%"
+          secondarySrc={venturesDetail}
+          secondaryObjectPosition="center 18%"
+          folio={fr ? 'EN DÉVELOPPEMENT / 03' : 'IN DEVELOPMENT / 03'}
+        />
+        <div className="relative max-w-6xl mx-auto w-full">
           <p className="text-xs tracking-[0.45em] uppercase mb-6" style={{ color: '#C6A45A' }}>
             {fr ? 'Construit par CREOVA' : 'Built by CREOVA'}
           </p>

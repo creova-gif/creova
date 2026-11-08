@@ -1,6 +1,7 @@
 import { Link } from '../i18n/LocaleLink';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { PageSEO } from '../components/PageSEO';
+import { EditorialHeroImage } from '../components/EditorialHeroImage';
 import { useLanguage } from '../context/LanguageContext';
 import { getPost, JOURNAL } from '../data/journal';
 import { absoluteUrl } from '../i18n/locale';
@@ -43,11 +44,16 @@ export function JournalPostPage({ slug }: { slug: string }) {
 
       <article>
         {/* Header */}
-        <header className="relative overflow-hidden">
-          <div className="absolute inset-0 pointer-events-none" style={{
-            background: 'radial-gradient(ellipse 55% 50% at 25% 0%, rgba(198,164,90,0.10) 0%, transparent 55%)',
-          }} />
-          <div className="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-10 lg:pt-28">
+        <header className="relative overflow-hidden min-h-[68vh] flex items-end">
+          <EditorialHeroImage
+            src={post.cover}
+            objectPosition="center 35%"
+            secondarySrc={more[0]?.cover}
+            secondaryObjectPosition="center 35%"
+            folio={fr ? 'NOTE DE TERRAIN' : 'FIELD NOTE'}
+            deep
+          />
+          <div className="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16 lg:pt-28 lg:pb-20 w-full">
             <Link to="/journal" className="inline-flex items-center gap-2 text-xs tracking-[0.2em] uppercase mb-8 transition-colors hover:text-[#C6A45A]" style={{ color: '#8C7B75' }}>
               <ArrowLeft className="w-3.5 h-3.5" /> {fr ? 'Le Journal' : 'The Journal'}
             </Link>
@@ -58,13 +64,6 @@ export function JournalPostPage({ slug }: { slug: string }) {
             <h1 className="tracking-tight" style={{ color: '#FFFFFF', fontFamily: 'var(--font-display)', fontSize: 'clamp(2.2rem, 5.5vw, 3.8rem)', lineHeight: 1.05 }}>{c.title}</h1>
           </div>
         </header>
-
-        {/* Cover */}
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="relative overflow-hidden rounded-2xl" style={{ aspectRatio: '16/9', border: '1px solid rgba(198,164,90,0.12)' }}>
-            <img src={post.cover} alt={c.title} className="w-full h-full object-cover" style={{ objectPosition: 'center 35%' }} />
-          </div>
-        </div>
 
         {/* Body */}
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-14 lg:py-20">

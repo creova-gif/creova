@@ -1,8 +1,11 @@
 import { ArrowRight, Download, FileText, Lightbulb } from 'lucide-react';
 import { Link } from '../i18n/LocaleLink';
 import { PageSEO } from '../components/PageSEO';
+import { EditorialHeroImage } from '../components/EditorialHeroImage';
 import { useLanguage } from '../context/LanguageContext';
 import { JOURNAL } from '../data/journal';
+import resourcesHero from '../assets/photo-social-laptop.jpg';
+import resourcesDetail from '../assets/photo-collage-2.jpg';
 
 const DOWNLOADS = [
   {
@@ -70,8 +73,15 @@ export function ResourcesPage() {
         path="/resources"
       />
 
-      <section className="py-24 lg:py-36" style={{ backgroundColor: '#2D1011' }}>
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+      <section className="relative overflow-hidden py-24 lg:py-36 min-h-[70vh] flex items-end" style={{ backgroundColor: '#2D1011' }}>
+        <EditorialHeroImage
+          src={resourcesHero}
+          objectPosition="center 45%"
+          secondarySrc={resourcesDetail}
+          secondaryObjectPosition="center 40%"
+          folio={fr ? 'OUTILS OUVERTS / 02' : 'OPEN TOOLS / 02'}
+        />
+        <div className="relative max-w-7xl mx-auto px-6 lg:px-8 w-full">
           <p className="text-xs tracking-[.35em] uppercase mb-6" style={{ color: '#C6A45A' }}>{fr ? 'Ressources de la communauté' : 'Community resources'}</p>
           <h1 className="max-w-5xl tracking-tight leading-[.98]" style={{ color: '#FFFFFF', fontSize: 'clamp(3.2rem, 8vw, 7.5rem)' }}>
             {fr ? 'Des outils utiles, issus du travail réel.' : 'Useful tools, shaped by real work.'}

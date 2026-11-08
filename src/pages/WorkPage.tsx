@@ -1,13 +1,14 @@
-import { useState, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { PageSEO } from '../components/PageSEO';
-import { ExternalLink, ArrowRight, Lock, Search, X } from 'lucide-react';
+import { ExternalLink, ArrowRight, ArrowDown, Lock, Search, X } from 'lucide-react';
 import { Link } from '../i18n/LocaleLink';
 import { useLanguage } from '../context/LanguageContext';
 import { RevealOnScroll } from '../components/RevealOnScroll';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { useGalleries, type Gallery } from '../hooks/useGalleries';
+import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion';
 import { galleryListSchema } from '../utils/structuredData';
 import { CASE_STUDIES } from '../data/caseStudies';
 import { getPublishedEvidenceBySlug } from '../content/publicEvidence';
@@ -28,72 +29,142 @@ const MARQUEE_ITEMS = ['CREOVA', 'PHOTOGRAPHY', 'EVENTS', 'SPORTS', 'BRAND', 'CO
 
 function ProjectCard({
   project,
+  index,
   large = false,
 }: {
   project: Gallery;
+  index: number;
   large?: boolean;
 }) {
   // Portfolio page → tu register (see mixed-register decision).
   const fr = useLanguage().language === 'fr';
   return (
-    <div style={{ contentVisibility: 'auto', containIntrinsicSize: large ? '690px' : '510px' }}>
+    <RevealOnScroll mode="3d" delay={index * 0.06}>
       <motion.a
         href={project.url}
         target="_blank"
         rel="noopener noreferrer"
-        className="group block overflow-hidden rounded-2xl cursor-pointer"
-        style={{ backgroundColor: '#0E0E0E', border: '1px solid rgba(198,164,90,0.16)' }}
+        className="group relative block overflow-hidden rounded-2xl cursor-pointer"
+        style={{ aspectRatio: large ? '16/9' : '4/3', backgroundColor: '#111' }}
+        whileHover={{ scale: 1.015 }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
       >
-        <div className="relative overflow-hidden" style={{ aspectRatio: large ? '16/9' : '4/3' }}>
-          <img
-            src={project.image}
-            alt={`${project.title} — ${project.subtitle}`}
-            loading="lazy"
-            className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-            style={{ objectPosition: project.objectPosition }}
-            width="1600"
-            height="1200"
-          />
+        <img
+          src={project.image}
+          alt={`${project.title} — ${project.subtitle}`}
+          loading="lazy"
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          style={{ objectPosition: project.objectPosition }}
+          width="1600"
+          height="1200"
+        />
+
+        {/* Base gradient */}
+        <div className="absolute inset-0" style={{
+          background: 'linear-gradient(to top, rgba(8,8,8,0.95) 0%, rgba(8,8,8,0.45) 45%, rgba(8,8,8,0.05) 100%)'
+        }} />
+
+        {/* Hover color wash */}
+        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{
+          background: `linear-gradient(135deg, ${project.accent}1A 0%, rgba(8,8,8,0.2) 100%)`
+        }} />
+
+        {/* Category + lock — top left */}
+        <div className="absolute top-4 left-4 flex items-center gap-2">
+          <span
+            className="text-[9px] tracking-[0.35em] uppercase px-3 py-1.5 rounded-full backdrop-blur-sm"
+            style={{
+              backgroundColor: `${project.accent}18`,
+              color: project.accent,
+              border: `1px solid ${project.accent}44`,
+            }}
+          >
+            {fr
+              ? (project.category === 'brand' ? 'Marque' : project.category === 'conference' ? 'Conférence' : project.category === 'sports' ? 'Sport' : 'Événement')
+              : (project.category === 'brand' ? 'Brand' : project.category === 'conference' ? 'Conference' : project.category === 'sports' ? 'Sports' : 'Event')}
+          </span>
+          {project.locked && (
+            <span
+              className="text-[9px] tracking-[0.2em] uppercase px-2 py-1 rounded-full backdrop-blur-sm flex items-center gap-1"
+              style={{
+                backgroundColor: 'rgba(45,16,17,0.6)',
+                color: 'rgba(255,255,255,0.7)',
+                border: '1px solid rgba(255,255,255,0.15)',
+              }}
+              title="This gallery is password-protected on Pixieset"
+            >
+              <Lock className="w-2.5 h-2.5" />
+              {fr ? 'Privé' : 'Private'}
+            </span>
+          )}
         </div>
 
-        <div className="p-5 md:p-6">
-          <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
-            <div className="flex items-center gap-2">
-              <span className="text-[9px] tracking-[0.3em] uppercase rounded-full px-3 py-1.5" style={{ color: '#FFFFFF', border: '1px solid rgba(255,255,255,0.3)' }}>
-                {fr
-                  ? (project.category === 'brand' ? 'Marque' : project.category === 'conference' ? 'Conférence' : project.category === 'sports' ? 'Sport' : 'Événement')
-                  : (project.category === 'brand' ? 'Brand' : project.category === 'conference' ? 'Conference' : project.category === 'sports' ? 'Sports' : 'Event')}
-              </span>
-              {project.locked && (
-                <span className="text-[9px] tracking-[0.2em] uppercase flex items-center gap-1" style={{ color: '#CDBFAE' }} title="This gallery is password-protected on Pixieset">
-                  <Lock className="w-2.5 h-2.5" /> {fr ? 'Privé' : 'Private'}
-                </span>
-              )}
+        {/* Item count + date — top right */}
+        <div className="absolute top-4 right-4 text-right">
+          {typeof project.itemCount === 'number' && project.itemCount > 0 && (
+            <div className="text-[10px] tracking-[0.25em]" style={{ color: 'rgba(255,255,255,0.55)' }}>
+              {project.itemCount} {fr ? 'photos' : 'photos'}
             </div>
-            <span className="text-[10px] tracking-[0.2em]" style={{ color: '#CDBFAE' }}>
-              {typeof project.itemCount === 'number' && project.itemCount > 0 ? `${project.itemCount} photos · ` : ''}{project.date ? formatShortDate(project.date) : project.year}
-            </span>
+          )}
+          <div className="text-[9px] tracking-[0.3em]" style={{ color: 'rgba(255,255,255,0.35)' }}>
+            {project.date ? formatShortDate(project.date) : project.year}
           </div>
+        </div>
+
+        {/* Bottom content */}
+        <div className="absolute bottom-0 left-0 right-0 p-5">
+          <div
+            className="mb-3 transition-all duration-500 group-hover:w-10"
+            style={{ width: '24px', height: '1px', backgroundColor: project.accent }}
+          />
           {project.org && (
-            <p className="text-[10px] tracking-[0.3em] uppercase mb-2" style={{ color: '#CDBFAE' }}>
+            <p className="text-[10px] tracking-[0.3em] uppercase mb-1" style={{ color: project.accent }}>
               {project.org}
             </p>
           )}
-          <h2 className={`tracking-tight leading-tight mb-1 ${large ? 'text-2xl' : 'text-xl'}`} style={{ color: '#FFFFFF', fontWeight: 300 }}>
+          <h2 className={`tracking-tight leading-tight mb-0.5 ${large ? 'text-2xl' : 'text-lg'}`} style={{ color: '#FFFFFF', fontWeight: 300 }}>
             {project.title}
           </h2>
           {project.subtitle && (
-            <p className="text-sm mb-5" style={{ color: '#CDBFAE' }}>{project.subtitle}</p>
+            <p className="text-sm mb-4" style={{ color: 'rgba(255,255,255,0.5)' }}>{project.subtitle}</p>
           )}
-          <div className="flex items-center gap-2">
-            <span className="text-[10px] tracking-[0.25em] uppercase" style={{ color: '#FFFFFF' }}>
+
+          <div className="flex items-center gap-2 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-400">
+            <span className="text-[10px] tracking-[0.25em] uppercase" style={{ color: project.accent }}>
               {fr ? (project.locked ? 'Entrer le mot de passe' : 'Voir la galerie') : (project.locked ? 'Enter Password' : 'View Gallery')}
             </span>
-            <ExternalLink className="w-3 h-3" style={{ color: '#C6A45A' }} />
+            <ExternalLink className="w-3 h-3" style={{ color: project.accent }} />
           </div>
         </div>
       </motion.a>
-    </div>
+    </RevealOnScroll>
+  );
+}
+
+function ScrollIndicator() {
+  const fr = useLanguage().language === 'fr';
+  const [visible, setVisible] = useState(true);
+  const prefersReduced = usePrefersReducedMotion();
+  useEffect(() => {
+    const handler = () => setVisible(window.scrollY < 60);
+    window.addEventListener('scroll', handler, { passive: true });
+    return () => window.removeEventListener('scroll', handler);
+  }, []);
+
+  return (
+    <motion.div
+      animate={{ opacity: visible ? 1 : 0 }}
+      transition={{ duration: 0.3 }}
+      className="absolute bottom-10 left-1/2 -translate-x-1/2 hidden sm:flex flex-col items-center gap-2 pointer-events-none"
+    >
+      <span className="text-[9px] tracking-[0.5em] uppercase" style={{ color: 'rgba(255,255,255,0.35)' }}>{fr ? 'Défiler' : 'Scroll'}</span>
+      <motion.div
+        animate={prefersReduced ? {} : { y: [0, 6, 0] }}
+        transition={prefersReduced ? undefined : { repeat: Infinity, duration: 1.5, ease: 'easeInOut' }}
+      >
+        <ArrowDown className="w-3.5 h-3.5" style={{ color: 'rgba(255,255,255,0.35)' }} />
+      </motion.div>
+    </motion.div>
   );
 }
 
@@ -173,48 +244,138 @@ export function WorkPage() {
         jsonLd={structuredData}
       />
 
-      {/* ── EDITORIAL HERO ── */}
-      <section className="overflow-hidden" style={{ backgroundColor: '#2D1011' }}>
-        <div className="max-w-[1440px] mx-auto grid lg:grid-cols-[1.08fr_.92fr] min-h-[78vh]">
-          <div className="px-6 lg:pl-12 xl:pl-20 lg:pr-12 pt-28 pb-16 lg:py-28 flex flex-col justify-center">
-            <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
-              <div className="flex items-center gap-3 mb-7">
-                <span className="block h-px w-8" style={{ backgroundColor: '#C6A45A' }} />
-                <span className="text-[10px] tracking-[0.45em] uppercase" style={{ color: '#C6A45A' }}>{fr ? 'Travaux choisis' : 'Selected Work'}</span>
+      {/* ── CINEMATIC HERO ── */}
+      <section className="relative overflow-hidden" style={{ height: '100svh', minHeight: '580px' }}>
+        {/* Full-bleed background image — this is the LCP element, so hint the
+            browser to fetch it at high priority (React 19 forwards the
+            camelCase fetchPriority prop natively). */}
+        <img
+          src={sorted[0].image}
+          alt=""
+          aria-hidden="true"
+          fetchPriority="high"
+          className="absolute inset-0 w-full h-full object-cover"
+          style={{ objectPosition: sorted[0].objectPosition }}
+          width="1600"
+          height="1200"
+        />
+
+        {/* Layered gradient overlay */}
+        <div className="absolute inset-0" style={{
+          background: 'linear-gradient(to top, #2D1011 0%, rgba(10,10,10,0.78) 45%, rgba(10,10,10,0.25) 100%)'
+        }} />
+        <div className="absolute inset-0" style={{
+          background: 'radial-gradient(ellipse 80% 60% at 0% 100%, rgba(136,119,89,0.18) 0%, transparent 60%)'
+        }} />
+
+        {/* Subtle film-grain noise overlay */}
+        <div className="absolute inset-0 opacity-[0.04] pointer-events-none" style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E")`,
+        }} />
+
+        {/* Top bar */}
+        <div className="absolute top-8 left-6 lg:left-12 right-6 lg:right-12 flex items-center justify-between">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.7, delay: 0.2 }}
+            className="flex items-center gap-3"
+          >
+            <div style={{ height: '1px', width: '32px', backgroundColor: '#C6A45A' }} />
+            <span className="text-[10px] tracking-[0.55em] uppercase" style={{ color: '#C6A45A' }}>{fr ? 'Travaux choisis' : 'Selected Work'}</span>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.7, delay: 0.2 }}
+            className="hidden sm:flex items-center gap-2"
+          >
+            <span className="text-[10px] tracking-[0.4em] uppercase" style={{ color: 'rgba(255,255,255,0.3)' }}>
+              {fr ? 'Portfolio public' : 'Public Portfolio'}
+            </span>
+          </motion.div>
+        </div>
+
+        {/* Giant ghost number */}
+        <div
+          className="absolute right-0 bottom-0 select-none pointer-events-none hidden lg:block"
+          style={{
+            fontSize: 'clamp(200px, 28vw, 380px)',
+            fontWeight: 700,
+            color: 'rgba(255,255,255,0.03)',
+            lineHeight: 1,
+            letterSpacing: '-0.05em',
+            transform: 'translateX(8%)',
+          }}
+          aria-hidden="true"
+        >
+          {sorted.length}
+        </div>
+
+        {/* Vertical side text — editorial */}
+        <div className="absolute right-8 top-1/2 -translate-y-1/2 hidden xl:flex flex-col items-center gap-2 pointer-events-none" aria-hidden="true">
+          <div style={{ height: '40px', width: '1px', backgroundColor: 'rgba(198,164,90,0.3)' }} />
+          <span
+            className="text-[9px] tracking-[0.6em] uppercase select-none"
+            style={{ color: 'rgba(255,255,255,0.2)', writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}
+          >
+            Niagara · Ontario · Canada
+          </span>
+          <div style={{ height: '40px', width: '1px', backgroundColor: 'rgba(198,164,90,0.3)' }} />
+        </div>
+
+        {/* Bottom content */}
+        <div className="absolute bottom-0 left-0 right-0 px-6 lg:px-12 pb-10 sm:pb-16">
+          <div className="max-w-7xl mx-auto">
+            <div className="flex flex-col gap-0">
+
+              {/* Title block — bbbblanc-style scale contrast */}
+              <div>
+                <motion.div
+                  initial={{ opacity: 0, y: 40 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.9, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <h1 className="max-w-6xl font-light tracking-tight leading-[0.98]" style={{ fontSize: 'clamp(2.5rem, 12vw, 7.8rem)', color: '#FFFFFF' }}>
+                    {fr ? 'Des histoires ancrées dans de vrais événements, personnes et programmes.' : 'Stories built from real events, people, and programs.'}
+                  </h1>
+                </motion.div>
+
+                <motion.p
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.7, delay: 0.55 }}
+                  className="mt-4 sm:mt-6 text-base sm:text-lg leading-relaxed max-w-2xl"
+                  style={{ color: 'rgba(255,255,255,0.72)' }}
+                >
+                  {fr ? "Parcourez une sélection publique de photographies et de contenus créés pour des organisations, des événements culturels et des institutions communautaires de l'Ontario." : 'Explore public photography and content created for organizations, cultural events, and community institutions across Ontario.'}
+                </motion.p>
               </div>
-              <h1 className="font-light tracking-tight leading-[0.96]" style={{ fontSize: 'clamp(3.2rem, 7vw, 6.8rem)', color: '#FFFFFF' }}>
-                {fr ? 'Des histoires ancrées dans de vrais événements, personnes et programmes.' : 'Stories built from real events, people, and programs.'}
-              </h1>
-              <p className="mt-7 text-lg leading-relaxed max-w-2xl" style={{ color: '#E0E0E0' }}>
-                {fr ? "Parcourez une sélection publique de photographies et de contenus créés pour des organisations, des événements culturels et des institutions communautaires de l'Ontario." : 'Explore public photography and content created for organizations, cultural events, and community institutions across Ontario.'}
-              </p>
-              <div className="mt-10 grid grid-cols-3 gap-5 max-w-xl">
+
+              {/* Stats block */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.65 }}
+                className="grid grid-cols-3 gap-3 sm:flex sm:gap-10 lg:gap-12 flex-shrink-0"
+              >
                 {[
-                  { n: String(sorted.length), l: fr ? 'Galeries' : 'Galleries' },
+                  { n: String(sorted.length), l: fr ? 'Galeries choisies' : 'Selected Galleries' },
                   { n: 'Public', l: 'Pixieset' },
-                  { n: 'ON', l: fr ? 'Ontario' : 'Ontario-based' },
+                  { n: 'ON', l: fr ? 'Basé en Ontario' : 'Ontario-Based' },
                 ].map((s) => (
-                  <div key={s.l} className="border-t pt-3" style={{ borderColor: 'rgba(198,164,90,0.28)' }}>
-                    <div className="text-2xl font-light tracking-tight" style={{ color: '#C6A45A' }}>{s.n}</div>
-                    <div className="text-[9px] tracking-[0.25em] uppercase mt-1.5" style={{ color: '#CDBFAE' }}>{s.l}</div>
+                  <div key={s.l} className="min-w-0">
+                    <div className="text-3xl font-light tracking-tight" style={{ color: '#C6A45A' }}>{s.n}</div>
+                    <div className="text-[9px] tracking-[0.16em] sm:tracking-[0.45em] uppercase mt-1.5 break-words" style={{ color: 'rgba(255,255,255,0.4)' }}>{s.l}</div>
                   </div>
                 ))}
-              </div>
-            </motion.div>
-          </div>
-          <div className="relative min-h-[420px] lg:min-h-full overflow-hidden" role="img" aria-label={fr ? 'Aperçu de la galerie publique CREOVA' : 'Preview from the CREOVA public gallery'}>
-            <img
-              src={sorted[0].image}
-              alt=""
-              aria-hidden="true"
-              fetchPriority="high"
-              className="absolute inset-0 w-full h-full object-cover"
-              style={{ objectPosition: sorted[0].objectPosition }}
-              width="1600"
-              height="1200"
-            />
+              </motion.div>
+            </div>
           </div>
         </div>
+
+        <ScrollIndicator />
       </section>
 
       {source === 'fallback' && (
@@ -260,12 +421,12 @@ export function WorkPage() {
               style={{ backgroundColor: '#0E0E0E', border: '1px solid rgba(198,164,90,0.15)' }}
             >
               <div className="relative overflow-hidden" style={{ minHeight: '200px', aspectRatio: '16/10' }}>
-                <img src={cs.cover} alt={c.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" style={{ objectPosition: 'center 40%' }} loading="lazy" width="1600" height="1200" />
+                <img src={cs.cover} alt={c.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" style={{ objectPosition: 'center 40%' }} loading="lazy" />
               </div>
               <div className="flex flex-col justify-center p-7 lg:p-10">
                 <span className="text-[10px] tracking-[0.35em] uppercase mb-3" style={{ color: '#C6A45A' }}>{fr ? 'Étude de cas en vedette' : 'Featured case study'}</span>
                 <h3 className="tracking-tight mb-3 transition-colors duration-200 group-hover:text-[#C6A45A]" style={{ color: '#FFFFFF', fontFamily: 'var(--font-display)', fontSize: 'clamp(1.6rem, 3vw, 2.2rem)', lineHeight: 1.1 }}>{c.title}</h3>
-                <p className="text-sm leading-relaxed mb-5" style={{ color: '#CDBFAE', maxWidth: '48ch' }}>{cs.partner} · {cs.org}</p>
+                <p className="text-sm leading-relaxed mb-5" style={{ color: '#8C7B75', maxWidth: '48ch' }}>{cs.partner} · {cs.org}</p>
                 <span className="inline-flex items-center gap-2 text-sm tracking-wide" style={{ color: '#E0E0E0' }}>
                   {fr ? 'Lire l’étude de cas' : 'Read the case study'}
                   <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" style={{ color: '#C6A45A' }} />
@@ -378,7 +539,7 @@ export function WorkPage() {
                       key={project.id}
                       className={isHero ? 'sm:col-span-2' : ''}
                     >
-                      <ProjectCard project={project} large={isHero} />
+                      <ProjectCard project={project} index={index} large={isHero} />
                     </div>
                   );
                 })}

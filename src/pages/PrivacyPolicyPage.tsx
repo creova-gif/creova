@@ -3,7 +3,9 @@ import { Button } from '../components/ui/button';
 import { motion } from 'motion/react';
 import { ArrowLeft, Shield, CheckCircle2 } from 'lucide-react';
 import { PageSEO } from '../components/PageSEO';
+import { EditorialHeroImage } from '../components/EditorialHeroImage';
 import { useLanguage } from '../context/LanguageContext';
+import privacyHero from '../assets/photo-collage-3.jpg';
 
 export function PrivacyPolicyPage() {
   const navigate = useNavigate();
@@ -18,8 +20,9 @@ export function PrivacyPolicyPage() {
         path="/privacy-policy"
       />
       {/* Hero */}
-      <section className="relative py-16 overflow-hidden" style={{ backgroundColor: '#2D1011' }}>
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="relative py-16 overflow-hidden min-h-[54vh] flex items-end" style={{ backgroundColor: '#2D1011' }}>
+        <EditorialHeroImage src={privacyHero} objectPosition="center 42%" deep />
+        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <Button
             variant="ghost"
             onClick={() => navigate(-1)}

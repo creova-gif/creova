@@ -1,7 +1,10 @@
 import { Link } from '../i18n/LocaleLink';
 import { PageSEO } from '../components/PageSEO';
+import { EditorialHeroImage } from '../components/EditorialHeroImage';
 import { useLanguage } from '../context/LanguageContext';
 import { JOURNAL } from '../data/journal';
+import journalHero from '../assets/photo-collage-1.jpg';
+import journalDetail from '../assets/photo-event-networking.jpg';
 import { absoluteUrl } from '../i18n/locale';
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -41,11 +44,15 @@ export function JournalPage() {
       />
 
       {/* Header */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none" style={{
-          background: 'radial-gradient(ellipse 60% 50% at 20% 0%, rgba(198,164,90,0.10) 0%, transparent 55%)',
-        }} />
-        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-12 lg:pt-32">
+      <section className="relative overflow-hidden min-h-[68vh] flex items-end">
+        <EditorialHeroImage
+          src={journalHero}
+          objectPosition="center 42%"
+          secondarySrc={journalDetail}
+          secondaryObjectPosition="center 40%"
+          folio={fr ? 'NOTES DU STUDIO / 06' : 'STUDIO NOTES / 06'}
+        />
+        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16 lg:pt-32 lg:pb-20 w-full">
           <span className="text-xs tracking-[0.4em] uppercase" style={{ color: '#C6A45A' }}>
             {fr ? 'Le Journal' : 'The Journal'}
           </span>

@@ -2,7 +2,9 @@ import { Link } from '../i18n/LocaleLink';
 import { motion } from 'motion/react';
 import { Home, Mail, ArrowRight } from 'lucide-react';
 import { PageSEO } from '../components/PageSEO';
+import { EditorialHeroImage } from '../components/EditorialHeroImage';
 import { useLanguage } from '../context/LanguageContext';
+import notFoundHero from '../assets/photo-community-chess.jpg';
 
 const warmGradient = 'linear-gradient(135deg, #C6A45A 0%, #887759 100%)';
 
@@ -17,6 +19,7 @@ export function NotFoundPage() {
         path="/404"
         noIndex
       />
+      <EditorialHeroImage src={notFoundHero} objectPosition="center 42%" deep />
       {/* Ambient glow */}
       <div className="absolute inset-0 pointer-events-none" style={{
         background: `radial-gradient(ellipse 60% 60% at 50% 50%, rgba(198,164,90,0.06) 0%, transparent 70%)`
