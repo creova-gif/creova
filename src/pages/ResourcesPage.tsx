@@ -73,7 +73,7 @@ export function ResourcesPage() {
         path="/resources"
       />
 
-      <section className="relative overflow-hidden py-24 lg:py-36 min-h-[70vh] flex items-end" style={{ backgroundColor: '#2D1011' }}>
+      <section className="relative overflow-hidden py-12 lg:py-14 min-h-[42vh] flex items-end" style={{ backgroundColor: '#2D1011' }}>
         <EditorialHeroImage
           src={resourcesHero}
           objectPosition="center 45%"
@@ -82,8 +82,8 @@ export function ResourcesPage() {
           folio={fr ? 'OUTILS OUVERTS / 02' : 'OPEN TOOLS / 02'}
         />
         <div className="relative max-w-7xl mx-auto px-6 lg:px-8 w-full">
-          <p className="text-xs tracking-[.35em] uppercase mb-6" style={{ color: '#C6A45A' }}>{fr ? 'Ressources de la communauté' : 'Community resources'}</p>
-          <h1 className="max-w-5xl tracking-tight leading-[.98]" style={{ color: '#FFFFFF', fontSize: 'clamp(3.2rem, 8vw, 7.5rem)' }}>
+          <p className="text-xs tracking-[.35em] uppercase mb-3" style={{ color: '#C6A45A' }}>{fr ? 'Ressources de la communauté' : 'Community resources'}</p>
+          <h1 className="max-w-5xl tracking-tight leading-[1.05]" style={{ color: '#FFFFFF', fontSize: 'clamp(1.9rem, 3.8vw, 3.1rem)' }}>
             {fr ? 'Des outils utiles, issus du travail réel.' : 'Useful tools, shaped by real work.'}
           </h1>
           <p className="max-w-3xl mt-7 text-lg md:text-xl leading-relaxed" style={{ color: '#D7CEC4' }}>

@@ -76,7 +76,7 @@ export function ServiceAreaPage({ slug }: { slug: string }) {
       <PageSEO title={copy.title} description={copy.description} path={`/${slug}`} jsonLd={jsonLd} />
 
       {/* Hero */}
-      <section className="relative overflow-hidden min-h-[72vh] flex items-end" style={{ backgroundColor: '#2D1011' }}>
+      <section className="relative overflow-hidden min-h-[42vh] flex items-end" style={{ backgroundColor: '#2D1011' }}>
         <EditorialHeroImage
           src={hero.src}
           objectPosition={hero.position}
@@ -85,13 +85,13 @@ export function ServiceAreaPage({ slug }: { slug: string }) {
           folio="NIAGARA / SERVICE"
           deep
         />
-        <div ref={ref} className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16 lg:pt-32 lg:pb-20 w-full">
+        <div ref={ref} className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-8 lg:pt-24 lg:pb-10 w-full">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}>
             <div className="flex items-center gap-2.5 mb-6">
               <MapPin className="w-4 h-4" style={{ color: '#C6A45A' }} />
               <span className="text-xs tracking-[0.35em] uppercase" style={{ color: '#C6A45A' }}>{copy.kicker}</span>
             </div>
-            <h1 className="tracking-tight mb-6" style={{ color: '#FFFFFF', fontFamily: 'var(--font-display)', fontSize: 'clamp(2.4rem, 6vw, 4.2rem)', lineHeight: 1.04 }}>
+            <h1 className="tracking-tight mb-6" style={{ color: '#FFFFFF', fontFamily: 'var(--font-display)', fontSize: 'clamp(1.9rem, 3.8vw, 3.1rem)', lineHeight: 1.04 }}>
               {copy.h1}
             </h1>
             <p className="text-lg leading-relaxed mb-8" style={{ color: '#E0E0E0', maxWidth: '60ch' }}>{copy.intro}</p>

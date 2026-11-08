@@ -66,7 +66,7 @@ export function AboutPage() {
       />
 
       {/* Hero */}
-      <section className="relative overflow-hidden min-h-[68vh] flex items-end">
+      <section className="relative overflow-hidden min-h-[42vh] flex items-end">
         <EditorialHeroImage
           src={aboutHero}
           objectPosition="56% 48%"
@@ -74,9 +74,9 @@ export function AboutPage() {
           secondaryObjectPosition="center 24%"
           folio={fr ? 'ORIGINE / 05' : 'ORIGIN / 05'}
         />
-        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16 lg:pt-32 lg:pb-20 w-full">
+        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-8 lg:pt-24 lg:pb-10 w-full">
           <span className="text-xs tracking-[0.4em] uppercase" style={{ color: '#C6A45A' }}>{fr ? 'À propos de CREOVA' : 'About CREOVA'}</span>
-          <h1 className="tracking-tight mt-5" style={{ color: '#FFFFFF', fontFamily: 'var(--font-display)', fontSize: 'clamp(2.6rem, 7vw, 4.8rem)', lineHeight: 1.02 }}>
+          <h1 className="tracking-tight mt-3" style={{ color: '#FFFFFF', fontFamily: 'var(--font-display)', fontSize: 'clamp(1.9rem, 3.8vw, 3.1rem)', lineHeight: 1.02 }}>
             {fr ? 'Un studio conçu pour raconter la culture avec contexte et soin.' : 'A studio built to tell cultural stories with context and care.'}
           </h1>
         </div>

@@ -181,7 +181,7 @@ export function ContactPage() {
       />
       {/* Hero — full-width dark with large email CTA treatment */}
       <section
-        className="relative overflow-hidden min-h-[72vh] flex items-end"
+        className="relative overflow-hidden min-h-[42vh] flex items-end"
         style={{ backgroundColor: '#2D1011', borderBottom: '1px solid rgba(198,164,90,0.15)' }}
       >
         <EditorialHeroImage
@@ -194,7 +194,7 @@ export function ContactPage() {
         {/* Top accent stripe */}
         <div className="absolute inset-x-0 top-0 z-10" style={{ height: '2px', background: 'linear-gradient(90deg, #C6A45A, #887759, transparent)' }} />
 
-        <div className="relative max-w-7xl mx-auto px-6 lg:px-12 py-20 lg:py-28 w-full">
+        <div className="relative max-w-7xl mx-auto px-6 lg:px-12 py-12 lg:py-14 w-full">
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-10">
             {/* Left: headline */}
             <div>
@@ -215,7 +215,7 @@ export function ContactPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
               >
-                <h1 className="font-light tracking-tight leading-[0.96] max-w-5xl" style={{ fontSize: 'clamp(3.4rem, 9vw, 8rem)', color: '#FFFFFF' }}>
+                <h1 className="font-light tracking-tight leading-[1.05] max-w-5xl" style={{ fontSize: 'clamp(1.9rem, 3.8vw, 3.1rem)', color: '#FFFFFF' }}>
                   {language === 'fr' ? 'Parlez-nous de ce que vous préparez.' : 'Tell us what you’re planning.'}
                 </h1>
               </motion.div>

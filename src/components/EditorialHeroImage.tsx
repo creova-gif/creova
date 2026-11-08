@@ -76,7 +76,7 @@ export function EditorialHeroImage({
 
       {secondarySrc && (
         <motion.div
-          className="absolute right-[5vw] top-[13%] hidden w-[clamp(9rem,16vw,15rem)] overflow-hidden rounded-[1.15rem] border border-white/25 shadow-2xl lg:block"
+          className="absolute right-[5vw] top-[18%] hidden w-[clamp(6.5rem,10vw,9.5rem)] overflow-hidden rounded-[1.15rem] border border-white/25 shadow-2xl lg:block"
           style={{ aspectRatio: '4 / 5' }}
           initial={reduceMotion ? false : { opacity: 0, y: 38, rotate: 4, scale: 0.92 }}
           animate={{ opacity: 1, y: 0, rotate: 2, scale: 1 }}
@@ -91,7 +91,7 @@ export function EditorialHeroImage({
             decoding="async"
           />
           <div className="absolute inset-0 ring-1 ring-inset ring-black/10" />
-          <div className="absolute bottom-3 left-3 rounded-full border border-white/30 bg-[#2D1011]/75 px-2.5 py-1 text-[8px] tracking-[0.24em] text-white/80 backdrop-blur-sm">
+          <div className="absolute bottom-3 left-3 rounded-full border border-white/30 bg-[#2D1011]/75 px-2 py-0.5 text-[7px] whitespace-nowrap tracking-[0.18em] text-white/80 backdrop-blur-sm">
             CREOVA / FRAME 02
           </div>
         </motion.div>

@@ -245,7 +245,7 @@ export function WorkPage() {
       />
 
       {/* ── CINEMATIC HERO ── */}
-      <section className="relative overflow-hidden" style={{ height: '100svh', minHeight: '580px' }}>
+      <section className="relative overflow-hidden" style={{ height: 'min(74svh, 700px)', minHeight: '540px' }}>
         {/* Full-bleed background image — this is the LCP element, so hint the
             browser to fetch it at high priority (React 19 forwards the
             camelCase fetchPriority prop natively). */}
@@ -301,7 +301,7 @@ export function WorkPage() {
         <div
           className="absolute right-0 bottom-0 select-none pointer-events-none hidden lg:block"
           style={{
-            fontSize: 'clamp(200px, 28vw, 380px)',
+            fontSize: 'clamp(120px, 14vw, 200px)',
             fontWeight: 700,
             color: 'rgba(255,255,255,0.03)',
             lineHeight: 1,
@@ -326,7 +326,7 @@ export function WorkPage() {
         </div>
 
         {/* Bottom content */}
-        <div className="absolute bottom-0 left-0 right-0 px-6 lg:px-12 pb-10 sm:pb-16">
+        <div className="absolute bottom-0 left-0 right-0 px-6 lg:px-12 pb-8 sm:pb-10">
           <div className="max-w-7xl mx-auto">
             <div className="flex flex-col gap-0">
 
@@ -337,7 +337,7 @@ export function WorkPage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.9, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
                 >
-                  <h1 className="max-w-6xl font-light tracking-tight leading-[0.98]" style={{ fontSize: 'clamp(2.5rem, 12vw, 7.8rem)', color: '#FFFFFF' }}>
+                  <h1 className="max-w-6xl font-light tracking-tight leading-[1.05]" style={{ fontSize: 'clamp(1.9rem, 4vw, 3.25rem)', color: '#FFFFFF' }}>
                     {fr ? 'Des histoires ancrées dans de vrais événements, personnes et programmes.' : 'Stories built from real events, people, and programs.'}
                   </h1>
                 </motion.div>
@@ -358,7 +358,7 @@ export function WorkPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.65 }}
-                className="grid grid-cols-3 gap-3 sm:flex sm:gap-10 lg:gap-12 flex-shrink-0"
+                className="mt-6 grid grid-cols-3 gap-3 sm:flex sm:gap-10 lg:gap-12 flex-shrink-0"
               >
                 {[
                   { n: String(sorted.length), l: fr ? 'Galeries choisies' : 'Selected Galleries' },

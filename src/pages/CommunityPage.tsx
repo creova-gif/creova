@@ -42,7 +42,7 @@ export function CommunityPage() {
         path="/community"
       />
 
-      <section className="relative min-h-[70vh] flex items-end overflow-hidden" style={{ backgroundColor: '#2D1011' }}>
+      <section className="relative min-h-[42vh] flex items-end overflow-hidden" style={{ backgroundColor: '#2D1011' }}>
         <EditorialHeroImage
           src={communityImageLarge}
           srcSet={`${communityImageSmall} 800w, ${communityImageLarge} 1400w`}
@@ -51,9 +51,9 @@ export function CommunityPage() {
           secondaryObjectPosition="center 42%"
           folio={fr ? 'COMMUNAUTÉ / 07' : 'COMMUNITY / 07'}
         />
-        <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .7 }} className="relative max-w-7xl mx-auto w-full px-6 lg:px-8 py-20 lg:py-28">
-            <p className="text-xs tracking-[.35em] uppercase mb-6" style={{ color: '#C6A45A' }}>{fr ? 'Communauté' : 'Community'}</p>
-            <h1 className="max-w-5xl font-light tracking-tight leading-[.98]" style={{ color: '#FFFFFF', fontSize: 'clamp(3.1rem, 8vw, 7.2rem)' }}>{fr ? 'Mandater, collaborer ou soutenir — avec des rôles clairs dès le départ.' : 'Commission, collaborate, or partner—with clear roles from the start.'}</h1>
+        <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .7 }} className="relative max-w-7xl mx-auto w-full px-6 lg:px-8 py-12 lg:py-14">
+            <p className="text-xs tracking-[.35em] uppercase mb-3" style={{ color: '#C6A45A' }}>{fr ? 'Communauté' : 'Community'}</p>
+            <h1 className="max-w-5xl font-light tracking-tight leading-[1.05]" style={{ color: '#FFFFFF', fontSize: 'clamp(1.9rem, 3.8vw, 3.1rem)' }}>{fr ? 'Mandater, collaborer ou soutenir — avec des rôles clairs dès le départ.' : 'Commission, collaborate, or partner—with clear roles from the start.'}</h1>
             <p className="max-w-3xl mt-7 text-lg md:text-xl leading-relaxed" style={{ color: '#E0E0E0' }}>{fr ? 'Choisissez la relation qui correspond à votre objectif. Nous clarifions le rôle de chacun, la valeur échangée et le résultat avant de commencer.' : 'Choose the relationship that matches your goal. We clarify roles, value exchange, and the intended outcome before work begins.'}</p>
         </motion.div>
       </section>

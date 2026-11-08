@@ -12,7 +12,7 @@ export function NotFoundPage() {
   // Transactional/utility page → vous register.
   const fr = useLanguage().language === 'fr';
   return (
-    <div className="min-h-screen flex items-center justify-center px-6 py-24 overflow-hidden" style={{ backgroundColor: '#2D1011' }}>
+    <div className="min-h-[70vh] flex items-center justify-center px-6 py-16 relative overflow-hidden" style={{ backgroundColor: '#2D1011' }}>
       <PageSEO
         title="Page Not Found"
         description="The page you're looking for doesn't exist or has moved."
@@ -31,7 +31,7 @@ export function NotFoundPage() {
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6 }}
-          className="flex items-center gap-3 mb-8"
+          className="flex items-center gap-3 mb-4"
         >
           <div style={{ height: '1px', width: '32px', background: warmGradient }} />
           <span className="text-[10px] tracking-[0.5em] uppercase" style={{ color: '#C6A45A' }}>{fr ? 'CREOVA · Erreur' : 'CREOVA · Error'}</span>
@@ -43,7 +43,7 @@ export function NotFoundPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           className="font-light leading-none tracking-tighter"
-          style={{ fontSize: 'clamp(100px, 22vw, 280px)', color: '#FFFFFF' }}
+          style={{ fontSize: 'clamp(80px, 13vw, 160px)', color: '#FFFFFF' }}
           aria-label="404"
         >
           404

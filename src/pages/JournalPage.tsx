@@ -44,7 +44,7 @@ export function JournalPage() {
       />
 
       {/* Header */}
-      <section className="relative overflow-hidden min-h-[68vh] flex items-end">
+      <section className="relative overflow-hidden min-h-[42vh] flex items-end">
         <EditorialHeroImage
           src={journalHero}
           objectPosition="center 42%"
@@ -52,11 +52,11 @@ export function JournalPage() {
           secondaryObjectPosition="center 40%"
           folio={fr ? 'NOTES DU STUDIO / 06' : 'STUDIO NOTES / 06'}
         />
-        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16 lg:pt-32 lg:pb-20 w-full">
+        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-8 lg:pt-24 lg:pb-10 w-full">
           <span className="text-xs tracking-[0.4em] uppercase" style={{ color: '#C6A45A' }}>
             {fr ? 'Le Journal' : 'The Journal'}
           </span>
-          <h1 className="tracking-tight mt-5 mb-5" style={{ color: '#FFFFFF', fontFamily: 'var(--font-display)', fontSize: 'clamp(2.6rem, 7vw, 4.6rem)', lineHeight: 1.02 }}>
+          <h1 className="tracking-tight mt-3 mb-5" style={{ color: '#FFFFFF', fontFamily: 'var(--font-display)', fontSize: 'clamp(1.9rem, 3.8vw, 3.1rem)', lineHeight: 1.02 }}>
             {fr ? 'Des conseils pratiques pour mieux raconter la culture.' : 'Practical guidance for better cultural storytelling.'}
           </h1>
           <p className="text-lg" style={{ color: '#8C7B75', maxWidth: '54ch' }}>

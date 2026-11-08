@@ -20,7 +20,7 @@ export function TermsOfServicePage() {
         path="/terms-of-service"
       />
       {/* Hero */}
-      <section className="relative py-16 overflow-hidden min-h-[54vh] flex items-end" style={{ backgroundColor: '#2D1011' }}>
+      <section className="relative py-16 overflow-hidden min-h-[36vh] flex items-end" style={{ backgroundColor: '#2D1011' }}>
         <EditorialHeroImage src={legalHero} objectPosition="center 45%" deep />
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <Button
@@ -44,7 +44,7 @@ export function TermsOfServicePage() {
               <span className="text-sm tracking-wide" style={{ color: '#C6A45A' }}>{fr ? 'Informations légales' : 'Legal Information'}</span>
             </div>
 
-            <h1 className="text-4xl md:text-5xl mb-4" style={{ color: '#FFFFFF' }}>
+            <h1 className="text-3xl md:text-4xl mb-3" style={{ color: '#FFFFFF' }}>
               {fr ? "Conditions d'utilisation" : 'Terms of Service'}
             </h1>
             <p className="text-lg max-w-2xl mx-auto" style={{ color: '#E0E0E0' }}>

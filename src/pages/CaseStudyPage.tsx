@@ -38,7 +38,7 @@ export function CaseStudyPage({ slug }: { slug: string }) {
       <PageSEO title={c.title} description={c.metaDescription} path={`/work/${slug}`} ogImage={coverUrl} jsonLd={jsonLd} />
 
       {/* Hero */}
-      <section className="relative overflow-hidden min-h-[76vh] flex items-end">
+      <section className="relative overflow-hidden min-h-[42vh] flex items-end">
         <EditorialHeroImage
           src={cs.cover}
           objectPosition="center 40%"
@@ -47,12 +47,12 @@ export function CaseStudyPage({ slug }: { slug: string }) {
           folio={fr ? 'ÉTUDE DE CAS' : 'CASE STUDY'}
           deep
         />
-        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16 lg:pt-28 lg:pb-20 w-full">
+        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-8 lg:pt-24 lg:pb-10 w-full">
           <Link to="/work" className="flex w-fit items-center gap-2 text-xs tracking-[0.2em] uppercase mb-8 transition-colors hover:text-[#FFFFFF]" style={{ color: '#CDBFAE' }}>
             <ArrowLeft className="w-3.5 h-3.5" /> {fr ? 'Réalisations' : 'Our work'}
           </Link>
           <span className="block text-xs tracking-[0.35em] uppercase" style={{ color: '#C6A45A' }}>{c.kicker}</span>
-          <h1 className="tracking-tight mt-5 mb-6" style={{ color: '#FFFFFF', fontFamily: 'var(--font-display)', fontSize: 'clamp(2.4rem, 6vw, 4.2rem)', lineHeight: 1.03 }}>{c.title}</h1>
+          <h1 className="tracking-tight mt-3 mb-6" style={{ color: '#FFFFFF', fontFamily: 'var(--font-display)', fontSize: 'clamp(1.9rem, 3.8vw, 3.1rem)', lineHeight: 1.03 }}>{c.title}</h1>
           <p className="text-lg leading-relaxed" style={{ color: '#E0E0E0', maxWidth: '62ch' }}>{c.overview}</p>
           <div className="mt-8 flex items-center gap-4" aria-label="Collaborators">
             <img src={logoBrock} alt="Brock University" className="h-11 w-auto object-contain" width="1188" height="720" />

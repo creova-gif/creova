@@ -82,7 +82,7 @@ export function HomePage() {
         jsonLd={organizationSchema}
       />
 
-      <section className="relative min-h-[82vh] flex items-end overflow-hidden" style={{ backgroundColor: '#2D1011' }}>
+      <section className="relative min-h-[62vh] flex items-end overflow-hidden" style={{ backgroundColor: '#2D1011' }}>
         <EditorialHeroImage
           src={heroImageLarge}
           srcSet={`${heroImageSmall} 800w, ${heroImageLarge} 1400w`}
@@ -91,20 +91,20 @@ export function HomePage() {
           secondaryObjectPosition="center 30%"
           folio={fr ? 'MÉMOIRE VIVANTE / 00' : 'LIVING MEMORY / 00'}
         />
-        <div className="relative z-10 max-w-7xl mx-auto w-full px-6 lg:px-8 pt-32 pb-20">
+        <div className="relative z-10 max-w-7xl mx-auto w-full px-6 lg:px-8 pt-24 pb-10">
           <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.75 }} className="max-w-4xl">
-            <p className="text-xs tracking-[0.34em] uppercase mb-6" style={{ color: '#C6A45A' }}>
+            <p className="text-xs tracking-[0.34em] uppercase mb-3" style={{ color: '#C6A45A' }}>
               {fr ? 'Studio de narration culturelle · Ontario' : 'Cultural storytelling studio · Ontario'}
             </p>
-            <h1 className="font-light tracking-tight leading-[0.96]" style={{ color: '#FFFFFF', fontSize: 'clamp(3.2rem, 8vw, 7.6rem)' }}>
+            <h1 className="font-light tracking-tight leading-[1.05]" style={{ color: '#FFFFFF', fontSize: 'clamp(2.1rem, 4.6vw, 3.75rem)' }}>
               {fr ? 'Transformez vos événements en histoires qui rassemblent et font agir.' : 'Turn your events into stories that connect people and move them to act.'}
             </h1>
-            <p className="mt-7 max-w-3xl text-lg md:text-xl leading-relaxed" style={{ color: '#E0E0E0' }}>
+            <p className="mt-4 max-w-2xl text-base md:text-lg leading-relaxed" style={{ color: '#E0E0E0' }}>
               {fr
                 ? 'CREOVA aide les organisations culturelles, les bâtisseurs de communautés et les entreprises engagées à transformer leurs événements et programmes en récits qui stimulent la participation, démontrent l’impact et maintiennent le lien.'
                 : 'CREOVA helps cultural organizations, community builders, and purpose-led businesses turn events and programs into stories that grow participation, prove impact, and keep people connected.'}
             </p>
-            <div className="mt-9 flex flex-wrap gap-4">
+            <div className="mt-6 flex flex-wrap gap-4">
               <Link to="/start-a-project" className="inline-flex items-center gap-2 rounded-xl px-6 py-3.5 text-sm font-semibold transition-transform hover:-translate-y-0.5" style={{ backgroundColor: '#7D6D51', color: '#FFFFFF' }}>
                 {fr ? 'Démarrer un projet' : 'Start a project'} <ArrowRight className="w-4 h-4" />
               </Link>
@@ -112,7 +112,7 @@ export function HomePage() {
                 {fr ? 'Voir les études de cas' : 'View case studies'}
               </Link>
             </div>
-            <div className="mt-10 flex flex-wrap gap-x-7 gap-y-3 text-sm" style={{ color: 'rgba(255,255,255,.72)' }}>
+            <div className="mt-6 flex flex-wrap gap-x-7 gap-y-3 text-sm" style={{ color: 'rgba(255,255,255,.72)' }}>
               <span className="inline-flex items-center gap-2"><CheckCircle2 className="w-4 h-4" style={{ color: '#C6A45A' }} />{fr ? 'Dirigé par des personnes BIPOC' : 'BIPOC-led'}</span>
               <span className="inline-flex items-center gap-2"><Globe2 className="w-4 h-4" style={{ color: '#C6A45A' }} />{fr ? 'Collaboration en anglais et en français' : 'English and French collaboration'}</span>
               <span className="inline-flex items-center gap-2"><CalendarDays className="w-4 h-4" style={{ color: '#C6A45A' }} />Niagara · Hamilton · GTA</span>

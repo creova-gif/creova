@@ -20,7 +20,7 @@ export function PrivacyPolicyPage() {
         path="/privacy-policy"
       />
       {/* Hero */}
-      <section className="relative py-16 overflow-hidden min-h-[54vh] flex items-end" style={{ backgroundColor: '#2D1011' }}>
+      <section className="relative py-16 overflow-hidden min-h-[36vh] flex items-end" style={{ backgroundColor: '#2D1011' }}>
         <EditorialHeroImage src={privacyHero} objectPosition="center 42%" deep />
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <Button
@@ -44,7 +44,7 @@ export function PrivacyPolicyPage() {
               <span className="text-sm tracking-wide" style={{ color: '#C6A45A' }}>{fr ? 'Votre vie privée compte' : 'Your Privacy Matters'}</span>
             </div>
 
-            <h1 className="text-4xl md:text-5xl mb-4" style={{ color: '#FFFFFF' }}>
+            <h1 className="text-3xl md:text-4xl mb-3" style={{ color: '#FFFFFF' }}>
               {fr ? 'Politique de confidentialité' : 'Privacy Policy'}
             </h1>
             <p className="text-lg max-w-2xl mx-auto" style={{ color: '#E0E0E0' }}>

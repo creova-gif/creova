@@ -44,7 +44,7 @@ export function JournalPostPage({ slug }: { slug: string }) {
 
       <article>
         {/* Header */}
-        <header className="relative overflow-hidden min-h-[68vh] flex items-end">
+        <header className="relative overflow-hidden min-h-[42vh] flex items-end">
           <EditorialHeroImage
             src={post.cover}
             objectPosition="center 35%"
@@ -53,7 +53,7 @@ export function JournalPostPage({ slug }: { slug: string }) {
             folio={fr ? 'NOTE DE TERRAIN' : 'FIELD NOTE'}
             deep
           />
-          <div className="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16 lg:pt-28 lg:pb-20 w-full">
+          <div className="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-8 lg:pt-24 lg:pb-10 w-full">
             <Link to="/journal" className="inline-flex items-center gap-2 text-xs tracking-[0.2em] uppercase mb-8 transition-colors hover:text-[#C6A45A]" style={{ color: '#8C7B75' }}>
               <ArrowLeft className="w-3.5 h-3.5" /> {fr ? 'Le Journal' : 'The Journal'}
             </Link>
@@ -61,7 +61,7 @@ export function JournalPostPage({ slug }: { slug: string }) {
               <span className="text-[10px] tracking-[0.25em] uppercase px-2.5 py-1 rounded-full" style={{ color: '#C6A45A', backgroundColor: 'rgba(198,164,90,0.12)' }}>{post.category}</span>
               <span className="text-xs" style={{ color: '#777777' }}>{fmt(post.date, fr)} · {post.readMins} {fr ? 'min de lecture' : 'min read'}</span>
             </div>
-            <h1 className="tracking-tight" style={{ color: '#FFFFFF', fontFamily: 'var(--font-display)', fontSize: 'clamp(2.2rem, 5.5vw, 3.8rem)', lineHeight: 1.05 }}>{c.title}</h1>
+            <h1 className="tracking-tight" style={{ color: '#FFFFFF', fontFamily: 'var(--font-display)', fontSize: 'clamp(1.9rem, 3.8vw, 3.1rem)', lineHeight: 1.05 }}>{c.title}</h1>
           </div>
         </header>
 

@@ -25,7 +25,7 @@ export function VenturesPage() {
         path="/ventures"
       />
 
-      <section className="relative overflow-hidden px-6 py-24 lg:py-36 min-h-[76vh] flex items-end">
+      <section className="relative overflow-hidden px-6 py-12 lg:py-14 min-h-[42vh] flex items-end">
         <EditorialHeroImage
           src={venturesHero}
           objectPosition="center 38%"
@@ -34,10 +34,10 @@ export function VenturesPage() {
           folio={fr ? 'EN DÉVELOPPEMENT / 03' : 'IN DEVELOPMENT / 03'}
         />
         <div className="relative max-w-6xl mx-auto w-full">
-          <p className="text-xs tracking-[0.45em] uppercase mb-6" style={{ color: '#C6A45A' }}>
+          <p className="text-xs tracking-[0.45em] uppercase mb-3" style={{ color: '#C6A45A' }}>
             {fr ? 'Construit par CREOVA' : 'Built by CREOVA'}
           </p>
-          <h1 className="max-w-4xl font-light tracking-tight leading-[0.95]" style={{ color: '#FFFFFF', fontSize: 'clamp(3.5rem, 9vw, 8rem)' }}>
+          <h1 className="max-w-4xl font-light tracking-tight leading-[1.05]" style={{ color: '#FFFFFF', fontSize: 'clamp(1.9rem, 3.8vw, 3.1rem)' }}>
             {fr ? 'Découvrez les produits et marques que CREOVA développe.' : 'Meet the products and brands CREOVA is building.'}
           </h1>
           <p className="max-w-2xl mt-8 text-lg leading-relaxed" style={{ color: '#9B9B9B' }}>
