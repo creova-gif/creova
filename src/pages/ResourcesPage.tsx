@@ -3,6 +3,10 @@ import { Link } from '../i18n/LocaleLink';
 import { PageSEO } from '../components/PageSEO';
 import { useLanguage } from '../context/LanguageContext';
 import { JOURNAL } from '../data/journal';
+import { EditorialHeroImage } from '../components/EditorialHeroImage';
+import resourceImageSmall from '../assets/photo-social-laptop-800.webp';
+import resourceImageLarge from '../assets/photo-social-laptop-1600.webp';
+import resourceDetailImage from '../assets/photo-community-chess-800.webp';
 
 const DOWNLOADS = [
   {
@@ -70,8 +74,17 @@ export function ResourcesPage() {
         path="/resources"
       />
 
-      <section className="py-24 lg:py-36" style={{ backgroundColor: '#2D1011' }}>
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+      <section className="relative flex min-h-[72vh] items-end overflow-hidden py-24 lg:py-36" style={{ backgroundColor: '#2D1011' }}>
+        <EditorialHeroImage
+          src={resourceImageLarge}
+          srcSet={`${resourceImageSmall} 800w, ${resourceImageLarge} 1600w`}
+          objectPosition="center 42%"
+          secondarySrc={resourceDetailImage}
+          secondaryObjectPosition="center 40%"
+          folio="FIELD TOOLS / 02"
+          deep
+        />
+        <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
           <p className="text-xs tracking-[.35em] uppercase mb-6" style={{ color: '#C6A45A' }}>{fr ? 'Ressources de la communauté' : 'Community resources'}</p>
           <h1 className="max-w-5xl tracking-tight leading-[.98]" style={{ color: '#FFFFFF', fontSize: 'clamp(3.2rem, 8vw, 7.5rem)' }}>
             {fr ? 'Des outils utiles, issus du travail réel.' : 'Useful tools, shaped by real work.'}
@@ -88,7 +101,7 @@ export function ResourcesPage() {
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid lg:grid-cols-[.7fr_1.3fr] gap-10 lg:gap-16">
             <div>
-              <p className="text-xs tracking-[.3em] uppercase mb-5" style={{ color: '#887759' }}>{fr ? 'Modèles gratuits' : 'Free templates'}</p>
+              <p className="text-xs tracking-[.3em] uppercase mb-5" style={{ color: '#75664C' }}>{fr ? 'Modèles gratuits' : 'Free templates'}</p>
               <h2 className="text-4xl md:text-6xl tracking-tight leading-[1.02]" style={{ color: '#2D1011' }}>{fr ? 'Commencez avec un meilleur brief.' : 'Start with a better brief.'}</h2>
               <p className="mt-5 leading-relaxed" style={{ color: '#555' }}>{fr ? 'Téléchargement direct. Aucun formulaire, aucune liste de diffusion.' : 'Direct downloads. No form and no mailing-list gate.'}</p>
             </div>
@@ -96,10 +109,10 @@ export function ResourcesPage() {
               {DOWNLOADS.map((resource, index) => (
                 <article key={resource.href} className="rounded-3xl p-7 md:p-9 grid sm:grid-cols-[1fr_auto] gap-7 items-end" style={{ backgroundColor: '#F7F3EE', border: '1px solid #E5DED5' }}>
                   <div>
-                    <div className="flex items-center gap-3 mb-8"><FileText className="w-5 h-5" style={{ color: '#887759' }} /><span className="text-xs tracking-[.25em]" style={{ color: '#887759' }}>0{index + 1}</span></div>
+                    <div className="flex items-center gap-3 mb-8"><FileText className="w-5 h-5" style={{ color: '#75664C' }} /><span className="text-xs tracking-[.25em]" style={{ color: '#75664C' }}>0{index + 1}</span></div>
                     <h3 className="text-2xl md:text-3xl mb-3" style={{ color: '#2D1011' }}>{fr ? resource.titleFr : resource.title}</h3>
                     <p className="leading-relaxed" style={{ color: '#555' }}>{fr ? resource.descriptionFr : resource.description}</p>
-                    <p className="mt-5 text-xs tracking-[.16em] uppercase" style={{ color: '#887759' }}>{fr ? resource.metaFr : resource.meta}</p>
+                    <p className="mt-5 text-xs tracking-[.16em] uppercase" style={{ color: '#75664C' }}>{fr ? resource.metaFr : resource.meta}</p>
                   </div>
                   <a href={resource.href} download className="inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold" style={{ backgroundColor: '#7D6D51', color: '#FFFFFF' }}>
                     {fr ? 'Télécharger' : 'Download'} <Download className="w-4 h-4" />
@@ -115,7 +128,7 @@ export function ResourcesPage() {
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
             <div className="max-w-3xl">
-              <div className="flex items-center gap-3 text-xs tracking-[.3em] uppercase mb-5" style={{ color: '#6D5D44' }}><Lightbulb className="w-4 h-4" />{fr ? 'Guides du studio' : 'Studio guides'}</div>
+              <div className="flex items-center gap-3 text-xs tracking-[.3em] uppercase mb-5" style={{ color: '#574932' }}><Lightbulb className="w-4 h-4" />{fr ? 'Guides du studio' : 'Studio guides'}</div>
               <h2 className="text-4xl md:text-6xl tracking-tight" style={{ color: '#2D1011' }}>{fr ? 'Ce que nous apprenons, en accès libre.' : 'What we learn, in the open.'}</h2>
             </div>
             <Link to="/journal" className="inline-flex items-center gap-2 text-sm font-medium" style={{ color: '#2D1011' }}>{fr ? 'Voir tout le journal' : 'Explore the journal'} <ArrowRight className="w-4 h-4" /></Link>
@@ -125,10 +138,10 @@ export function ResourcesPage() {
               const copy = fr ? article.fr : article.en;
               return (
                 <Link key={article.slug} to={`/journal/${article.slug}`} className="group rounded-2xl p-7 min-h-[300px] flex flex-col" style={{ backgroundColor: '#FFFFFF' }}>
-                  <p className="text-xs tracking-[.2em] uppercase" style={{ color: '#887759' }}>{fr ? (CATEGORY_FR[article.category] ?? article.category) : article.category} · {article.readMins} min</p>
+                  <p className="text-xs tracking-[.2em] uppercase" style={{ color: '#75664C' }}>{fr ? (CATEGORY_FR[article.category] ?? article.category) : article.category} · {article.readMins} min</p>
                   <h3 className="mt-10 text-2xl leading-tight group-hover:translate-x-1 transition-transform" style={{ color: '#2D1011' }}>{copy.title}</h3>
                   <p className="mt-4 text-sm leading-relaxed flex-1" style={{ color: '#555' }}>{copy.excerpt}</p>
-                  <span className="mt-7 inline-flex items-center gap-2 text-sm" style={{ color: '#887759' }}>{fr ? 'Lire le guide' : 'Read the guide'} <ArrowRight className="w-4 h-4" /></span>
+                  <span className="mt-7 inline-flex items-center gap-2 text-sm" style={{ color: '#75664C' }}>{fr ? 'Lire le guide' : 'Read the guide'} <ArrowRight className="w-4 h-4" /></span>
                 </Link>
               );
             })}

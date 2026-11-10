@@ -10,6 +10,7 @@ import { getPublishedEvidenceBySlug } from '../content/publicEvidence';
 import logoBrock from '../assets/logo-brock-university.webp';
 import logoBSSC from '../assets/logo-bssc.png';
 import { GALLERY_FALLBACK } from '../data/galleryFallback';
+import { EditorialHeroImage } from '../components/EditorialHeroImage';
 
 const SITE_URL = 'https://www.creova.one';
 
@@ -41,9 +42,16 @@ export function CaseStudyPage({ slug }: { slug: string }) {
       <PageSEO title={c.title} description={c.metaDescription} path={`/work/${slug}`} ogImage={coverUrl} jsonLd={jsonLd} />
 
       {/* Hero */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse 60% 50% at 20% 0%, rgba(198,164,90,0.10) 0%, transparent 55%)' }} />
-        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-10 lg:pt-28">
+      <section className="relative flex min-h-[68vh] items-end overflow-hidden">
+        <EditorialHeroImage
+          src={cs.cover}
+          objectPosition="center 40%"
+          secondarySrc={cs.featureImage}
+          secondaryObjectPosition="center 20%"
+          folio="CASE STUDY / 09"
+          deep
+        />
+        <div className="relative z-10 w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16 lg:pt-28 lg:pb-20">
           <Link to="/work" className="flex w-fit items-center gap-2 text-xs tracking-[0.2em] uppercase mb-8 transition-colors hover:text-[#FFFFFF]" style={{ color: '#CDBFAE' }}>
             <ArrowLeft className="w-3.5 h-3.5" /> {fr ? 'Réalisations' : 'Our work'}
           </Link>
@@ -171,7 +179,7 @@ export function CaseStudyPage({ slug }: { slug: string }) {
         <section className="relative py-16">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <p className="italic" style={{ color: '#FFFFFF', fontFamily: 'var(--font-display)', fontSize: 'clamp(1.5rem, 3.6vw, 2.3rem)', lineHeight: 1.3 }}>“{c.quote.text}”</p>
-            <p className="mt-6 text-sm" style={{ color: '#C6A45A' }}>{c.quote.name} · <span style={{ color: '#8C7B75' }}>{c.quote.role}</span></p>
+            <p className="mt-6 text-sm" style={{ color: '#C6A45A' }}>{c.quote.name} · <span style={{ color: '#B8AAA4' }}>{c.quote.role}</span></p>
           </div>
         </section>
       )}

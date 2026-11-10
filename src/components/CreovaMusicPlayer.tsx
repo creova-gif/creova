@@ -112,7 +112,7 @@ export function CreovaMusicPlayer() {
                     ? 'Une sélection transversale de sorties — choisie pour le contraste, pas pour suivre l’ordre d’un album.'
                     : 'A cross-release sampler chosen for contrast, not album order.'}
                 </p>
-                <span className="hidden text-[9px] uppercase tracking-[.28em] sm:block" style={{ color: '#706966' }}>{fr ? 'Choisir une piste' : 'Choose a track'}</span>
+                <span className="hidden text-[9px] uppercase tracking-[.28em] sm:block" style={{ color: '#AAA09B' }}>{fr ? 'Choisir une piste' : 'Choose a track'}</span>
               </div>
 
               <div className="-mx-5 flex snap-x gap-2 overflow-x-auto px-5 pb-2 sm:mx-0 sm:grid sm:grid-cols-2 sm:px-0 lg:grid-cols-1" style={{ scrollbarWidth: 'thin', scrollbarColor: '#5A3028 transparent' }}>
@@ -127,12 +127,12 @@ export function CreovaMusicPlayer() {
                       style={{ backgroundColor: selected ? '#2D1011' : '#171717', border: `1px solid ${selected ? 'rgba(198,164,90,.48)' : 'rgba(205,191,174,.1)'}` }}
                       aria-pressed={selected}
                     >
-                      <span className="flex h-7 w-7 items-center justify-center rounded-full text-[10px]" style={{ backgroundColor: selected ? '#C6A45A' : '#252525', color: selected ? '#2D1011' : '#887759' }}>
+                      <span className="flex h-7 w-7 items-center justify-center rounded-full text-[10px]" style={{ backgroundColor: selected ? '#C6A45A' : '#252525', color: selected ? '#2D1011' : '#BCA66F' }}>
                         {selected ? <Play className="h-3 w-3" fill="currentColor" /> : String(index + 1).padStart(2, '0')}
                       </span>
                       <span className="min-w-0">
                         <span className="block truncate text-sm" style={{ color: '#FFFFFF' }}>{track.title}</span>
-                        <span className="mt-0.5 block truncate text-[10px] uppercase tracking-[.16em]" style={{ color: '#887759' }}>{track.release}</span>
+                        <span className="mt-0.5 block truncate text-[10px] uppercase tracking-[.16em]" style={{ color: '#BCA66F' }}>{track.release}</span>
                       </span>
                       <span className="text-[10px]" style={{ color: '#B9B0AA' }}>{track.duration}</span>
                     </button>

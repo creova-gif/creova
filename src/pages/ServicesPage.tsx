@@ -2,7 +2,11 @@ import { ArrowRight, Camera, Check, Compass, FileStack, HeartHandshake, Repeat2 
 import { motion } from 'motion/react';
 import { Link } from '../i18n/LocaleLink';
 import { PageSEO } from '../components/PageSEO';
+import { EditorialHeroImage } from '../components/EditorialHeroImage';
 import { useLanguage } from '../context/LanguageContext';
+import serviceImageSmall from '../assets/photo-service-events-800.webp';
+import serviceImageLarge from '../assets/photo-service-events-1600.webp';
+import serviceDetailImage from '../assets/photo-service-videography-800.webp';
 
 type Offer = {
   id: string;
@@ -106,8 +110,15 @@ export function ServicesPage() {
         path="/services"
       />
 
-      <section className="relative overflow-hidden py-24 lg:py-36" style={{ backgroundColor: '#2D1011' }}>
-        <div className="absolute inset-0" style={{ background: 'radial-gradient(circle at 42% 52%, rgba(198,164,90,.15), transparent 50%)' }} />
+      <section className="relative flex min-h-[78vh] items-end overflow-hidden py-24 lg:py-36" style={{ backgroundColor: '#2D1011' }}>
+        <EditorialHeroImage
+          src={serviceImageLarge}
+          srcSet={`${serviceImageSmall} 800w, ${serviceImageLarge} 1600w`}
+          objectPosition="center 45%"
+          secondarySrc={serviceDetailImage}
+          secondaryObjectPosition="center"
+          folio="STORY SYSTEM / 01"
+        />
         <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .7 }} className="relative max-w-7xl mx-auto px-6 lg:px-8">
           <p className="text-xs tracking-[.35em] uppercase mb-6" style={{ color: '#C6A45A' }}>{fr ? 'Services' : 'What we do'}</p>
           <h1 className="max-w-5xl font-light tracking-tight leading-[.98]" style={{ color: '#FFFFFF', fontSize: 'clamp(3.2rem, 8vw, 7.5rem)' }}>
@@ -124,15 +135,15 @@ export function ServicesPage() {
           {offers.map(({ id, number, title, promise, fit, includes, icon: Icon }) => (
             <article id={id} key={id} className="scroll-mt-36 grid lg:grid-cols-[.7fr_1.3fr] gap-10 rounded-3xl p-7 md:p-10 lg:p-12" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E0E0E0' }}>
               <div>
-                <div className="flex items-center gap-3 mb-10"><Icon className="w-5 h-5" style={{ color: '#887759' }} /><span className="text-xs tracking-[.3em]" style={{ color: '#887759' }}>{number}</span></div>
+                <div className="flex items-center gap-3 mb-10"><Icon className="w-5 h-5" style={{ color: '#75664C' }} /><span className="text-xs tracking-[.3em]" style={{ color: '#75664C' }}>{number}</span></div>
                 <h2 className="text-3xl md:text-5xl font-light tracking-tight mb-5" style={{ color: '#2D1011' }}>{title}</h2>
                 <p className="text-lg leading-relaxed" style={{ color: '#555' }}>{promise}</p>
               </div>
               <div className="lg:border-l lg:pl-12" style={{ borderColor: '#E0E0E0' }}>
-                <p className="text-xs tracking-[.25em] uppercase mb-3" style={{ color: '#887759' }}>{fr ? 'Conçu pour' : 'Designed for'}</p>
+                <p className="text-xs tracking-[.25em] uppercase mb-3" style={{ color: '#75664C' }}>{fr ? 'Conçu pour' : 'Designed for'}</p>
                 <p className="leading-relaxed mb-8" style={{ color: '#555' }}>{fit}</p>
                 <ul className="grid sm:grid-cols-2 gap-4 mb-9">
-                  {includes.map((item) => <li key={item} className="flex gap-3 text-sm leading-relaxed" style={{ color: '#333' }}><Check className="w-4 h-4 mt-1 shrink-0" style={{ color: '#887759' }} />{item}</li>)}
+                  {includes.map((item) => <li key={item} className="flex gap-3 text-sm leading-relaxed" style={{ color: '#333' }}><Check className="w-4 h-4 mt-1 shrink-0" style={{ color: '#75664C' }} />{item}</li>)}
                 </ul>
                 <Link to="/start-a-project" className="inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold" style={{ backgroundColor: '#2D1011', color: '#FFFFFF' }}>{fr ? 'Parler de votre projet' : 'Talk about your project'} <ArrowRight className="w-4 h-4" /></Link>
               </div>
@@ -154,7 +165,7 @@ export function ServicesPage() {
 
       <section className="py-24">
         <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
-          <HeartHandshake className="w-7 h-7 mx-auto mb-6" style={{ color: '#887759' }} />
+          <HeartHandshake className="w-7 h-7 mx-auto mb-6" style={{ color: '#75664C' }} />
           <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-6" style={{ color: '#2D1011' }}>{fr ? 'Le prix suit le mandat.' : 'Scope first. Price second.'}</h2>
           <p className="max-w-2xl mx-auto leading-relaxed mb-9" style={{ color: '#555' }}>{fr ? 'Chaque proposition définit le résultat, les responsabilités, les droits d’usage, le calendrier et le budget. Aucun forfait public ne remplace cette conversation.' : 'Every proposal defines the outcome, responsibilities, usage rights, timeline, and budget. A public package cannot replace that conversation.'}</p>
           <Link to="/start-a-project" className="inline-flex items-center gap-2 rounded-xl px-7 py-4 font-semibold" style={{ backgroundColor: '#7D6D51', color: '#FFFFFF' }}>{fr ? 'Démarrer un projet' : 'Start a project'} <ArrowRight className="w-4 h-4" /></Link>

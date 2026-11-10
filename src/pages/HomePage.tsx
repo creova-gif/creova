@@ -80,9 +80,28 @@ export function HomePage() {
         jsonLd={organizationSchema}
       />
 
-      <section style={{ backgroundColor: '#2D1011' }}>
-        <div className="max-w-[1440px] mx-auto grid lg:grid-cols-[1.08fr_.92fr] min-h-[82vh]">
-          <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.75 }} className="px-6 lg:pl-12 xl:pl-20 lg:pr-12 pt-32 pb-16 lg:py-32 flex flex-col justify-center">
+      <section className="relative min-h-[82vh] flex items-end overflow-hidden" style={{ backgroundColor: '#2D1011' }}>
+        <motion.img
+          src={heroImageLarge}
+          srcSet={`${heroImageSmall} 800w, ${heroImageLarge} 1400w`}
+          sizes="100vw"
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 h-full w-full object-cover"
+          style={{ objectPosition: 'center 42%' }}
+          initial={{ scale: 1.035 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
+          fetchPriority="high"
+          decoding="async"
+          width="1400"
+          height="1050"
+        />
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(90deg, rgba(45,16,17,.97) 0%, rgba(45,16,17,.88) 43%, rgba(45,16,17,.32) 78%, rgba(45,16,17,.16) 100%)' }} />
+        <div className="absolute inset-x-0 bottom-0 h-48" style={{ background: 'linear-gradient(transparent, rgba(45,16,17,.9))' }} />
+
+        <div className="relative z-10 max-w-7xl mx-auto w-full px-6 lg:px-8 pt-32 pb-16 lg:pb-20">
+          <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.75 }} className="max-w-4xl">
             <p className="text-xs tracking-[0.34em] uppercase mb-6" style={{ color: '#C6A45A' }}>
               {fr ? 'Studio de narration culturelle · Ontario' : 'Cultural storytelling studio · Ontario'}
             </p>
@@ -108,21 +127,6 @@ export function HomePage() {
               <span className="inline-flex items-center gap-2"><CalendarDays className="w-4 h-4" style={{ color: '#C6A45A' }} />Niagara · Hamilton · GTA</span>
             </div>
           </motion.div>
-          <div className="relative min-h-[420px] lg:min-h-full overflow-hidden" aria-label={fr ? 'Rassemblement communautaire documenté par CREOVA' : 'A community gathering documented by CREOVA'} role="img">
-            <img
-              src={heroImageLarge}
-              srcSet={`${heroImageSmall} 800w, ${heroImageLarge} 1400w`}
-              sizes="(min-width: 1024px) 46vw, 100vw"
-              alt=""
-              aria-hidden="true"
-              className="absolute inset-0 h-full w-full object-cover"
-              style={{ objectPosition: 'center 42%', background: 'radial-gradient(circle at 42% 52%, rgba(198,164,90,.15), transparent 50%)' }}
-              fetchPriority="high"
-              decoding="async"
-              width="1400"
-              height="1050"
-            />
-          </div>
         </div>
       </section>
 
@@ -209,7 +213,7 @@ export function HomePage() {
                 ? 'CREOVA a photographié et documenté la vie étudiante noire et des programmes culturels liés au Black Student Success Centre de l’Université Brock.'
                 : 'CREOVA photographed and documented Black student life and cultural programming connected with Brock University’s Black Student Success Centre.'}
             </p>
-            <p className="leading-relaxed mb-8" style={{ color: '#777' }}>
+            <p className="leading-relaxed mb-8" style={{ color: '#685F5A' }}>
               {fr
                 ? 'Une sélection du travail continue de soutenir les communications sociales, promotionnelles, communautaires et institutionnelles. Aucun résultat ni témoignage non vérifié n’est ajouté.'
                 : 'Selected work continues to support social, promotional, community, and institutional communications. No unverified result or testimonial is added.'}
@@ -275,11 +279,11 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="py-24" style={{ backgroundColor: '#887759' }}>
+      <section className="py-24" style={{ backgroundColor: '#6C5C42' }}>
         <div className="max-w-5xl mx-auto px-6 lg:px-8 text-center">
           <Repeat2 className="w-7 h-7 mx-auto mb-6" style={{ color: '#FFFFFF' }} />
           <h2 className="text-4xl md:text-6xl font-light tracking-tight" style={{ color: '#FFFFFF' }}>{fr ? 'Vous planifiez un moment qui doit compter après la journée?' : 'Planning a moment that needs to matter beyond the day?'}</h2>
-          <p className="mt-5 text-lg" style={{ color: 'rgba(255,255,255,.82)' }}>{fr ? 'Dites-nous ce qui se passe, qui il faut rejoindre et à quoi ressemble la réussite.' : 'Tell us what is happening, who it needs to reach, and what success should look like.'}</p>
+          <p className="mt-5 text-lg" style={{ color: '#FFFFFF' }}>{fr ? 'Dites-nous ce qui se passe, qui il faut rejoindre et à quoi ressemble la réussite.' : 'Tell us what is happening, who it needs to reach, and what success should look like.'}</p>
           <Link to="/start-a-project" className="mt-9 inline-flex items-center gap-2 rounded-xl px-6 py-3.5 text-sm font-semibold" style={{ backgroundColor: '#FFFFFF', color: '#2D1011' }}>{fr ? 'Démarrer un projet' : 'Start a project'} <ArrowRight className="w-4 h-4" /></Link>
         </div>
       </section>

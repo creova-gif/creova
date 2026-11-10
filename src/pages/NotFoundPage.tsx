@@ -3,6 +3,9 @@ import { motion } from 'motion/react';
 import { Home, Mail, ArrowRight } from 'lucide-react';
 import { PageSEO } from '../components/PageSEO';
 import { useLanguage } from '../context/LanguageContext';
+import { EditorialHeroImage } from '../components/EditorialHeroImage';
+import notFoundImageSmall from '../assets/photo-community-celebration-800.webp';
+import notFoundImageLarge from '../assets/photo-community-celebration-1400.webp';
 
 const warmGradient = 'linear-gradient(135deg, #C6A45A 0%, #887759 100%)';
 
@@ -10,12 +13,19 @@ export function NotFoundPage() {
   // Transactional/utility page → vous register.
   const fr = useLanguage().language === 'fr';
   return (
-    <div className="min-h-screen flex items-center justify-center px-6 py-24 overflow-hidden" style={{ backgroundColor: '#2D1011' }}>
+    <div className="relative min-h-screen flex items-center justify-center px-6 py-24 overflow-hidden" style={{ backgroundColor: '#2D1011' }}>
       <PageSEO
         title="Page Not Found"
         description="The page you're looking for doesn't exist or has moved."
         path="/404"
         noIndex
+      />
+      <EditorialHeroImage
+        src={notFoundImageLarge}
+        srcSet={`${notFoundImageSmall} 800w, ${notFoundImageLarge} 1400w`}
+        objectPosition="center 42%"
+        folio="LOST FRAME / 404"
+        deep
       />
       {/* Ambient glow */}
       <div className="absolute inset-0 pointer-events-none" style={{
@@ -68,7 +78,7 @@ export function NotFoundPage() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.35 }}
           className="text-sm font-light leading-relaxed mb-10 max-w-xs"
-          style={{ color: 'rgba(255,255,255,0.35)' }}
+          style={{ color: 'rgba(255,255,255,0.68)' }}
         >
           {fr ? "La page que vous cherchez a été déplacée ou n'a jamais existé. Ramenons-vous en terrain connu." : "The page you're looking for has moved or never existed. Let's get you somewhere real."}
         </motion.p>

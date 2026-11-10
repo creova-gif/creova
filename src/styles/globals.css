@@ -420,3 +420,11 @@ html {
     scroll-behavior: auto !important;
   }
 }
+
+/* The final declaration intentionally wins over component resets from the UI
+   library so every keyboard target keeps the same high-contrast indicator. */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 3px solid #C6A45A !important;
+  outline-offset: 3px !important;
+  box-shadow: 0 0 0 2px #2D1011 !important;
+}

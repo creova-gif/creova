@@ -4,6 +4,9 @@ import { motion } from 'motion/react';
 import { ArrowLeft, FileText, CheckCircle2 } from 'lucide-react';
 import { PageSEO } from '../components/PageSEO';
 import { useLanguage } from '../context/LanguageContext';
+import { EditorialHeroImage } from '../components/EditorialHeroImage';
+import legalImageSmall from '../assets/photo-event-networking-800.webp';
+import legalImageLarge from '../assets/photo-event-networking-1600.webp';
 
 export function TermsOfServicePage() {
   const navigate = useNavigate();
@@ -18,8 +21,15 @@ export function TermsOfServicePage() {
         path="/terms-of-service"
       />
       {/* Hero */}
-      <section className="relative py-16 overflow-hidden" style={{ backgroundColor: '#2D1011' }}>
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="relative flex min-h-[48vh] items-center overflow-hidden py-16" style={{ backgroundColor: '#2D1011' }}>
+        <EditorialHeroImage
+          src={legalImageLarge}
+          srcSet={`${legalImageSmall} 800w, ${legalImageLarge} 1600w`}
+          objectPosition="center 42%"
+          folio="LEGAL / TERMS"
+          deep
+        />
+        <div className="relative z-10 w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <Button
             variant="ghost"
             onClick={() => navigate(-1)}
@@ -63,7 +73,7 @@ export function TermsOfServicePage() {
             {/* Welcome */}
             <div>
               <h2 className="text-2xl mb-4" style={{ color: '#2D1011' }}>{fr ? 'Bienvenue chez CREOVA' : 'Welcome to CREOVA'}</h2>
-              <p style={{ color: '#777777' }}>
+              <p style={{ color: '#685F5A' }}>
                 {fr ? "Merci d'avoir choisi CREOVA. Les présentes conditions d'utilisation (« Conditions ») régissent votre utilisation de notre site web, de nos services, de nos produits et de nos locations d'équipement. En accédant aux services de CREOVA ou en les utilisant, vous acceptez d'être lié par ces Conditions." : 'Thank you for choosing CREOVA. These Terms of Service ("Terms") govern your use of our website, services, products, and equipment rentals. By accessing or using CREOVA\'s services, you agree to be bound by these Terms.'}
               </p>
             </div>
@@ -74,7 +84,7 @@ export function TermsOfServicePage() {
                 <CheckCircle2 className="w-6 h-6" style={{ color: '#C6A45A' }} />
                 <h2 className="text-2xl" style={{ color: '#2D1011' }}>{fr ? '1. Services offerts' : '1. Services Offered'}</h2>
               </div>
-              <div className="space-y-3" style={{ color: '#777777' }}>
+              <div className="space-y-3" style={{ color: '#685F5A' }}>
                 <p>{fr ? 'CREOVA offre les services suivants :' : 'CREOVA provides the following services:'}</p>
                 <ul className="list-disc pl-6 space-y-2">
                   {(fr ? [
@@ -108,7 +118,7 @@ export function TermsOfServicePage() {
                 <CheckCircle2 className="w-6 h-6" style={{ color: '#C6A45A' }} />
                 <h2 className="text-2xl" style={{ color: '#2D1011' }}>{fr ? '2. Réservation et paiement' : '2. Booking and Payment'}</h2>
               </div>
-              <div className="space-y-3" style={{ color: '#777777' }}>
+              <div className="space-y-3" style={{ color: '#685F5A' }}>
                 <p><strong style={{ color: '#2D1011' }}>{fr ? 'Réservations de services :' : 'Service Bookings:'}</strong></p>
                 <ul className="list-disc pl-6 space-y-2">
                   {(fr ? [
@@ -145,7 +155,7 @@ export function TermsOfServicePage() {
                 <CheckCircle2 className="w-6 h-6" style={{ color: '#C6A45A' }} />
                 <h2 className="text-2xl" style={{ color: '#2D1011' }}>{fr ? "3. Conditions de location d'équipement" : '3. Equipment Rental Terms'}</h2>
               </div>
-              <div className="space-y-3" style={{ color: '#777777' }}>
+              <div className="space-y-3" style={{ color: '#685F5A' }}>
                 <p><strong style={{ color: '#2D1011' }}>{fr ? 'Période de location :' : 'Rental Period:'}</strong> {fr ? "Les locations d'équipement sont fondées sur des périodes de 24 heures (p. ex. ramassage lundi 9 h, retour mardi avant 9 h)." : 'Equipment rentals are based on 24-hour periods (e.g., pickup at 9am Monday, return by 9am Tuesday).'}</p>
 
                 <p><strong style={{ color: '#2D1011' }}>{fr ? 'Dépôt de garantie :' : 'Security Deposit:'}</strong> {fr ? "Un dépôt de garantie remboursable est requis pour toutes les locations d'équipement. Les dépôts sont remis dans les 5 jours ouvrables après le retour de l'équipement en bon état." : 'A refundable security deposit is required for all equipment rentals. Deposits are returned within 5 business days after equipment is returned in good condition.'}</p>
@@ -175,7 +185,7 @@ export function TermsOfServicePage() {
                 <CheckCircle2 className="w-6 h-6" style={{ color: '#C6A45A' }} />
                 <h2 className="text-2xl" style={{ color: '#2D1011' }}>{fr ? "4. Politique d'annulation et de remboursement" : '4. Cancellation and Refund Policy'}</h2>
               </div>
-              <div className="space-y-3" style={{ color: '#777777' }}>
+              <div className="space-y-3" style={{ color: '#685F5A' }}>
                 <p><strong style={{ color: '#2D1011' }}>{fr ? 'Annulations de services :' : 'Service Cancellations:'}</strong></p>
                 <ul className="list-disc pl-6 space-y-2">
                   {(fr ? [
@@ -212,7 +222,7 @@ export function TermsOfServicePage() {
                 <CheckCircle2 className="w-6 h-6" style={{ color: '#C6A45A' }} />
                 <h2 className="text-2xl" style={{ color: '#2D1011' }}>{fr ? '5. Droits de propriété intellectuelle' : '5. Intellectual Property Rights'}</h2>
               </div>
-              <div className="space-y-3" style={{ color: '#777777' }}>
+              <div className="space-y-3" style={{ color: '#685F5A' }}>
                 <p><strong style={{ color: '#2D1011' }}>{fr ? 'Photographie et vidéographie :' : 'Photography and Videography:'}</strong></p>
                 <ul className="list-disc pl-6 space-y-2">
                   {(fr ? [
@@ -238,7 +248,7 @@ export function TermsOfServicePage() {
                 <CheckCircle2 className="w-6 h-6" style={{ color: '#C6A45A' }} />
                 <h2 className="text-2xl" style={{ color: '#2D1011' }}>{fr ? "6. Conduite de l'utilisateur" : '6. User Conduct'}</h2>
               </div>
-              <div className="space-y-3" style={{ color: '#777777' }}>
+              <div className="space-y-3" style={{ color: '#685F5A' }}>
                 <p>{fr ? 'En utilisant les services de CREOVA, vous acceptez de :' : 'By using CREOVA services, you agree to:'}</p>
                 <ul className="list-disc pl-6 space-y-2">
                   {(fr ? [
@@ -266,7 +276,7 @@ export function TermsOfServicePage() {
                 <CheckCircle2 className="w-6 h-6" style={{ color: '#C6A45A' }} />
                 <h2 className="text-2xl" style={{ color: '#2D1011' }}>{fr ? '7. Limitation de responsabilité' : '7. Limitation of Liability'}</h2>
               </div>
-              <div className="space-y-3" style={{ color: '#777777' }}>
+              <div className="space-y-3" style={{ color: '#685F5A' }}>
                 <p>{fr ? "CREOVA n'est pas responsable de :" : 'CREOVA is not liable for:'}</p>
                 <ul className="list-disc pl-6 space-y-2">
                   {(fr ? [
@@ -291,11 +301,11 @@ export function TermsOfServicePage() {
                 <CheckCircle2 className="w-6 h-6" style={{ color: '#C6A45A' }} />
                 <h2 className="text-2xl" style={{ color: '#2D1011' }}>{fr ? '8. Confidentialité et protection des données' : '8. Privacy and Data Protection'}</h2>
               </div>
-              <div className="space-y-3" style={{ color: '#777777' }}>
+              <div className="space-y-3" style={{ color: '#685F5A' }}>
                 <p>{fr ? 'Votre vie privée nous tient à cœur. Veuillez consulter notre ' : 'Your privacy is important to us. Please review our '}<button
                   onClick={() => navigate('/privacy-policy')}
                   className="underline"
-                  style={{ color: '#C6A45A' }}
+                  style={{ color: '#75664C' }}
                 >{fr ? 'politique de confidentialité' : 'Privacy Policy'}</button>{fr ? ' pour des informations détaillées sur la façon dont nous recueillons, utilisons et protégeons vos renseignements personnels.' : ' for detailed information about how we collect, use, and protect your personal information.'}</p>
               </div>
             </div>
@@ -306,7 +316,7 @@ export function TermsOfServicePage() {
                 <CheckCircle2 className="w-6 h-6" style={{ color: '#C6A45A' }} />
                 <h2 className="text-2xl" style={{ color: '#2D1011' }}>{fr ? '9. Modifications des conditions' : '9. Modifications to Terms'}</h2>
               </div>
-              <div className="space-y-3" style={{ color: '#777777' }}>
+              <div className="space-y-3" style={{ color: '#685F5A' }}>
                 <p>{fr ? "CREOVA se réserve le droit de modifier ces Conditions à tout moment. Les modifications prennent effet dès leur publication sur notre site web. Votre utilisation continue de nos services après la publication des modifications constitue une acceptation des Conditions modifiées." : 'CREOVA reserves the right to modify these Terms at any time. Changes will be effective immediately upon posting to our website. Your continued use of our services after changes are posted constitutes acceptance of the modified Terms.'}</p>
               </div>
             </div>
@@ -317,7 +327,7 @@ export function TermsOfServicePage() {
                 <CheckCircle2 className="w-6 h-6" style={{ color: '#C6A45A' }} />
                 <h2 className="text-2xl" style={{ color: '#2D1011' }}>{fr ? '10. Droit applicable' : '10. Governing Law'}</h2>
               </div>
-              <div className="space-y-3" style={{ color: '#777777' }}>
+              <div className="space-y-3" style={{ color: '#685F5A' }}>
                 <p>{fr ? "Les présentes Conditions sont régies par les lois de la province de l'Ontario et les lois fédérales du Canada. Tout litige sera résolu devant les tribunaux de l'Ontario." : 'These Terms are governed by the laws of the Province of Ontario and the federal laws of Canada. Any disputes will be resolved in the courts of Ontario.'}</p>
               </div>
             </div>
@@ -325,10 +335,10 @@ export function TermsOfServicePage() {
             {/* Contact Information */}
             <div className="border-t pt-8" style={{ borderColor: '#E0E0E0' }}>
               <h2 className="text-2xl mb-4" style={{ color: '#2D1011' }}>{fr ? 'Nous joindre' : 'Contact Us'}</h2>
-              <p style={{ color: '#777777' }}>
+              <p style={{ color: '#685F5A' }}>
                 {fr ? "Si vous avez des questions au sujet de ces conditions d'utilisation, veuillez nous joindre :" : 'If you have questions about these Terms of Service, please contact us:'}
               </p>
-              <ul className="mt-3 space-y-2" style={{ color: '#777777' }}>
+              <ul className="mt-3 space-y-2" style={{ color: '#685F5A' }}>
                 <li><strong style={{ color: '#2D1011' }}>{fr ? 'Courriel :' : 'Email:'}</strong> support@creova.one</li>
                 <li><strong style={{ color: '#2D1011' }}>{fr ? 'Lieu :' : 'Location:'}</strong> {fr ? 'Ontario, Canada' : 'Ontario, Canada'}</li>
                 <li><strong style={{ color: '#2D1011' }}>{fr ? 'Site web :' : 'Website:'}</strong> www.creova.one</li>

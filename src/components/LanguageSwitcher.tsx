@@ -30,7 +30,7 @@ export function LanguageSwitcher({ variant = 'desktop' }: LanguageSwitcherProps)
   if (variant === 'mobile') {
     return (
       <div className="flex items-center gap-3">
-        <span className="text-xs tracking-[0.3em] uppercase" style={{ color: '#777777' }}>
+        <span className="text-xs tracking-[0.3em] uppercase" style={{ color: '#625A56' }}>
           {isFR ? 'Langue' : 'Language'}
         </span>
         <div
@@ -53,7 +53,7 @@ export function LanguageSwitcher({ variant = 'desktop' }: LanguageSwitcherProps)
               key={lang}
               onClick={(e) => handleClick(e, lang)}
               className="relative z-10 px-5 py-2 rounded-lg text-sm font-semibold tracking-wider transition-colors duration-200 min-w-[52px] overflow-hidden"
-              style={{ color: language === lang ? '#FFFFFF' : '#777777' }}
+              style={{ color: language === lang ? '#FFFFFF' : '#625A56' }}
             >
               {lang.toUpperCase()}
             </button>
@@ -98,7 +98,7 @@ export function LanguageSwitcher({ variant = 'desktop' }: LanguageSwitcherProps)
             aria-pressed={language === lang}
             aria-label={lang === 'en' ? 'Switch to English' : 'Passer en français'}
             className="relative z-10 overflow-hidden rounded-full flex items-center justify-center px-3.5 py-1.5 text-[11px] font-bold tracking-[0.14em] transition-colors duration-200"
-            style={{ color: language === lang ? '#FFFFFF' : '#777777', minWidth: '44px' }}
+            style={{ color: language === lang ? '#FFFFFF' : '#625A56', minWidth: '44px' }}
           >
             {/* Label with crossfade */}
             <AnimatePresence mode="wait" initial={false}>

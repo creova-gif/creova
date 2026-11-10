@@ -1,5 +1,9 @@
 import { useState } from 'react';
 import { PageSEO } from '../components/PageSEO';
+import { EditorialHeroImage } from '../components/EditorialHeroImage';
+import contactImageSmall from '../assets/photo-event-networking-800.webp';
+import contactImageLarge from '../assets/photo-event-networking-1600.webp';
+import contactDetailImage from '../assets/photo-collage-2-800.webp';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Textarea } from '../components/ui/textarea';
@@ -178,11 +182,20 @@ export function ContactPage() {
       />
       {/* Hero — full-width dark with large email CTA treatment */}
       <section
-        className="relative overflow-hidden"
+        className="relative flex min-h-[72vh] items-end overflow-hidden"
         style={{ backgroundColor: '#2D1011', borderBottom: '1px solid rgba(198,164,90,0.15)' }}
       >
+        <EditorialHeroImage
+          src={contactImageLarge}
+          srcSet={`${contactImageSmall} 800w, ${contactImageLarge} 1600w`}
+          objectPosition="center 42%"
+          secondarySrc={contactDetailImage}
+          secondaryObjectPosition="center"
+          folio="START A PROJECT / 06"
+          deep
+        />
         {/* Top accent stripe */}
-        <div style={{ height: '2px', background: 'linear-gradient(90deg, #C6A45A, #887759, transparent)' }} />
+        <div className="absolute inset-x-0 top-0 z-10" style={{ height: '2px', background: 'linear-gradient(90deg, #C6A45A, #887759, transparent)' }} />
 
         <div className="relative max-w-7xl mx-auto px-6 lg:px-12 py-20 lg:py-28">
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-10">
@@ -241,7 +254,7 @@ export function ContactPage() {
                   <h2 className="text-lg mb-1 tracking-tight" style={{ color: '#FFFFFF' }}>
                     {language === 'fr' ? 'Parlez-nous du projet.' : 'Tell us about the project.'}
                   </h2>
-                  <p className="text-sm mb-4" style={{ color: '#777777' }}>
+                  <p className="text-sm mb-4" style={{ color: '#B8ACA6' }}>
                     {onlineFormAvailable
                       ? language === 'fr'
                         ? 'Nous enregistrons d’abord votre demande, puis nous affichons son identifiant de suivi.'
@@ -260,7 +273,7 @@ export function ContactPage() {
             {/* Divider */}
             <div className="flex items-center gap-4 mb-8">
               <div style={{ flex: 1, height: '1px', backgroundColor: 'rgba(45,16,17,0.1)' }} />
-              <p className="text-xs tracking-widest uppercase" style={{ color: '#777777' }}>{language === 'fr' ? 'Démarrer un projet' : 'Start a project'}</p>
+              <p className="text-xs tracking-widest uppercase" style={{ color: '#685F5A' }}>{language === 'fr' ? 'Démarrer un projet' : 'Start a project'}</p>
               <div style={{ flex: 1, height: '1px', backgroundColor: 'rgba(45,16,17,0.1)' }} />
             </div>
 
@@ -333,7 +346,7 @@ export function ContactPage() {
                 <div>
                   <Label htmlFor="phone">
                     {t('contact.form.label.phone')}
-                    <span className="text-xs ml-1" style={{ color: '#777777' }}>({t('form.optional')})</span>
+                    <span className="text-xs ml-1" style={{ color: '#685F5A' }}>({t('form.optional')})</span>
                   </Label>
                   <Input
                     id="phone"
@@ -386,7 +399,7 @@ export function ContactPage() {
                   <div>
                     <Label htmlFor="budget">
                       {t('contact.form.label.budget')}
-                      <span className="text-xs ml-1" style={{ color: '#777777' }}>({t('form.optional')})</span>
+                      <span className="text-xs ml-1" style={{ color: '#685F5A' }}>({t('form.optional')})</span>
                     </Label>
                     <Input
                       id="budget"
@@ -413,7 +426,7 @@ export function ContactPage() {
                 <div>
                   <Label htmlFor="context">
                     {language === 'fr' ? 'Contexte ou liens utiles' : 'Helpful context or links'}
-                    <span className="text-xs ml-1" style={{ color: '#777777' }}>({t('form.optional')})</span>
+                    <span className="text-xs ml-1" style={{ color: '#685F5A' }}>({t('form.optional')})</span>
                   </Label>
                   <Textarea
                     id="context"
@@ -428,7 +441,7 @@ export function ContactPage() {
                 {onlineFormAvailable && (
                   <div className="border-t pt-6" style={{ borderColor: '#E0E0E0' }}>
                     <h3 className="text-lg mb-2" style={{ color: '#2D1011' }}>{t('contact.form.security')}</h3>
-                    <p className="text-xs mb-4" style={{ color: '#777777' }}>
+                    <p className="text-xs mb-4" style={{ color: '#685F5A' }}>
                       {t('contact.captcha.security')}
                     </p>
                     <Captcha
@@ -506,7 +519,7 @@ export function ContactPage() {
                   <span className="text-base text-left" style={{ color: '#FFFFFF' }}>{item.q}</span>
                 </AccordionTrigger>
                 <AccordionContent>
-                  <p className="leading-relaxed pb-4 text-sm" style={{ color: '#777777' }}>{item.a}</p>
+                  <p className="leading-relaxed pb-4 text-sm" style={{ color: '#B8ACA6' }}>{item.a}</p>
                 </AccordionContent>
               </AccordionItem>
             ))}
@@ -524,7 +537,7 @@ export function ContactPage() {
               </span>
               <div>
                 <p className="text-base font-medium mb-1" style={{ color: '#FFFFFF' }}>{t('home.review.title')}</p>
-                <p className="text-sm" style={{ color: '#8C7B75' }}>{t('home.review.sub')}</p>
+                <p className="text-sm" style={{ color: '#B8ACA6' }}>{t('home.review.sub')}</p>
               </div>
             </div>
             <a

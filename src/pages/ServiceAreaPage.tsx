@@ -6,8 +6,27 @@ import { PageSEO } from '../components/PageSEO';
 import { useLanguage } from '../context/LanguageContext';
 import { useGalleries } from '../hooks/useGalleries';
 import { getServiceArea, SERVICE_AREAS } from '../data/serviceAreas';
+import { EditorialHeroImage } from '../components/EditorialHeroImage';
+import eventsSmall from '../assets/photo-service-events-800.webp';
+import eventsLarge from '../assets/photo-service-events-1600.webp';
+import videoSmall from '../assets/photo-service-videography-800.webp';
+import videoLarge from '../assets/photo-service-videography-1600.webp';
+import brandSmall from '../assets/photo-social-laptop-800.webp';
+import brandLarge from '../assets/photo-social-laptop-1600.webp';
+import communitySmall from '../assets/photo-community-convo-800.webp';
+import communityLarge from '../assets/photo-community-convo-1400.webp';
+import graduationSmall from '../assets/photo-welcome-bash-800.webp';
+import graduationLarge from '../assets/photo-welcome-bash-1600.webp';
 
 const SITE_URL = 'https://www.creova.one';
+
+const SERVICE_HEROES: Record<string, { small: string; large: string; position: string }> = {
+  'event-photography-niagara': { small: eventsSmall, large: eventsLarge, position: 'center 44%' },
+  'videography-niagara': { small: videoSmall, large: videoLarge, position: 'center 45%' },
+  'brand-photography-st-catharines': { small: brandSmall, large: brandLarge, position: 'center 42%' },
+  'bipoc-creative-agency-ontario': { small: communitySmall, large: communityLarge, position: 'center 42%' },
+  'graduation-photography-brock-university': { small: graduationSmall, large: graduationLarge, position: 'center 38%' },
+};
 
 export function ServiceAreaPage({ slug }: { slug: string }) {
   const { language } = useLanguage();
@@ -19,6 +38,7 @@ export function ServiceAreaPage({ slug }: { slug: string }) {
 
   if (!area) return null;
   const copy = fr ? area.fr : area.en;
+  const hero = SERVICE_HEROES[slug] ?? SERVICE_HEROES['event-photography-niagara'];
 
   // Real portfolio, filtered to this service's category.
   const related = area.galleryCategory
@@ -61,11 +81,15 @@ export function ServiceAreaPage({ slug }: { slug: string }) {
       <PageSEO title={copy.title} description={copy.description} path={`/${slug}`} jsonLd={jsonLd} />
 
       {/* Hero */}
-      <section className="relative overflow-hidden" style={{ backgroundColor: '#2D1011' }}>
-        <div className="absolute inset-0 pointer-events-none" style={{
-          background: 'radial-gradient(ellipse 60% 50% at 15% 0%, rgba(198,164,90,0.10) 0%, transparent 55%), radial-gradient(ellipse 50% 50% at 90% 100%, rgba(136,119,89,0.07) 0%, transparent 55%)',
-        }} />
-        <div ref={ref} className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16 lg:pt-32">
+      <section className="relative flex min-h-[68vh] items-end overflow-hidden" style={{ backgroundColor: '#2D1011' }}>
+        <EditorialHeroImage
+          src={hero.large}
+          srcSet={`${hero.small} 800w, ${hero.large} 1600w`}
+          objectPosition={hero.position}
+          folio={`LOCAL SERVICE / ${area.serviceLabel.toUpperCase()}`}
+          deep
+        />
+        <div ref={ref} className="relative z-10 w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16 lg:pt-32 lg:pb-20">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}>
             <div className="flex items-center gap-2.5 mb-6">
               <MapPin className="w-4 h-4" style={{ color: '#C6A45A' }} />
@@ -112,7 +136,7 @@ export function ServiceAreaPage({ slug }: { slug: string }) {
               <h2 className="tracking-tight mb-6" style={{ color: '#FFFFFF', fontFamily: 'var(--font-display)', fontSize: 'clamp(1.6rem, 3.5vw, 2.1rem)' }}>
                 {fr ? 'Enraciné ici' : 'Rooted here'}
               </h2>
-              <p className="text-base leading-relaxed" style={{ color: '#8C7B75' }}>{copy.localContext}</p>
+              <p className="text-base leading-relaxed" style={{ color: '#B8AAA4' }}>{copy.localContext}</p>
             </div>
           </div>
         </div>
@@ -150,7 +174,7 @@ export function ServiceAreaPage({ slug }: { slug: string }) {
             {copy.faqs.map((f, i) => (
               <div key={i} className="py-6" style={{ borderColor: 'rgba(198,164,90,0.12)' }}>
                 <h3 className="text-lg mb-2.5" style={{ color: '#FFFFFF', fontWeight: 500 }}>{f.q}</h3>
-                <p className="leading-relaxed" style={{ color: '#8C7B75' }}>{f.a}</p>
+                <p className="leading-relaxed" style={{ color: '#B8AAA4' }}>{f.a}</p>
               </div>
             ))}
           </div>
@@ -169,7 +193,7 @@ export function ServiceAreaPage({ slug }: { slug: string }) {
           </Link>
 
           <div className="mt-16 pt-10 border-t" style={{ borderColor: 'rgba(198,164,90,0.12)' }}>
-            <p className="text-xs tracking-[0.35em] uppercase mb-5" style={{ color: '#8C7B75' }}>{fr ? 'Explorer aussi' : 'Explore also'}</p>
+            <p className="text-xs tracking-[0.35em] uppercase mb-5" style={{ color: '#B8AAA4' }}>{fr ? 'Explorer aussi' : 'Explore also'}</p>
             <div className="flex flex-wrap justify-center gap-x-6 gap-y-3">
               {others.map((o) => (
                 <Link key={o.slug} to={`/${o.slug}`} className="text-sm tracking-wide transition-colors duration-200 hover:text-[#C6A45A]" style={{ color: '#E0E0E0' }}>

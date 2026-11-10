@@ -7,6 +7,18 @@ import { useLanguage } from '../context/LanguageContext';
 import { absoluteUrl } from '../i18n/locale';
 import { VENTURE_URLS } from '../config';
 import sankofaSymbol from '../assets/sankofa-symbol.webp';
+import aboutHero from '../assets/photo-about-hero.webp';
+import aboutHeroSmall from '../assets/photo-about-hero-900.webp';
+import founderSpeaking from '../assets/founder-speaking-1600.webp';
+import founderSpeakingSmall from '../assets/founder-speaking-800.webp';
+import founderCollaboration from '../assets/founder-collaboration-1600.webp';
+import founderCollaborationSmall from '../assets/founder-collaboration-800.webp';
+import founderCommunity from '../assets/founder-community-1600.webp';
+import founderCommunitySmall from '../assets/founder-community-800.webp';
+import founderStage from '../assets/founder-stage-1600.webp';
+import founderStageSmall from '../assets/founder-stage-800.webp';
+import { EditorialHeroImage } from '../components/EditorialHeroImage';
+import { EditorialPhotoSequence } from '../components/EditorialPhotoSequence';
 
 const SITE_URL = 'https://www.creova.one';
 
@@ -63,11 +75,15 @@ export function AboutPage() {
       />
 
       {/* Hero */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none" style={{
-          background: 'radial-gradient(ellipse 60% 50% at center 42%, rgba(198,164,90,0.10) 0%, transparent 55%)',
-        }} />
-        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-10 lg:pt-32">
+      <section className="relative flex min-h-[72vh] items-end overflow-hidden">
+        <EditorialHeroImage
+          src={aboutHero}
+          srcSet={`${aboutHeroSmall} 900w, ${aboutHero} 2000w`}
+          objectPosition="center 44%"
+          folio="ABOUT CREOVA / 07"
+          deep
+        />
+        <div className="relative z-10 w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16 lg:pt-32 lg:pb-20">
           <span className="text-xs tracking-[0.4em] uppercase" style={{ color: '#C6A45A' }}>{fr ? 'À propos de CREOVA' : 'About CREOVA'}</span>
           <h1 className="tracking-tight mt-5" style={{ color: '#FFFFFF', fontFamily: 'var(--font-display)', fontSize: 'clamp(2.6rem, 7vw, 4.8rem)', lineHeight: 1.02 }}>
             {fr ? 'Un studio conçu pour raconter la culture avec contexte et soin.' : 'A studio built to tell cultural stories with context and care.'}
@@ -85,7 +101,17 @@ export function AboutPage() {
           style={{ backgroundColor: '#0E0E0E', border: '1px solid rgba(198,164,90,0.15)' }}
         >
           <div className="relative overflow-hidden" style={{ aspectRatio: '16/9' }}>
-            <img src="/card-justin-panel.jpg" alt="Justin Mafie, founder of CREOVA, at the Brock LINC Innovation Showcase" className="w-full h-full object-cover" style={{ objectPosition: 'center 28%' }} width="1600" height="1201" />
+            <img
+              src={founderSpeaking}
+              srcSet={`${founderSpeakingSmall} 800w, ${founderSpeaking} 1600w`}
+              sizes="(min-width: 1024px) 896px, 100vw"
+              alt={fr ? 'Justin Mafie, fondateur de CREOVA, prenant la parole lors d’un événement à l’Université Brock' : 'Justin Mafie, founder of CREOVA, speaking at a Brock University event'}
+              className="w-full h-full object-cover"
+              style={{ objectPosition: 'center 36%' }}
+              width="1600"
+              height="1067"
+              decoding="async"
+            />
           </div>
           <div className="px-6 py-4">
             <p className="text-lg" style={{ color: '#FFFFFF', fontFamily: 'var(--font-display)' }}>Justin Mafie</p>
@@ -107,14 +133,47 @@ export function AboutPage() {
             )
           )}
         </div>
-        <p className="mt-10 text-sm tracking-[0.2em] uppercase" style={{ color: '#8C7B75' }}>— Justin Mafie, {fr ? 'Fondateur' : 'Founder'}</p>
+        <p className="mt-10 text-sm tracking-[0.2em] uppercase" style={{ color: '#B8AAA4' }}>— Justin Mafie, {fr ? 'Fondateur' : 'Founder'}</p>
       </article>
+
+      <EditorialPhotoSequence
+        id="founder-in-practice"
+        eyebrow={fr ? 'Le fondateur en pratique' : 'The founder in practice'}
+        title={fr ? 'Les histoires prennent forme dans la relation.' : 'Stories take shape through relationship.'}
+        description={fr
+          ? 'Des conversations informelles aux moments publics, le travail de CREOVA commence par l’écoute, la présence et une compréhension claire du contexte.'
+          : 'From informal conversations to public moments, CREOVA’s work begins with listening, presence, and a clear understanding of context.'}
+        dark
+        photos={[
+          {
+            src: founderCollaboration,
+            srcSet: `${founderCollaborationSmall} 800w, ${founderCollaboration} 1600w`,
+            alt: fr ? 'Justin Mafie partageant un moment spontané avec un collaborateur' : 'Justin Mafie sharing a candid moment with a collaborator',
+            label: fr ? 'Relation' : 'Relationship',
+            objectPosition: 'center 38%',
+          },
+          {
+            src: founderCommunity,
+            srcSet: `${founderCommunitySmall} 800w, ${founderCommunity} 1600w`,
+            alt: fr ? 'Justin Mafie avec des participants à un événement communautaire de l’Université Brock' : 'Justin Mafie with participants at a Brock University community event',
+            label: fr ? 'Communauté' : 'Community',
+            objectPosition: 'center 42%',
+          },
+          {
+            src: founderStage,
+            srcSet: `${founderStageSmall} 800w, ${founderStage} 1600w`,
+            alt: fr ? 'Des organisateurs s’adressant au public lors d’un événement à l’Université Brock' : 'Event organizers addressing an audience at Brock University',
+            label: fr ? 'Présence' : 'Presence',
+            objectPosition: 'center 44%',
+          },
+        ]}
+      />
 
       {/* Sankofa — the symbol is presented as a quiet, layered visual rather
           than a separate white image tile. */}
       <section id="philosophy" className="relative scroll-mt-24 py-16 lg:py-24 overflow-hidden" style={{ backgroundColor: '#0E0E0E' }}>
         <div className="absolute inset-0 pointer-events-none" style={{
-          background: 'radial-gradient(ellipse 50% 60% at center 42%, rgba(198,164,90,0.08) 0%, transparent 55%)',
+          background: 'radial-gradient(ellipse 50% 60% at 85% 20%, rgba(198,164,90,0.08) 0%, transparent 55%)',
         }} />
         <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-[.85fr_1.3fr] gap-10 lg:gap-16 items-start">

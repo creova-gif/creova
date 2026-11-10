@@ -1,6 +1,7 @@
 import { useState, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { PageSEO } from '../components/PageSEO';
+import { EditorialHeroImage } from '../components/EditorialHeroImage';
 import { ExternalLink, ArrowRight, Lock, Search, X } from 'lucide-react';
 import { Link } from '../i18n/LocaleLink';
 import { useLanguage } from '../context/LanguageContext';
@@ -174,9 +175,16 @@ export function WorkPage() {
       />
 
       {/* ── EDITORIAL HERO ── */}
-      <section className="overflow-hidden" style={{ backgroundColor: '#2D1011' }}>
-        <div className="max-w-[1440px] mx-auto grid lg:grid-cols-[1.08fr_.92fr] min-h-[78vh]">
-          <div className="px-6 lg:pl-12 xl:pl-20 lg:pr-12 pt-28 pb-16 lg:py-28 flex flex-col justify-center">
+      <section className="relative flex min-h-[78vh] items-end overflow-hidden" style={{ backgroundColor: '#2D1011' }}>
+        <EditorialHeroImage
+          src={sorted[0].image}
+          objectPosition={sorted[0].objectPosition}
+          secondarySrc={sorted[1]?.image}
+          secondaryObjectPosition={sorted[1]?.objectPosition}
+          folio="SELECTED WORK / 05"
+        />
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-8 pt-28 pb-16 lg:py-28">
+          <div className="max-w-5xl">
             <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
               <div className="flex items-center gap-3 mb-7">
                 <span className="block h-px w-8" style={{ backgroundColor: '#C6A45A' }} />
@@ -201,18 +209,6 @@ export function WorkPage() {
                 ))}
               </div>
             </motion.div>
-          </div>
-          <div className="relative min-h-[420px] lg:min-h-full overflow-hidden" role="img" aria-label={fr ? 'Aperçu de la galerie publique CREOVA' : 'Preview from the CREOVA public gallery'}>
-            <img
-              src={sorted[0].image}
-              alt=""
-              aria-hidden="true"
-              fetchPriority="high"
-              className="absolute inset-0 w-full h-full object-cover"
-              style={{ objectPosition: sorted[0].objectPosition }}
-              width="1600"
-              height="1200"
-            />
           </div>
         </div>
       </section>
@@ -294,17 +290,17 @@ export function WorkPage() {
                   onClick={() => setActiveTab(tab.id)}
                   className="flex items-center gap-2 px-4 py-2 rounded-full whitespace-nowrap transition-all duration-300 flex-shrink-0 text-xs tracking-wide"
                   style={{
-                    backgroundColor: activeTab === tab.id ? 'rgba(198,164,90,0.18)' : 'transparent',
-                    color: activeTab === tab.id ? '#C6A45A' : 'rgba(255,255,255,0.3)',
-                    border: activeTab === tab.id ? '1px solid rgba(198,164,90,0.45)' : '1px solid transparent',
+                    backgroundColor: activeTab === tab.id ? '#6B5033' : 'transparent',
+                    color: activeTab === tab.id ? '#FFFFFF' : '#C9BFBA',
+                    border: activeTab === tab.id ? '1px solid #C6A45A' : '1px solid transparent',
                   }}
                 >
                   {tab.label}
                   <span
                     className="text-[9px] px-1.5 min-w-[18px] h-[18px] rounded-full flex items-center justify-center"
                     style={{
-                      backgroundColor: activeTab === tab.id ? 'rgba(198,164,90,0.35)' : 'rgba(255,255,255,0.06)',
-                      color: activeTab === tab.id ? '#C6A45A' : 'rgba(255,255,255,0.25)',
+                      backgroundColor: activeTab === tab.id ? '#2D1011' : '#4A3031',
+                      color: activeTab === tab.id ? '#F2D98C' : '#D8CECA',
                     }}
                   >
                     {tab.count}

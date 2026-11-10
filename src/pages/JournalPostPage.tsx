@@ -4,6 +4,7 @@ import { PageSEO } from '../components/PageSEO';
 import { useLanguage } from '../context/LanguageContext';
 import { getPost, JOURNAL } from '../data/journal';
 import { absoluteUrl } from '../i18n/locale';
+import { EditorialHeroImage } from '../components/EditorialHeroImage';
 
 const SITE_URL = 'https://www.creova.one';
 
@@ -43,17 +44,20 @@ export function JournalPostPage({ slug }: { slug: string }) {
 
       <article>
         {/* Header */}
-        <header className="relative overflow-hidden">
-          <div className="absolute inset-0 pointer-events-none" style={{
-            background: 'radial-gradient(ellipse 55% 50% at 25% 0%, rgba(198,164,90,0.10) 0%, transparent 55%)',
-          }} />
-          <div className="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-10 lg:pt-28">
-            <Link to="/journal" className="inline-flex items-center gap-2 text-xs tracking-[0.2em] uppercase mb-8 transition-colors hover:text-[#C6A45A]" style={{ color: '#8C7B75' }}>
+        <header className="relative flex min-h-[62vh] items-end overflow-hidden">
+          <EditorialHeroImage
+            src={post.cover}
+            objectPosition="center 35%"
+            folio={`JOURNAL / ${post.category.toUpperCase()}`}
+            deep
+          />
+          <div className="relative z-10 w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-14 lg:pt-28 lg:pb-20">
+            <Link to="/journal" className="inline-flex items-center gap-2 text-xs tracking-[0.2em] uppercase mb-8 transition-colors hover:text-[#C6A45A]" style={{ color: '#B8AAA4' }}>
               <ArrowLeft className="w-3.5 h-3.5" /> {fr ? 'Le Journal' : 'The Journal'}
             </Link>
             <div className="flex items-center gap-3 mb-5">
               <span className="text-[10px] tracking-[0.25em] uppercase px-2.5 py-1 rounded-full" style={{ color: '#C6A45A', backgroundColor: 'rgba(198,164,90,0.12)' }}>{post.category}</span>
-              <span className="text-xs" style={{ color: '#777777' }}>{fmt(post.date, fr)} · {post.readMins} {fr ? 'min de lecture' : 'min read'}</span>
+              <span className="text-xs" style={{ color: '#B8ACA6' }}>{fmt(post.date, fr)} · {post.readMins} {fr ? 'min de lecture' : 'min read'}</span>
             </div>
             <h1 className="tracking-tight" style={{ color: '#FFFFFF', fontFamily: 'var(--font-display)', fontSize: 'clamp(2.2rem, 5.5vw, 3.8rem)', lineHeight: 1.05 }}>{c.title}</h1>
           </div>
@@ -91,7 +95,7 @@ export function JournalPostPage({ slug }: { slug: string }) {
 
           {/* CTA */}
           <div className="mt-14 pt-10 border-t text-center" style={{ borderColor: 'rgba(198,164,90,0.15)' }}>
-            <p className="mb-6" style={{ color: '#8C7B75' }}>{fr ? 'Un projet en tête ?' : 'Have a project in mind?'}</p>
+            <p className="mb-6" style={{ color: '#B8AAA4' }}>{fr ? 'Un projet en tête ?' : 'Have a project in mind?'}</p>
             <Link to="/start-a-project" className="group inline-flex items-center gap-3 px-7 py-3.5 rounded-xl text-sm font-semibold tracking-wide transition-all duration-300 hover:-translate-y-px hover:shadow-lg" style={{ backgroundColor: '#7D6D51', color: '#FFFFFF' }}>
               {fr ? 'Réserver un appel' : 'Book a call'}
               <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
@@ -103,7 +107,7 @@ export function JournalPostPage({ slug }: { slug: string }) {
         {more.length > 0 && (
           <section className="border-t py-16" style={{ borderColor: 'rgba(255,255,255,0.06)', backgroundColor: '#0E0E0E' }}>
             <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-              <p className="text-xs tracking-[0.35em] uppercase mb-6" style={{ color: '#8C7B75' }}>{fr ? 'À lire ensuite' : 'Read next'}</p>
+              <p className="text-xs tracking-[0.35em] uppercase mb-6" style={{ color: '#B8AAA4' }}>{fr ? 'À lire ensuite' : 'Read next'}</p>
               <div className="grid sm:grid-cols-2 gap-6">
                 {more.map((p) => (
                   <Link key={p.slug} to={`/journal/${p.slug}`} className="group flex items-center gap-4">

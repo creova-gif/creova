@@ -54,16 +54,16 @@ export function Footer() {
         </div>
 
         <div className="py-8 border-y" style={{ borderColor: 'rgba(255,255,255,.08)' }}>
-          <p className="text-[10px] tracking-[.3em] uppercase mb-4" style={{ color: '#777' }}>{fr ? 'Zones de service' : 'Service areas'}</p>
+          <p className="text-[10px] tracking-[.3em] uppercase mb-4" style={{ color: '#B8ACA6' }}>{fr ? 'Zones de service' : 'Service areas'}</p>
           <div className="flex flex-wrap gap-x-6 gap-y-2">
-            {SERVICE_AREAS.map(area => <Link key={area.slug} to={`/${area.slug}`} className="text-xs hover:text-[#C6A45A]" style={{ color: '#777' }}>{(fr ? area.fr : area.en).kicker}</Link>)}
+            {SERVICE_AREAS.map(area => <Link key={area.slug} to={`/${area.slug}`} className="text-xs hover:text-[#E5C978]" style={{ color: '#B8ACA6' }}>{(fr ? area.fr : area.en).kicker}</Link>)}
           </div>
         </div>
 
         <div className="pt-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <Link to="/" aria-label="CREOVA"><Logo variant="white" className="h-8 w-auto" interactive={false} /></Link>
-          <p className="text-xs" style={{ color: '#777' }}>© {new Date().getFullYear()} CREOVA. {fr ? 'Tous droits réservés.' : 'All rights reserved.'}</p>
-          <div className="flex gap-5 text-xs" style={{ color: '#777' }}><Link to="/terms-of-service" className="hover:text-white">{fr ? 'Conditions' : 'Terms'}</Link><Link to="/privacy-policy" className="hover:text-white">{fr ? 'Confidentialité' : 'Privacy'}</Link><Link to="/start-a-project" className="hover:text-white">{fr ? 'Contact' : 'Contact'}</Link></div>
+          <p className="text-xs" style={{ color: '#B8ACA6' }}>© {new Date().getFullYear()} CREOVA. {fr ? 'Tous droits réservés.' : 'All rights reserved.'}</p>
+          <div className="flex gap-5 text-xs" style={{ color: '#B8ACA6' }}><Link to="/terms-of-service" className="hover:text-white">{fr ? 'Conditions' : 'Terms'}</Link><Link to="/privacy-policy" className="hover:text-white">{fr ? 'Confidentialité' : 'Privacy'}</Link><Link to="/start-a-project" className="hover:text-white">{fr ? 'Contact' : 'Contact'}</Link></div>
         </div>
       </div>
     </footer>

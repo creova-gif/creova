@@ -4,6 +4,10 @@ import { PageSEO } from '../components/PageSEO';
 import { getPublishedEvidence } from '../content/publicEvidence';
 import { useLanguage } from '../context/LanguageContext';
 import { VENTURE_URLS } from '../config';
+import { EditorialHeroImage } from '../components/EditorialHeroImage';
+import ventureImageSmall from '../assets/photo-collage-2-800.webp';
+import ventureImageLarge from '../assets/photo-collage-2-1600.webp';
+import ventureDetailImage from '../assets/photo-service-videography-800.webp';
 
 export function VenturesPage() {
   const { language } = useLanguage();
@@ -22,8 +26,16 @@ export function VenturesPage() {
         path="/ventures"
       />
 
-      <section className="relative overflow-hidden px-6 py-24 lg:py-36">
-        <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(circle at 75% 20%, rgba(198,164,90,0.13), transparent 40%)' }} />
+      <section className="relative flex min-h-[78vh] items-end overflow-hidden px-6 py-24 lg:py-36">
+        <EditorialHeroImage
+          src={ventureImageLarge}
+          srcSet={`${ventureImageSmall} 800w, ${ventureImageLarge} 1600w`}
+          objectPosition="center 48%"
+          secondarySrc={ventureDetailImage}
+          secondaryObjectPosition="center"
+          folio="BUILT BY CREOVA / 03"
+          deep
+        />
         <div className="relative max-w-6xl mx-auto">
           <p className="text-xs tracking-[0.45em] uppercase mb-6" style={{ color: '#C6A45A' }}>
             {fr ? 'Construit par CREOVA' : 'Built by CREOVA'}
@@ -77,7 +89,7 @@ export function VenturesPage() {
                     <ArrowRight className="w-4 h-4" />
                   </a>
                 ) : (
-                  <div className="inline-flex items-center gap-2 text-sm" style={{ color: '#777' }}>
+                  <div className="inline-flex items-center gap-2 text-sm" style={{ color: isSeen ? '#685F5A' : '#B8ACA6' }}>
                     <Sparkles className="w-4 h-4" />
                     {isSeen
                       ? (fr ? 'Le site dédié sera ajouté lorsqu’il sera prêt' : 'The dedicated website will be linked when ready')
