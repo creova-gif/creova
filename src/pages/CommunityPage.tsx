@@ -1,9 +1,10 @@
 import { ArrowRight, BriefcaseBusiness, HandHeart, ShieldCheck, Sparkles, Users } from 'lucide-react';
+import { motion } from 'motion/react';
 import { Link } from '../i18n/LocaleLink';
 import { PageSEO } from '../components/PageSEO';
 import { useLanguage } from '../context/LanguageContext';
-import communityImageSmall from '../assets/community-founder-stage-800.webp';
-import communityImageLarge from '../assets/community-founder-stage-1600.webp';
+import communityImageSmall from '../assets/photo-community-convo-800.webp';
+import communityImageLarge from '../assets/photo-community-convo-1400.webp';
 
 export function CommunityPage() {
   const { language } = useLanguage();
@@ -39,21 +40,49 @@ export function CommunityPage() {
         path="/community"
       />
 
-      <section className="relative min-h-[76vh] overflow-hidden lg:min-h-[calc(100svh-6rem)]" style={{ backgroundColor: '#2D1011' }} aria-label={fr ? 'Portrait de la communauté CREOVA' : 'CREOVA community portrait'}>
-        <picture>
-          <source media="(max-width: 799px)" srcSet={communityImageSmall} />
-          <img
-            src={communityImageLarge}
-            alt=""
-            aria-hidden="true"
-            className="absolute inset-0 h-full w-full object-cover"
-            style={{ objectPosition: 'center 42%' }}
-            width="1600"
-            height="1067"
-            decoding="async"
-            fetchPriority="high"
-          />
-        </picture>
+      <section className="relative min-h-[calc(100svh-4rem)] overflow-hidden lg:min-h-[calc(100svh-6rem)]" style={{ backgroundColor: '#2D1011' }} aria-label={fr ? 'Portrait de la communauté CREOVA' : 'CREOVA community portrait'}>
+        <motion.img
+          src={communityImageLarge}
+          srcSet={`${communityImageSmall} 800w, ${communityImageLarge} 1400w`}
+          sizes="100vw"
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 h-full w-full object-cover"
+          style={{ objectPosition: 'center 42%' }}
+          initial={{ scale: 1.035 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
+          fetchPriority="high"
+          decoding="async"
+          width="1600"
+          height="1067"
+        />
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(90deg, rgba(45,16,17,.94) 0%, rgba(45,16,17,.82) 39%, rgba(45,16,17,.26) 72%, rgba(45,16,17,.08) 100%)' }} />
+        <div className="absolute inset-x-0 bottom-0 h-48" style={{ background: 'linear-gradient(transparent, rgba(45,16,17,.9))' }} />
+
+        <div className="relative z-10 max-w-7xl mx-auto w-full px-6 lg:px-8 pt-32 pb-16 lg:pb-20">
+          <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.75 }} className="max-w-3xl">
+            <p className="text-xs tracking-[0.34em] uppercase mb-6" style={{ color: '#C6A45A' }}>
+              {fr ? 'Choisissez votre voie' : 'Choose your route'}
+            </p>
+            <h1 className="creova-hero-title font-light tracking-tight" style={{ color: '#FFFFFF' }}>
+              {fr ? 'Trois relations. Trois prochaines étapes.' : 'Three relationships. Three next steps.'}
+            </h1>
+            <p className="mt-7 max-w-2xl text-base md:text-lg leading-relaxed" style={{ color: '#E0E0E0' }}>
+              {fr
+                ? 'Présentez le contexte, les personnes concernées, le résultat recherché, le calendrier et ce que chaque partie apporte.'
+                : 'Share the context, who is involved, the intended outcome, timing, and what each party brings.'}
+            </p>
+            <div className="mt-9 flex flex-wrap gap-4">
+              <a href="mailto:support@creova.one?subject=Community proposal" className="inline-flex items-center gap-2 rounded-xl px-7 py-4 font-semibold transition-transform hover:-translate-y-0.5" style={{ backgroundColor: '#7D6D51', color: '#FFFFFF' }}>
+                {fr ? 'Écrire à CREOVA' : 'Email CREOVA'} <ArrowRight className="w-4 h-4" />
+              </a>
+              <Link to="/start-a-project" className="inline-flex items-center gap-2 rounded-xl px-6 py-3.5 text-sm font-semibold border transition-colors" style={{ borderColor: 'rgba(255,255,255,.45)', color: '#FFFFFF', backgroundColor: 'rgba(45,16,17,.25)' }}>
+                {fr ? 'Start a project' : 'Start a project'} <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+          </motion.div>
+        </div>
       </section>
 
       <section className="py-20 lg:py-28">
