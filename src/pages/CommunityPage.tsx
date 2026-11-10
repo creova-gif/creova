@@ -1,12 +1,9 @@
 import { ArrowRight, BriefcaseBusiness, HandHeart, ShieldCheck, Sparkles, Users } from 'lucide-react';
-import { motion } from 'motion/react';
 import { Link } from '../i18n/LocaleLink';
 import { PageSEO } from '../components/PageSEO';
 import { useLanguage } from '../context/LanguageContext';
 import communityImageSmall from '../assets/community-founder-stage-800.webp';
 import communityImageLarge from '../assets/community-founder-stage-1600.webp';
-import communityDetailImage from '../assets/photo-welcome-bash-800.webp';
-import { EditorialHeroImage } from '../components/EditorialHeroImage';
 
 export function CommunityPage() {
   const { language } = useLanguage();
@@ -42,27 +39,26 @@ export function CommunityPage() {
         path="/community"
       />
 
-      <section className="relative flex min-h-[76vh] items-end overflow-hidden" style={{ backgroundColor: '#2D1011' }}>
-        <EditorialHeroImage
-          src={communityImageLarge}
-          srcSet={`${communityImageSmall} 800w, ${communityImageLarge} 1600w`}
-          objectPosition="center 42%"
-          secondarySrc={communityDetailImage}
-          secondaryObjectPosition="center 35%"
-          folio="COMMUNITY / 04"
-        />
-        <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-8 pt-28 pb-16 lg:py-28">
-          <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .7 }} className="max-w-5xl">
-            <p className="text-xs tracking-[.35em] uppercase mb-6" style={{ color: '#C6A45A' }}>{fr ? 'Communauté' : 'Community'}</p>
-            <h1 className="font-light tracking-tight leading-[.98]" style={{ color: '#FFFFFF', fontSize: 'clamp(3.1rem, 7vw, 6.5rem)' }}>{fr ? 'Mandater, collaborer ou soutenir — avec des rôles clairs dès le départ.' : 'Commission, collaborate, or partner—with clear roles from the start.'}</h1>
-            <p className="max-w-3xl mt-7 text-lg md:text-xl leading-relaxed" style={{ color: '#E0E0E0' }}>{fr ? 'Choisissez la relation qui correspond à votre objectif. Nous clarifions le rôle de chacun, la valeur échangée et le résultat avant de commencer.' : 'Choose the relationship that matches your goal. We clarify roles, value exchange, and the intended outcome before work begins.'}</p>
-          </motion.div>
-        </div>
+      <section className="relative min-h-[76vh] overflow-hidden lg:min-h-[calc(100svh-6rem)]" style={{ backgroundColor: '#2D1011' }} aria-label={fr ? 'Portrait de la communauté CREOVA' : 'CREOVA community portrait'}>
+        <picture>
+          <source media="(max-width: 799px)" srcSet={communityImageSmall} />
+          <img
+            src={communityImageLarge}
+            alt=""
+            aria-hidden="true"
+            className="absolute inset-0 h-full w-full object-cover"
+            style={{ objectPosition: 'center 42%' }}
+            width="1600"
+            height="1067"
+            decoding="async"
+            fetchPriority="high"
+          />
+        </picture>
       </section>
 
       <section className="py-20 lg:py-28">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="max-w-3xl mb-12"><p className="text-xs tracking-[.35em] uppercase mb-4" style={{ color: '#7D6D51' }}>{fr ? 'Choisissez votre voie' : 'Choose your route'}</p><h2 className="text-4xl md:text-6xl font-light tracking-tight" style={{ color: '#2D1011' }}>{fr ? 'Trois relations. Trois prochaines étapes.' : 'Three relationships. Three next steps.'}</h2></div>
+          <div className="max-w-3xl mb-12"><p className="text-xs tracking-[.35em] uppercase mb-4" style={{ color: '#7D6D51' }}>{fr ? 'Choisissez votre voie' : 'Choose your route'}</p><h1 className="text-4xl md:text-6xl font-light tracking-tight" style={{ color: '#2D1011' }}>{fr ? 'Trois relations. Trois prochaines étapes.' : 'Three relationships. Three next steps.'}</h1></div>
           <div className="grid lg:grid-cols-3 gap-6">
             {routes.map(({ id, icon: Icon, title, text, cta, to }) => (
               <article id={id} key={id} className="scroll-mt-36 rounded-3xl p-7 md:p-9 flex flex-col min-h-[390px]" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E0E0E0' }}>

@@ -132,7 +132,7 @@ export const JOURNAL: JournalPost[] = [
     date: '2026-06-18',
     category: 'Guides',
     readMins: 5,
-    cover: '/photo-monique-stock.jpg',
+    cover: '/journal-brand-photoshoot.webp',
     en: {
       title: 'How to Prepare for a Brand Photoshoot',
       excerpt: 'The work that happens before the camera comes out is what makes a shoot feel effortless. Here is the prep that separates a good gallery from a great one.',

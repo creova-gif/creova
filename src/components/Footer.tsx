@@ -18,7 +18,7 @@ export function Footer() {
   return (
     <footer style={{ backgroundColor: '#2D1011', color: '#E0E0E0' }}>
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-20 lg:py-28">
-        <div className="grid lg:grid-cols-[1.25fr_.75fr] gap-14 lg:gap-24 pb-16 border-b" style={{ borderColor: 'rgba(255,255,255,.1)' }}>
+        <div className="grid lg:grid-cols-[1.18fr_.82fr] gap-14 lg:gap-20 pb-16 border-b" style={{ borderColor: 'rgba(255,255,255,.1)' }}>
           <div>
             <p className="text-xs tracking-[.35em] uppercase mb-5" style={{ color: '#C6A45A' }}>{fr ? 'Un récit utile commence ici' : 'A useful story starts here'}</p>
             <h2 className="max-w-4xl font-light tracking-tight leading-[1.02]" style={{ color: '#FFFFFF', fontSize: 'clamp(2.8rem, 6vw, 6rem)' }}>{fr ? 'Transformons votre prochain moment en élan durable.' : 'Turn your next meaningful moment into lasting momentum.'}</h2>
@@ -27,9 +27,48 @@ export function Footer() {
               <a href="mailto:support@creova.one" className="inline-flex items-center gap-2 rounded-xl px-6 py-3.5 border" style={{ borderColor: 'rgba(255,255,255,.3)', color: '#FFFFFF' }}><Mail className="w-4 h-4" />support@creova.one</a>
             </div>
           </div>
-          <div className="flex flex-col justify-end gap-4 text-sm" style={{ color: '#B7BBC3' }}>
-            <p className="flex items-center gap-3"><MapPin className="w-4 h-4" style={{ color: '#C6A45A' }} />{fr ? 'Ontario · Niagara, Hamilton et projets sélectionnés dans le GTA' : 'Ontario · Niagara, Hamilton, and select GTA projects'}</p>
-            <p>{fr ? 'Collaboration en anglais et en français.' : 'English and French collaboration.'}</p>
+          <div className="relative flex flex-col justify-end gap-7 lg:pt-12">
+            <div
+              className="pointer-events-none absolute -right-16 top-0 h-52 w-52 rounded-full border opacity-40"
+              style={{ borderColor: 'rgba(198,164,90,.34)' }}
+              aria-hidden="true"
+            >
+              <div className="absolute inset-7 rounded-full border" style={{ borderColor: 'rgba(198,164,90,.25)' }} />
+              <div className="absolute inset-16 rounded-full" style={{ backgroundColor: 'rgba(198,164,90,.14)' }} />
+            </div>
+
+            <div className="relative overflow-hidden rounded-[1.75rem] border p-6 sm:p-8" style={{ borderColor: 'rgba(198,164,90,.24)', backgroundColor: 'rgba(255,255,255,.035)' }}>
+              <div className="absolute right-5 top-3 select-none font-light leading-none" style={{ color: 'rgba(198,164,90,.1)', fontSize: '6.5rem' }} aria-hidden="true">03</div>
+              <p className="relative text-[10px] uppercase tracking-[.32em]" style={{ color: '#C6A45A' }}>{fr ? 'Du moment à l’élan' : 'From moment to momentum'}</p>
+              <ol className="relative mt-7">
+                {(
+                  fr
+                    ? [
+                        ['01', 'Contexte', 'Comprendre les personnes, le lieu et l’intention.'],
+                        ['02', 'Création', 'Façonner des images et un récit qui sonnent juste.'],
+                        ['03', 'Continuité', 'Créer des ressources qui continuent de servir.'],
+                      ]
+                    : [
+                        ['01', 'Context', 'Understand the people, place, and purpose.'],
+                        ['02', 'Create', 'Shape images and a story that feel true.'],
+                        ['03', 'Continue', 'Build assets designed to keep working.'],
+                      ]
+                ).map(([number, title, description]) => (
+                  <li key={number} className="grid grid-cols-[2.25rem_1fr] gap-3 border-t py-4 last:pb-0" style={{ borderColor: 'rgba(255,255,255,.12)' }}>
+                    <span className="pt-1 text-[10px] tracking-[.2em]" style={{ color: '#C6A45A' }}>{number}</span>
+                    <span>
+                      <strong className="block font-medium" style={{ color: '#FFFFFF' }}>{title}</strong>
+                      <span className="mt-1 block text-sm leading-relaxed" style={{ color: '#B7BBC3' }}>{description}</span>
+                    </span>
+                  </li>
+                ))}
+              </ol>
+            </div>
+
+            <div className="relative flex flex-col gap-4 text-sm" style={{ color: '#B7BBC3' }}>
+              <p className="flex items-start gap-3"><MapPin className="mt-0.5 h-4 w-4 shrink-0" style={{ color: '#C6A45A' }} />{fr ? 'Ontario · Niagara, Hamilton et projets sélectionnés dans le GTA' : 'Ontario · Niagara, Hamilton, and select GTA projects'}</p>
+              <p>{fr ? 'Collaboration en anglais et en français.' : 'English and French collaboration.'}</p>
+            </div>
           </div>
         </div>
 
