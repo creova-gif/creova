@@ -17,6 +17,10 @@ import founderCommunity from '../assets/founder-community-1600.webp';
 import founderCommunitySmall from '../assets/founder-community-800.webp';
 import founderStage from '../assets/founder-stage-1600.webp';
 import founderStageSmall from '../assets/founder-stage-800.webp';
+import founderWorkshopCandid from '../assets/founder-workshop-candid-1600.webp';
+import founderWorkshopCandidSmall from '../assets/founder-workshop-candid-800.webp';
+import founderWorkshopPresenting from '../assets/founder-workshop-presenting-1600.webp';
+import founderWorkshopPresentingSmall from '../assets/founder-workshop-presenting-800.webp';
 import { EditorialHeroImage } from '../components/EditorialHeroImage';
 import { EditorialPhotoSequence } from '../components/EditorialPhotoSequence';
 
@@ -25,10 +29,10 @@ const SITE_URL = 'https://www.creova.one';
 // Founder's own words, sharpened with CREOVA's own problem-framing language
 // (from the pitch deck: "the representation & visibility gap for BIPOC
 // creatives") and its tagline ("Creative Stories, Digital Impact"). The
-// personal anecdote is untouched — only the articulation of the problem and
-// mission is enriched. Edit here; the pull-quote is index PULL of the array.
+// The opening anchors the story in Niagara; the remaining problem and mission
+// framing comes from CREOVA's own language. The pull-quote is index PULL.
 const STORY_EN = [
-  'One of the moments that inspired me to build CREOVA came from simply exploring my city.',
+  'One of the moments that inspired me to build CREOVA came from exploring the Niagara community.',
   'I visited restaurants, cafés, and local businesses that served incredible food and offered amazing experiences. The quality was there — but the visual storytelling wasn’t. Their social media was inconsistent, their photography didn’t reflect the experience, and many had little to no digital presence at all.',
   'It wasn’t because they lacked passion. Many simply couldn’t afford professional creative services, or didn’t have the tools to compete in a digital-first world where visual storytelling is what gets a business seen.',
   'I realized there was a gap — not in talent or quality, but in representation and visibility.',
@@ -37,7 +41,7 @@ const STORY_EN = [
   'I wanted to build a company rooted in visual storytelling and digital impact — one that helps businesses, creators, and communities tell their stories through world-class design, media, and technology, making high-quality creative work accessible not just to those with the biggest budgets, but to everyone with a story worth telling.',
 ];
 const STORY_FR = [
-  'L’un des moments qui m’ont inspiré à bâtir CREOVA est venu simplement en explorant ma ville.',
+  'L’un des moments qui m’ont inspiré à bâtir CREOVA est venu en explorant la communauté de Niagara.',
   'J’ai visité des restaurants, des cafés et des commerces locaux qui servaient une nourriture incroyable et offraient des expériences remarquables. La qualité était là — mais pas la narration visuelle. Leurs réseaux sociaux étaient irréguliers, leur photographie ne reflétait pas l’expérience, et beaucoup n’avaient presque aucune présence numérique.',
   'Ce n’était pas par manque de passion. Beaucoup n’avaient tout simplement pas les moyens de s’offrir des services créatifs professionnels, ou n’avaient pas les outils pour rivaliser dans un monde d’abord numérique où la narration visuelle fait toute la différence.',
   'J’ai compris qu’il y avait un fossé — non pas de talent ou de qualité, mais de représentation et de visibilité.',
@@ -123,15 +127,59 @@ export function AboutPage() {
       {/* Story */}
       <article className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-14 lg:py-20">
         <div className="space-y-6">
-          {story.map((para, i) =>
-            i === PULL ? (
-              <blockquote key={i} className="py-3 my-2 pl-6" style={{ borderLeft: '2px solid #887759' }}>
-                <p className="italic" style={{ color: '#FFFFFF', fontFamily: 'var(--font-display)', fontSize: 'clamp(1.5rem, 3.4vw, 2.1rem)', lineHeight: 1.28 }}>{para}</p>
-              </blockquote>
-            ) : (
-              <p key={i} className="leading-relaxed" style={{ color: '#E0E0E0', fontSize: '1.1rem' }}>{para}</p>
-            )
-          )}
+          {story.map((para, i) => (
+            <div key={i}>
+              {i === PULL ? (
+                <blockquote className="py-3 my-2 pl-6" style={{ borderLeft: '2px solid #887759' }}>
+                  <p className="italic" style={{ color: '#FFFFFF', fontFamily: 'var(--font-display)', fontSize: 'clamp(1.5rem, 3.4vw, 2.1rem)', lineHeight: 1.28 }}>{para}</p>
+                </blockquote>
+              ) : (
+                <p className="leading-relaxed" style={{ color: '#E0E0E0', fontSize: '1.1rem' }}>{para}</p>
+              )}
+
+              {i === 1 && (
+                <div className="-mx-2 my-10 grid gap-4 sm:-mx-12 sm:grid-cols-[0.92fr_1.08fr] lg:-mx-28">
+                  <figure className="relative min-h-[300px] overflow-hidden rounded-2xl sm:min-h-[430px]">
+                    <img
+                      src={founderWorkshopCandid}
+                      srcSet={`${founderWorkshopCandidSmall} 800w, ${founderWorkshopCandid} 1600w`}
+                      sizes="(min-width: 1024px) 390px, (min-width: 640px) 44vw, 100vw"
+                      alt={fr ? 'Justin Mafie échangeant avec des participants pendant un atelier entrepreneurial' : 'Justin Mafie listening to participants during an entrepreneurship workshop'}
+                      loading="lazy"
+                      decoding="async"
+                      className="absolute inset-0 h-full w-full object-cover"
+                      style={{ objectPosition: 'center 42%' }}
+                      width="1600"
+                      height="1067"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#2D1011]/80 via-transparent to-transparent" />
+                    <figcaption className="absolute inset-x-0 bottom-0 p-5 text-xs uppercase tracking-[0.22em] text-white">
+                      {fr ? 'Écouter avant de créer' : 'Listen before creating'}
+                    </figcaption>
+                  </figure>
+
+                  <figure className="relative min-h-[300px] overflow-hidden rounded-2xl sm:min-h-[430px] sm:translate-y-10">
+                    <img
+                      src={founderWorkshopPresenting}
+                      srcSet={`${founderWorkshopPresentingSmall} 800w, ${founderWorkshopPresenting} 1600w`}
+                      sizes="(min-width: 1024px) 455px, (min-width: 640px) 52vw, 100vw"
+                      alt={fr ? 'Justin Mafie présentant une idée à un groupe pendant un atelier entrepreneurial' : 'Justin Mafie presenting an idea to a group during an entrepreneurship workshop'}
+                      loading="lazy"
+                      decoding="async"
+                      className="absolute inset-0 h-full w-full object-cover"
+                      style={{ objectPosition: 'center 44%' }}
+                      width="1600"
+                      height="1067"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#2D1011]/80 via-transparent to-transparent" />
+                    <figcaption className="absolute inset-x-0 bottom-0 p-5 text-xs uppercase tracking-[0.22em] text-white">
+                      {fr ? 'Transformer les idées en récit' : 'Turn ideas into story'}
+                    </figcaption>
+                  </figure>
+                </div>
+              )}
+            </div>
+          ))}
         </div>
         <p className="mt-10 text-sm tracking-[0.2em] uppercase" style={{ color: '#B8AAA4' }}>— Justin Mafie, {fr ? 'Fondateur' : 'Founder'}</p>
       </article>

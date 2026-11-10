@@ -3,8 +3,8 @@ import { motion } from 'motion/react';
 import { Link } from '../i18n/LocaleLink';
 import { PageSEO } from '../components/PageSEO';
 import { useLanguage } from '../context/LanguageContext';
-import communityImageSmall from '../assets/community-stage-800.webp';
-import communityImageLarge from '../assets/community-stage-1600.webp';
+import communityImageSmall from '../assets/community-founder-stage-800.webp';
+import communityImageLarge from '../assets/community-founder-stage-1600.webp';
 import communityDetailImage from '../assets/photo-welcome-bash-800.webp';
 import { EditorialHeroImage } from '../components/EditorialHeroImage';
 
@@ -46,7 +46,7 @@ export function CommunityPage() {
         <EditorialHeroImage
           src={communityImageLarge}
           srcSet={`${communityImageSmall} 800w, ${communityImageLarge} 1600w`}
-          objectPosition="center 46%"
+          objectPosition="center 42%"
           secondarySrc={communityDetailImage}
           secondaryObjectPosition="center 35%"
           folio="COMMUNITY / 04"
