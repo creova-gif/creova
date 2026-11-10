@@ -218,7 +218,7 @@ export function ContactPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
               >
-                <h1 className="font-light tracking-tight leading-[0.96] max-w-5xl" style={{ fontSize: 'clamp(3.4rem, 9vw, 8rem)', color: '#FFFFFF' }}>
+                <h1 className="creova-page-title font-light tracking-tight" style={{ color: '#FFFFFF' }}>
                   {language === 'fr' ? 'Parlez-nous de ce que vous préparez.' : 'Tell us what you’re planning.'}
                 </h1>
               </motion.div>

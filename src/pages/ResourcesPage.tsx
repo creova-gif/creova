@@ -86,7 +86,7 @@ export function ResourcesPage() {
         />
         <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
           <p className="text-xs tracking-[.35em] uppercase mb-6" style={{ color: '#C6A45A' }}>{fr ? 'Ressources de la communauté' : 'Community resources'}</p>
-          <h1 className="max-w-5xl tracking-tight leading-[.98]" style={{ color: '#FFFFFF', fontSize: 'clamp(3.2rem, 8vw, 7.5rem)' }}>
+          <h1 className="creova-page-title tracking-tight" style={{ color: '#FFFFFF' }}>
             {fr ? 'Des outils utiles, issus du travail réel.' : 'Useful tools, shaped by real work.'}
           </h1>
           <p className="max-w-3xl mt-7 text-lg md:text-xl leading-relaxed" style={{ color: '#D7CEC4' }}>

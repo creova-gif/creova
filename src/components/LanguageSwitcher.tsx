@@ -98,7 +98,7 @@ export function LanguageSwitcher({ variant = 'desktop' }: LanguageSwitcherProps)
             aria-pressed={language === lang}
             aria-label={lang === 'en' ? 'Switch to English' : 'Passer en français'}
             className="relative z-10 overflow-hidden rounded-full flex items-center justify-center px-3.5 py-1.5 text-[11px] font-bold tracking-[0.14em] transition-colors duration-200"
-            style={{ color: language === lang ? '#FFFFFF' : '#625A56', minWidth: '44px' }}
+            style={{ color: language === lang ? '#FFFFFF' : '#625A56', minWidth: '44px', minHeight: '44px' }}
           >
             {/* Label with crossfade */}
             <AnimatePresence mode="wait" initial={false}>

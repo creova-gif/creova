@@ -40,7 +40,7 @@ export function VenturesPage() {
           <p className="text-xs tracking-[0.45em] uppercase mb-6" style={{ color: '#C6A45A' }}>
             {fr ? 'Construit par CREOVA' : 'Built by CREOVA'}
           </p>
-          <h1 className="max-w-4xl font-light tracking-tight leading-[0.95]" style={{ color: '#FFFFFF', fontSize: 'clamp(3.5rem, 9vw, 8rem)' }}>
+          <h1 className="creova-page-title font-light tracking-tight" style={{ color: '#FFFFFF' }}>
             {fr ? 'Découvrez les produits et marques que CREOVA développe.' : 'Meet the products and brands CREOVA is building.'}
           </h1>
           <p className="max-w-2xl mt-8 text-lg leading-relaxed" style={{ color: '#9B9B9B' }}>

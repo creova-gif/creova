@@ -21,7 +21,7 @@ export function Footer() {
         <div className="grid lg:grid-cols-[1.18fr_.82fr] gap-14 lg:gap-20 pb-16 border-b" style={{ borderColor: 'rgba(255,255,255,.1)' }}>
           <div>
             <p className="text-xs tracking-[.35em] uppercase mb-5" style={{ color: '#C6A45A' }}>{fr ? 'Un récit utile commence ici' : 'A useful story starts here'}</p>
-            <h2 className="max-w-4xl font-light tracking-tight leading-[1.02]" style={{ color: '#FFFFFF', fontSize: 'clamp(2.8rem, 6vw, 6rem)' }}>{fr ? 'Transformons votre prochain moment en élan durable.' : 'Turn your next meaningful moment into lasting momentum.'}</h2>
+            <h2 className="creova-footer-title max-w-4xl font-light tracking-tight leading-[1.02]" style={{ color: '#FFFFFF' }}>{fr ? 'Transformons votre prochain moment en élan durable.' : 'Turn your next meaningful moment into lasting momentum.'}</h2>
             <div className="mt-9 flex flex-wrap gap-4">
               <Link to="/start-a-project" className="inline-flex items-center gap-2 rounded-xl px-6 py-3.5 font-semibold" style={{ backgroundColor: '#7D6D51', color: '#FFFFFF' }}>{fr ? 'Démarrer un projet' : 'Start a project'} <ArrowUpRight className="w-4 h-4" /></Link>
               <a href="mailto:support@creova.one" className="inline-flex items-center gap-2 rounded-xl px-6 py-3.5 border" style={{ borderColor: 'rgba(255,255,255,.3)', color: '#FFFFFF' }}><Mail className="w-4 h-4" />support@creova.one</a>
@@ -78,16 +78,16 @@ export function Footer() {
           <div>
             <p className="text-xs tracking-[.3em] uppercase mb-5" style={{ color: '#C6A45A' }}>{fr ? 'Nos marques' : 'Our Brands'}</p>
             <ul className="space-y-3 text-sm" style={{ color: '#9B9B9B' }}>
-              <li>{VENTURE_URLS.seen ? <a href={VENTURE_URLS.seen} target="_blank" rel="noopener noreferrer" className="hover:text-white">SEEN <ArrowUpRight className="inline w-3 h-3" /></a> : <Link to="/ventures#seen" className="hover:text-white">SEEN · {fr ? 'en développement' : 'in development'}</Link>}</li>
-              <li>{VENTURE_URLS.verse ? <a href={VENTURE_URLS.verse} target="_blank" rel="noopener noreferrer" className="hover:text-white">VERSE · {fr ? 'en développement' : 'in development'} <ArrowUpRight className="inline w-3 h-3" /></a> : <Link to="/ventures#verse" className="hover:text-white">VERSE · {fr ? 'en développement' : 'in development'}</Link>}</li>
+              <li>{VENTURE_URLS.seen ? <a href={VENTURE_URLS.seen} target="_blank" rel="noopener noreferrer" className="creova-touch-target inline-flex items-center hover:text-white">SEEN <ArrowUpRight className="inline w-3 h-3" /></a> : <Link to="/ventures#seen" className="creova-touch-target inline-flex items-center hover:text-white">SEEN · {fr ? 'en développement' : 'in development'}</Link>}</li>
+              <li>{VENTURE_URLS.verse ? <a href={VENTURE_URLS.verse} target="_blank" rel="noopener noreferrer" className="creova-touch-target inline-flex items-center hover:text-white">VERSE · {fr ? 'en développement' : 'in development'} <ArrowUpRight className="inline w-3 h-3" /></a> : <Link to="/ventures#verse" className="creova-touch-target inline-flex items-center hover:text-white">VERSE · {fr ? 'en développement' : 'in development'}</Link>}</li>
             </ul>
           </div>
           <div>
             <p className="text-xs tracking-[.3em] uppercase mb-5" style={{ color: '#C6A45A' }}>{fr ? 'Coordonnées' : 'Connect'}</p>
             <ul className="space-y-3 text-sm" style={{ color: '#9B9B9B' }}>
-              <li><a href="https://instagram.com/creativeinnovation__" target="_blank" rel="noopener noreferrer" className="hover:text-white">Instagram</a></li>
-              <li><a href="https://www.linkedin.com/company/creovaspace/" target="_blank" rel="noopener noreferrer" className="hover:text-white">LinkedIn</a></li>
-              <li><a href="mailto:support@creova.one" className="hover:text-white">support@creova.one</a></li>
+              <li><a href="https://instagram.com/creativeinnovation__" target="_blank" rel="noopener noreferrer" className="creova-touch-target inline-flex items-center hover:text-white">Instagram</a></li>
+              <li><a href="https://www.linkedin.com/company/creovaspace/" target="_blank" rel="noopener noreferrer" className="creova-touch-target inline-flex items-center hover:text-white">LinkedIn</a></li>
+              <li><a href="mailto:support@creova.one" className="creova-touch-target inline-flex items-center hover:text-white">support@creova.one</a></li>
             </ul>
           </div>
         </div>
@@ -95,14 +95,14 @@ export function Footer() {
         <div className="py-8 border-y" style={{ borderColor: 'rgba(255,255,255,.08)' }}>
           <p className="text-[10px] tracking-[.3em] uppercase mb-4" style={{ color: '#B8ACA6' }}>{fr ? 'Zones de service' : 'Service areas'}</p>
           <div className="flex flex-wrap gap-x-6 gap-y-2">
-            {SERVICE_AREAS.map(area => <Link key={area.slug} to={`/${area.slug}`} className="text-xs hover:text-[#E5C978]" style={{ color: '#B8ACA6' }}>{(fr ? area.fr : area.en).kicker}</Link>)}
+            {SERVICE_AREAS.map(area => <Link key={area.slug} to={`/${area.slug}`} className="creova-touch-target inline-flex items-center text-xs hover:text-[#E5C978]" style={{ color: '#B8ACA6' }}>{(fr ? area.fr : area.en).kicker}</Link>)}
           </div>
         </div>
 
         <div className="pt-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-          <Link to="/" aria-label="CREOVA"><Logo variant="white" className="h-8 w-auto" interactive={false} /></Link>
+          <Link to="/" aria-label="CREOVA" className="creova-touch-target inline-flex items-center"><Logo variant="white" className="h-8 w-auto" interactive={false} /></Link>
           <p className="text-xs" style={{ color: '#B8ACA6' }}>© {new Date().getFullYear()} CREOVA. {fr ? 'Tous droits réservés.' : 'All rights reserved.'}</p>
-          <div className="flex gap-5 text-xs" style={{ color: '#B8ACA6' }}><Link to="/terms-of-service" className="hover:text-white">{fr ? 'Conditions' : 'Terms'}</Link><Link to="/privacy-policy" className="hover:text-white">{fr ? 'Confidentialité' : 'Privacy'}</Link><Link to="/start-a-project" className="hover:text-white">{fr ? 'Contact' : 'Contact'}</Link></div>
+          <div className="flex gap-5 text-xs" style={{ color: '#B8ACA6' }}><Link to="/terms-of-service" className="creova-touch-target inline-flex items-center hover:text-white">{fr ? 'Conditions' : 'Terms'}</Link><Link to="/privacy-policy" className="creova-touch-target inline-flex items-center hover:text-white">{fr ? 'Confidentialité' : 'Privacy'}</Link><Link to="/start-a-project" className="creova-touch-target inline-flex items-center hover:text-white">{fr ? 'Contact' : 'Contact'}</Link></div>
         </div>
       </div>
     </footer>
@@ -110,5 +110,5 @@ export function Footer() {
 }
 
 function FooterColumn({ title, links }: { title: string; links: string[][] }) {
-  return <div><p className="text-xs tracking-[.3em] uppercase mb-5" style={{ color: '#C6A45A' }}>{title}</p><ul className="space-y-3">{links.map(([label, href]) => <li key={href}><Link to={href} className="text-sm hover:text-white" style={{ color: '#9B9B9B' }}>{label}</Link></li>)}</ul></div>;
+  return <div><p className="text-xs tracking-[.3em] uppercase mb-5" style={{ color: '#C6A45A' }}>{title}</p><ul>{links.map(([label, href]) => <li key={href}><Link to={href} className="creova-touch-target inline-flex items-center text-sm hover:text-white" style={{ color: '#B8ACA6' }}>{label}</Link></li>)}</ul></div>;
 }

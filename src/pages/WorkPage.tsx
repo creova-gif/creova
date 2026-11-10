@@ -37,7 +37,7 @@ function ProjectCard({
   // Portfolio page → tu register (see mixed-register decision).
   const fr = useLanguage().language === 'fr';
   return (
-    <div style={{ contentVisibility: 'auto', containIntrinsicSize: large ? '690px' : '510px' }}>
+    <div>
       <motion.a
         href={project.url}
         target="_blank"
@@ -175,7 +175,7 @@ export function WorkPage() {
       />
 
       {/* ── EDITORIAL HERO ── */}
-      <section className="relative flex min-h-[78vh] items-end overflow-hidden" style={{ backgroundColor: '#2D1011' }}>
+      <section className="relative flex min-h-[calc(100svh-4rem)] items-end overflow-hidden" style={{ backgroundColor: '#2D1011' }}>
         <EditorialHeroImage
           src={sorted[0].image}
           objectPosition={sorted[0].objectPosition}
@@ -190,7 +190,7 @@ export function WorkPage() {
                 <span className="block h-px w-8" style={{ backgroundColor: '#C6A45A' }} />
                 <span className="text-[10px] tracking-[0.45em] uppercase" style={{ color: '#C6A45A' }}>{fr ? 'Travaux choisis' : 'Selected Work'}</span>
               </div>
-              <h1 className="font-light tracking-tight leading-[0.96]" style={{ fontSize: 'clamp(3.2rem, 7vw, 6.8rem)', color: '#FFFFFF' }}>
+              <h1 className="creova-page-title font-light tracking-tight" style={{ color: '#FFFFFF' }}>
                 {fr ? 'Des histoires ancrées dans de vrais événements, personnes et programmes.' : 'Stories built from real events, people, and programs.'}
               </h1>
               <p className="mt-7 text-lg leading-relaxed max-w-2xl" style={{ color: '#E0E0E0' }}>
@@ -217,7 +217,7 @@ export function WorkPage() {
         <div className="px-4 py-4 text-center" style={{ backgroundColor: '#0E0E0E', borderTop: '1px solid rgba(198,164,90,0.12)' }}>
           <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.55)' }}>
             {fr ? 'Une sélection organisée du portfolio public de CREOVA.' : "A curated selection from CREOVA's public portfolio."}{' '}
-            <a href="https://creova.pixieset.com/" target="_blank" rel="noopener noreferrer" className="underline underline-offset-4" style={{ color: '#C6A45A' }}>
+            <a href="https://creova.pixieset.com/" target="_blank" rel="noopener noreferrer" className="creova-touch-target inline-flex items-center underline underline-offset-4" style={{ color: '#C6A45A' }}>
               {fr ? 'Voir les galeries sur Pixieset' : 'Browse the galleries on Pixieset'}
             </a>
           </p>
@@ -260,7 +260,7 @@ export function WorkPage() {
               </div>
               <div className="flex flex-col justify-center p-7 lg:p-10">
                 <span className="text-[10px] tracking-[0.35em] uppercase mb-3" style={{ color: '#C6A45A' }}>{fr ? 'Étude de cas en vedette' : 'Featured case study'}</span>
-                <h3 className="tracking-tight mb-3 transition-colors duration-200 group-hover:text-[#C6A45A]" style={{ color: '#FFFFFF', fontFamily: 'var(--font-display)', fontSize: 'clamp(1.6rem, 3vw, 2.2rem)', lineHeight: 1.1 }}>{c.title}</h3>
+                <h2 className="tracking-tight mb-3 transition-colors duration-200 group-hover:text-[#C6A45A]" style={{ color: '#FFFFFF', fontFamily: 'var(--font-display)', fontSize: 'clamp(1.6rem, 3vw, 2.2rem)', lineHeight: 1.1 }}>{c.title}</h2>
                 <p className="text-sm leading-relaxed mb-5" style={{ color: '#CDBFAE', maxWidth: '48ch' }}>{cs.partner} · {cs.org}</p>
                 <span className="inline-flex items-center gap-2 text-sm tracking-wide" style={{ color: '#E0E0E0' }}>
                   {fr ? 'Lire l’étude de cas' : 'Read the case study'}
@@ -288,7 +288,7 @@ export function WorkPage() {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className="flex items-center gap-2 px-4 py-2 rounded-full whitespace-nowrap transition-all duration-300 flex-shrink-0 text-xs tracking-wide"
+                  className="creova-touch-target flex items-center gap-2 px-4 py-2 rounded-full whitespace-nowrap transition-all duration-300 flex-shrink-0 text-xs tracking-wide"
                   style={{
                     backgroundColor: activeTab === tab.id ? '#6B5033' : 'transparent',
                     color: activeTab === tab.id ? '#FFFFFF' : '#C9BFBA',
@@ -318,7 +318,7 @@ export function WorkPage() {
                 onChange={e => setQuery(e.target.value)}
                 placeholder={fr ? 'Rechercher des galeries...' : 'Search galleries...'}
                 aria-label={fr ? 'Rechercher des galeries' : 'Search galleries'}
-                className="pl-10 pr-9 py-2 text-xs rounded-full border"
+                className="h-11 pl-10 pr-9 py-2 text-xs rounded-full border"
                 style={{
                   backgroundColor: 'rgba(255,255,255,0.04)',
                   borderColor: 'rgba(198,164,90,0.15)',
@@ -329,7 +329,7 @@ export function WorkPage() {
                 <button
                   type="button"
                   onClick={() => setQuery('')}
-                  className="absolute right-3 top-1/2 -translate-y-1/2"
+                  className="creova-touch-target absolute right-0 top-1/2 -translate-y-1/2 inline-flex items-center justify-center"
                   aria-label={fr ? 'Effacer la recherche' : 'Clear search'}
                 >
                   <X className="w-3.5 h-3.5" style={{ color: 'rgba(255,255,255,0.4)' }} />
@@ -400,9 +400,9 @@ export function WorkPage() {
                 <span className="text-[9px] tracking-[0.55em] uppercase" style={{ color: '#C6A45A' }}>{fr ? 'Portfolio complet' : 'Full Portfolio'}</span>
                 <div style={{ height: '1px', width: '32px', backgroundColor: 'rgba(198,164,90,0.4)' }} />
               </div>
-              <h3 className="text-3xl md:text-4xl font-light tracking-tight mb-4" style={{ color: '#FFFFFF' }}>
+              <h2 className="text-3xl md:text-4xl font-light tracking-tight mb-4" style={{ color: '#FFFFFF' }}>
                 {fr ? 'Chaque photo, pleine résolution' : 'Every photo, full resolution'}
-              </h3>
+              </h2>
               <p className="text-base mb-10 leading-relaxed" style={{ color: 'rgba(255,255,255,0.4)' }}>
                 {fr ? 'Toutes les galeries sont hébergées sur Pixieset avec téléchargements en pleine résolution.' : 'All galleries live on Pixieset with full-resolution downloads available.'}
               </p>
@@ -422,7 +422,7 @@ export function WorkPage() {
                 <Button
                   asChild
                   variant="outline"
-                  className="px-8 py-4 rounded-xl text-sm tracking-wide border transition-all duration-300"
+                  className="h-11 px-8 py-4 rounded-xl text-sm tracking-wide border transition-all duration-300"
                   style={{ backgroundColor: 'transparent', borderColor: 'rgba(198,164,90,0.35)', color: '#C6A45A' }}
                 >
                   <Link to="/start-a-project">

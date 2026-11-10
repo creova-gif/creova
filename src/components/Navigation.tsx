@@ -30,16 +30,16 @@ export function Navigation() {
   return (
     <nav className="relative border-b" style={{ backgroundColor: '#FFFFFF', borderColor: '#E0E0E0' }} aria-label={fr ? 'Navigation principale' : 'Primary navigation'}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-        <Link to="/" aria-label="CREOVA" onClick={closeMenu} aria-current={currentPath === '/' ? 'page' : undefined}><Logo variant="navy" animateIn className="h-10 w-auto" interactive /></Link>
+        <Link to="/" aria-label="CREOVA" onClick={closeMenu} aria-current={currentPath === '/' ? 'page' : undefined} className="creova-touch-target inline-flex items-center"><Logo variant="navy" animateIn className="h-10 w-auto" interactive /></Link>
 
         <div className="hidden lg:flex items-center gap-5 xl:gap-7">
-          {links.map(([label, path]) => <Link key={path} to={path} aria-current={currentPath === path ? 'page' : undefined} className="text-sm transition-colors hover:text-[#75664C] aria-[current=page]:font-semibold aria-[current=page]:underline aria-[current=page]:underline-offset-8" style={{ color: '#2D1011' }}>{label}</Link>)}
+          {links.map(([label, path]) => <Link key={path} to={path} aria-current={currentPath === path ? 'page' : undefined} className="creova-touch-target inline-flex items-center text-sm transition-colors hover:text-[#75664C] aria-[current=page]:font-semibold aria-[current=page]:underline aria-[current=page]:underline-offset-8" style={{ color: '#2D1011' }}>{label}</Link>)}
         </div>
 
         <div className="flex items-center gap-3">
           <div className="hidden sm:block"><LanguageSwitcher /></div>
-          <Link to="/start-a-project" onClick={closeMenu} aria-current={currentPath === '/start-a-project' ? 'page' : undefined} className="hidden md:inline-flex rounded-xl px-5 py-2.5 text-sm font-semibold" style={{ backgroundColor: '#2D1011', color: '#FFFFFF' }}>{fr ? 'Démarrer un projet' : 'Start a project'}</Link>
-          <button type="button" onClick={() => setOpen(value => !value)} className="lg:hidden inline-flex items-center justify-center w-10 h-10 rounded-xl" style={{ border: '1px solid #D5D5D5' }} aria-expanded={open} aria-controls="mobile-navigation" aria-label={open ? (fr ? 'Fermer le menu' : 'Close menu') : (fr ? 'Ouvrir le menu' : 'Open menu')}>
+          <Link to="/start-a-project" onClick={closeMenu} aria-current={currentPath === '/start-a-project' ? 'page' : undefined} className="creova-touch-target hidden md:inline-flex items-center rounded-xl px-5 py-2.5 text-sm font-semibold" style={{ backgroundColor: '#2D1011', color: '#FFFFFF' }}>{fr ? 'Démarrer un projet' : 'Start a project'}</Link>
+          <button type="button" onClick={() => setOpen(value => !value)} className="creova-touch-target lg:hidden inline-flex items-center justify-center rounded-xl" style={{ border: '1px solid #D5D5D5' }} aria-expanded={open} aria-controls="mobile-navigation" aria-label={open ? (fr ? 'Fermer le menu' : 'Close menu') : (fr ? 'Ouvrir le menu' : 'Open menu')}>
             {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
         </div>

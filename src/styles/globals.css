@@ -67,6 +67,10 @@
   --creova-oxblood: #2D1011;
   --creova-white: #FFFFFF;
   --creova-gold: #C6A45A;
+  --type-hero: clamp(2.9rem, 5.8vw, 5.5rem);
+  --type-page-title: clamp(2.65rem, 5vw, 4.5rem);
+  --type-section-title: clamp(2.2rem, 4vw, 3.5rem);
+  --type-footer-title: clamp(2.6rem, 4.5vw, 4.75rem);
   --background: #ffffff;
   --foreground: #2D1011;
   --card: #ffffff;
@@ -109,6 +113,37 @@ h1, h2 {
   font-family: var(--font-display);
   font-weight: 700;
   letter-spacing: -0.035em;
+}
+
+/* Editorial type roles keep photography and content in balance across routes. */
+.creova-hero-title {
+  max-width: 15ch;
+  font-size: var(--type-hero);
+  line-height: 0.98;
+  text-wrap: balance;
+}
+
+.creova-page-title {
+  max-width: 18ch;
+  font-size: var(--type-page-title);
+  line-height: 1;
+  text-wrap: balance;
+}
+
+.creova-section-title {
+  font-size: var(--type-section-title);
+  line-height: 1.04;
+  text-wrap: balance;
+}
+
+.creova-footer-title {
+  font-size: var(--type-footer-title);
+  text-wrap: balance;
+}
+
+.creova-touch-target {
+  min-width: 2.75rem;
+  min-height: 2.75rem;
 }
 
 h3 {

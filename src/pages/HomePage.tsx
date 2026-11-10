@@ -80,7 +80,7 @@ export function HomePage() {
         jsonLd={organizationSchema}
       />
 
-      <section className="relative min-h-[82vh] flex items-end overflow-hidden" style={{ backgroundColor: '#2D1011' }}>
+      <section className="relative min-h-[calc(100svh-4rem)] flex items-end overflow-hidden" style={{ backgroundColor: '#2D1011' }}>
         <motion.img
           src={heroImageLarge}
           srcSet={`${heroImageSmall} 800w, ${heroImageLarge} 1400w`}
@@ -97,18 +97,18 @@ export function HomePage() {
           width="1400"
           height="1050"
         />
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(90deg, rgba(45,16,17,.97) 0%, rgba(45,16,17,.88) 43%, rgba(45,16,17,.32) 78%, rgba(45,16,17,.16) 100%)' }} />
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(90deg, rgba(45,16,17,.94) 0%, rgba(45,16,17,.82) 39%, rgba(45,16,17,.26) 72%, rgba(45,16,17,.08) 100%)' }} />
         <div className="absolute inset-x-0 bottom-0 h-48" style={{ background: 'linear-gradient(transparent, rgba(45,16,17,.9))' }} />
 
         <div className="relative z-10 max-w-7xl mx-auto w-full px-6 lg:px-8 pt-32 pb-16 lg:pb-20">
-          <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.75 }} className="max-w-4xl">
+          <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.75 }} className="max-w-3xl">
             <p className="text-xs tracking-[0.34em] uppercase mb-6" style={{ color: '#C6A45A' }}>
               {fr ? 'Studio de narration culturelle · Ontario' : 'Cultural storytelling studio · Ontario'}
             </p>
-            <h1 className="font-light tracking-tight leading-[0.96]" style={{ color: '#FFFFFF', fontSize: 'clamp(3.2rem, 8vw, 7.6rem)' }}>
+            <h1 className="creova-hero-title font-light tracking-tight" style={{ color: '#FFFFFF' }}>
               {fr ? 'Transformez vos événements en histoires qui rassemblent et font agir.' : 'Turn your events into stories that connect people and move them to act.'}
             </h1>
-            <p className="mt-7 max-w-3xl text-lg md:text-xl leading-relaxed" style={{ color: '#E0E0E0' }}>
+            <p className="mt-7 max-w-2xl text-base md:text-lg leading-relaxed" style={{ color: '#E0E0E0' }}>
               {fr
                 ? 'CREOVA aide les organisations culturelles, les bâtisseurs de communautés et les entreprises engagées à transformer leurs événements et programmes en récits qui stimulent la participation, démontrent l’impact et maintiennent le lien.'
                 : 'CREOVA helps cultural organizations, community builders, and purpose-led businesses turn events and programs into stories that grow participation, prove impact, and keep people connected.'}
