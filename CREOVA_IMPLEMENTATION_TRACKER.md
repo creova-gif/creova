@@ -23,6 +23,7 @@ Status date: 2026-11-11
 | P2 | Replace repeated card grids | Planned | Implement Phase 2 page-by-page after visual review. |
 | P2 | Founder three-image editorial sequence | Planned | Select distinct supplied images; no stock. |
 | P2 | Consolidate inline brand colours | Planned | Migrate repeated literals to tokens without changing palette. |
-| P2 | Hosted performance verification | Pending release | Lighthouse/Web Vitals on deployed origin. |
+| P2 | Hosted performance verification | Done | Lighthouse mobile baseline: Home 79 performance / 100 accessibility / 100 best practices / 100 SEO; Start a Project 78 / 100 / 100 / 100. CLS 0 and TBT 0 ms on both. |
+| P2 | Third-party analytics performance review | Monitor | Requested GTM and Contentsquare scripts are the largest reported unused-JavaScript cost; retain them and compare field data before changing load behavior. |
 | P2 | Search recrawl comparison | Pending | Compare equivalent 28-day periods after recrawl; do not infer from low-volume daily noise. |
 

@@ -76,7 +76,7 @@ Record any unavailable command as `NOT VERIFIED` with the reason.
 
 Automated project commands: PASS — install, lint, typecheck, 44 tests, production build, content validation, SSR build, and 44-route prerender completed on 2026-11-10.  
 Manual accessibility and device testing: NOT VERIFIED; requires human/device pass.  
-Hosted deployment behavior: NOT VERIFIED; no release claim is made from local evidence.
+Hosted deployment behavior: VERIFIED on 2026-11-11 for release `bd1d1b9`; GitHub CI and Pages completed successfully and the public-origin axe matrix passed.
 
 ## 2026-11-11 search and imagery continuation
 
@@ -97,5 +97,7 @@ Manual assistive-technology and physical-device testing remains NOT VERIFIED.
 - Replaced low-contrast decorative footer text with a non-text circular motif.
 - Increased the mobile Work marquee contrast and corrected the Community page to expose one top-level heading.
 - Re-scan result: zero axe WCAG 2.1 A/AA violations across all 14 tested page states; every tested page exposed exactly one `h1`, no images without `alt`, and no unlabelled form fields.
+- Public mobile Lighthouse baseline: Home scored 79 performance / 100 accessibility / 100 best practices / 100 SEO; Start a Project scored 78 / 100 / 100 / 100. Both reported CLS 0 and total blocking time 0 ms.
+- Lighthouse attributed most unused JavaScript to the requested GTM and Contentsquare integrations. Their loading behavior was preserved; field data should be reviewed before changing analytics collection.
 - Automated coverage does not replace manual keyboard, screen-reader, 200%/400% zoom, or physical-device testing; those checks remain NOT VERIFIED.
 
