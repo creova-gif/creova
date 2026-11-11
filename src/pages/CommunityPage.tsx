@@ -87,7 +87,7 @@ export function CommunityPage() {
 
       <section className="py-20 lg:py-28">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="max-w-3xl mb-12"><p className="text-xs tracking-[.35em] uppercase mb-4" style={{ color: '#7D6D51' }}>{fr ? 'Choisissez votre voie' : 'Choose your route'}</p><h1 className="text-4xl md:text-6xl font-light tracking-tight" style={{ color: '#2D1011' }}>{fr ? 'Trois relations. Trois prochaines étapes.' : 'Three relationships. Three next steps.'}</h1></div>
+          <div className="max-w-3xl mb-12"><p className="text-xs tracking-[.35em] uppercase mb-4" style={{ color: '#7D6D51' }}>{fr ? 'Choisissez votre voie' : 'Choose your route'}</p><h2 className="text-4xl md:text-6xl font-light tracking-tight" style={{ color: '#2D1011' }}>{fr ? 'Trois relations. Trois prochaines étapes.' : 'Three relationships. Three next steps.'}</h2></div>
           <div className="grid lg:grid-cols-3 gap-6">
             {routes.map(({ id, icon: Icon, title, text, cta, to }) => (
               <article id={id} key={id} className="scroll-mt-36 rounded-3xl p-7 md:p-9 flex flex-col min-h-[390px]" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E0E0E0' }}>

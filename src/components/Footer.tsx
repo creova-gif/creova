@@ -38,7 +38,10 @@ export function Footer() {
             </div>
 
             <div className="relative overflow-hidden rounded-[1.75rem] border p-6 sm:p-8" style={{ borderColor: 'rgba(198,164,90,.24)', backgroundColor: 'rgba(255,255,255,.035)' }}>
-              <div className="absolute right-5 top-3 select-none font-light leading-none" style={{ color: 'rgba(198,164,90,.1)', fontSize: '6.5rem' }} aria-hidden="true">03</div>
+              <div className="pointer-events-none absolute right-5 top-5 h-20 w-20 rounded-full border opacity-30" style={{ borderColor: 'rgba(198,164,90,.55)' }} aria-hidden="true">
+                <div className="absolute inset-4 rounded-full border" style={{ borderColor: 'rgba(198,164,90,.42)' }} />
+                <div className="absolute inset-[1.85rem] rounded-full" style={{ backgroundColor: 'rgba(198,164,90,.42)' }} />
+              </div>
               <p className="relative text-[10px] uppercase tracking-[.32em]" style={{ color: '#C6A45A' }}>{fr ? 'Du moment à l’élan' : 'From moment to momentum'}</p>
               <ol className="relative mt-7">
                 {(

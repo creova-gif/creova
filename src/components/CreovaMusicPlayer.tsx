@@ -90,8 +90,8 @@ export function CreovaMusicPlayer() {
                   type="button"
                   onClick={playSelectedTrack}
                   className="absolute inset-0 flex items-center gap-5 p-6 text-left group"
-                  aria-label={`${fr ? 'Écouter' : 'Play'} ${selectedTrack.title}`}
                 >
+                  <span className="sr-only">{fr ? 'Écouter' : 'Play'}</span>
                   <Logo color="#CDBFAE" className="absolute right-5 top-5 h-9 w-auto opacity-50" interactive={false} />
                   <span className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-full transition-transform group-hover:scale-105" style={{ backgroundColor: '#FFFFFF', color: '#2D1011' }}>
                     <Play className="h-5 w-5 ml-0.5" fill="currentColor" />

@@ -235,7 +235,7 @@ export function WorkPage() {
             <span
               key={i}
               className="inline-flex items-center gap-4 text-[9px] tracking-[0.5em] uppercase flex-shrink-0"
-              style={{ color: 'rgba(198,164,90,0.35)' }}
+              style={{ color: '#C6A45A' }}
             >
               {item}
               <span style={{ width: '3px', height: '3px', borderRadius: '50%', backgroundColor: 'rgba(198,164,90,0.25)', display: 'inline-block' }} />

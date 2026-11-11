@@ -90,3 +90,12 @@ Hosted deployment behavior: NOT VERIFIED; no release claim is made from local ev
 
 Manual assistive-technology and physical-device testing remains NOT VERIFIED.
 
+## 2026-11-11 rendered accessibility continuation
+
+- Ran axe against the production build at 1280×900 and 390×844 on Home, About, Community, Resources, Work, Start a Project, and French Home.
+- Remediated accessible-name mismatches in the language switcher and music player.
+- Replaced low-contrast decorative footer text with a non-text circular motif.
+- Increased the mobile Work marquee contrast and corrected the Community page to expose one top-level heading.
+- Re-scan result: zero axe WCAG 2.1 A/AA violations across all 14 tested page states; every tested page exposed exactly one `h1`, no images without `alt`, and no unlabelled form fields.
+- Automated coverage does not replace manual keyboard, screen-reader, 200%/400% zoom, or physical-device testing; those checks remain NOT VERIFIED.
+
