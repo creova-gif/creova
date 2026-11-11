@@ -69,10 +69,10 @@ export function AboutPage() {
   return (
     <div style={{ backgroundColor: '#2D1011' }}>
       <PageSEO
-        title={fr ? 'À propos — L’histoire de CREOVA' : 'About — The CREOVA Story'}
+        title={fr ? 'À propos de CREOVA et de Justin Mafie' : 'About CREOVA & Founder Justin Mafie'}
         description={fr
-          ? 'L’histoire derrière CREOVA, par son fondateur Justin Mafie — pourquoi il a bâti une agence créative pour rendre le travail de qualité accessible à tous.'
-          : 'The story behind CREOVA, by founder Justin Mafie — and why cultural context, responsible production, and useful storytelling belong together.'}
+          ? 'Découvrez Justin Mafie, fondateur de CREOVA, et l’approche du studio envers le contexte culturel, la production responsable et les récits utiles.'
+          : 'Meet CREOVA founder Justin Mafie and learn how cultural context, responsible production, and useful storytelling shape the Ontario studio.'}
         path="/about"
         ogImage={`${SITE_URL}/card-justin-panel.jpg`}
         jsonLd={jsonLd}

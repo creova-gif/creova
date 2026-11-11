@@ -1,7 +1,7 @@
 import { Helmet } from '@dr.pogodin/react-helmet';
 import { useLocation } from 'react-router';
 import { localeFromPath, stripLocale, absoluteUrl } from '../i18n/locale';
-import { SEO_FR, FR_TITLE_SUFFIX } from '../i18n/seoCopy';
+import { SEO_FR } from '../i18n/seoCopy';
 
 const SITE_URL = 'https://www.creova.one';
 const DEFAULT_OG_IMAGE = `${SITE_URL}/card-blackprint.jpg`;
@@ -43,8 +43,13 @@ export function PageSEO({
   const frCopy = locale === 'fr' ? SEO_FR[barePath] : undefined;
   const localizedTitle = frCopy?.title ?? title;
   const localizedDescription = frCopy?.description ?? description;
-  const suffix = locale === 'fr' ? FR_TITLE_SUFFIX : 'CREOVA — Cultural Storytelling Studio';
-  const fullTitle = `${localizedTitle} | ${suffix}`;
+  // Search Console shows the brand query generating most impressions while
+  // mobile CTR remains weak. Keep titles short enough to retain the page job
+  // on narrow results, and lead with the site name only on the homepage.
+  const mentionsBrand = /\bcreova\b/i.test(localizedTitle);
+  const fullTitle = barePath === '/'
+    ? `CREOVA | ${localizedTitle}`
+    : (mentionsBrand ? localizedTitle : `${localizedTitle} | CREOVA`);
 
   const canonicalUrl = absoluteUrl(barePath, locale, SITE_URL);
   const enUrl = absoluteUrl(barePath, 'en', SITE_URL);

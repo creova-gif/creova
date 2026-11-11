@@ -33,6 +33,21 @@ export const organizationSchema = {
   ],
 };
 
+/** Site-name markup for branded search results; no unsupported search action. */
+export const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'CREOVA',
+  alternateName: 'CREOVA Cultural Storytelling Studio',
+  url: `${SITE_URL}/`,
+  inLanguage: ['en-CA', 'fr-CA'],
+  publisher: {
+    '@type': 'Organization',
+    name: 'CREOVA',
+    url: `${SITE_URL}/`,
+  },
+};
+
 export function productSchema(product: {
   id: string;
   name: string;

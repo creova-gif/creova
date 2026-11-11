@@ -35,8 +35,8 @@ export function CommunityPage() {
   return (
     <div style={{ backgroundColor: '#FFFFFF' }}>
       <PageSEO
-        title={fr ? 'Communauté et collaborations' : 'Community and Collaboration'}
-        description={fr ? 'Mandater CREOVA, proposer une collaboration ou discuter d’un partenariat communautaire avec des attentes claires.' : 'Commission CREOVA, propose a collaboration, or discuss a community partnership with clear expectations.'}
+        title={fr ? 'Collaborations et partenariats communautaires' : 'Community Collaboration & Partnerships'}
+        description={fr ? 'Mandater CREOVA, proposer une collaboration ou discuter d’un partenariat communautaire avec des rôles, des attentes et des prochaines étapes clairs.' : 'Commission CREOVA, propose a creative collaboration, or discuss a community partnership with clear roles, expectations, and next steps.'}
         path="/community"
       />
 

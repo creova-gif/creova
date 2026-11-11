@@ -14,14 +14,11 @@ export interface SeoCopy {
   description: string;
 }
 
-/** Appended to every title. English form lives in PageSEO. */
-export const FR_TITLE_SUFFIX = 'CREOVA — Studio de narration culturelle';
-
 export const SEO_FR: Record<string, SeoCopy> = {
   '/': {
     title: 'Studio de narration culturelle en Ontario',
     description:
-      "CREOVA aide les organisations culturelles et communautaires à transformer leurs événements et programmes en récits durables.",
+      'CREOVA est un studio ontarien de narration culturelle créant photos, vidéos et récits pour les événements, programmes communautaires et organisations.',
   },
   '/work': {
     title: 'Nos réalisations',
@@ -34,14 +31,14 @@ export const SEO_FR: Record<string, SeoCopy> = {
       "Trois façons de travailler avec CREOVA : événements, campagnes communautaires et partenariats narratifs continus.",
   },
   '/community': {
-    title: 'Communauté et collaborations',
+    title: 'Collaborations et partenariats communautaires',
     description:
-      "Mandater CREOVA, proposer une collaboration ou discuter d'un partenariat communautaire avec des attentes claires.",
+      'Mandater CREOVA, proposer une collaboration ou discuter d’un partenariat communautaire avec des rôles, des attentes et des prochaines étapes clairs.',
   },
   '/resources': {
-    title: 'Ressources créatives gratuites',
+    title: 'Ressources gratuites pour raconter vos projets',
     description:
-      'Des modèles, listes de contrôle et guides pratiques de CREOVA pour mieux préparer les projets créatifs et culturels.',
+      'Des modèles, listes de contrôle et guides gratuits de CREOVA pour préparer des événements, entrevues communautaires et projets de narration culturelle.',
   },
   '/ventures': {
     title: 'Produits et marques en développement',
@@ -49,9 +46,9 @@ export const SEO_FR: Record<string, SeoCopy> = {
       'Découvrez SEEN, le produit numérique en développement de CREOVA, et le site public de VERSE, une marque lifestyle en développement.',
   },
   '/start-a-project': {
-    title: 'Démarrer un projet',
+    title: 'Démarrer un projet de narration culturelle',
     description:
-      'Présentez votre projet à CREOVA et recevez un identifiant de demande ainsi qu’une échéance de réponse claire.',
+      'Présentez à CREOVA votre événement, campagne, programme communautaire ou besoin de partenariat narratif.',
   },
   '/terms-of-service': {
     title: "Conditions d'utilisation",

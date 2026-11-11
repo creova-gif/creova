@@ -176,7 +176,7 @@ export function ContactPage() {
   return (
     <div style={{ backgroundColor: '#FFFFFF' }}>
       <PageSEO
-        title="Start a Project"
+        title="Start a Cultural Storytelling Project"
         description={language === 'fr' ? 'Parlez à CREOVA de votre événement, campagne, programme communautaire ou partenariat narratif.' : 'Tell CREOVA about your event, campaign, community program, or ongoing storytelling partnership.'}
         path="/start-a-project"
       />

@@ -4,7 +4,7 @@ import { Link } from '../i18n/LocaleLink';
 import { PageSEO } from '../components/PageSEO';
 import { useLanguage } from '../context/LanguageContext';
 import { VENTURE_URLS } from '../config';
-import { organizationSchema } from '../utils/structuredData';
+import { websiteSchema } from '../utils/structuredData';
 import heroImageSmall from '../assets/photo-community-celebration-800.webp';
 import heroImageLarge from '../assets/photo-community-celebration-1400.webp';
 import communityImageSmall from '../assets/photo-community-convo-800.webp';
@@ -14,6 +14,12 @@ import founderImageLarge from '../assets/photo-team-atrium-1066.webp';
 import logoBrock from '../assets/logo-brock-university.webp';
 import logoBSSC from '../assets/logo-bssc.png';
 import { CreovaMusicPlayer } from '../components/CreovaMusicPlayer';
+import { EditorialPhotoSequence } from '../components/EditorialPhotoSequence';
+import communityStageSmall from '../assets/community-stage-800.webp';
+import communityStageLarge from '../assets/community-stage-1600.webp';
+import communityFounderStageSmall from '../assets/community-founder-stage-800.webp';
+import communityFounderStageLarge from '../assets/community-founder-stage-1600.webp';
+import communityChess from '../assets/photo-community-chess-800.webp';
 
 export function HomePage() {
   const { language } = useLanguage();
@@ -74,10 +80,10 @@ export function HomePage() {
       <PageSEO
         title={fr ? 'Studio de narration culturelle en Ontario' : 'Cultural Storytelling Studio in Ontario'}
         description={fr
-          ? 'CREOVA aide les organisations culturelles, les bâtisseurs de communautés et les entreprises engagées à transformer leurs événements et programmes en récits durables.'
-          : 'CREOVA helps cultural organizations, community builders, and purpose-led businesses turn events and programs into stories that grow participation, prove impact, and keep people connected.'}
+          ? 'CREOVA est un studio ontarien de narration culturelle créant photos, vidéos et récits pour les événements, programmes communautaires et organisations.'
+          : 'CREOVA is an Ontario cultural storytelling studio creating photography, video, and narrative assets for events, community programs, and organizations.'}
         path="/"
-        jsonLd={organizationSchema}
+        jsonLd={websiteSchema}
       />
 
       <section className="relative min-h-[calc(100svh-4rem)] flex items-end overflow-hidden" style={{ backgroundColor: '#2D1011' }}>
@@ -153,7 +159,7 @@ export function HomePage() {
                 {fr ? 'L’événement se termine. Sa valeur ne devrait pas disparaître.' : 'The event ends. Its value should not.'}
               </h2>
             </div>
-            <div className="grid gap-5">
+            <div className="border-t" style={{ borderColor: 'rgba(45,16,17,.2)' }}>
               {(fr ? [
                 ['Attirer', 'Des récits et actifs de campagne qui aident le bon public à comprendre pourquoi le moment compte.'],
                 ['Documenter avec soin', 'Une production culturellement attentive, guidée par le contexte, les droits, le consentement et l’usage prévu.'],
@@ -163,15 +169,49 @@ export function HomePage() {
                 ['Capture with care', 'Culturally attentive production shaped by context, rights, consent, and intended use.'],
                 ['Carry the story forward', 'Rapid assets, a useful archive, and an editorial path for reporting, promotion, and the next program.'],
               ]).map(([title, text], index) => (
-                <div key={title} className="grid grid-cols-[auto_1fr] gap-5 rounded-2xl p-6" style={{ backgroundColor: '#FFFFFF', border: '1px solid #E0E0E0' }}>
-                  <span className="text-xs pt-1" style={{ color: '#7D6D51' }}>0{index + 1}</span>
-                  <div><h3 className="text-xl mb-2" style={{ color: '#2D1011' }}>{title}</h3><p className="leading-relaxed" style={{ color: '#555' }}>{text}</p></div>
-                </div>
+                <article key={title} className="grid gap-4 border-b py-7 sm:grid-cols-[3.5rem_1fr] sm:gap-6" style={{ borderColor: 'rgba(45,16,17,.2)' }}>
+                  <span className="text-xs tracking-[.2em] pt-1" style={{ color: '#7D6D51' }}>0{index + 1}</span>
+                  <div className="grid gap-3 md:grid-cols-[minmax(10rem,.72fr)_1.28fr] md:gap-8">
+                    <h3 className="text-xl" style={{ color: '#2D1011' }}>{title}</h3>
+                    <p className="leading-relaxed" style={{ color: '#555' }}>{text}</p>
+                  </div>
+                </article>
               ))}
             </div>
           </div>
         </div>
       </section>
+
+      <EditorialPhotoSequence
+        id="living-archive"
+        eyebrow={fr ? 'Une archive vivante' : 'A living archive'}
+        title={fr ? 'Un moment, vu sous plusieurs angles.' : 'One moment, seen from more than one angle.'}
+        description={fr
+          ? 'Les images les plus utiles montrent le contexte autant que le moment : qui était présent, ce qui se construisait et comment la communauté a pris place.'
+          : 'The most useful images hold context as well as the moment: who was present, what was being built, and how the community took part.'}
+        photos={[
+          {
+            src: communityStageLarge,
+            srcSet: `${communityStageSmall} 800w, ${communityStageLarge} 1600w`,
+            alt: fr ? 'Des organisateurs du Black Student Success Centre s’adressant au public à l’Université Brock' : 'Black Student Success Centre organizers addressing an audience at Brock University',
+            label: fr ? 'Présence' : 'Presence',
+            objectPosition: 'center 42%',
+          },
+          {
+            src: communityFounderStageLarge,
+            srcSet: `${communityFounderStageSmall} 800w, ${communityFounderStageLarge} 1600w`,
+            alt: fr ? 'Un organisateur s’adressant au public devant le mur rouge de l’Université Brock' : 'An organizer addressing an audience in front of Brock University’s red feature wall',
+            label: fr ? 'Leadership' : 'Leadership',
+            objectPosition: 'center 44%',
+          },
+          {
+            src: communityChess,
+            alt: fr ? 'Deux participants échangeant autour d’un jeu d’échecs dans un espace communautaire' : 'Two participants talking over a chess game in a community space',
+            label: fr ? 'Relation' : 'Relationship',
+            objectPosition: 'center 44%',
+          },
+        ]}
+      />
 
       <section className="py-24" style={{ backgroundColor: '#2D1011' }}>
         <div className="max-w-7xl mx-auto px-6 lg:px-8">

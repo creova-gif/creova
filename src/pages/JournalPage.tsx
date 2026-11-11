@@ -36,10 +36,10 @@ export function JournalPage() {
   return (
     <div style={{ backgroundColor: '#2D1011', minHeight: '100vh' }}>
       <PageSEO
-        title={fr ? 'Journal — Guides et perspectives' : 'Journal — Guides & Perspective'}
+        title={fr ? 'Guides et perspectives sur la narration culturelle' : 'Creative Storytelling Guides & Insights'}
         description={fr
-          ? 'Guides, perspectives et coulisses de CREOVA — photographie, vidéo et création de marque pour les communautés BIPOC en Ontario.'
-          : 'Guides, perspective and behind-the-scenes from CREOVA — photography, video and brand craft for BIPOC communities across Ontario.'}
+          ? 'Guides pratiques de CREOVA sur la préparation d’événements, le consentement, la photographie de marque et la narration culturelle en Ontario.'
+          : 'Practical CREOVA guides on event preparation, consent, brand photography, and cultural storytelling from Ontario.'}
         path="/journal"
         jsonLd={jsonLd}
       />

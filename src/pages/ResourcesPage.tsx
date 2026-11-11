@@ -69,8 +69,8 @@ export function ResourcesPage() {
   return (
     <div style={{ backgroundColor: '#FFFFFF' }}>
       <PageSEO
-        title={fr ? 'Ressources créatives gratuites' : 'Free Creative Resources'}
-        description={fr ? 'Des modèles, listes de contrôle et guides pratiques de CREOVA pour mieux préparer les projets créatifs et culturels.' : 'Practical CREOVA templates, checklists, and guides for planning stronger creative and cultural projects.'}
+        title={fr ? 'Ressources gratuites pour raconter vos projets' : 'Free Event & Community Storytelling Resources'}
+        description={fr ? 'Des modèles, listes de contrôle et guides gratuits de CREOVA pour préparer des événements, entrevues communautaires et projets de narration culturelle.' : 'Free CREOVA templates, checklists, and practical guides for planning events, community interviews, and cultural storytelling projects.'}
         path="/resources"
       />
 

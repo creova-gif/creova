@@ -78,3 +78,15 @@ Automated project commands: PASS — install, lint, typecheck, 44 tests, product
 Manual accessibility and device testing: NOT VERIFIED; requires human/device pass.  
 Hosted deployment behavior: NOT VERIFIED; no release claim is made from local evidence.
 
+## 2026-11-11 search and imagery continuation
+
+- Analyzed the supplied Search Console workbook without modifying it.
+- Re-ran install, lint, typecheck, 44 tests, production build, SSR build, public-evidence validation, and the 44-route prerender: all passed.
+- Captured the updated homepage at 375, 768, and 1280 pixels plus the French desktop state.
+- Verified all three living-archive images load after the section enters the viewport and expose descriptive alt text.
+- Verified homepage structured data contains one `WebSite` and one `ProfessionalService` graph, with no duplicate organization graph.
+- Verified English and French homepage titles, canonical URL, language state, and archive copy in rendered HTML.
+- The browser harness logged sandboxed `about:blank` script warnings; these came from the test harness frame rather than the CREOVA application.
+
+Manual assistive-technology and physical-device testing remains NOT VERIFIED.
+

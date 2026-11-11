@@ -91,9 +91,9 @@ export const SERVICE_AREAS: ServiceArea[] = [
     galleryCategory: null,
     serviceLabel: 'Videography',
     en: {
-      title: 'Videography & Video Production in Niagara',
+      title: 'Video Production & Videography in Niagara',
       description:
-        'Cinematic videography in the Niagara Region — brand films, event recaps, social reels and interviews for BIPOC-led businesses and organizations across St. Catharines and beyond.',
+        'Video production and videography across St. Catharines, Niagara Falls and Welland for events, interviews, campaigns and community programs.',
       kicker: 'Niagara Region · Videography',
       h1: 'Videography & Video Production in Niagara',
       intro:
@@ -241,9 +241,9 @@ export const SERVICE_AREAS: ServiceArea[] = [
     galleryCategory: 'events',
     serviceLabel: 'Grad & Campus Photography',
     en: {
-      title: 'Graduation & Campus Photography — Brock University',
+      title: 'Brock University Graduation Photography',
       description:
-        'Graduation and campus photography for Brock University students, clubs and cultural groups in St. Catharines — grad portraits, club events and cultural nights, shot by a studio that knows the campus.',
+        'Brock University graduation and campus photography in St. Catharines for students, clubs and cultural groups, including portraits, events and programs.',
       kicker: 'Brock University · Grad & Campus',
       h1: 'Graduation & Campus Photography at Brock University',
       intro:

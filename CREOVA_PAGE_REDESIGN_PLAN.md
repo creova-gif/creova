@@ -10,11 +10,13 @@
 
 ## Phase 2 — Narrative layout variation
 
+Search priorities are informed by the 2026-11-09 Search Console export. See `CREOVA_SEARCH_PERFORMANCE_ANALYSIS.md`; proposed CTR improvements remain hypotheses until post-recrawl measurement.
+
 ### Home
 
-- Convert one three-card explanatory group into a rule-separated editorial sequence.
+- Convert one three-card explanatory group into a rule-separated editorial sequence. **Implemented locally.**
 - Keep the featured case study as the first strong proof block.
-- Add a compact three-image “living archive” strip using distinct supplied images.
+- Add a compact three-image “living archive” strip using distinct supplied images. **Implemented locally.**
 
 ### Work
 
