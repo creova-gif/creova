@@ -11,7 +11,9 @@ const CYCLE = [
   { color: '#887759', glow: 'rgba(136,119,89,0.32)' },
   { color: '#FFFFFF', glow: 'rgba(198,164,90,0.26)' },
 ];
-const STEP_MS = 240;
+// Keep the branded reveal perceptible without holding the hero behind a
+// loader-length animation. The full sequence completes in about 300 ms.
+const STEP_MS = 80;
 
 /**
  * Plays once per browser tab session, on the very first page load — not on
@@ -43,7 +45,7 @@ export function IntroLoader() {
     });
     sessionStorage.setItem(SESSION_KEY, '1');
 
-    // Advance through the colour cycle, then hold on the final (white) frame.
+    // Advance through the colour cycle, then briefly hold the final frame.
     const stepper = setInterval(() => {
       setStep((s) => {
         if (s >= CYCLE.length - 1) {
@@ -54,11 +56,11 @@ export function IntroLoader() {
       });
     }, STEP_MS);
 
-    const hold = STEP_MS * (CYCLE.length - 1) + 380;
+    const hold = STEP_MS * (CYCLE.length - 1) + 40;
     const timer = setTimeout(() => {
       setPhase('done');
       document.documentElement.classList.remove('creova-intro-pending');
-    }, hold + 320);
+    }, hold + 100);
 
     return () => {
       cancelled = true;
@@ -80,14 +82,14 @@ export function IntroLoader() {
         style={{ backgroundColor: '#2D1011' }}
         initial={{ opacity: 1 }}
         animate={{ opacity: 1 }}
-        exit={{ opacity: 0, transition: { duration: 0.32, ease: [0.22, 1, 0.36, 1] } }}
+        exit={{ opacity: 0, transition: { duration: 0.16, ease: [0.22, 1, 0.36, 1] } }}
       >
         <div className="absolute inset-x-0 top-0 h-1" style={{ backgroundColor: '#C6A45A' }} />
         <motion.div
           className="absolute rounded-full pointer-events-none"
           style={{ width: 420, height: 420, background: `radial-gradient(circle, ${current.glow} 0%, transparent 68%)` }}
           animate={{ scale: isFinal ? [1, 1.15] : 1, opacity: isFinal ? [0.8, 0.4] : 1 }}
-          transition={{ duration: isFinal ? 0.7 : 0.3, ease: 'easeOut' }}
+          transition={{ duration: isFinal ? 0.14 : 0.08, ease: 'easeOut' }}
         />
 
         <AnimatePresence mode="popLayout">
@@ -100,8 +102,8 @@ export function IntroLoader() {
               scale: isFinal ? [1, 1.06, 1] : 1,
               rotate: 0,
             }}
-            exit={{ opacity: 0, scale: 1.12, transition: { duration: 0.18 } }}
-            transition={{ duration: isFinal ? 0.6 : 0.26, ease: [0.22, 1, 0.36, 1] }}
+            exit={{ opacity: 0, scale: 1.12, transition: { duration: 0.08 } }}
+            transition={{ duration: isFinal ? 0.14 : 0.08, ease: [0.22, 1, 0.36, 1] }}
           >
             <Logo color={current.color} className="h-16 sm:h-20 w-auto" interactive={false} />
             {isFinal && (

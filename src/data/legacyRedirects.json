@@ -1,0 +1,16 @@
+[
+  { "from": "/contact", "to": "/start-a-project" },
+  { "from": "/seen", "to": "/ventures#seen" },
+  { "from": "/pricing", "to": "/services#event-story" },
+  { "from": "/shop", "to": "/ventures#verse" },
+  { "from": "/shop/digital", "to": "/ventures" },
+  { "from": "/digital-products", "to": "/ventures" },
+  { "from": "/events", "to": "/services#event-story" },
+  { "from": "/experience", "to": "/services#event-story" },
+  { "from": "/collaborate", "to": "/services#event-story" },
+  { "from": "/booking", "to": "/start-a-project" },
+  { "from": "/rental", "to": "/services" },
+  { "from": "/checkout", "to": "/start-a-project" },
+  { "from": "/order-confirmation", "to": "/start-a-project" },
+  { "from": "/payment-success", "to": "/start-a-project" }
+]

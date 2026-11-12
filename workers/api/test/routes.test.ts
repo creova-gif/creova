@@ -94,6 +94,64 @@ describe("worker routes", () => {
     expect(Array.isArray(submissions.submissions)).toBe(true);
   });
 
+  it("returns submission storage keys and uses them for status updates", async () => {
+    const key = "contact_admin_round_trip";
+    const now = "2026-11-11T12:00:00.000Z";
+    await env.DB.prepare("INSERT INTO kv (key, value, updated_at) VALUES (?1, ?2, ?3)")
+      .bind(key, JSON.stringify({
+        name: "Admin Test",
+        email: "admin-test@creova.one",
+        status: "new",
+        type: "contact",
+        created_at: now,
+      }), now)
+      .run();
+
+    try {
+      const login = await postJson(
+        "/make-server-feacf0d8/admin-login",
+        { password: "test-admin-password" },
+        "203.0.113.32",
+      );
+      const session = (await login.json()) as { token: string };
+      const headers = { "x-admin-session": session.token };
+
+      const list = await call("/make-server-feacf0d8/submissions", { headers }, "203.0.113.32");
+      expect(list.status).toBe(200);
+      const body = (await list.json()) as { submissions: Array<{ key: string; status: string }> };
+      expect(body.submissions).toContainEqual(expect.objectContaining({ key, status: "new" }));
+
+      const invalid = await call(
+        "/make-server-feacf0d8/update-submission-status",
+        {
+          method: "POST",
+          headers: { ...headers, "content-type": "application/json" },
+          body: JSON.stringify({ submissionId: key, status: "unknown" }),
+        },
+        "203.0.113.32",
+      );
+      expect(invalid.status).toBe(400);
+
+      const update = await call(
+        "/make-server-feacf0d8/update-submission-status",
+        {
+          method: "POST",
+          headers: { ...headers, "content-type": "application/json" },
+          body: JSON.stringify({ submissionId: key, status: "contacted" }),
+        },
+        "203.0.113.32",
+      );
+      expect(update.status).toBe(200);
+
+      const saved = await env.DB.prepare("SELECT value FROM kv WHERE key = ?1")
+        .bind(key)
+        .first<{ value: string }>();
+      expect(JSON.parse(saved!.value)).toEqual(expect.objectContaining({ status: "contacted" }));
+    } finally {
+      await env.DB.prepare("DELETE FROM kv WHERE key = ?1").bind(key).run();
+    }
+  });
+
   it("requireAdmin runs before the rate limit on admin mail routes", async () => {
     const ip = "203.0.113.40";
     for (let i = 0; i < 6; i++) {

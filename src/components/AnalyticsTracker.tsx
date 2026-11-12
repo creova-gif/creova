@@ -1,49 +1,12 @@
 import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router';
+import { onCLS, onINP, onLCP, type Metric } from 'web-vitals';
 import { apiUrl } from '../utils/api';
-
-const GA_MEASUREMENT_ID = import.meta.env.VITE_GA_MEASUREMENT_ID ?? '';
-
-// Load Google Analytics script
-const loadGoogleAnalytics = () => {
-  if (typeof window === 'undefined' || !GA_MEASUREMENT_ID || !GA_MEASUREMENT_ID.startsWith('G-')) {
-    return;
-  }
-
-  // Check if already loaded
-  if (document.querySelector(`script[src*="googletagmanager.com/gtag/js"]`)) {
-    return;
-  }
-
-  // Load GA script
-  const script = document.createElement('script');
-  script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
-  script.async = true;
-  document.head.appendChild(script);
-
-  // Initialize dataLayer
-  window.dataLayer = window.dataLayer || [];
-  function gtag(...args: any[]) {
-    window.dataLayer.push(args);
-  }
-  gtag('js', new Date());
-  gtag('config', GA_MEASUREMENT_ID, {
-    send_page_view: false // We'll manually track page views
-  });
-
-  // Make gtag globally available
-  (window as any).gtag = gtag;
-};
 
 export function AnalyticsTracker() {
   const location = useLocation();
   const sessionIdRef = useRef<string>('');
   const visitorIdRef = useRef<string>('');
-
-  // Load Google Analytics on mount
-  useEffect(() => {
-    loadGoogleAnalytics();
-  }, []);
 
   // Generate or retrieve visitor ID
   useEffect(() => {
@@ -62,6 +25,48 @@ export function AnalyticsTracker() {
       sessionStorage.setItem('creova_session_id', sessionId);
     }
     sessionIdRef.current = sessionId;
+  }, []);
+
+  // Report the three Core Web Vitals to GTM and the existing first-party
+  // analytics endpoint. The values stay diagnostic and contain no page text.
+  useEffect(() => {
+    let active = true;
+    const report = (metric: Metric) => {
+      if (!active) return;
+      const eventData = {
+        name: metric.name,
+        value: metric.value,
+        rating: metric.rating,
+        id: metric.id,
+        navigationType: metric.navigationType,
+      };
+
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event: 'web_vital',
+        ...eventData,
+      });
+
+      const eventUrl = apiUrl('/track-event');
+      if (!eventUrl || !visitorIdRef.current || !sessionIdRef.current) return;
+      void fetch(eventUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        keepalive: true,
+        body: JSON.stringify({
+          visitorId: visitorIdRef.current,
+          sessionId: sessionIdRef.current,
+          eventName: `web_vital_${metric.name.toLowerCase()}`,
+          page: window.location.pathname,
+          eventData,
+        }),
+      }).catch(() => undefined);
+    };
+
+    onCLS(report);
+    onINP(report);
+    onLCP(report);
+    return () => { active = false; };
   }, []);
 
   // Track page view on every route change. page_exit is not sent:
@@ -102,14 +107,14 @@ export function AnalyticsTracker() {
           });
         }
 
-        // Track page view in Google Analytics
-        if (typeof (window as any).gtag === 'function') {
-          (window as any).gtag('event', 'page_view', {
-            page_path: location.pathname,
-            page_title: document.title,
-            page_location: window.location.href
-          });
-        }
+        // GTM owns vendor configuration. The app emits one explicit SPA event.
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          event: 'virtual_page_view',
+          page_path: location.pathname,
+          page_title: document.title,
+          page_location: window.location.href,
+        });
       } catch {
         // Silently fail - don't disrupt user experience
       }

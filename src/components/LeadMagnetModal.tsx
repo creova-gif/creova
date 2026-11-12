@@ -76,14 +76,14 @@ export function LeadMagnetModal({ isOpen, onClose, leadMagnet }: LeadMagnetModal
         setCaptchaToken(null);
         setCaptchaReset((n) => n + 1);
         
-        // Track conversion
-        if (typeof (window as any).gtag === 'function') {
-          (window as any).gtag('event', 'generate_lead', {
-            event_category: 'Lead Magnet',
-            event_label: leadMagnet.title,
-            value: 0
-          });
-        }
+        // GTM owns vendor configuration; emit one semantic conversion event.
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          event: 'generate_lead',
+          event_category: 'Lead Magnet',
+          event_label: leadMagnet.title,
+          value: 0,
+        });
 
         toast.success(t('leadmagnet.success.title'), {
           description: t('leadmagnet.success.desc')

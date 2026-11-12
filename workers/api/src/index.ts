@@ -1142,13 +1142,16 @@ app.post("/make-server-feacf0d8/submit-rental", rateLimit(5, 60000), async (c) =
 // Get all contact and collaboration submissions (admin endpoint)
 app.get("/make-server-feacf0d8/submissions", requireAdmin, async (c) => {
   try {
-    const contacts = await store(c).getByPrefix("contact_");
-    const collaborations = await store(c).getByPrefix("collaboration_");
+    type Submission = Record<string, unknown> & { created_at?: string };
+    const contacts = await store(c).getEntriesByPrefix<Submission>("contact_");
+    const collaborations = await store(c).getEntriesByPrefix<Submission>("collaboration_");
 
     // Combine and sort by date (newest first)
-    const allSubmissions = [...contacts, ...collaborations].sort((a, b) => {
-      return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
-    });
+    const allSubmissions = [...contacts, ...collaborations]
+      .map(({ key, value }) => ({ key, ...value }))
+      .sort((a, b) => {
+        return new Date(b.created_at ?? 0).getTime() - new Date(a.created_at ?? 0).getTime();
+      });
 
     console.log(`Retrieved ${allSubmissions.length} submissions`);
 
@@ -1171,6 +1174,9 @@ app.post("/make-server-feacf0d8/update-submission-status", requireAdmin, async (
 
     if (!submissionId || !status) {
       return c.json({ error: "Submission ID and status are required" }, 400);
+    }
+    if (!['new', 'contacted', 'completed'].includes(status)) {
+      return c.json({ error: "Invalid submission status" }, 400);
     }
 
     const submission = await store(c).get(submissionId);

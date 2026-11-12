@@ -14,6 +14,7 @@ export interface KvStore {
   mset(keys: string[], values: any[]): Promise<void>;
   mdel(keys: string[]): Promise<void>;
   getByPrefix(prefix: string): Promise<any[]>;
+  getEntriesByPrefix<T = unknown>(prefix: string): Promise<Array<{ key: string; value: T }>>;
 }
 
 function parseValue(raw: string): unknown {
@@ -114,6 +115,18 @@ export function createKv(db: D1Database): KvStore {
         .bind(start, end)
         .all<{ value: string }>();
       return (result.results ?? []).map((row) => parseValue(row.value));
+    },
+
+    async getEntriesByPrefix<T>(prefix: string) {
+      const { start, end } = prefixBounds(prefix);
+      const result = await db
+        .prepare("SELECT key, value FROM kv WHERE key >= ?1 AND key < ?2 ORDER BY key")
+        .bind(start, end)
+        .all<{ key: string; value: string }>();
+      return (result.results ?? []).map((row) => ({
+        key: row.key,
+        value: parseValue(row.value) as T,
+      }));
     },
   };
 }

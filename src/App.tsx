@@ -10,6 +10,7 @@ import { ErrorBoundary } from './components/ErrorBoundary';
 import { SERVICE_AREAS } from './data/serviceAreas';
 import { JOURNAL } from './data/journal';
 import { CASE_STUDIES } from './data/caseStudies';
+import legacyRedirects from './data/legacyRedirects.json';
 import { LanguageProvider, useLanguage } from './context/LanguageContext';
 import { Toaster } from './components/ui/sonner';
 import { ScrollToTop } from './components/ScrollToTop';
@@ -79,23 +80,8 @@ const LOCALIZED_ROUTES: Array<{ path: string; element: React.ReactNode }> = [
   ...CASE_STUDIES.map((cs) => ({ path: `work/${cs.slug}`, element: <CaseStudyPage slug={cs.slug} /> })),
 ];
 
-/** Legacy paths kept alive as redirects. English only — they were never localized. */
-const LEGACY_REDIRECTS: Array<{ from: string; to: string }> = [
-  { from: '/contact', to: '/start-a-project' },
-  { from: '/seen', to: '/ventures#seen' },
-  { from: '/pricing', to: '/services#event-story' },
-  { from: '/shop', to: '/ventures#verse' },
-  { from: '/shop/digital', to: '/ventures' },
-  { from: '/digital-products', to: '/ventures' },
-  { from: '/events', to: '/services#event-story' },
-  { from: '/experience', to: '/services#event-story' },
-  { from: '/collaborate', to: '/services#event-story' },
-  { from: '/booking', to: '/start-a-project' },
-  { from: '/rental', to: '/services' },
-  { from: '/checkout', to: '/start-a-project' },
-  { from: '/order-confirmation', to: '/start-a-project' },
-  { from: '/payment-success', to: '/start-a-project' },
-];
+/** Legacy paths kept alive client-side and as static redirect pages at build time. */
+const LEGACY_REDIRECTS: Array<{ from: string; to: string }> = legacyRedirects;
 
 function AnimatedRoutes() {
   const location = useLocation();

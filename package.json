@@ -58,9 +58,12 @@
     "sonner": "^2.0.3",
     "tailwind-merge": "^3.5.0",
     "tw-animate-css": "^1.3.8",
-    "vaul": "^1.1.2"
+    "vaul": "^1.1.2",
+    "web-vitals": "^6.2.3"
   },
   "devDependencies": {
+    "@emnapi/core": "1.11.3",
+    "@emnapi/wasi-threads": "1.2.3",
     "@eslint/js": "^10.0.1",
     "@tailwindcss/vite": "^4.3.2",
     "@types/animejs": "^3.1.13",

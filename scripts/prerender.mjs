@@ -8,7 +8,7 @@
  * markup plus its own title/description/canonical/OG/JSON-LD.
  *
  * Deliberately excluded: /admin/* and /analytics/* are private surfaces. Old
- * commerce, pricing, booking, rental, and event URLs resolve as redirects.
+ * commerce, pricing, booking, rental, and event URLs get static redirect pages.
  */
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
@@ -85,6 +85,9 @@ const SITEMAP_PRIORITY = {
 // Pages returns 200 for the trailing-slash directory URL (route/index.html)
 // and 301s the slashless path. Sitemap locs use that 200 URL.
 const SITE_URL = 'https://www.creova.one';
+const LEGACY_REDIRECTS = JSON.parse(
+  readFileSync(join(root, 'src/data/legacyRedirects.json'), 'utf8'),
+);
 
 function canonicalLoc(route) {
   const path = route === '/' ? '/' : (route.endsWith('/') ? route : `${route}/`);
@@ -101,6 +104,49 @@ function writeSitemap() {
   const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
   writeFileSync(join(buildDir, 'sitemap.xml'), xml, 'utf8');
   console.log(`[prerender] sitemap.xml written (${ROUTES.length} urls).`);
+}
+
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#039;');
+}
+
+function writeLegacyRedirects() {
+  const redirects = [
+    ...LEGACY_REDIRECTS,
+    ...LEGACY_REDIRECTS.map(({ from, to }) => ({
+      from: `/fr${from}`,
+      to: `/fr${to}`,
+    })),
+  ];
+
+  for (const { from, to } of redirects) {
+    const canonicalPath = to.split('#')[0];
+    const target = escapeHtml(to);
+    const page = `<!doctype html>
+<html lang="${from.startsWith('/fr/') ? 'fr' : 'en'}">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, follow">
+    <link rel="canonical" href="${SITE_URL}${escapeHtml(canonicalPath)}">
+    <meta http-equiv="refresh" content="0; url=${target}">
+    <title>Redirecting to CREOVA</title>
+    <script>window.location.replace(${JSON.stringify(to)});</script>
+  </head>
+  <body>
+    <p><a href="${target}">Continue to CREOVA</a></p>
+  </body>
+</html>`;
+    const outPath = join(buildDir, from.slice(1), 'index.html');
+    mkdirSync(dirname(outPath), { recursive: true });
+    writeFileSync(outPath, page, 'utf8');
+  }
+  console.log(`[prerender] ${redirects.length} legacy redirect pages written.`);
 }
 
 /**
@@ -216,6 +262,7 @@ async function main() {
     process.exit(1);
   }
   writeSitemap();
+  writeLegacyRedirects();
   console.log(`\n[prerender] ${ROUTES.length} routes written.`);
 }
 
