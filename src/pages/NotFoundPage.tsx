@@ -4,8 +4,8 @@ import { Home, Mail, ArrowRight } from 'lucide-react';
 import { PageSEO } from '../components/PageSEO';
 import { useLanguage } from '../context/LanguageContext';
 import { EditorialHeroImage } from '../components/EditorialHeroImage';
-import notFoundImageSmall from '../assets/photo-community-celebration-800.webp';
-import notFoundImageLarge from '../assets/photo-community-celebration-1400.webp';
+import notFoundImageSmall from '../assets/community-friends-800.webp';
+import notFoundImageLarge from '../assets/community-friends-1600.webp';
 
 const warmGradient = 'linear-gradient(135deg, #C6A45A 0%, #887759 100%)';
 

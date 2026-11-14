@@ -4,8 +4,8 @@ import { PageSEO } from '../components/PageSEO';
 import { useLanguage } from '../context/LanguageContext';
 import { JOURNAL } from '../data/journal';
 import { EditorialHeroImage } from '../components/EditorialHeroImage';
-import resourceImageSmall from '../assets/photo-social-laptop-800.webp';
-import resourceImageLarge from '../assets/photo-social-laptop-1600.webp';
+import resourceImageSmall from '../assets/community-reader-800.webp';
+import resourceImageLarge from '../assets/community-reader-1600.webp';
 import resourceDetailImage from '../assets/photo-community-chess-800.webp';
 
 const DOWNLOADS = [
@@ -78,7 +78,7 @@ export function ResourcesPage() {
         <EditorialHeroImage
           src={resourceImageLarge}
           srcSet={`${resourceImageSmall} 800w, ${resourceImageLarge} 1600w`}
-          objectPosition="center 42%"
+          objectPosition="center 44%"
           secondarySrc={resourceDetailImage}
           secondaryObjectPosition="center 40%"
           folio="FIELD TOOLS / 02"

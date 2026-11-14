@@ -7,8 +7,6 @@ import { VENTURE_URLS } from '../config';
 import { websiteSchema } from '../utils/structuredData';
 import heroImageSmall from '../assets/photo-community-celebration-800.webp';
 import heroImageLarge from '../assets/photo-community-celebration-1400.webp';
-import communityImageSmall from '../assets/photo-community-convo-800.webp';
-import communityImageLarge from '../assets/photo-community-convo-1400.webp';
 import founderImageSmall from '../assets/photo-team-atrium-640.webp';
 import founderImageLarge from '../assets/photo-team-atrium-1066.webp';
 import logoBrock from '../assets/logo-brock-university.webp';
@@ -17,11 +15,16 @@ import { CreovaMusicPlayer } from '../components/CreovaMusicPlayer';
 import { EditorialPhotoSequence } from '../components/EditorialPhotoSequence';
 import { EditorialProofModule } from '../components/EditorialProofModule';
 import { EditorialMark } from '../components/EditorialMark';
-import communityStageSmall from '../assets/community-stage-800.webp';
-import communityStageLarge from '../assets/community-stage-1600.webp';
-import communityFounderStageSmall from '../assets/community-founder-stage-800.webp';
-import communityFounderStageLarge from '../assets/community-founder-stage-1600.webp';
-import communityChess from '../assets/photo-community-chess-800.webp';
+import communityBelongingSmall from '../assets/community-belonging-800.webp';
+import communityBelongingLarge from '../assets/community-belonging-1600.webp';
+import communityVoiceSmall from '../assets/community-voice-800.webp';
+import communityVoiceLarge from '../assets/community-voice-1200.webp';
+import communityPlaySmall from '../assets/community-play-800.webp';
+import communityPlayLarge from '../assets/community-play-1200.webp';
+import communityCarnivalSmall from '../assets/community-carnival-800.webp';
+import communityCarnivalLarge from '../assets/community-carnival-1600.webp';
+import communityPortraitSmall from '../assets/community-portrait-purple-800.webp';
+import communityPortraitLarge from '../assets/community-portrait-purple-1200.webp';
 
 export function HomePage() {
   const { language } = useLanguage();
@@ -187,30 +190,31 @@ export function HomePage() {
       <EditorialPhotoSequence
         id="living-archive"
         eyebrow={fr ? 'Une archive vivante' : 'A living archive'}
-        title={fr ? 'Un moment, vu sous plusieurs angles.' : 'One moment, seen from more than one angle.'}
+        title={fr ? 'Une communauté, vue sous plusieurs angles.' : 'A community, seen from more than one angle.'}
         description={fr
-          ? 'Les images les plus utiles montrent le contexte autant que le moment : qui était présent, ce qui se construisait et comment la communauté a pris place.'
-          : 'The most useful images hold context as well as the moment: who was present, what was being built, and how the community took part.'}
+          ? 'Une archive vivante ne répète pas la même image. Elle réunit appartenance, voix et expression pour montrer comment la communauté prend place.'
+          : 'A living archive does not repeat the same frame. It holds belonging, voice, and expression to show how community takes shape.'}
         photos={[
           {
-            src: communityStageLarge,
-            srcSet: `${communityStageSmall} 800w, ${communityStageLarge} 1600w`,
-            alt: fr ? 'Des organisateurs du Black Student Success Centre s’adressant au public à l’Université Brock' : 'Black Student Success Centre organizers addressing an audience at Brock University',
-            label: fr ? 'Présence' : 'Presence',
-            objectPosition: 'center 42%',
-          },
-          {
-            src: communityFounderStageLarge,
-            srcSet: `${communityFounderStageSmall} 800w, ${communityFounderStageLarge} 1600w`,
-            alt: fr ? 'Un organisateur s’adressant au public devant le mur rouge de l’Université Brock' : 'An organizer addressing an audience in front of Brock University’s red feature wall',
-            label: fr ? 'Leadership' : 'Leadership',
+            src: communityBelongingLarge,
+            srcSet: `${communityBelongingSmall} 800w, ${communityBelongingLarge} 1600w`,
+            alt: fr ? 'Trois amis souriant ensemble lors d’un rassemblement communautaire en plein air' : 'Three friends smiling together at an outdoor community gathering',
+            label: fr ? 'Appartenance' : 'Belonging',
             objectPosition: 'center 44%',
           },
           {
-            src: communityChess,
-            alt: fr ? 'Deux participants échangeant autour d’un jeu d’échecs dans un espace communautaire' : 'Two participants talking over a chess game in a community space',
-            label: fr ? 'Relation' : 'Relationship',
-            objectPosition: 'center 44%',
+            src: communityVoiceLarge,
+            srcSet: `${communityVoiceSmall} 800w, ${communityVoiceLarge} 1200w`,
+            alt: fr ? 'Une femme s’exprimant dans un microphone pendant une conversation enregistrée' : 'A woman speaking into a microphone during a recorded conversation',
+            label: fr ? 'Voix' : 'Voice',
+            objectPosition: 'center 50%',
+          },
+          {
+            src: communityPlayLarge,
+            srcSet: `${communityPlaySmall} 800w, ${communityPlayLarge} 1200w`,
+            alt: fr ? 'Deux amis prenant une pose spontanée et joyeuse dans un espace communautaire' : 'Two friends sharing a playful pose in a community space',
+            label: fr ? 'Joie' : 'Joy',
+            objectPosition: 'center 58%',
           },
         ]}
       />
@@ -218,10 +222,17 @@ export function HomePage() {
       <EditorialProofModule
         fr={fr}
         primary={{
-          src: communityImageLarge,
-          srcSet: `${communityImageSmall} 800w, ${communityImageLarge} 1400w`,
+          src: communityCarnivalLarge,
+          srcSet: `${communityCarnivalSmall} 800w, ${communityCarnivalLarge} 1600w`,
+          alt: fr ? 'Une participante souriante portant une coiffe de carnaval bleue devant un fond orange' : 'A smiling participant wearing a blue carnival headdress against an orange backdrop',
+          objectPosition: 'center 48%',
         }}
-        secondary={{ src: communityChess }}
+        secondary={{
+          src: communityPortraitLarge,
+          srcSet: `${communityPortraitSmall} 800w, ${communityPortraitLarge} 1200w`,
+          alt: fr ? 'Portrait d’une participante portant un chandail violet dans un fauteuil bleu' : 'Portrait of a participant wearing a purple sweatshirt in a blue chair',
+          objectPosition: 'center 34%',
+        }}
       />
 
       <section className="py-24" style={{ backgroundColor: '#2D1011' }}>

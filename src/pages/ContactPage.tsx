@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { PageSEO } from '../components/PageSEO';
 import { EditorialHeroImage } from '../components/EditorialHeroImage';
-import contactImageSmall from '../assets/photo-event-networking-800.webp';
-import contactImageLarge from '../assets/photo-event-networking-1600.webp';
+import contactImageSmall from '../assets/community-event-black-800.webp';
+import contactImageLarge from '../assets/community-event-black-1600.webp';
 import contactDetailImage from '../assets/photo-collage-2-800.webp';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';

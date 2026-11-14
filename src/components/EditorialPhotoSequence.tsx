@@ -59,7 +59,7 @@ export function EditorialPhotoSequence({
               key={`${photo.src}-${photo.label}`}
               className={`group relative min-h-[290px] overflow-hidden rounded-2xl ${layouts[index]}`}
               initial={reduceMotion ? false : { opacity: 0, y: 42, clipPath: 'inset(12% 0 0 0 round 1rem)' }}
-              whileInView={{ opacity: 1, y: 0, clipPath: 'inset(0% 0 0 0 round 1rem)' }}
+              whileInView={reduceMotion ? undefined : { opacity: 1, y: 0, clipPath: 'inset(0% 0 0 0 round 1rem)' }}
               viewport={{ once: true, margin: '-12% 0px' }}
               transition={{ duration: 0.85, delay: index * 0.11, ease: [0.22, 1, 0.36, 1] }}
             >

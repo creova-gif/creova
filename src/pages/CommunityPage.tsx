@@ -4,8 +4,8 @@ import { Link } from '../i18n/LocaleLink';
 import { PageSEO } from '../components/PageSEO';
 import { useLanguage } from '../context/LanguageContext';
 import { EditorialMark } from '../components/EditorialMark';
-import communityImageSmall from '../assets/photo-community-convo-800.webp';
-import communityImageLarge from '../assets/photo-community-convo-1400.webp';
+import communityImageSmall from '../assets/community-event-red-800.webp';
+import communityImageLarge from '../assets/community-event-red-1600.webp';
 
 export function CommunityPage() {
   const { language } = useLanguage();
@@ -49,7 +49,7 @@ export function CommunityPage() {
           alt=""
           aria-hidden="true"
           className="absolute inset-0 h-full w-full object-cover"
-          style={{ objectPosition: 'center 42%' }}
+          style={{ objectPosition: 'center 45%' }}
           initial={{ scale: 1.035 }}
           animate={{ scale: 1 }}
           transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1] }}

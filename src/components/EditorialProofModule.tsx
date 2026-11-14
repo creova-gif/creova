@@ -4,8 +4,8 @@ import { Link } from '../i18n/LocaleLink';
 
 interface EditorialProofModuleProps {
   fr: boolean;
-  primary: { src: string; srcSet: string };
-  secondary: { src: string };
+  primary: { src: string; srcSet: string; alt: string; objectPosition?: string };
+  secondary: { src: string; srcSet?: string; alt: string; objectPosition?: string };
 }
 
 export function EditorialProofModule({ fr, primary, secondary }: EditorialProofModuleProps) {
@@ -44,17 +44,17 @@ export function EditorialProofModule({ fr, primary, secondary }: EditorialProofM
               src={primary.src}
               srcSet={primary.srcSet}
               sizes="(min-width: 1024px) 52vw, 100vw"
-              alt={fr ? 'Programmation communautaire documentée par CREOVA à l’Université Brock' : 'Community programming documented by CREOVA at Brock University'}
+              alt={primary.alt}
               loading="lazy"
               decoding="async"
               className="h-[500px] w-full object-cover sm:h-[610px]"
-              style={{ objectPosition: 'center 44%' }}
+              style={{ objectPosition: primary.objectPosition ?? 'center' }}
               width="1400"
               height="933"
             />
             <figcaption className="flex items-center justify-between gap-4 px-5 py-4 text-[10px] uppercase tracking-[.24em]" style={{ backgroundColor: '#14090A', color: '#CDBFAE' }}>
-              <span>BSSC × CREOVA</span>
-              <span>{fr ? 'Étude publique vérifiée' : 'Verified public work'}</span>
+              <span>{fr ? 'ARCHIVE VISUELLE CREOVA' : 'CREOVA VISUAL ARCHIVE'}</span>
+              <span>{fr ? 'Récits communautaires' : 'Community stories'}</span>
             </figcaption>
           </motion.figure>
 
@@ -68,11 +68,13 @@ export function EditorialProofModule({ fr, primary, secondary }: EditorialProofM
           >
             <img
               src={secondary.src}
-              alt={fr ? 'Deux participants échangeant autour d’un jeu d’échecs' : 'Two participants talking over a chess game'}
+              srcSet={secondary.srcSet}
+              sizes={secondary.srcSet ? '(min-width: 1024px) 25vw, 58vw' : undefined}
+              alt={secondary.alt}
               loading="lazy"
               decoding="async"
               className="aspect-[4/5] w-full object-cover"
-              style={{ objectPosition: 'center 44%' }}
+              style={{ objectPosition: secondary.objectPosition ?? 'center' }}
               width="800"
               height="1000"
             />
@@ -134,8 +136,8 @@ export function EditorialProofModule({ fr, primary, secondary }: EditorialProofM
             ))}
           </ol>
 
-          <Link to="/work/black-student-success-centre" className="mt-8 inline-flex w-fit items-center gap-2 text-sm font-semibold" style={{ color: '#C6A45A' }}>
-            {fr ? 'Voir l’étude de cas' : 'Read the case study'} <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+          <Link to="/work" className="mt-8 inline-flex w-fit items-center gap-2 text-sm font-semibold" style={{ color: '#C6A45A' }}>
+            {fr ? 'Explorer les récits' : 'Explore the stories'} <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
           </Link>
         </div>
       </div>
