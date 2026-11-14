@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import { Link } from '../i18n/LocaleLink';
 import { PageSEO } from '../components/PageSEO';
 import { useLanguage } from '../context/LanguageContext';
+import { EditorialMark } from '../components/EditorialMark';
 import communityImageSmall from '../assets/photo-community-convo-800.webp';
 import communityImageLarge from '../assets/photo-community-convo-1400.webp';
 
@@ -103,7 +104,7 @@ export function CommunityPage() {
 
       <section className="py-24" style={{ backgroundColor: '#2D1011' }}>
         <div className="max-w-7xl mx-auto px-6 lg:px-8 grid lg:grid-cols-[.8fr_1.2fr] gap-14 lg:gap-20">
-          <div><ShieldCheck className="w-7 h-7 mb-7" style={{ color: '#C6A45A' }} /><h2 className="text-4xl md:text-6xl font-light tracking-tight" style={{ color: '#FFFFFF' }}>{fr ? 'Nos engagements de collaboration.' : 'How we protect the relationship.'}</h2></div>
+          <div><ShieldCheck className="w-7 h-7 mb-7" style={{ color: '#C6A45A' }} /><h2 className="text-4xl md:text-6xl font-light tracking-tight" style={{ color: '#FFFFFF' }}>{fr ? <>Nos engagements de <EditorialMark tone="sand">collaboration</EditorialMark>.</> : <>How we <EditorialMark tone="sand">protect</EditorialMark> the relationship.</>}</h2></div>
           <div className="grid sm:grid-cols-2 gap-5">
             {commitments.map(([title, text]) => <div key={title} className="rounded-2xl p-6" style={{ border: '1px solid rgba(198,164,90,.18)', backgroundColor: 'rgba(255,255,255,.04)' }}><h3 className="text-xl mb-3" style={{ color: '#FFFFFF' }}>{title}</h3><p className="text-sm leading-relaxed" style={{ color: '#B7BBC3' }}>{text}</p></div>)}
           </div>

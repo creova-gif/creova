@@ -1,15 +1,33 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router';
 import { onCLS, onINP, onLCP, type Metric } from 'web-vitals';
 import { apiUrl } from '../utils/api';
+import {
+  ANALYTICS_CONSENT_EVENT,
+  analyticsAllowed,
+  pushAnalyticsEvent,
+} from '../analytics/consent';
 
 export function AnalyticsTracker() {
   const location = useLocation();
   const sessionIdRef = useRef<string>('');
   const visitorIdRef = useRef<string>('');
+  const [enabled, setEnabled] = useState(false);
+
+  useEffect(() => {
+    const sync = () => setEnabled(analyticsAllowed());
+    sync();
+    window.addEventListener(ANALYTICS_CONSENT_EVENT, sync);
+    return () => window.removeEventListener(ANALYTICS_CONSENT_EVENT, sync);
+  }, []);
 
   // Generate or retrieve visitor ID
   useEffect(() => {
+    if (!enabled) {
+      visitorIdRef.current = '';
+      sessionIdRef.current = '';
+      return;
+    }
     // Get or create visitor ID (persists across sessions)
     let visitorId = localStorage.getItem('creova_visitor_id');
     if (!visitorId) {
@@ -25,11 +43,12 @@ export function AnalyticsTracker() {
       sessionStorage.setItem('creova_session_id', sessionId);
     }
     sessionIdRef.current = sessionId;
-  }, []);
+  }, [enabled]);
 
   // Report the three Core Web Vitals to GTM and the existing first-party
   // analytics endpoint. The values stay diagnostic and contain no page text.
   useEffect(() => {
+    if (!enabled) return;
     let active = true;
     const report = (metric: Metric) => {
       if (!active) return;
@@ -41,8 +60,7 @@ export function AnalyticsTracker() {
         navigationType: metric.navigationType,
       };
 
-      window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push({
+      pushAnalyticsEvent({
         event: 'web_vital',
         ...eventData,
       });
@@ -67,11 +85,12 @@ export function AnalyticsTracker() {
     onINP(report);
     onLCP(report);
     return () => { active = false; };
-  }, []);
+  }, [enabled]);
 
   // Track page view on every route change. page_exit is not sent:
   // the Worker accepts it and drops it, so the POST only spends a request.
   useEffect(() => {
+    if (!enabled) return;
     const trackPageView = async () => {
       try {
         // Extract UTM parameters from URL
@@ -108,8 +127,7 @@ export function AnalyticsTracker() {
         }
 
         // GTM owns vendor configuration. The app emits one explicit SPA event.
-        window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push({
+        pushAnalyticsEvent({
           event: 'virtual_page_view',
           page_path: location.pathname,
           page_title: document.title,
@@ -121,7 +139,7 @@ export function AnalyticsTracker() {
     };
 
     trackPageView();
-  }, [location]);
+  }, [enabled, location]);
 
   return null; // This component doesn't render anything
 }

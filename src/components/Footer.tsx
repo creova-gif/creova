@@ -4,6 +4,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { Logo } from './Logo';
 import { SERVICE_AREAS } from '../data/serviceAreas';
 import { VENTURE_URLS } from '../config';
+import { openPrivacyChoices } from '../analytics/consent';
 
 export function Footer() {
   const { language } = useLanguage();
@@ -105,7 +106,7 @@ export function Footer() {
         <div className="pt-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <Link to="/" aria-label="CREOVA" className="creova-touch-target inline-flex items-center"><Logo variant="white" className="h-8 w-auto" interactive={false} /></Link>
           <p className="text-xs" style={{ color: '#B8ACA6' }}>© {new Date().getFullYear()} CREOVA. {fr ? 'Tous droits réservés.' : 'All rights reserved.'}</p>
-          <div className="flex gap-5 text-xs" style={{ color: '#B8ACA6' }}><Link to="/terms-of-service" className="creova-touch-target inline-flex items-center hover:text-white">{fr ? 'Conditions' : 'Terms'}</Link><Link to="/privacy-policy" className="creova-touch-target inline-flex items-center hover:text-white">{fr ? 'Confidentialité' : 'Privacy'}</Link><Link to="/start-a-project" className="creova-touch-target inline-flex items-center hover:text-white">{fr ? 'Contact' : 'Contact'}</Link></div>
+          <div className="flex flex-wrap gap-5 text-xs" style={{ color: '#B8ACA6' }}><Link to="/terms-of-service" className="creova-touch-target inline-flex items-center hover:text-white">{fr ? 'Conditions' : 'Terms'}</Link><Link to="/privacy-policy" className="creova-touch-target inline-flex items-center hover:text-white">{fr ? 'Confidentialité' : 'Privacy'}</Link><button type="button" onClick={openPrivacyChoices} className="creova-touch-target inline-flex items-center hover:text-white">{fr ? 'Choix de confidentialité' : 'Privacy choices'}</button><Link to="/start-a-project" className="creova-touch-target inline-flex items-center hover:text-white">{fr ? 'Contact' : 'Contact'}</Link></div>
         </div>
       </div>
     </footer>

@@ -16,7 +16,7 @@ import { Toaster } from './components/ui/sonner';
 import { ScrollToTop } from './components/ScrollToTop';
 import { ScrollToTopOnMount } from './components/ScrollToTopOnMount';
 import { AnalyticsTracker } from './components/AnalyticsTracker';
-import { IntroLoader } from './components/IntroLoader';
+import { AnalyticsConsentBanner } from './components/AnalyticsConsentBanner';
 
 const HomePage = lazy(() => import('./pages/HomePage').then(m => ({ default: m.HomePage })));
 const ServicesPage = lazy(() => import('./pages/ServicesPage').then(m => ({ default: m.ServicesPage })));
@@ -43,15 +43,12 @@ const NotFoundPage = lazy(() => import('./pages/NotFoundPage').then(m => ({ defa
 function PageLoader() {
   return (
     <div
-      className="min-h-screen flex items-center justify-center"
-      style={{ backgroundColor: '#2D1011' }}
+      className="min-h-[35vh] flex items-center justify-center px-6"
+      style={{ backgroundColor: '#FFFFFF', color: '#2D1011' }}
       aria-label="Loading page"
+      role="status"
     >
-      <div
-        className="w-8 h-8 rounded-full border-2 border-t-transparent animate-spin"
-        style={{ borderColor: '#C6A45A', borderTopColor: 'transparent' }}
-        role="status"
-      />
+      <span className="text-xs tracking-[.28em] uppercase">Loading</span>
     </div>
   );
 }
@@ -132,7 +129,6 @@ function AppContent() {
 
   return (
     <>
-      <IntroLoader />
       {/*
         Site-wide defaults only. Everything page-specific — title, description,
         canonical, robots, og/twitter title+description+url+image, hreflang,
@@ -254,6 +250,7 @@ function AppContent() {
         <Footer />
         <Toaster richColors position="top-right" />
         <AnalyticsTracker />
+        <AnalyticsConsentBanner />
         {/* <CustomCursor /> disabled: trailing custom cursor made the site feel laggy; using native cursor */}
       </div>
     </>

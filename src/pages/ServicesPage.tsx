@@ -4,6 +4,7 @@ import { Link } from '../i18n/LocaleLink';
 import { PageSEO } from '../components/PageSEO';
 import { EditorialHeroImage } from '../components/EditorialHeroImage';
 import { useLanguage } from '../context/LanguageContext';
+import { EditorialMark } from '../components/EditorialMark';
 import serviceImageSmall from '../assets/photo-service-events-800.webp';
 import serviceImageLarge from '../assets/photo-service-events-1600.webp';
 import serviceDetailImage from '../assets/photo-service-videography-800.webp';
@@ -122,7 +123,7 @@ export function ServicesPage() {
         <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .7 }} className="relative max-w-7xl mx-auto px-6 lg:px-8">
           <p className="text-xs tracking-[.35em] uppercase mb-6" style={{ color: '#C6A45A' }}>{fr ? 'Services' : 'What we do'}</p>
           <h1 className="creova-page-title font-light tracking-tight" style={{ color: '#FFFFFF' }}>
-            {fr ? 'Un système narratif pour le moment, le public et la suite.' : 'One story system for the moment, the audience, and what comes next.'}
+            {fr ? <>Un <EditorialMark variant="circle" tone="sand">système narratif</EditorialMark> pour le moment, le public et la suite.</> : <>One <EditorialMark variant="circle" tone="sand">story system</EditorialMark> for the moment, the audience, and what comes next.</>}
           </h1>
           <p className="max-w-3xl mt-7 text-lg md:text-xl leading-relaxed" style={{ color: '#B7BBC3' }}>
             {fr ? 'Stratégie, photo, vidéo et actifs organisés autour du résultat recherché — pas une liste de livrables isolés.' : 'Strategy, photography, video, and organized assets built around the outcome you need—not a disconnected menu of deliverables.'}
@@ -155,7 +156,7 @@ export function ServicesPage() {
       <section className="py-24" style={{ backgroundColor: '#2D1011' }}>
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid lg:grid-cols-[.75fr_1.25fr] gap-12 lg:gap-20">
-            <div><p className="text-xs tracking-[.35em] uppercase mb-5" style={{ color: '#C6A45A' }}>{fr ? 'Notre approche' : 'How it works'}</p><h2 className="text-4xl md:text-6xl font-light tracking-tight" style={{ color: '#FFFFFF' }}>{fr ? 'Un mandat clair. Une production responsable.' : 'A clear brief. A responsible production.'}</h2></div>
+            <div><p className="text-xs tracking-[.35em] uppercase mb-5" style={{ color: '#C6A45A' }}>{fr ? 'Notre approche' : 'How it works'}</p><h2 className="text-4xl md:text-6xl font-light tracking-tight" style={{ color: '#FFFFFF' }}>{fr ? <>Un mandat clair. Une production <EditorialMark variant="highlight" tone="gold">responsable</EditorialMark>.</> : <>A clear brief. A <EditorialMark variant="highlight" tone="gold">responsible</EditorialMark> production.</>}</h2></div>
             <div className="grid sm:grid-cols-2 gap-5">
               {steps.map(([title, text], index) => <div key={title} className="rounded-2xl p-6" style={{ backgroundColor: 'rgba(255,255,255,.04)', border: '1px solid rgba(198,164,90,.18)' }}><span className="text-xs" style={{ color: '#C6A45A' }}>0{index + 1}</span><h3 className="text-xl mt-7 mb-3" style={{ color: '#FFFFFF' }}>{title}</h3><p className="text-sm leading-relaxed" style={{ color: '#B7BBC3' }}>{text}</p></div>)}
             </div>

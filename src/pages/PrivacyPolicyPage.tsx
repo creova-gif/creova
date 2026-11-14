@@ -55,7 +55,7 @@ export function PrivacyPolicyPage() {
               {fr ? 'Politique de confidentialité' : 'Privacy Policy'}
             </h1>
             <p className="text-lg max-w-2xl mx-auto" style={{ color: '#E0E0E0' }}>
-              {fr ? 'Dernière mise à jour : 18 novembre 2024' : 'Last Updated: November 18, 2024'}
+              {fr ? 'Dernière mise à jour : 12 novembre 2026' : 'Last Updated: November 12, 2026'}
             </p>
           </motion.div>
         </div>
@@ -184,15 +184,15 @@ export function PrivacyPolicyPage() {
                 <p className="pt-3"><strong style={{ color: '#2D1011' }}>{fr ? 'Fournisseurs de services :' : 'Service Providers:'}</strong></p>
                 <ul className="list-disc pl-6 space-y-2">
                   {(fr ? [
-                    <><strong>Stripe :</strong> Traitement des paiements (assujetti à la politique de confidentialité de Stripe)</>,
-                    <><strong>Supabase :</strong> Services de base de données et d'infrastructure</>,
+                    <><strong>Cloudflare :</strong> Services d’API, de sécurité et d’analyse opérationnelle</>,
+                    <><strong>Google :</strong> Gestion des balises et analyse du site, uniquement après votre accord</>,
+                    <><strong>Contentsquare :</strong> Analyse de l’expérience, uniquement après votre accord</>,
                     <><strong>Fournisseurs de services de courriel :</strong> Pour l'envoi de communications</>,
-                    <><strong>Transporteurs :</strong> Pour la livraison des produits</>,
                   ] : [
-                    <><strong>Stripe:</strong> Payment processing (subject to Stripe's privacy policy)</>,
-                    <><strong>Supabase:</strong> Database and backend services</>,
+                    <><strong>Cloudflare:</strong> API, security, and operational analytics services</>,
+                    <><strong>Google:</strong> Tag management and website analytics, only after you allow analytics</>,
+                    <><strong>Contentsquare:</strong> Experience analytics, only after you allow analytics</>,
                     <><strong>Email service providers:</strong> For sending communications</>,
-                    <><strong>Shipping carriers:</strong> For product delivery</>,
                   ]).map((li, i) => <li key={i}>{li}</li>)}
                 </ul>
 
@@ -223,23 +223,19 @@ export function PrivacyPolicyPage() {
                 <h2 className="text-2xl" style={{ color: '#2D1011' }}>{fr ? '4. Témoins et technologies de suivi' : '4. Cookies and Tracking Technologies'}</h2>
               </div>
               <div className="space-y-3" style={{ color: '#685F5A' }}>
-                <p>{fr ? 'Nous utilisons des témoins et des technologies similaires pour :' : 'We use cookies and similar technologies to:'}</p>
+                <p>{fr ? 'Les technologies de mesure non essentielles sont désactivées jusqu’à ce que vous les acceptiez. Avec votre accord, nous les utilisons pour :' : 'Non-essential measurement technologies remain disabled until you allow them. With your permission, we use them to:'}</p>
                 <ul className="list-disc pl-6 space-y-2">
                   {(fr ? [
-                    'Mémoriser vos préférences et paramètres',
-                    'Maintenir votre panier',
-                    "Analyser le trafic du site web et le comportement des utilisateurs",
-                    'Fournir du contenu personnalisé',
-                    'Améliorer les fonctionnalités du site web',
+                    'Mesurer la stabilité, la réactivité et la vitesse de chargement',
+                    'Comprendre quelles pages sont utiles et comment la navigation fonctionne',
+                    'Détecter les problèmes d’expérience et améliorer le site web',
                   ] : [
-                    'Remember your preferences and settings',
-                    'Maintain your shopping cart',
-                    'Analyze website traffic and user behavior',
-                    'Provide personalized content',
-                    'Improve website functionality',
+                    'Measure visual stability, responsiveness, and loading speed',
+                    'Understand which pages are useful and how navigation works',
+                    'Identify experience problems and improve the website',
                   ]).map((li, i) => <li key={i}>{li}</li>)}
                 </ul>
-                <p className="pt-3">{fr ? "Vous pouvez contrôler les témoins dans les paramètres de votre navigateur. Toutefois, leur désactivation peut nuire à votre capacité d'utiliser certaines fonctionnalités de notre site web." : 'You can control cookies through your browser settings. However, disabling cookies may affect your ability to use certain features of our website.'}</p>
+                <p className="pt-3">{fr ? 'Vous pouvez refuser ces technologies sans perdre les fonctionnalités essentielles du site et modifier votre choix à tout moment avec le lien « Choix de confidentialité » dans le pied de page.' : 'You can decline these technologies without losing essential website functionality and change your choice at any time through the “Privacy choices” link in the footer.'}</p>
               </div>
             </div>
 

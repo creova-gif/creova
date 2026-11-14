@@ -9,6 +9,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { toast } from 'sonner';
 import { apiUrl } from '../utils/api';
 import { Captcha } from './Captcha';
+import { pushAnalyticsEvent } from '../analytics/consent';
 
 interface LeadMagnet {
   id: string;
@@ -77,8 +78,7 @@ export function LeadMagnetModal({ isOpen, onClose, leadMagnet }: LeadMagnetModal
         setCaptchaReset((n) => n + 1);
         
         // GTM owns vendor configuration; emit one semantic conversion event.
-        window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push({
+        pushAnalyticsEvent({
           event: 'generate_lead',
           event_category: 'Lead Magnet',
           event_label: leadMagnet.title,

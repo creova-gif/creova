@@ -6,3 +6,82 @@
 @layer base {
   html, body, #root { min-height: 100vh; height: 100%; margin: 0; }
 }
+
+@layer components {
+  .editorial-mark {
+    --mark-color: #c6a45a;
+    position: relative;
+    display: inline-block;
+    isolation: isolate;
+    white-space: nowrap;
+  }
+
+  .editorial-mark--gold { --mark-color: #c6a45a; }
+  .editorial-mark--sand { --mark-color: #ddcfae; }
+  .editorial-mark--wine { --mark-color: #6f3336; }
+
+  .editorial-mark__text {
+    position: relative;
+    z-index: 1;
+  }
+
+  .editorial-mark__stroke {
+    position: absolute;
+    z-index: 0;
+    overflow: visible;
+    pointer-events: none;
+  }
+
+  .editorial-mark__stroke path {
+    fill: none;
+    stroke: var(--mark-color);
+    stroke-width: 3.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: editorial-mark-draw 850ms cubic-bezier(.22, 1, .36, 1) 400ms forwards;
+  }
+
+  .editorial-mark--circle .editorial-mark__stroke {
+    inset: -20% -5% -12%;
+    width: 110%;
+    height: 135%;
+    transform: rotate(-1.5deg);
+  }
+
+  .editorial-mark--underline .editorial-mark__stroke {
+    left: -2%;
+    bottom: -15%;
+    width: 105%;
+    height: 48%;
+    transform: rotate(-1deg);
+  }
+
+  .editorial-mark--underline .editorial-mark__stroke path { stroke-width: 4; }
+
+  .editorial-mark--highlight .editorial-mark__stroke {
+    inset: 24% -2% -8%;
+    width: 104%;
+    height: 82%;
+    transform: rotate(-1deg);
+  }
+
+  .editorial-mark--highlight .editorial-mark__stroke path {
+    fill: var(--mark-color);
+    fill-opacity: .34;
+    stroke: none;
+  }
+
+  @keyframes editorial-mark-draw {
+    to { stroke-dashoffset: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .editorial-mark__stroke path {
+      animation: none;
+      stroke-dashoffset: 0;
+    }
+  }
+}

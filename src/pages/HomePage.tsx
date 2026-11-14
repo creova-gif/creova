@@ -15,6 +15,8 @@ import logoBrock from '../assets/logo-brock-university.webp';
 import logoBSSC from '../assets/logo-bssc.png';
 import { CreovaMusicPlayer } from '../components/CreovaMusicPlayer';
 import { EditorialPhotoSequence } from '../components/EditorialPhotoSequence';
+import { EditorialProofModule } from '../components/EditorialProofModule';
+import { EditorialMark } from '../components/EditorialMark';
 import communityStageSmall from '../assets/community-stage-800.webp';
 import communityStageLarge from '../assets/community-stage-1600.webp';
 import communityFounderStageSmall from '../assets/community-founder-stage-800.webp';
@@ -112,7 +114,7 @@ export function HomePage() {
               {fr ? 'Studio de narration culturelle · Ontario' : 'Cultural storytelling studio · Ontario'}
             </p>
             <h1 className="creova-hero-title font-light tracking-tight" style={{ color: '#FFFFFF' }}>
-              {fr ? 'Transformez vos événements en histoires qui rassemblent et font agir.' : 'Turn your events into stories that connect people and move them to act.'}
+              {fr ? <>Transformez vos événements en histoires qui <EditorialMark tone="sand">rassemblent</EditorialMark> et font agir.</> : <>Turn your events into stories that <EditorialMark tone="sand">connect</EditorialMark> people and move them to act.</>}
             </h1>
             <p className="mt-7 max-w-2xl text-base md:text-lg leading-relaxed" style={{ color: '#E0E0E0' }}>
               {fr
@@ -156,7 +158,7 @@ export function HomePage() {
             <div>
               <p className="text-xs tracking-[0.35em] uppercase mb-5" style={{ color: '#7D6D51' }}>{fr ? 'Le problème' : 'The problem'}</p>
               <h2 className="font-light tracking-tight leading-tight" style={{ color: '#2D1011', fontSize: 'clamp(2.5rem, 5vw, 4.8rem)' }}>
-                {fr ? 'L’événement se termine. Sa valeur ne devrait pas disparaître.' : 'The event ends. Its value should not.'}
+                {fr ? <>L’événement se termine. Sa <EditorialMark variant="circle" tone="wine">valeur</EditorialMark> ne devrait pas disparaître.</> : <>The event ends. Its <EditorialMark variant="circle" tone="wine">value</EditorialMark> should not.</>}
               </h2>
             </div>
             <div className="border-t" style={{ borderColor: 'rgba(45,16,17,.2)' }}>
@@ -213,6 +215,15 @@ export function HomePage() {
         ]}
       />
 
+      <EditorialProofModule
+        fr={fr}
+        primary={{
+          src: communityImageLarge,
+          srcSet: `${communityImageSmall} 800w, ${communityImageLarge} 1400w`,
+        }}
+        secondary={{ src: communityChess }}
+      />
+
       <section className="py-24" style={{ backgroundColor: '#2D1011' }}>
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-5 mb-12">
@@ -231,34 +242,6 @@ export function HomePage() {
                 <Link to="/start-a-project" className="inline-flex items-center gap-2 text-sm mt-8" style={{ color: '#C6A45A' }}>{offer.cta} <ArrowRight className="w-4 h-4" /></Link>
               </article>
             ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="py-24 lg:py-32">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-          <div className="overflow-hidden rounded-3xl" style={{ border: '1px solid #E0E0E0' }}>
-            <div className="relative min-h-[420px]">
-              <img src={communityImageLarge} srcSet={`${communityImageSmall} 800w, ${communityImageLarge} 1400w`} sizes="(min-width: 1024px) 46vw, 100vw" alt="Community programming documented by CREOVA" loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover" width="1400" height="933" />
-            </div>
-            <div className="p-6" style={{ backgroundColor: '#2D1011' }}>
-              <p className="text-xs tracking-[0.3em] uppercase" style={{ color: '#CDBFAE' }}>BSSC × CREOVA</p>
-            </div>
-          </div>
-          <div>
-            <p className="text-xs tracking-[0.35em] uppercase mb-5" style={{ color: '#7D6D51' }}>{fr ? 'Étude de cas' : 'Featured case study'}</p>
-            <h2 className="text-4xl md:text-5xl font-light tracking-tight mb-6" style={{ color: '#2D1011' }}>{fr ? 'Conçu pour le moment. Utile longtemps après.' : 'Made for the moment. Useful long after it.'}</h2>
-            <p className="text-lg leading-relaxed mb-5" style={{ color: '#555' }}>
-              {fr
-                ? 'CREOVA a photographié et documenté la vie étudiante noire et des programmes culturels liés au Black Student Success Centre de l’Université Brock.'
-                : 'CREOVA photographed and documented Black student life and cultural programming connected with Brock University’s Black Student Success Centre.'}
-            </p>
-            <p className="leading-relaxed mb-8" style={{ color: '#685F5A' }}>
-              {fr
-                ? 'Une sélection du travail continue de soutenir les communications sociales, promotionnelles, communautaires et institutionnelles. Aucun résultat ni témoignage non vérifié n’est ajouté.'
-                : 'Selected work continues to support social, promotional, community, and institutional communications. No unverified result or testimonial is added.'}
-            </p>
-            <Link to="/work/black-student-success-centre" className="inline-flex items-center gap-2 font-medium" style={{ color: '#7D6D51' }}>{fr ? 'Lire l’étude de cas' : 'Read the case study'} <ArrowRight className="w-4 h-4" /></Link>
           </div>
         </div>
       </section>
@@ -287,7 +270,7 @@ export function HomePage() {
           <img src={founderImageLarge} srcSet={`${founderImageSmall} 640w, ${founderImageLarge} 1066w`} sizes="(min-width: 1024px) 46vw, 100vw" alt="Justin Mafie working with the CREOVA community" decoding="async" loading="lazy" className="w-full rounded-3xl object-cover aspect-[4/5]" width="1066" height="1600" />
           <div>
             <p className="text-xs tracking-[0.35em] uppercase mb-5" style={{ color: '#7D6D51' }}>{fr ? 'Approche fondée par Justin Mafie' : 'Founder-led by Justin Mafie'}</p>
-            <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-6" style={{ color: '#2D1011' }}>{fr ? 'La culture n’est pas une couche décorative.' : 'Culture is not a decorative layer.'}</h2>
+            <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-6" style={{ color: '#2D1011' }}>{fr ? <>La culture n’est pas une couche <EditorialMark variant="highlight" tone="gold">décorative</EditorialMark>.</> : <>Culture is not a <EditorialMark variant="highlight" tone="gold">decorative</EditorialMark> layer.</>}</h2>
             <p className="text-lg leading-relaxed mb-8" style={{ color: '#555' }}>
               {fr
                 ? 'Elle influence l’auteur du récit, les personnes qui en bénéficient, la manière dont les gens sont représentés et l’usage des images après la remise. CREOVA intègre ces décisions à la stratégie et à la production.'

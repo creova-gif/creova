@@ -4,6 +4,7 @@ import { ArrowRight, ArrowUpRight } from 'lucide-react';
 import { Link } from '../i18n/LocaleLink';
 import { PageSEO } from '../components/PageSEO';
 import { useLanguage } from '../context/LanguageContext';
+import { EditorialMark } from '../components/EditorialMark';
 import { absoluteUrl } from '../i18n/locale';
 import { VENTURE_URLS } from '../config';
 import sankofaSymbol from '../assets/sankofa-symbol.webp';
@@ -90,7 +91,7 @@ export function AboutPage() {
         <div className="relative z-10 w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16 lg:pt-32 lg:pb-20">
           <span className="text-xs tracking-[0.4em] uppercase" style={{ color: '#C6A45A' }}>{fr ? 'À propos de CREOVA' : 'About CREOVA'}</span>
           <h1 className="tracking-tight mt-5" style={{ color: '#FFFFFF', fontFamily: 'var(--font-display)', fontSize: 'clamp(2.6rem, 7vw, 4.8rem)', lineHeight: 1.02 }}>
-            {fr ? 'Un studio conçu pour raconter la culture avec contexte et soin.' : 'A studio built to tell cultural stories with context and care.'}
+            {fr ? <>Un studio conçu pour raconter la culture avec <EditorialMark tone="sand">contexte</EditorialMark> et soin.</> : <>A studio built to tell cultural stories with <EditorialMark tone="sand">context</EditorialMark> and care.</>}
           </h1>
         </div>
       </section>
