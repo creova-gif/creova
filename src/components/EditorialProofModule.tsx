@@ -83,7 +83,35 @@ export function EditorialProofModule({ fr, primary, secondary }: EditorialProofM
           </div>
         </div>
 
-        <div className="flex flex-col justify-center">
+        <div className="relative flex flex-col justify-center">
+          <motion.svg
+            className="pointer-events-none absolute -left-20 top-10 hidden h-24 w-24 -rotate-6 lg:block"
+            viewBox="0 0 96 96"
+            fill="none"
+            aria-hidden="true"
+          >
+            <motion.path
+              d="M88 10C53 17 30 34 22 64"
+              stroke="#C6A45A"
+              strokeWidth="2"
+              strokeLinecap="round"
+              initial={reduceMotion ? false : { pathLength: 0, opacity: 0 }}
+              whileInView={reduceMotion ? undefined : { pathLength: 1, opacity: 1 }}
+              viewport={{ once: true, amount: 0.7 }}
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            />
+            <motion.path
+              d="m14 55 8 10 13-5"
+              stroke="#C6A45A"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              initial={reduceMotion ? false : { opacity: 0 }}
+              whileInView={reduceMotion ? undefined : { opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.25, delay: 0.65 }}
+            />
+          </motion.svg>
           <p className="text-xs uppercase tracking-[.35em]" style={{ color: '#C6A45A' }}>{fr ? 'Une preuve éditoriale' : 'An editorial proof system'}</p>
           <h2 id="editorial-proof-title" className="mt-5 text-4xl font-light leading-[1.02] tracking-tight sm:text-5xl lg:text-6xl" style={{ color: '#FFFFFF' }}>
             {fr ? 'Le moment est vivant. La preuve doit le rester.' : 'The moment is alive. The proof should be too.'}

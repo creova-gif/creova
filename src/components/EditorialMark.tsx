@@ -1,4 +1,5 @@
-import type { ReactNode } from 'react';
+import { useRef, type ReactNode } from 'react';
+import { useInView, useReducedMotion } from 'motion/react';
 
 type EditorialMarkProps = {
   children: ReactNode;
@@ -14,8 +15,16 @@ const paths = {
 } as const;
 
 export function EditorialMark({ children, variant = 'underline', tone = 'gold', className = '' }: EditorialMarkProps) {
+  const markRef = useRef<HTMLSpanElement>(null);
+  const inView = useInView(markRef, { once: true, amount: 0.55 });
+  const reduceMotion = useReducedMotion();
+  const visible = Boolean(reduceMotion || inView);
+
   return (
-    <span className={`editorial-mark editorial-mark--${variant} editorial-mark--${tone} ${className}`.trim()}>
+    <span
+      ref={markRef}
+      className={`editorial-mark editorial-mark--${variant} editorial-mark--${tone} ${visible ? 'is-visible' : ''} ${className}`.trim()}
+    >
       <span className="editorial-mark__text">{children}</span>
       <svg className="editorial-mark__stroke" viewBox="0 0 150 76" preserveAspectRatio="none" aria-hidden="true" focusable="false">
         <path d={paths[variant]} pathLength="1" />
