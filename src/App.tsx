@@ -1,6 +1,6 @@
 import { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router';
-import { AnimatePresence } from 'motion/react';
+import { AnimatePresence, MotionConfig } from 'motion/react';
 import { PageTransition } from './components/PageTransition';
 import { Helmet, HelmetProvider } from '@dr.pogodin/react-helmet';
 import { Navigation } from './components/Navigation';
@@ -277,7 +277,9 @@ export default function App() {
   return (
     <HelmetProvider>
       <Router>
-        <AppShell />
+        <MotionConfig reducedMotion="user">
+          <AppShell />
+        </MotionConfig>
       </Router>
     </HelmetProvider>
   );
