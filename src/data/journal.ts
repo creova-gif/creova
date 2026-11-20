@@ -26,6 +26,7 @@ export interface JournalPost {
   category: string;    // short label
   readMins: number;
   cover: string;       // public path
+  objectPosition?: string;
   en: JournalCopy;
   fr: JournalCopy;
 }
@@ -132,7 +133,8 @@ export const JOURNAL: JournalPost[] = [
     date: '2026-06-18',
     category: 'Guides',
     readMins: 5,
-    cover: '/journal-brand-photoshoot.webp',
+    cover: '/journal-brand-community.webp',
+    objectPosition: 'center 48%',
     en: {
       title: 'How to Prepare for a Brand Photoshoot',
       excerpt: 'The work that happens before the camera comes out is what makes a shoot feel effortless. Here is the prep that separates a good gallery from a great one.',

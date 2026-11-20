@@ -80,7 +80,7 @@ export function JournalPage() {
                 <Link key={post.slug} to={`/journal/${post.slug}`} className="group block">
                   <article className="h-full flex flex-col overflow-hidden rounded-2xl transition-all duration-300 group-hover:-translate-y-1" style={{ backgroundColor: '#0E0E0E', border: '1px solid rgba(198,164,90,0.12)' }}>
                     <div className="relative overflow-hidden" style={{ aspectRatio: '16/10' }}>
-                      <img src={post.cover} alt={c.title} loading="lazy" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" style={{ objectPosition: 'center 35%' }} />
+                      <img src={post.cover} alt={c.title} loading="lazy" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" style={{ objectPosition: post.objectPosition ?? 'center 35%' }} />
                       <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(14,14,14,0.6) 0%, transparent 55%)' }} />
                     </div>
                     <div className="flex flex-col flex-1 p-6">

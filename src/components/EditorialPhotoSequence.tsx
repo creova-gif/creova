@@ -7,6 +7,7 @@ export type EditorialPhoto = {
   alt: string;
   label: string;
   objectPosition?: string;
+  fit?: 'cover' | 'portrait';
 };
 
 type EditorialPhotoSequenceProps = {
@@ -63,6 +64,19 @@ export function EditorialPhotoSequence({
               viewport={{ once: true, margin: '-12% 0px' }}
               transition={{ duration: 0.85, delay: index * 0.11, ease: [0.22, 1, 0.36, 1] }}
             >
+              {photo.fit === 'portrait' && (
+                <img
+                  src={photo.src}
+                  srcSet={photo.srcSet}
+                  sizes={photo.srcSet ? (photo.sizes ?? '(min-width: 1024px) 42vw, 100vw') : undefined}
+                  alt=""
+                  loading="lazy"
+                  decoding="async"
+                  aria-hidden="true"
+                  className="absolute inset-0 h-full w-full scale-110 object-cover opacity-45 blur-2xl"
+                  style={{ objectPosition: photo.objectPosition ?? 'center' }}
+                />
+              )}
               <motion.img
                 src={photo.src}
                 srcSet={photo.srcSet}
@@ -70,9 +84,9 @@ export function EditorialPhotoSequence({
                 alt={photo.alt}
                 loading="lazy"
                 decoding="async"
-                className="absolute inset-0 h-full w-full object-cover"
+                className={`absolute inset-0 h-full w-full ${photo.fit === 'portrait' ? 'object-contain' : 'object-cover'}`}
                 style={{ objectPosition: photo.objectPosition ?? 'center' }}
-                whileHover={reduceMotion ? undefined : { scale: 1.045 }}
+                whileHover={reduceMotion ? undefined : { scale: photo.fit === 'portrait' ? 1.02 : 1.045 }}
                 transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#2D1011]/85 via-transparent to-transparent" />

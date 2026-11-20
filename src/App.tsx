@@ -17,6 +17,7 @@ import { ScrollToTop } from './components/ScrollToTop';
 import { ScrollToTopOnMount } from './components/ScrollToTopOnMount';
 import { AnalyticsTracker } from './components/AnalyticsTracker';
 import { AnalyticsConsentBanner } from './components/AnalyticsConsentBanner';
+import { BrandIntro } from './components/BrandIntro';
 
 const HomePage = lazy(() => import('./pages/HomePage').then(m => ({ default: m.HomePage })));
 const ServicesPage = lazy(() => import('./pages/ServicesPage').then(m => ({ default: m.ServicesPage })));
@@ -129,6 +130,7 @@ function AppContent() {
 
   return (
     <>
+      <BrandIntro />
       {/*
         Site-wide defaults only. Everything page-specific — title, description,
         canonical, robots, og/twitter title+description+url+image, hreflang,

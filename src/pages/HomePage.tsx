@@ -208,13 +208,15 @@ export function HomePage() {
             alt: fr ? 'Une femme s’exprimant dans un microphone pendant une conversation enregistrée' : 'A woman speaking into a microphone during a recorded conversation',
             label: fr ? 'Voix' : 'Voice',
             objectPosition: 'center 50%',
+            fit: 'portrait',
           },
           {
             src: communityPlayLarge,
             srcSet: `${communityPlaySmall} 800w, ${communityPlayLarge} 1200w`,
             alt: fr ? 'Deux amis prenant une pose spontanée et joyeuse dans un espace communautaire' : 'Two friends sharing a playful pose in a community space',
             label: fr ? 'Joie' : 'Joy',
-            objectPosition: 'center 58%',
+            objectPosition: 'center 48%',
+            fit: 'portrait',
           },
         ]}
       />

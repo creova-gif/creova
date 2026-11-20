@@ -47,7 +47,7 @@ export function JournalPostPage({ slug }: { slug: string }) {
         <header className="relative flex min-h-[62vh] items-end overflow-hidden">
           <EditorialHeroImage
             src={post.cover}
-            objectPosition="center 35%"
+            objectPosition={post.objectPosition ?? 'center 35%'}
             folio={`JOURNAL / ${post.category.toUpperCase()}`}
             deep
           />
@@ -66,7 +66,7 @@ export function JournalPostPage({ slug }: { slug: string }) {
         {/* Cover */}
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="relative overflow-hidden rounded-2xl" style={{ aspectRatio: '16/9', border: '1px solid rgba(198,164,90,0.12)' }}>
-            <img src={post.cover} alt={c.title} className="w-full h-full object-cover" style={{ objectPosition: 'center 35%' }} />
+            <img src={post.cover} alt={c.title} className="w-full h-full object-cover" style={{ objectPosition: post.objectPosition ?? 'center 35%' }} />
           </div>
         </div>
 
@@ -112,7 +112,7 @@ export function JournalPostPage({ slug }: { slug: string }) {
                 {more.map((p) => (
                   <Link key={p.slug} to={`/journal/${p.slug}`} className="group flex items-center gap-4">
                     <div className="relative overflow-hidden rounded-xl flex-shrink-0" style={{ width: 88, height: 88 }}>
-                      <img src={p.cover} alt="" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" style={{ objectPosition: 'center 35%' }} />
+                      <img src={p.cover} alt="" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" style={{ objectPosition: p.objectPosition ?? 'center 35%' }} />
                     </div>
                     <span className="text-base leading-snug transition-colors duration-200 group-hover:text-[#C6A45A]" style={{ color: '#FFFFFF', fontFamily: 'var(--font-display)' }}>{(fr ? p.fr : p.en).title}</span>
                   </Link>
