@@ -35,19 +35,21 @@ or direct-booking flow.
 
 ## Visual rules
 
-- The supplied CREOVA brand board is the source of truth: warm beige
-  `#CDBFAE`, olive `#887759`, deep oxblood `#2D1011`, white `#FFFFFF`, and a
-  restrained digital metallic-gold accent `#C6A45A`.
+- The October 2026 CREOVA Brand Guidelines are the source of truth: Sandstone
+  `#CDBEAE`, Taupe `#88785A`, Oxblood `#2B1112`, white `#FFFFFF`, black
+  `#000000`, and a metallic-gold texture used as an accent. Marigold `#DAA710`
+  is the approved flat secondary accent when a texture is not appropriate.
 - Use the derived olive shade `#7D6D51` only when white small text needs an
-  accessible solid background; the board's `#887759` remains the visible
-  palette reference.
+  accessible solid background; the guideline's Taupe `#88785A` remains the
+  visible palette reference.
 - Quasimoda Bold is the preferred heading face and Quasimoda Regular is the
   preferred body face. Use only through a licensed Adobe Fonts web project or
   licensed self-hosted files. Until that is connected, the site uses its
   declared Avenir Next, General Sans, and Instrument Serif fallbacks.
 - Use generous editorial spacing, strong type contrast, and real CREOVA work.
-- The logo-led intro plays once per browser-tab session, stays under roughly
-  1.2 seconds, never delays content loading, and is skipped for reduced motion.
+- The logo-led intro uses the approved primary lockup, plays once per
+  browser-tab session, stays under roughly 1.2 seconds, never delays content
+  loading, and is skipped for reduced motion.
 - Partner logos use their official colour artwork. Do not recolour, desaturate,
   or force institutional marks into monochrome treatments.
 - Project cards use the corresponding public Pixieset collection cover and

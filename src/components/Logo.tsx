@@ -1,10 +1,10 @@
 import { motion } from 'motion/react';
 
 const MARK_COLORS = {
-  navy: '#2D1011',
+  navy: '#2B1112',
   white: '#FFFFFF',
-  red: '#887759',
-  blue: '#CDBFAE',
+  red: '#88785A',
+  blue: '#CDBEAE',
   gold: '#C6A45A',
 } as const;
 

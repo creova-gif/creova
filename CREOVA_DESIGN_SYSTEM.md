@@ -6,12 +6,12 @@
 
 | Token | Value | Role |
 | --- | --- | --- |
-| `--creova-oxblood` | `#2D1011` | Primary dark canvas and text |
+| `--creova-oxblood` | `#2B1112` | Primary dark canvas and text |
 | `--creova-white` | `#FFFFFF` | Light canvas and inverse text |
-| `--creova-cream` | `#CDBFAE` | Soft neutral field and supporting text |
-| `--creova-olive` | `#887759` | Secondary brand surface |
+| `--creova-cream` | `#CDBEAE` | Sandstone field and supporting text |
+| `--creova-olive` | `#88785A` | Taupe secondary brand surface |
 | `--creova-olive-strong` | `#7D6D51` | Accessible action colour on white |
-| `--creova-gold` | `#C6A45A` | Focus, active state, and editorial signal |
+| `--creova-marigold` | `#DAA710` | Flat accent when metallic-gold texture is unsuitable |
 
 Avoid low-opacity body copy. Body text targets 4.5:1; large text targets 3:1; interactive boundaries and focus indicators target 3:1 against adjacent colours.
 
