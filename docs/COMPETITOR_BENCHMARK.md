@@ -1,7 +1,9 @@
 # CREOVA competitor benchmark
 
-Tested on 2026-11-14 against the live homepages for CREOVA, OneMethod,
-Narrative XPR, Tadiem, and DonProd.
+Originally tested on 2026-11-14 against the live homepages for CREOVA,
+OneMethod, Narrative XPR, Tadiem, and DonProd. The technology review was
+expanded on 2026-11-21 with supplied Wappalyzer exports for Higgsfield, Devin,
+and Super Proper, plus refreshed exports for the original references.
 
 ## Method
 
@@ -43,10 +45,32 @@ the reference sites without duplicating animation or styling runtimes.
 | Anime.js | Do not activate | No current effect requires a second animation runtime. |
 | Mapbox | Add only for a real map feature | A decorative map would add weight, API governance, and accessibility work without improving the current conversion path. |
 | Next.js / Framer Sites | Do not migrate | Vite prerendering already provides indexable route HTML and strong lab performance. |
+| PWA shell | Defer | Several references expose PWA metadata, but CREOVA has no offline task or repeat-use workflow that would justify service-worker cache governance. |
+| PostHog / GrowthBook | Defer | Experimentation tooling should follow a defined hypothesis and consent model, not precede one. |
+| Sanity | Defer | The reviewed evidence manifest and gallery administration already cover current publishing needs without a CMS migration. |
+| Three.js | Do not add | Higgsfield uses it for product spectacle; CREOVA's authentic photography communicates the brand more directly and accessibly. |
+| Turbopack | Not applicable | It is a Next.js build tool, not an experience feature CREOVA can adopt independently. |
 
-`lenis` and `animejs` remain installed but have no production imports. They
-should be removed in a dedicated dependency cleanup unless an approved feature
-requires them.
+`lenis`, `animejs`, and the unused Anime.js type package were removed on
+2026-11-21 after repository-wide import checks confirmed that none of them were
+used. Motion remains the single animation runtime and native scrolling remains
+the interaction baseline.
+
+## Expanded technology snapshot
+
+The supplied exports identify technologies, not design quality or business
+results. They are useful for spotting capabilities, but they are not a reason
+to copy a stack wholesale.
+
+| Reference | Notable detected technology | CREOVA response |
+| --- | --- | --- |
+| Higgsfield | Framer Motion, Three.js, Tailwind, Sanity, PostHog, GrowthBook, priority hints, PWA | Reuse the proof-first visual density selectively; reject 3D spectacle, fingerprinting, and experimentation tooling without a defined need. |
+| Devin | React, Next.js, Tailwind, priority hints, Vercel | Adopt the principle of showing real work immediately; retain Vite and the current hosting path. |
+| Super Proper | React, Next.js, Tailwind, Sanity, priority hints | Keep concise positioning and fast media delivery; do not adopt its AI-advertising identity or migrate frameworks. |
+| OneMethod | React, Next.js, GSAP, Emotion, web-vitals, Mapbox | Keep Web Vitals; use existing Motion and Tailwind instead of adding overlapping runtimes. |
+| Narrative XPR | React, Framer Motion, Framer Sites, priority hints | Continue the editorial rhythm and hand-marked language in CREOVA's palette and voice. |
+| Tadiem | React, Next.js, Emotion, priority hints | Keep the portfolio-scale confidence while avoiding its measured layout shift and duplicate styling stack. |
+| DonProd | React Router, Framer Motion, Lenis, Locomotive Scroll | Retain native scrolling and reduced-motion safeguards; do not activate competing smooth-scroll systems. |
 
 ## Design comparison
 
@@ -61,6 +85,24 @@ requires them.
   shift and accessibility issues are regressions CREOVA should avoid.
 - DonProd is technically light once loaded, but the JavaScript-dependent first
   view and missing image alternatives found by Lighthouse reduce resilience.
+- Higgsfield demonstrates dense visual discovery and cinematic product theatre,
+  but its larger experimentation, fingerprinting, and 3D stack is not a fit for
+  CREOVA's consent and performance principles.
+- Devin is strongest when it shows the product doing real work rather than
+  describing it abstractly. CREOVA can borrow that proof-first principle by
+  bringing verified case-study imagery forward, without copying its software UI.
+- Super Proper's concise positioning is useful, while its AI-advertising frame
+  is not CREOVA's meaning or market position.
+
+## 2026-11-21 implementation response
+
+- Replaced the text-only homepage proof strip with an image-led selected-work
+  rail sourced from the approved evidence record and existing public galleries.
+- Kept the evidence copy unchanged, preserved the case-study route, and linked
+  each image to its public Pixieset gallery.
+- Used the current Motion and Tailwind stack, lazy image loading, explicit image
+  geometry, keyboard focus treatment, and reduced-motion handling.
+- No competitor framework or analytics vendor was added.
 
 ## Follow-up checks
 

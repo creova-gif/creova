@@ -9,12 +9,11 @@ import heroImageSmall from '../assets/photo-community-celebration-800.webp';
 import heroImageLarge from '../assets/photo-community-celebration-1400.webp';
 import founderImageSmall from '../assets/photo-team-atrium-640.webp';
 import founderImageLarge from '../assets/photo-team-atrium-1066.webp';
-import logoBrock from '../assets/logo-brock-university.webp';
-import logoBSSC from '../assets/logo-bssc.png';
 import { CreovaMusicPlayer } from '../components/CreovaMusicPlayer';
 import { EditorialPhotoSequence } from '../components/EditorialPhotoSequence';
 import { EditorialProofModule } from '../components/EditorialProofModule';
 import { EditorialMark } from '../components/EditorialMark';
+import { FeaturedWorkRail } from '../components/FeaturedWorkRail';
 import communityBelongingSmall from '../assets/community-belonging-800.webp';
 import communityBelongingLarge from '../assets/community-belonging-1600.webp';
 import communityVoiceSmall from '../assets/community-voice-800.webp';
@@ -141,19 +140,7 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="border-b" style={{ backgroundColor: '#FFFFFF', borderColor: '#E0E0E0' }}>
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-7 grid md:grid-cols-[1fr_auto] gap-6 md:items-center">
-          <p className="text-sm leading-relaxed" style={{ color: '#555' }}>
-            {fr
-              ? 'Travail public vérifié : documentation du Mois de l’histoire des Noirs et de programmes communautaires liés au Black Student Success Centre de l’Université Brock.'
-              : 'Verified public work: Black History Month and community-program documentation connected with Brock University’s Black Student Success Centre.'}
-          </p>
-          <div className="flex items-center gap-5" aria-label="Verified collaborators">
-            <img src={logoBrock} alt="Brock University" className="h-11 w-auto object-contain" width="1188" height="720" />
-            <img src={logoBSSC} alt="Black Student Success Centre" className="h-11 w-11 object-contain" width="1070" height="1074" />
-          </div>
-        </div>
-      </section>
+      <FeaturedWorkRail fr={fr} />
 
       <section className="py-24 lg:py-32">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
