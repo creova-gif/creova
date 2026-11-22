@@ -23,18 +23,11 @@ React/Vite frontend with a minimal Supabase backend (scaffold tables only — `k
 
 ## Technology Stack
 
-| Layer | Technology | Version |
-|---|---|---|
-| Runtime | Node.js | 22 (CI) |
-| Frontend | React, React Router, Vite | ^19.2, 8.3.0, ^8.3 |
-| Styling / motion | Tailwind CSS, Motion, Recharts | ^4.3, ^12.38, ^2.15 |
-| Language / lint | TypeScript, ESLint | ^6.0, ^10.8 |
-| Backend data | Supabase (`@supabase/supabase-js`); scaffold tables only | ^2.100 |
-| API worker (`workers/api`) | Hono on Cloudflare Workers (Wrangler), D1 | ^4.13, Wrangler 4.152 |
-| Testing | Vitest (worker) | 4.1.12 |
-| CI/CD | `ci.yml`; `deploy.yml` publishes the site to GitHub Pages; the worker deploys only by manual dispatch | — |
-
-Versions come from `package.json`, `workers/api/package.json` and `.github/workflows/`.
+| Layer | Technology |
+|---|---|
+| Frontend | React, Vite |
+| Backend | Supabase (minimal/scaffold usage) |
+| CI/CD | Own `ci.yml` + `deploy.yml` |
 
 ## Prerequisites
 
