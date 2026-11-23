@@ -166,8 +166,9 @@ async function loadGalleries() {
     if (legacyGalleryBase) {
       // The legacy gallery endpoint expects the public Supabase token. The
       // current Cloudflare Worker endpoint does not.
+      const envAnonKey = process.env.VITE_SUPABASE_ANON_KEY?.trim();
       const info = readFileSync(join(root, 'src/utils/supabase/info.tsx'), 'utf8');
-      const publicAnonKey = info.match(/publicAnonKey\s*=\s*"([^"]+)"/)?.[1];
+      const publicAnonKey = envAnonKey || info.match(/publicAnonKey\s*=\s*"([^"]+)"/)?.[1];
       headers = publicAnonKey ? { Authorization: `Bearer ${publicAnonKey}` } : {};
     }
     const res = await fetch(`${apiBase}/galleries`, {
