@@ -8,7 +8,11 @@ config/credentials.json
 secrets.yml
 *.pem
 *.key
+*.p12
+*.sqlite3
 id_rsa
+utils/supabase/info.tsx
+src/utils/supabase/info.tsx
 
 # Build output
 build/
