@@ -2,6 +2,16 @@
 
 This is for Justin, the Cloudflare account owner. Run the commands from `workers/api/` with Node 22. Everything here is on the Workers Free plan. Nothing in this runbook changes DNS: the API stays on `*.workers.dev` until Rex approves `api.creova.one`. Sources: `workers/api/wrangler.toml`, `workers/api/README.md`, `.github/workflows/deploy-worker.yml`, `.github/workflows/deploy.yml`.
 
+## Order of operations (read first)
+
+Auto-merge (squash, not a merge commit) is on for #69. The PR is only blocked by unresolved review threads, so resolving the last thread merges it immediately and triggers the Pages deploy.
+
+1. Do steps 1 to 4 for the Worker: create D1 and the Worker, run migrations, set secrets, deploy.
+2. Run the Worker smoke tests (step 5).
+3. Set the repo Actions variable `VITE_API_BASE_URL`.
+4. Only then resolve the remaining review threads on #69. This squash-merges the PR and deploys the frontend.
+5. Smoke-test the live site's forms.
+
 ## 1. Create the D1 database and the Worker
 
 ```bash
